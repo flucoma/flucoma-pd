@@ -1,4 +1,3 @@
-####### original SC Cmake file starts here
 cmake_minimum_required(VERSION 3.8)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,7 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mavx -msse -msse2 -msse3
 SET(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
 
-project (fluid_decomposition_cli LANGUAGES CXX)
+project (fluid_decomposition_pd LANGUAGES CXX)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
 
@@ -60,13 +59,13 @@ add_library(AUDIOFILELIB STATIC ${AUFIOFILE_SOURCES})
 # )
 
 
-add_library(FLUID_CLI_WRAPPER INTERFACE)
+add_library(FLUID_PD_WRAPPER INTERFACE)
 
-target_include_directories (FLUID_CLI_WRAPPER INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_include_directories (FLUID_PD_WRAPPER INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-target_sources(FLUID_CLI_WRAPPER
+target_sources(FLUID_PD_WRAPPER
   INTERFACE
-  "${CMAKE_CURRENT_SOURCE_DIR}/include/FluidCLIWrapper.hpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/include/FluidPDWrapper.hpp"
 )
 
 SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
