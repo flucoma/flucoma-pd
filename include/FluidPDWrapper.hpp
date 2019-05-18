@@ -108,8 +108,8 @@ public:
       
     for (size_t i = 0; i < mSigOuts.size(); i++)
       mSigOuts[i] = sp[i + mSigIns.size()]->s_vec;
-      
-    dsp_add(callPerform, 2, this, sp[0]->s_vecsize);
+            
+    dsp_add(callPerform, 2, wrapper, sp[0]->s_vecsize);
   }
 
   void perform(int sampleframes)
