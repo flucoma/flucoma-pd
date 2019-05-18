@@ -168,9 +168,9 @@ struct NonRealTime
     {
       switch (res.status())
       {
-      case Result::Status::kWarning: object_warn(&wrapper, res.message().c_str()); break;
-      case Result::Status::kError: pd_error(&wrapper, res.message().c_str()); break;
-      default: {
+        case Result::Status::kWarning: object_warn(&wrapper, res.message().c_str()); break;
+        case Result::Status::kError: pd_error(&wrapper, "%s", res.message().c_str()); break;
+        default: {
       }
       }
       return;

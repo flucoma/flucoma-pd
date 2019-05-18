@@ -2,7 +2,7 @@
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 add_dependencies (${PROJECT_NAME} FLUID_DECOMPOSITION)
 target_link_libraries(${PROJECT_NAME}
-PUBLIC FLUID_DECOMPOSITION  
+PUBLIC FLUID_DECOMPOSITION
 PRIVATE FFTLIB
 )
 
@@ -39,9 +39,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXTERN_OUTPUT_NA
 if (APPLE)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES
-		BUNDLE True
-		BUNDLE_EXTENSION "pd_darwin"
-		XCODE_ATTRIBUTE_WRAPPER_EXTENSION "pd_darwin"
+		CMAKE_EXECUTABLE_SUFFIX "pd_darwin"
+		XCODE_ATTRIBUTE_MACH_O_TYPE mh_dylib
 )
 
 elseif (WIN32)
