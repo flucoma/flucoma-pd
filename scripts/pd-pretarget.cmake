@@ -1,2 +1,4 @@
 
+string(REGEX REPLACE "(.*)/" "" THIS_FOLDER_NAME "${CMAKE_CURRENT_SOURCE_DIR}")
+
 project (${THIS_FOLDER_NAME})
