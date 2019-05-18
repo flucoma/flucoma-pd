@@ -34,22 +34,6 @@ void object_warn(T *x, const char *fmt, ...)
  
   post(fmt, finalString);
 }
-    
-template <class T>
-void object_error(T *x, const char *fmt, ...)
-{
-  char postString[1024];
-  char finalString[1024];
-    
-  char *objectName = class_getname(*((t_pd *)x));
-  va_list argp;
-  va_start(argp, fmt);
-  vsnprintf(postString, 1024, fmt, argp);
-  va_end(argp);
-  snprintf(finalString, 1024, "%s: %s", objectName, finalString);
-
-  error(fmt, finalString);
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -185,7 +169,7 @@ struct NonRealTime
       switch (res.status())
       {
       case Result::Status::kWarning: object_warn(&wrapper, res.message().c_str()); break;
-      case Result::Status::kError: object_error(&wrapper, res.message().c_str()); break;
+      case Result::Status::kError: pd_error(&wrapper, res.message().c_str()); break;
       default: {
       }
       }
@@ -278,7 +262,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
       switch (x->messages().status())
       {
         case Result::Status::kWarning: object_warn(x, r.message().c_str()); break;
-        case Result::Status::kError: object_error(x, r.message().c_str()); break;
+        case Result::Status::kError: pd_error(x, "%s", r.message().c_str()); break;
         default: {
         }
       }
