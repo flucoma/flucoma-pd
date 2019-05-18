@@ -2,3 +2,4 @@ bin
 build
 **/build/*
 **/.DS_Store
+pr_objects/
