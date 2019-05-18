@@ -42,23 +42,31 @@ public:
 
   bool exists() const override
   {
-    //FIX
-    return false;
+    return channelExists(0, 0);
   }
 
   bool valid() const override
   {
-    //FIX
-    return false;
+    return getMinFrames() > 0;
   }
 
   void resize(size_t frames, size_t channels, size_t rank, double sampleRate) override
   {
-    //FIX
-
-    /*
-      assert(frames == numFrames() && channels == numChans());
-    }*/
+      
+    size_t nChans = numChans();
+      
+    for (size_t i = 0; i < nChans && i < channels; i++)
+    {
+      for (size_t j = 0; j < mRank && j < rank; j++)
+      {
+        t_garray *array = getArray(channelName(i, j));
+          
+        if (array)
+          garray_resize_long(array, static_cast<int>(frames));
+      }
+    }
+      
+    assert(frames == numFrames() && channels == numChans());
   }
 
   bool acquire() override
@@ -80,22 +88,21 @@ public:
 
   FluidTensorView<float, 1> samps(size_t channel, size_t rankIdx = 0) override
   {
-    //FIX
-    float* samples = nullptr;
-    FluidTensorView<float, 1> v{samples, 0, numFrames()};
+    float* samples = (float *) getChannelSamples(channel, rankIdx);
+      
+    FluidTensorView<float, 1> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     return v;
   }
 
   FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) override
   {
-    //FIX
-    float* samples = nullptr;
-    FluidTensorView<float, 1> v{samples, 0, numFrames()};
+    float* samples = (float *) getChannelSamples(chanoffset, 0);
+    FluidTensorView<float, 1> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     
     return v(Slice(offset, nframes));
   }
     
-  size_t numFrames() const override { return valid() ? getMaxFrames() : 0u; }
+  size_t numFrames() const override { return valid() ? getMinFrames() : 0u; }
 
   size_t numChans() const override { return valid() ? getChannelCount() / mRank : 0u; }
 
@@ -105,17 +112,76 @@ public:
   double sampleRate() const override { return valid() ? 1 : 0 ; } // N.B. pd has no notion of sample rates for buffers...
 
 private:
-
-  size_t getMaxFrames() const
+    
+  size_t getMinFrames() const
   {
-    //FIX
-    return 1;
+    size_t nChans = numChans();
+    size_t frames = 0;
+    
+    for (size_t i = 0; i < nChans; i++)
+    {
+      for (size_t j = 0; j < mRank; j++)
+      {
+        size_t chanFrames = getChannelFrames(i, j);
+        frames = (!i && !j) ? chanFrames : std::min(chanFrames, frames);
+      }
+    }
+    
+    return frames;
   }
     
   size_t getChannelCount() const
   {
     //FIX
     return 1;
+  }
+    
+  t_symbol *channelName(size_t chan, size_t rank) const
+  {
+      
+    //FIX
+    return mName;
+  }
+    
+  size_t getChannelFrames(size_t chan, size_t rank) const
+  {
+    t_word *words;
+    int length = 0;
+    getChannel(channelName(chan, rank), words, length);
+    return static_cast<size_t>(length);
+  }
+    
+  t_word *getChannelSamples(size_t chan, size_t rank)
+  {
+    t_word *words;
+    int length;
+    getChannel(channelName(chan, rank), words, length);
+    return words;
+  }
+    
+  bool channelExists(size_t chan, size_t rank) const
+  {
+    return getArray(channelName(chan, rank));
+  }
+    
+  void getChannel(t_symbol *name, t_word*& words, int& length) const
+  {
+    t_garray *array = getArray(name);
+    
+    if (array)
+    {
+      garray_getfloatwords(array, &length, &words);
+    }
+    else
+    {
+      words = nullptr;
+      length = 0;
+    }
+  }
+    
+  t_garray *getArray(t_symbol *name) const
+  {
+    return (t_garray *) pd_findbyclass(name, garray_class);
   }
     
   bool tryLock()
@@ -139,8 +205,8 @@ private:
       
     release();
 
-    mName   = other.mName;
-    mRank   = other.mRank;
+    mName = other.mName;
+    mRank = other.mRank;
 
     releaseLock();
   }
