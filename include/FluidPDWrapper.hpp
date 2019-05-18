@@ -390,7 +390,7 @@ public:
   {
     t_symbol* s = atom_getsymbol(a);
       
-    return a->a_type == A_SYMBOL && s && strlen(s->s_name) > 1 && s->s_name[0] == '@';
+    return a->a_type == A_SYMBOL && s && strlen(s->s_name) > 1 && s->s_name[0] == '-';
   }
     
   static int findTag(int start, int ac, t_atom *av)
@@ -406,6 +406,18 @@ public:
     return findTag(0, ac, av);
   }
     
+  template <size_t N, typename T>
+  struct MatchName
+  {
+    void operator()(const typename T::type& param, const char *name, bool& matched)
+    {
+      const char* paramName = paramDescriptor<N>().name;
+        
+      if (!strcmp(paramName, name))
+        matched = true;
+    }
+  };
+    
   void paramArgProcess(int ac, t_atom *av)
   {
     int tag = paramArgOffset(ac, av);
@@ -415,9 +427,19 @@ public:
       t_symbol* s = atom_getsymbol(av + tag);
       int endTag = findTag(tag + 1, ac, av);
       
-      // FIX - check that parameter exists...
-        
-      pd_typedmess((t_pd *) impl::PDBase::getPDObject(), gensym(s->s_name + 1), endTag - (tag + 1), av + tag + 1);
+      bool matched = false;
+      mParams.template forEachParam<MatchName>(s->s_name + 1, matched);
+      if (!strcmp(s->s_name + 1, "warnings"))
+        matched = true;
+          
+      if (!matched)
+      {
+        pd_error(impl::PDBase::getPDObject(), "No parameter named %s", s->s_name + 1);
+      }
+      else
+      {
+          pd_typedmess((t_pd *) impl::PDBase::getPDObject(), gensym(s->s_name + 1), endTag - (tag + 1), av + tag + 1);
+      }
         
       tag = endTag;
     }
