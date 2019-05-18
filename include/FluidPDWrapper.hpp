@@ -156,7 +156,7 @@ private:
 template <class Wrapper>
 struct NonRealTime
 {
-  static void setup(t_class *c) { class_addmethod(c, (t_method) deferProcess, gensym("bang"), A_GIMME, 0); }
+  static void setup(t_class *c) { class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL); }
 
   void process()
   {
@@ -178,9 +178,7 @@ struct NonRealTime
     wrapper.doneBang();
   }
 
-  static void deferProcess(Wrapper *x, t_symbol *s, int ac, t_atom *av) { defer(x, (t_method) &callProcess, s, static_cast<short>(ac), av); }
-
-  static void callProcess(Wrapper *x, t_symbol /*s*/, short /*ac*/, t_atom /**av*/) { x->process(); }
+  static void callProcess(Wrapper *x) { x->process(); }
     
     void setupAudio(t_object *, size_t, size_t) {}
 };
