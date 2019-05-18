@@ -98,16 +98,17 @@ public:
   {
     float* samples = (float *) getChannelSamples(channel, rankIdx);
       
-    FluidTensorView<float, 1> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
-    return v;
+    FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
+      
+    return v.col(0);
   }
 
   FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) override
   {
     float* samples = (float *) getChannelSamples(chanoffset, 0);
-    FluidTensorView<float, 1> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
+    FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     
-    return v(Slice(offset, nframes));
+    return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
     
   size_t numFrames() const override { return getMinFrames(); }
