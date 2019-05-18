@@ -8,6 +8,13 @@
 
 namespace fluid {
 namespace client {
+    
+template<typename T>
+void NOTUSED(T& a)
+{
+  (void)sizeof(a);
+}
+    
 class PDBufferAdaptor : public BufferAdaptor
 {
 public:
@@ -52,6 +59,7 @@ public:
 
   void resize(size_t frames, size_t channels, size_t rank, double sampleRate) override
   {
+    NOTUSED(sampleRate);
       
     size_t nChans = numChans();
       
@@ -138,6 +146,8 @@ private:
     
   t_symbol *channelName(size_t chan, size_t rank) const
   {
+    NOTUSED(chan);
+    NOTUSED(rank);
       
     //FIX
     return mName;

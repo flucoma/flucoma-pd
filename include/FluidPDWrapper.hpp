@@ -309,6 +309,8 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
 
     static void set(FluidPDWrapper<Client>* x, t_symbol *s, int ac, t_atom *av)
     {
+      NOTUSED(s);
+        
       ParamLiteralConvertor<T, argSize> a;
       a.set(paramDescriptor<N>().defaultValue);
 
@@ -332,7 +334,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
     static auto toAtom(t_atom *a, LongT::type v) { SETFLOAT(a, v); }
-    static auto toAtom(t_atom *a, FloatT::type v) { SETFLOAT(a, v); }
+    static auto toAtom(t_atom *a, FloatT::type v) { SETFLOAT(a, static_cast<t_float>(v)); }
 
     static auto toAtom(t_atom *a, BufferT::type v)
     {
@@ -409,6 +411,8 @@ public:
   {
     void operator()(const typename T::type& param, const char *name, bool& matched)
     {
+      NOTUSED(param);
+        
       const char* paramName = paramDescriptor<N>().name;
         
       if (!strcmp(paramName, name))
