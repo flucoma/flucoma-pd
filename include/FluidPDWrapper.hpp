@@ -108,7 +108,7 @@ public:
       
     for (size_t i = 0; i < mSigOuts.size(); i++)
       mSigOuts[i] = sp[i + mSigIns.size()]->s_vec;
-            
+      
     dsp_add(callPerform, 2, wrapper, sp[0]->s_vecsize);
   }
 
@@ -137,7 +137,7 @@ public:
     for (size_t i = 0; i < client.controlChannelsOut(); i++)
       SETFLOAT(mControlAtoms.data() + i, mControlOutputs[i]);
 
-    w->controlOut(static_cast<long>(client.controlChannelsOut()), mControlAtoms.data());
+    w->controlOut(static_cast<int>(client.controlChannelsOut()), mControlAtoms.data());
   }
 
 private:
@@ -158,7 +158,7 @@ struct NonRealTime
 {
   static void setup(t_class *c) { class_addmethod(c, (t_method) deferProcess, gensym("bang"), A_GIMME, 0); }
 
-  void process(t_symbol*/*s*/, long /*ac*/, t_atom */*av*/)
+  void process()
   {
     auto &wrapper = static_cast<Wrapper &>(*this);
     auto &client  = wrapper.mClient;
@@ -178,9 +178,9 @@ struct NonRealTime
     wrapper.doneBang();
   }
 
-  static void deferProcess(Wrapper *x, t_symbol *s, long ac, t_atom *av) { defer(x, (t_method) &callProcess, s, static_cast<short>(ac), av); }
+  static void deferProcess(Wrapper *x, t_symbol *s, int ac, t_atom *av) { defer(x, (t_method) &callProcess, s, static_cast<short>(ac), av); }
 
-  static void callProcess(Wrapper *x, t_symbol *s, short ac, t_atom *av) { x->process(s, ac, av); }
+  static void callProcess(Wrapper *x, t_symbol /*s*/, short /*ac*/, t_atom /**av*/) { x->process(); }
     
     void setupAudio(t_object *, size_t, size_t) {}
 };
@@ -301,15 +301,15 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   {
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
-    static auto fromAtom(t_object* /*x*/, t_atom *a, LongT::type) { return atom_getint(a); }
-    static auto fromAtom(t_object* /*x*/, t_atom *a, FloatT::type) { return atom_getfloat(a); }
+    static auto fromAtom(t_object* x, t_atom *a, LongT::type) { return atom_getint(a); }
+    static auto fromAtom(t_object* x, t_atom *a, FloatT::type) { return atom_getfloat(a); }
 
     static auto fromAtom(t_object * x, t_atom *a, BufferT::type)
     {
       return BufferT::type(new PDBufferAdaptor(x, atom_getsymbol(a)));
     }
 
-    static void set(FluidPDWrapper<Client>* x, t_symbol /**s*/, long ac, t_atom *av)
+    static void set(FluidPDWrapper<Client>* x, t_symbol *s, int ac, t_atom *av)
     {
       ParamLiteralConvertor<T, argSize> a;
       a.set(paramDescriptor<N>().defaultValue);
@@ -362,7 +362,7 @@ public:
   using ParamDescType = typename Client::ParamDescType;
   using ParamSetType = typename Client::ParamSetType;
 
-  FluidPDWrapper(t_symbol*, long ac, t_atom *av)
+  FluidPDWrapper(t_symbol*, int ac, t_atom *av)
     : mParams(Client::getParameterDescriptors()),
       mParamSnapshot(Client::getParameterDescriptors()),
       mClient{initParamsFromArgs(ac,av)}
@@ -384,7 +384,7 @@ public:
 
   void doneBang() { outlet_bang(mNRTDoneOutlet); }
 
-  void controlOut(long ac, t_atom *av) { outlet_list(mControlOutlet, nullptr, static_cast<short>(ac), av); }
+  void controlOut(int ac, t_atom *av) { outlet_list(mControlOutlet, nullptr, static_cast<short>(ac), av); }
 
   static bool isTag(t_atom *a)
   {
@@ -393,27 +393,27 @@ public:
     return a->a_type == A_SYMBOL && s && strlen(s->s_name) > 1 && s->s_name[0] == '@';
   }
     
-  static long findTag(long start, long ac, t_atom *av)
+  static int findTag(int start, int ac, t_atom *av)
   {
-    for (long i = start; i < ac; i++)
+    for (int i = start; i < ac; i++)
       if (isTag(av + i)) return i;
       
     return ac;
   }
     
-  static long paramArgOffset(long ac, t_atom *av)
+  static int paramArgOffset(int ac, t_atom *av)
   {
     return findTag(0, ac, av);
   }
     
-  void paramArgProcess(long ac, t_atom *av)
+  void paramArgProcess(int ac, t_atom *av)
   {
-    long tag = paramArgOffset(ac, av);
+    int tag = paramArgOffset(ac, av);
       
     while (tag < ac)
     {
       t_symbol* s = atom_getsymbol(av + tag);
-      long endTag = findTag(tag + 1, ac, av);
+      int endTag = findTag(tag + 1, ac, av);
       
       // FIX - check that parameter exists...
         
@@ -423,7 +423,7 @@ public:
     }
   }
     
-  static void *create(t_symbol *sym, long ac, t_atom *av)
+  static void *create(t_symbol *sym, int ac, t_atom *av)
   {
     void *x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
@@ -482,7 +482,7 @@ private:
     return result;
   }
 
-  ParamSetType &initParamsFromArgs(long ac, t_atom *av)
+  ParamSetType &initParamsFromArgs(int ac, t_atom *av)
   {
     // Process arguments for instantiation parameters
     if (long numArgs = paramArgOffset(ac, av))
