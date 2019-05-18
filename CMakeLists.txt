@@ -13,7 +13,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
 SET(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
 
-project (fluid_pd LANGUAGES CXX)
+project (flucoma_pd LANGUAGES CXX)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic")
 
@@ -70,6 +70,13 @@ target_include_directories (FLUID_PD_WRAPPER INTERFACE "${CMAKE_CURRENT_SOURCE_D
 target_sources(FLUID_PD_WRAPPER
   INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include/FluidPDWrapper.hpp"
+)
+
+add_library( FLUID_PD INTERFACE )
+target_sources(
+	FLUID_PD INTERFACE
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/FluidPDWrapper.hpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/include/PDBufferAdaptor.hpp"
 )
 
 SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
