@@ -8,7 +8,7 @@
 
 2) Instantiate objects as normal
 
-3) Object names are fluidobjectname~, where objectname is the same as the max name post fluid. and with all lowercase.
+3) Object names are fluidobjectname~, where objectname is the same as the max name post fluid. and all lowercase.
 
 4) Object arguments match those in max.
 
@@ -19,7 +19,7 @@
 
 ## Known issues:
 - there is no help - use the max help system for now for parameter names etc.
-- buffers don't work.
+- buffers are mono only for now (so mnf stuff won't do anything useful)
 - fluidgain~ doesn't work because it doesn't allow pointer aliasing, which we cannot explictly avoid in pd.
-- pd is single threaded.
+- pd is single threaded so doing buffer ops will do bad things to realtime audio.
 
