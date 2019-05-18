@@ -11,11 +11,8 @@ namespace client {
 class PDBufferAdaptor : public BufferAdaptor
 {
 public:
-  PDBufferAdaptor(t_object *x, t_symbol *name)
-      : mHostObject(x)
-      , mName(name)
-      , mSamps(nullptr)
-      //, mBufref{buffer_ref_new(mHostObject, mName)}
+  PDBufferAdaptor(t_symbol *name)
+      : mName(name)
       , mRank(1)
       , mLock(false)
   {}
@@ -45,18 +42,20 @@ public:
 
   bool exists() const override
   {
-    // return getBuffer(); <--Doesn't work on 0-size buffers
-    return false;//buffer_ref_exists(mBufref);
+    //FIX
+    return false;
   }
 
   bool valid() const override
   {
-    return mSamps;
-    //      return getBuffer();
+    //FIX
+    return false;
   }
 
-  void resize(size_t frames, size_t channels, size_t rank,double sampleRate) override
+  void resize(size_t frames, size_t channels, size_t rank, double sampleRate) override
   {
+    //FIX
+
     /*
       assert(frames == numFrames() && channels == numChans());
     }*/
@@ -81,27 +80,44 @@ public:
 
   FluidTensorView<float, 1> samps(size_t channel, size_t rankIdx = 0) override
   {
-    FluidTensorView<float, 2> v{this->mSamps, 0, numFrames(), numChans() * this->mRank};
-
-    return v.col(rankIdx + channel * mRank);
+    //FIX
+    float* samples = nullptr;
+    FluidTensorView<float, 1> v{samples, 0, numFrames()};
+    return v;
   }
 
   FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) override
   {
-    FluidTensorView<float, 2> v{this->mSamps, 0, numFrames(), numChans() * this->mRank};
-    return v(Slice(offset, nframes), Slice(chanoffset, 1)).col(0);
+    //FIX
+    float* samples = nullptr;
+    FluidTensorView<float, 1> v{samples, 0, numFrames()};
+    
+    return v(Slice(offset, nframes));
   }
     
-  size_t numFrames() const override { return 0; }//valid() ? static_cast<size_t>(buffer_getframecount(getBuffer())) : 0; }
+  size_t numFrames() const override { return valid() ? getMaxFrames() : 0u; }
 
-  size_t numChans() const override { return 0; }//valid() ? static_cast<size_t>(buffer_getchannelcount(getBuffer())) / mRank : 0; }
+  size_t numChans() const override { return valid() ? getChannelCount() / mRank : 0u; }
 
   size_t rank() const override { return valid() ? mRank : 0; }
   
-  double sampleRate() const override { return 44100; } //valid() ? buffer_getsamplerate(getBuffer()) : 0; }
+  //FIX
+  double sampleRate() const override { return valid() ? 1 : 0 ; } // N.B. pd has no notion of sample rates for buffers...
 
 private:
 
+  size_t getMaxFrames() const
+  {
+    //FIX
+    return 1;
+  }
+    
+  size_t getChannelCount() const
+  {
+    //FIX
+    return 1;
+  }
+    
   bool tryLock()
   {
     return compareExchange(false, true);
@@ -124,18 +140,14 @@ private:
     release();
 
     mName   = other.mName;
-    mSamps  = other.mSamps;
     mRank   = other.mRank;
 
-    other.mSamps  = nullptr;
     releaseLock();
   }
 
-  t_object *mHostObject;
   t_symbol *mName;
-
-  float *       mSamps;
-  size_t        mRank;
+  size_t   mRank;
+    
   std::atomic<bool> mLock;
 };
 } // namespace client

@@ -299,12 +299,12 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   {
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
-    static auto fromAtom(t_object* x, t_atom *a, LongT::type) { return atom_getint(a); }
-    static auto fromAtom(t_object* x, t_atom *a, FloatT::type) { return atom_getfloat(a); }
+    static auto fromAtom(t_atom *a, LongT::type) { return atom_getint(a); }
+    static auto fromAtom(t_atom *a, FloatT::type) { return atom_getfloat(a); }
 
-    static auto fromAtom(t_object * x, t_atom *a, BufferT::type)
+    static auto fromAtom(t_atom *a, BufferT::type)
     {
-      return BufferT::type(new PDBufferAdaptor(x, atom_getsymbol(a)));
+      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a)));
     }
 
     static void set(FluidPDWrapper<Client>* x, t_symbol *s, int ac, t_atom *av)
@@ -315,7 +315,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
       x->messages().reset();
 
       for (auto i = 0u; i < argSize && i < static_cast<size_t>(ac); i++)
-        a[i] = fromAtom((t_object *) x, av + i, a[0]);
+        a[i] = fromAtom(av + i, a[0]);
 
       x->params().template set<N>(a.value(), x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
