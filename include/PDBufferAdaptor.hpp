@@ -110,9 +110,9 @@ public:
     return v(Slice(offset, nframes));
   }
     
-  size_t numFrames() const override { return valid() ? getMinFrames() : 0u; }
+  size_t numFrames() const override { return getMinFrames(); }
 
-  size_t numChans() const override { return valid() ? getChannelCount() / mRank : 0u; }
+  size_t numChans() const override { return getChannelCount() / mRank; }
 
   size_t rank() const override { return valid() ? mRank : 0; }
   
@@ -141,7 +141,7 @@ private:
   size_t getChannelCount() const
   {
     //FIX
-    return 1;
+    return exists() ? 1 : 0;
   }
     
   t_symbol *channelName(size_t chan, size_t rank) const
