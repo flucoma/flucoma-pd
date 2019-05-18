@@ -2,7 +2,7 @@
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 add_dependencies (${PROJECT_NAME} FLUID_DECOMPOSITION)
 target_link_libraries(${PROJECT_NAME}
-PUBLIC FLUID_DECOMPOSITION  FLUID_MAX
+PUBLIC FLUID_DECOMPOSITION  
 PRIVATE FFTLIB
 )
 
@@ -43,7 +43,7 @@ if (APPLE)
 		BUNDLE_EXTENSION "pd_darwin"
 		XCODE_ATTRIBUTE_WRAPPER_EXTENSION "pd_darwin"
 )
-	
+
 elseif (WIN32)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".dll")

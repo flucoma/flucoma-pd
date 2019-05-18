@@ -1,18 +1,13 @@
 #pragma once
 
-#include <ext.h>
-#include <ext_obex.h>
-#include <ext_obex_util.h>
-#include <z_dsp.h>
-
-#include <commonsyms.h>
+#include "m_pd.h"
 
 #include <clients/common/FluidBaseClient.hpp>
 #include <clients/common/OfflineClient.hpp>
 #include <clients/common/ParameterSet.hpp>
 #include <clients/common/ParameterTypes.hpp>
 
-#include <MaxBufferAdaptor.hpp>
+#include <PDBufferAdaptor.hpp>
 
 #include <tuple>
 #include <utility>
@@ -23,14 +18,37 @@ namespace client {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace impl {
-
-template <typename Wrapper>
-t_max_err getLatency(Wrapper *x, t_object */*attr*/, long *ac, t_atom **av)
+    
+template <class T>
+void object_warn(T *x, const char *fmt, ...)
 {
-  char alloc;
-  atom_alloc(ac, av, &alloc);
-  atom_setlong(*av, static_cast<t_atom_long>(x->client().latency()));
-  return MAX_ERR_NONE;
+  char postString[1024];
+  char finalString[1024];
+  
+  char *objectName = class_getname(*((t_pd *)x));
+  va_list argp;
+  va_start(argp, fmt);
+  vsnprintf(postString, 1024, fmt, argp);
+  va_end(argp);
+  snprintf(finalString, 1024, "%s: %s", objectName, finalString);
+ 
+  post(fmt, finalString);
+}
+    
+template <class T>
+void object_error(T *x, const char *fmt, ...)
+{
+  char postString[1024];
+  char finalString[1024];
+    
+  char *objectName = class_getname(*((t_pd *)x));
+  va_list argp;
+  va_start(argp, fmt);
+  vsnprintf(postString, 1024, fmt, argp);
+  va_end(argp);
+  snprintf(finalString, 1024, "%s: %s", objectName, finalString);
+
+  error(fmt, finalString);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,95 +56,115 @@ t_max_err getLatency(Wrapper *x, t_object */*attr*/, long *ac, t_atom **av)
 template <class Wrapper>
 class RealTime
 {
-  using ViewType = FluidTensorView<double, 1>;
+  using ViewType = FluidTensorView<t_sample, 1>;
 
 public:
   static void setup(t_class *c)
   {
-    class_dspinit(c);
-    class_addmethod(c, (method) callDSP, "dsp64", A_CANT, 0);
-    class_addattr(c, attribute_new("latency", USESYM(long), 0, (method) getLatency<Wrapper>, nullptr));
-    CLASS_ATTR_LABEL(c, "latency", 0, "Latency");
+    class_addmethod(c, nullfn, gensym("signal"), A_NULL);
+    class_addmethod(c, (t_method) callDSP, gensym("dsp"), A_CANT, 0);
   }
 
-  static void callDSP(Wrapper *x, t_object *dsp64, short *count, double samplerate, long maxvectorsize, long flags)
+  static void callDSP(Wrapper *x, t_signal **sp)
   {
-    x->dsp(dsp64, count, samplerate, maxvectorsize, flags);
+    x->dsp(sp);
   }
 
-  static void callPerform(Wrapper *x, t_object *dsp64, double **ins, long numins, double **outs, long numouts, long vec_size, long flags, void *userparam)
+  static t_int *callPerform(t_int *w)
   {
-    x->perform(dsp64, ins, numins, outs, numouts, vec_size, flags, userparam);
+    Wrapper *x = (Wrapper *) w[1];
+    int sampleframes = (int) w[2];
+    x->perform(sampleframes);
+    return w + 3;
   }
 
-  void dsp(t_object *dsp64, short *count, double samplerate, long /*maxvectorsize*/, long /*flags*/)
+  void setupAudio(t_object *pdObject, size_t numSigIns, size_t numSigOuts)
+  {
+    //impl::PDBase::getPDObject()->z_misc |= Z_NO_INPLACE;
+          
+    mSigIns.resize(numSigIns);
+    mSigOuts.resize(numSigOuts);
+          
+    // Create signal inlets
+          
+    for (size_t i = 0; numSigIns && i < (numSigIns - 1); i++)
+        signalinlet_new(pdObject, 0.0);
+          
+    // Create signal outlets
+          
+    for (size_t i = 0; i < numSigOuts; i++)
+      outlet_new(pdObject, gensym("signal"));
+  }
+    
+  void dsp(t_signal **sp)
   {
     Wrapper *wrapper = static_cast<Wrapper *>(this);
     
     wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
     auto &   client  = wrapper->client();
-    client.sampleRate(samplerate);
-
-    audioInputConnections.resize(client.audioChannelsIn());
-    std::copy(count, count + client.audioChannelsIn(), audioInputConnections.begin());
+    client.sampleRate(sp[0]->s_sr);
 
     assert((client.audioChannelsOut() > 0) != (client.controlChannelsOut() > 0) &&
            "Client must *either* be audio out or control out, sorry");
-
-    audioOutputConnections.resize(client.audioChannelsOut());
-    std::copy(count + client.audioChannelsIn(), count + client.audioChannelsIn() + client.audioChannelsOut(),
-              audioOutputConnections.begin());
 
     mInputs = std::vector<ViewType>(client.audioChannelsIn(), ViewType(nullptr, 0, 0));
 
     if (client.audioChannelsOut() > 0) mOutputs = std::vector<ViewType>(client.audioChannelsOut(), ViewType(nullptr, 0, 0));
     if (client.controlChannelsOut() > 0)
     {
-      mControlClock = mControlClock ? mControlClock : clock_new((t_object *) wrapper, (method) doControlOut);
+      mControlClock = mControlClock ? mControlClock : clock_new((t_object *) wrapper, (t_method) doControlOut);
 
       mOutputs = std::vector<ViewType>(client.controlChannelsOut(), ViewType(nullptr, 0, 0));
       mControlOutputs.resize(client.controlChannelsOut());
       mControlAtoms.resize(client.controlChannelsOut());
     }
 
-    object_method(dsp64, gensym("dsp_add64"), wrapper, ((method) callPerform), 0, nullptr);
+    for (size_t i = 0; i < mSigIns.size(); i++)
+      mSigIns[i] = sp[i]->s_vec;
+      
+    for (size_t i = 0; i < mSigOuts.size(); i++)
+      mSigOuts[i] = sp[i + mSigIns.size()]->s_vec;
+      
+    dsp_add(callPerform, 2, this, sp[0]->s_vecsize);
   }
 
-  void perform(t_object */*dsp64*/, double **ins, long numins, double **outs, long /*numouts*/, long sampleframes, long /*flags*/, void*/*userparam*/)
+  void perform(int sampleframes)
   {
     auto &client = static_cast<Wrapper *>(this)->mClient;
-    for (auto i = 0u; i < static_cast<size_t>(numins); ++i)
-      if (audioInputConnections[i]) mInputs[i].reset(ins[i], 0, sampleframes);
+    for (auto i = 0u; i < mSigIns.size(); ++i)
+      mInputs[i].reset(mSigIns[i], 0, sampleframes);
 
     for (auto i = 0u; i < client.audioChannelsOut(); ++i)
-      // if(audioOutputConnections[i])
-      mOutputs[i].reset(outs[i], 0, sampleframes);
+      mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
 
     for (auto i = 0u; i < client.controlChannelsOut(); ++i) mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
     client.process(mInputs, mOutputs);
 
-    if (mControlClock) clock_delay(mControlClock, 0);
+    if (mControlClock)
+      clock_delay(mControlClock, 0);
   }
 
   void controlData()
   {
     Wrapper *w      = static_cast<Wrapper *>(this);
     auto &   client = w->client();
-    atom_setdouble_array(static_cast<long>(client.controlChannelsOut()), mControlAtoms.data(), static_cast<long>(client.controlChannelsOut()),
-                         mControlOutputs.data());
+      
+    for (size_t i = 0; i < client.controlChannelsOut(); i++)
+      SETFLOAT(mControlAtoms.data() + i, mControlOutputs[i]);
+
     w->controlOut(static_cast<long>(client.controlChannelsOut()), mControlAtoms.data());
   }
 
 private:
-  static void           doControlOut(Wrapper *x) { x->controlData(); }
-  std::vector<ViewType> mInputs;
-  std::vector<ViewType> mOutputs;
-  std::vector<short>    audioInputConnections;
-  std::vector<short>    audioOutputConnections;
-  std::vector<double>   mControlOutputs;
-  std::vector<t_atom>   mControlAtoms;
-  void *                mControlClock;
+  static void               doControlOut(Wrapper *x) { x->controlData(); }
+  std::vector<ViewType>     mInputs;
+  std::vector<ViewType>     mOutputs;
+  std::vector<t_sample *>   mSigIns;
+  std::vector<t_sample *>   mSigOuts;
+  std::vector<t_float>      mControlOutputs;
+  std::vector<t_atom>       mControlAtoms;
+  t_clock*                  mControlClock;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +172,7 @@ private:
 template <class Wrapper>
 struct NonRealTime
 {
-  static void setup(t_class *c) { class_addmethod(c, (method) deferProcess, "bang", A_GIMME, 0); }
+  static void setup(t_class *c) { class_addmethod(c, (t_method) deferProcess, gensym("bang"), A_GIMME, 0); }
 
   void process(t_symbol*/*s*/, long /*ac*/, t_atom */*av*/)
   {
@@ -146,8 +184,8 @@ struct NonRealTime
     {
       switch (res.status())
       {
-      case Result::Status::kWarning: object_warn((t_object *) &wrapper, res.message().c_str()); break;
-      case Result::Status::kError: object_error((t_object *) &wrapper, res.message().c_str()); break;
+      case Result::Status::kWarning: object_warn(&wrapper, res.message().c_str()); break;
+      case Result::Status::kError: object_error(&wrapper, res.message().c_str()); break;
       default: {
       }
       }
@@ -156,9 +194,11 @@ struct NonRealTime
     wrapper.doneBang();
   }
 
-  static void deferProcess(Wrapper *x, t_symbol *s, long ac, t_atom *av) { defer(x, (method) &callProcess, s, static_cast<short>(ac), av); }
+  static void deferProcess(Wrapper *x, t_symbol *s, long ac, t_atom *av) { defer(x, (t_method) &callProcess, s, static_cast<short>(ac), av); }
 
   static void callProcess(Wrapper *x, t_symbol *s, short ac, t_atom *av) { x->process(s, ac, av); }
+    
+    void setupAudio(t_object *, size_t, size_t) {}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,17 +211,23 @@ struct NonRealTimeAndRealTime : public RealTime<Wrapper>, public NonRealTime<Wra
     RealTime<Wrapper>::setup(c);
     NonRealTime<Wrapper>::setup(c);
   }
+    
+  void setupAudio(t_object *pdObject, size_t numSigIns, size_t numSigOuts)
+  {
+    RealTime<Wrapper>::setupAudio(pdObject, numSigIns, numSigOuts);
+    NonRealTime<Wrapper>::setupAudio(pdObject, numSigIns, numSigOuts);
+  }
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Max base type
 
-struct MaxBase
+struct PDBase
 {
-  t_object*     getMaxObject() { return (t_object *) &mObject; }
-  t_pxobject*   getMSPObject() { return &mObject; }
-  t_pxobject    mObject;
+  t_object*   getPDObject() { return &mObject; }
+    
+  t_object    mObject;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,23 +235,23 @@ struct MaxBase
 // Templates and specialisations for all possible base options
 
 template <class Wrapper, typename NRT, typename RT>
-struct FluidMaxBase : public MaxBase
+struct FluidPDBase : public PDBase
 {
-  static_assert(isRealTime<FluidMaxBase>::value || isNonRealTime<FluidMaxBase>::value,
+  static_assert(isRealTime<FluidPDBase>::value || isNonRealTime<FluidPDBase>::value,
                 "This object seems to be neither real-time nor non-real-time! Check that your Client inherits from "
                 "Audio[In/Out], Control[In/Out] or Offline[In/Out]");
 };
 
 template <class Wrapper>
-struct FluidMaxBase<Wrapper, std::true_type, std::false_type> : public MaxBase, public NonRealTime<Wrapper>
+struct FluidPDBase<Wrapper, std::true_type, std::false_type> : public PDBase, public NonRealTime<Wrapper>
 {};
 
 template <class Wrapper>
-struct FluidMaxBase<Wrapper, std::false_type, std::true_type> : public MaxBase, public RealTime<Wrapper>
+struct FluidPDBase<Wrapper, std::false_type, std::true_type> : public PDBase, public RealTime<Wrapper>
 {};
 
 template <class Wrapper>
-struct FluidMaxBase<Wrapper, std::true_type, std::true_type> : public MaxBase, public NonRealTimeAndRealTime<Wrapper>
+struct FluidPDBase<Wrapper, std::true_type, std::true_type> : public PDBase, public NonRealTimeAndRealTime<Wrapper>
 {};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,17 +259,17 @@ struct FluidMaxBase<Wrapper, std::true_type, std::true_type> : public MaxBase, p
 } // namespace impl
 
 template <typename Client>
-class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNonRealTime<Client>, isRealTime<Client>>
+class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRealTime<Client>, isRealTime<Client>>
 {
-  using WrapperBase = impl::FluidMaxBase<FluidMaxWrapper<Client>, isNonRealTime<Client>, isRealTime<Client>>;
+  using WrapperBase = impl::FluidPDBase<FluidPDWrapper<Client>, isNonRealTime<Client>, isRealTime<Client>>;
 
-  friend impl::RealTime<FluidMaxWrapper<Client>>;
-  friend impl::NonRealTime<FluidMaxWrapper<Client>>;
+  friend impl::RealTime<FluidPDWrapper<Client>>;
+  friend impl::NonRealTime<FluidPDWrapper<Client>>;
 
   template <size_t N>
   static constexpr auto paramDescriptor() { return Client::getParameterDescriptors().template get<N>(); }
 
-  static void printResult(FluidMaxWrapper<Client>* x, Result& r)
+  static void printResult(FluidPDWrapper<Client>* x, Result& r)
   {
     if (!x) return;
 
@@ -231,8 +277,8 @@ class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNon
     {
       switch (x->messages().status())
       {
-        case Result::Status::kWarning: object_warn((t_object *) x, r.message().c_str()); break;
-        case Result::Status::kError: object_error((t_object *) x, r.message().c_str()); break;
+        case Result::Status::kWarning: object_warn(x, r.message().c_str()); break;
+        case Result::Status::kError: object_error(x, r.message().c_str()); break;
         default: {
         }
       }
@@ -241,10 +287,10 @@ class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNon
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  template <size_t N, typename T, T Method(const t_atom *av)>
+  template <size_t N, typename T, typename U, U Method(t_atom *av)>
   struct FetchValue
   {
-    T operator()(const long ac, t_atom *av, long &currentCount)
+    typename T::type operator()(const long ac, t_atom *av, long &currentCount)
     {
       auto defaultValue = paramDescriptor<N>().defaultValue;
       return currentCount < ac ? Method(av + currentCount++) : defaultValue;
@@ -255,11 +301,11 @@ class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNon
   struct Fetcher;
 
   template <size_t N>
-  struct Fetcher<N, FloatT> : public FetchValue<N, t_atom_float, atom_getfloat>
+  struct Fetcher<N, FloatT> : public FetchValue<N, FloatT, t_float, atom_getfloat>
   {};
 
   template <size_t N>
-  struct Fetcher<N, LongT> : public FetchValue<N, t_atom_long, atom_getlong>
+  struct Fetcher<N, LongT> : public FetchValue<N, LongT, t_int, atom_getint>
   {};
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -271,15 +317,15 @@ class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNon
   {
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
-    static auto fromAtom(t_object* /*x*/, t_atom *a, LongT::type) { return atom_getlong(a); }
+    static auto fromAtom(t_object* /*x*/, t_atom *a, LongT::type) { return atom_getint(a); }
     static auto fromAtom(t_object* /*x*/, t_atom *a, FloatT::type) { return atom_getfloat(a); }
 
     static auto fromAtom(t_object * x, t_atom *a, BufferT::type)
     {
-      return BufferT::type(new MaxBufferAdaptor(x, atom_getsym(a)));
+      return BufferT::type(new PDBufferAdaptor(x, atom_getsymbol(a)));
     }
 
-    static t_max_err set(FluidMaxWrapper<Client>* x, t_object */*attr*/, long ac, t_atom *av)
+    static void set(FluidPDWrapper<Client>* x, t_symbol /**s*/, long ac, t_atom *av)
     {
       ParamLiteralConvertor<T, argSize> a;
       a.set(paramDescriptor<N>().defaultValue);
@@ -291,8 +337,6 @@ class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNon
 
       x->params().template set<N>(a.value(), x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
-      object_attr_touch((t_object *) x, gensym("latency"));
-      return MAX_ERR_NONE;
     }
   };
 
@@ -305,45 +349,26 @@ class FluidMaxWrapper : public impl::FluidMaxBase<FluidMaxWrapper<Client>, isNon
   {
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
-    static auto toAtom(t_atom *a, LongT::type v) { atom_setlong(a, v); }
-    static auto toAtom(t_atom *a, FloatT::type v) { atom_setfloat(a, v); }
+    static auto toAtom(t_atom *a, LongT::type v) { SETFLOAT(a, v); }
+    static auto toAtom(t_atom *a, FloatT::type v) { SETFLOAT(a, v); }
 
     static auto toAtom(t_atom *a, BufferT::type v)
     {
-      auto b = static_cast<MaxBufferAdaptor *>(v.get());
-      atom_setsym(a, b ? b->name() : nullptr);
+      auto b = static_cast<PDBufferAdaptor *>(v.get());
+      SETSYMBOL(a, (b ? b->name() : nullptr));
     }
 
-    static t_max_err get(FluidMaxWrapper<Client>* x, t_object */*attr*/, long *ac, t_atom **av)
+    static std::vector<t_atom> get(FluidPDWrapper<Client>* x)
     {
       ParamLiteralConvertor<T, argSize> a;
-
-      char alloc;
-      atom_alloc_array(argSize, ac, av, &alloc);
-
+      std::vector<t_atom> result(argSize);
+      
       a.set(x->params().template get<N>());
 
       for (auto i = 0u; i < argSize; i++)
-        toAtom(*av + i, a[i]);
-
-      return MAX_ERR_NONE;
-    }
-  };
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-
-  template<size_t, typename>
-  struct Notify
-  {
-    static void notify(FluidMaxWrapper<Client>*, t_symbol*, t_symbol*, void*, void*) {}
-  };
-
-  template<size_t N>
-  struct Notify<N, BufferT>
-  {
-    static void notify(FluidMaxWrapper<Client>* x, t_symbol *s, t_symbol *msg, void *sender, void *data)
-    {
-      if (auto p = static_cast<MaxBufferAdaptor *>(x->params().template get<N>().get())) p->notify(s, msg, sender, data);
+        toAtom(result.data() + i, a[i]);
+        
+      return result;
     }
   };
 
@@ -353,75 +378,104 @@ public:
   using ParamDescType = typename Client::ParamDescType;
   using ParamSetType = typename Client::ParamSetType;
 
-  FluidMaxWrapper(t_symbol*, long ac, t_atom *av)
+  FluidPDWrapper(t_symbol*, long ac, t_atom *av)
     : mParams(Client::getParameterDescriptors()),
       mParamSnapshot(Client::getParameterDescriptors()),
       mClient{initParamsFromArgs(ac,av)}
   {
-    if (mClient.audioChannelsIn())
-    {
-      dsp_setup(impl::MaxBase::getMSPObject(), mClient.audioChannelsIn());
-      impl::MaxBase::getMSPObject()->z_misc |= Z_NO_INPLACE;
-    }
-
+    t_object* pdObject = impl::PDBase::getPDObject();
+      
     auto results = mParams.keepConstrained(true);
     mParamSnapshot = mParams;
 
     for (auto &r : results)
       printResult(this, r);
 
-    object_obex_store(this, _sym_dumpout, (t_object *) outlet_new(this, nullptr));
+    if (isNonRealTime<Client>::value) mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
 
-    if (isNonRealTime<Client>::value) mNRTDoneOutlet = bangout(this);
-
-    if (mClient.controlChannelsOut()) mControlOutlet = listout(this);
-
-    for (auto i = 0u; i < mClient.audioChannelsOut(); ++i) outlet_new(this, "signal");
+    if (mClient.controlChannelsOut()) mControlOutlet = outlet_new(pdObject, gensym("list"));
+        
+    this->setupAudio(pdObject, mClient.audioChannelsIn(), mClient.audioChannelsOut());
   }
 
   void doneBang() { outlet_bang(mNRTDoneOutlet); }
 
   void controlOut(long ac, t_atom *av) { outlet_list(mControlOutlet, nullptr, static_cast<short>(ac), av); }
 
+  static bool isTag(t_atom *a)
+  {
+    t_symbol* s = atom_getsymbol(a);
+      
+    return a->a_type == A_SYMBOL && s && strlen(s->s_name) > 1 && s->s_name[0] == '@';
+  }
+    
+  static long findTag(long start, long ac, t_atom *av)
+  {
+    for (long i = start; i < ac; i++)
+      if (isTag(av + i)) return i;
+      
+    return ac;
+  }
+    
+  static long paramArgOffset(long ac, t_atom *av)
+  {
+    return findTag(0, ac, av);
+  }
+    
+  void paramArgProcess(long ac, t_atom *av)
+  {
+    long tag = paramArgOffset(ac, av);
+      
+    while (tag < ac)
+    {
+      t_symbol* s = atom_getsymbol(av + tag);
+      long endTag = findTag(tag + 1, ac, av);
+      
+      // FIX - check that parameter exists...
+        
+      pd_typedmess((t_pd *) impl::PDBase::getPDObject(), gensym(s->s_name + 1), ac, av);
+        
+      tag = endTag;
+    }
+  }
+    
   static void *create(t_symbol *sym, long ac, t_atom *av)
   {
-    void *x = object_alloc(getClass());
-    new (x) FluidMaxWrapper(sym, ac, av);
+    void *x = pd_new(getClass());
+    new (x) FluidPDWrapper(sym, ac, av);
 
-    if (static_cast<size_t>(attr_args_offset(static_cast<short>(ac), av)) > ParamDescType::NumFixedParams)
-    { object_warn((t_object *) x, "Too many arguments. Got %d, expect at most %d", ac, ParamDescType::NumFixedParams); }
+    if (static_cast<size_t>(paramArgOffset(ac, av)) > ParamDescType::NumFixedParams)
+    { impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac, ParamDescType::NumFixedParams); }
 
     return x;
   }
 
-  static void destroy(FluidMaxWrapper * x)
+  static void destroy(FluidPDWrapper * x)
   {
-    x->~FluidMaxWrapper();
+    x->~FluidPDWrapper();
   }
 
   static void makeClass(const char *className)
   {
     const ParamDescType& p = Client::getParameterDescriptors();
-    getClass(class_new(className, (method)create, (method)destroy, sizeof(FluidMaxWrapper), 0, A_GIMME, 0));
+    getClass(class_new(gensym(className), (t_newmethod)create, (t_method)destroy, sizeof(FluidPDWrapper), 0, A_GIMME, 0));
     WrapperBase::setup(getClass());
 
-    class_addmethod(getClass(), (method)doNotify, "notify",A_CANT, 0);
-    class_addmethod(getClass(), (method)object_obex_dumpout,"dumpout",A_CANT, 0);
-    class_addmethod(getClass(), (method)doReset, "reset",0);
+    class_addmethod(getClass(), (t_method)doReset, gensym("reset"), A_NULL);
+    class_addmethod(getClass(), (t_method)doWarnings, gensym("warnings"), A_FLOAT);
 
-    CLASS_ATTR_LONG(getClass(), "warnings", 0, FluidMaxWrapper, mVerbose);
-    CLASS_ATTR_FILTER_CLIP(getClass(), "warnings", 0, 1);
-    CLASS_ATTR_STYLE_LABEL(getClass(), "warnings", 0, "onoff", "Report Warnings");
-
-    p.template iterateMutable<SetupAttribute>();
-    class_dumpout_wrap(getClass());
-    class_register(CLASS_BOX, getClass());
+    p.template iterateMutable<SetupParameter>();
+    class_sethelpsymbol(getClass(), gensym(className));
   }
 
-  static void doReset(FluidMaxWrapper *x)
+  static void doReset(FluidPDWrapper *x)
   {
     x->mParams = x->mParamSnapshot; 
-    x->params().template forEachParam<touchAttribute>(x);
+  }
+    
+  static void doWarnings(FluidPDWrapper *x, t_float warnings)
+  {
+    x->mVerbose = (bool) warnings;
   }
 
   Result &messages() { return mResult; }
@@ -444,94 +498,37 @@ private:
     return result;
   }
 
-  static t_max_err doNotify(FluidMaxWrapper *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
-  {
-    x->notify(s, msg, sender, data);
-    return MAX_ERR_NONE;
-  }
-
-  void notify(t_symbol *s, t_symbol *msg, void *sender, void *data)
-  {
-    mParams.template forEachParam<notifyAttribute>(this, s, msg, sender, data);
-  }
-
-  template <size_t N, typename T>
-  struct notifyAttribute
-  {
-    void operator()(const typename T::type &/*attr*/, FluidMaxWrapper *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
-    {
-      Notify<N,T>::notify(x, s, msg, sender, data);
-    }
-  };
-
-  template <size_t N, typename T>
-  struct touchAttribute
-  {
-    void operator()(const typename T::type &/*attr*/, FluidMaxWrapper *x)
-    {
-      const char* name = paramDescriptor<N>().name;
-      object_attr_touch((t_object *) x, gensym(FluidMaxWrapper::lowerCase(name).c_str()));
-    }
-  };
-
   ParamSetType &initParamsFromArgs(long ac, t_atom *av)
   {
     // Process arguments for instantiation parameters
-    if (long numArgs = attr_args_offset(static_cast<short>(ac), av))
+    if (long numArgs = paramArgOffset(ac, av))
     {
       long argCount{0};
       mParams.template setFixedParameterValues<Fetcher>(true, numArgs, av, argCount);
     }
     // process in-box attributes for mutable params
-    attr_args_process((t_object *) this, static_cast<short>(ac), av);
+    paramArgProcess(ac, av);
     // return params so this can be called in client initaliser    
     return mParams;
   }
 
-  // Sets up a single attribute
-  // TODO: static assert on T?
+  // Sets up a single parameter
 
   template <size_t N, typename T>
-  struct SetupAttribute
+  struct SetupParameter
   {
-    void operator()(const T &attr)
+    void operator()(const T &parameter)
     {
-      std::string       name            = lowerCase(attr.name);
-      method            setterMethod    = (method) &Setter<T, N>::set;
-      method            getterMethod    = (method) &Getter<T, N>::get;
-      t_object*         a               = attribute_new(name.c_str(), maxAttrType(attr), 0, getterMethod, setterMethod);
-      class_addattr(getClass(), a);
-      CLASS_ATTR_LABEL(getClass(), name.c_str(), 0, attr.displayName);
-      decorateAttr(attr,name);
+      std::string       name            = lowerCase(parameter.name);
+      t_method          setterMethod    = (t_method) &Setter<T, N>::set;
+        
+      class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME);
     }
-
-    template<typename U>
-    void decorateAttr(const U &/*attr*/, std::string /*name*/)
-    {}
-
-    void decorateAttr(const EnumT& attr, std::string name)
-    {
-      std::stringstream enumstrings;
-      std::cout << "here";
-      for(auto i = 0u; i < attr.numOptions;++i) enumstrings << '"' << attr.strings[i] << "\" ";
-      CLASS_ATTR_STYLE(getClass(), name.c_str(),0,"enum");
-      CLASS_ATTR_ENUMINDEX(getClass(), name.c_str(), 0, enumstrings.str().c_str());
-    }
-
   };
 
-  // Get Symbols for attribute types
-
-  static t_symbol* maxAttrType(FloatT) { return USESYM(float64); }
-  static t_symbol* maxAttrType(LongT) { return USESYM(long); }
-  static t_symbol* maxAttrType(BufferT) { return USESYM(symbol); }
-  static t_symbol* maxAttrType(EnumT) { return USESYM(long); }
-  static t_symbol* maxAttrType(FloatPairsArrayT) { return _sym_atom; }
-  static t_symbol* maxAttrType(FFTParamsT) { return _sym_atom; }
-
   Result        mResult;
-  void *        mNRTDoneOutlet;
-  void *        mControlOutlet;
+  t_outlet*     mNRTDoneOutlet;
+  t_outlet*     mControlOutlet;
   bool          mVerbose;
   ParamSetType  mParams;
   ParamSetType  mParamSnapshot;
@@ -543,7 +540,7 @@ private:
 template<typename RT = std::true_type>
 struct InputTypeWrapper
 {
-  using type = double;
+  using type = t_sample;
 };
 
 template<>
@@ -553,11 +550,11 @@ struct InputTypeWrapper<std::false_type>
 };
 
 template <template <typename T> class Client>
-void makeMaxWrapper(const char *classname)
+void makePDWrapper(const char *classname)
 {
   using InputType = typename InputTypeWrapper<isRealTime<Client<double>>>::type;
 
-  FluidMaxWrapper<Client<InputType>>::makeClass(classname);
+  FluidPDWrapper<Client<InputType>>::makeClass(classname);
 }
 
 } // namespace client
