@@ -25,13 +25,12 @@ public:
     while (!tryLock());
 
     release();
-    //if (mBufref) object_free(mBufref);
   }
 
   PDBufferAdaptor(const PDBufferAdaptor &) = delete;
   PDBufferAdaptor &operator=(const PDBufferAdaptor &other) = delete;
 
-  PDBufferAdaptor(PDBufferAdaptor &&other) //: MaxBufferView(other.mHostObject, other.mName)
+  PDBufferAdaptor(PDBufferAdaptor &&other)
   {
     swap(std::move(other));
   }
@@ -47,7 +46,7 @@ public:
   bool exists() const override
   {
     // return getBuffer(); <--Doesn't work on 0-size buffers
-      return false;//buffer_ref_exists(mBufref);
+    return false;//buffer_ref_exists(mBufref);
   }
 
   bool valid() const override
@@ -58,32 +57,7 @@ public:
 
   void resize(size_t frames, size_t channels, size_t rank,double sampleRate) override
   {
-    /*t_object *buffer = getBuffer();
-
-    if (buffer)
-    {
-      // Do this in two stages so we can set length in samps rather than ms
-      unlockSamps();
-      buffer_edit_begin(buffer);
-
-      t_atom args[2];
-      atom_setfloat(&args[0], 0.);
-      atom_setlong(&args[1], static_cast<t_atom_long>(rank * channels));
-      t_symbol *setSizeMsg = gensym("setsize");
-      object_method_typed(buffer, setSizeMsg, 2, args, nullptr);
-      object_method(buffer, gensym("dirty"));
-      t_atom newsize;
-      atom_setlong(&newsize, static_cast<t_atom_long>(frames));
-      t_symbol *sampsMsg = gensym("sizeinsamps");
-      object_method_typed(buffer, sampsMsg, 1, &newsize, nullptr);
-      t_atom sr;
-      atom_setfloat(&sr,sampleRate);
-      t_symbol *srMsg = gensym("sr");
-      object_method_typed(buffer,srMsg,1,&sr,nullptr); 
-      object_method(buffer, gensym("dirty"));
-      buffer_edit_end(buffer, 1);
-      lockSamps();
-      mRank = rank;
+    /*
       assert(frames == numFrames() && channels == numChans());
     }*/
   }
@@ -94,7 +68,6 @@ public:
       
     if (lock)
     {
-      //lockSamps();
       return true;
     }
       
@@ -103,7 +76,6 @@ public:
 
   void release() override
   {
-    //unlockSamps();
     releaseLock();
   }
 
@@ -126,7 +98,7 @@ public:
 
   size_t rank() const override { return valid() ? mRank : 0; }
   
-    double sampleRate() const override { return 44100; } //valid() ? buffer_getsamplerate(getBuffer()) : 0; }
+  double sampleRate() const override { return 44100; } //valid() ? buffer_getsamplerate(getBuffer()) : 0; }
 
 private:
 
@@ -150,14 +122,12 @@ private:
     while (!tryLock());
       
     release();
-    //object_free(mBufref);
 
+    mName   = other.mName;
     mSamps  = other.mSamps;
-    //mBufref = other.mBufref;
     mRank   = other.mRank;
 
     other.mSamps  = nullptr;
-    //other.mBufref = nullptr;
     releaseLock();
   }
 
