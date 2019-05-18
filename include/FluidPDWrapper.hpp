@@ -417,7 +417,7 @@ public:
       
       // FIX - check that parameter exists...
         
-      pd_typedmess((t_pd *) impl::PDBase::getPDObject(), gensym(s->s_name + 1), ac, av);
+      pd_typedmess((t_pd *) impl::PDBase::getPDObject(), gensym(s->s_name + 1), endTag - (tag + 1), av + tag + 1);
         
       tag = endTag;
     }
@@ -506,7 +506,7 @@ private:
       std::string       name            = lowerCase(parameter.name);
       t_method          setterMethod    = (t_method) &Setter<T, N>::set;
         
-      class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME);
+      class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME, 0);
     }
   };
 
