@@ -49,7 +49,7 @@ public:
 
   bool exists() const override
   {
-    return channelExists(0, 0);
+    return numChans();
   }
 
   bool valid() const override
@@ -62,12 +62,13 @@ public:
     NOTUSED(sampleRate);
       
     size_t nChans = numChans();
+    mRank = rank;
       
     for (size_t i = 0; i < nChans && i < channels; i++)
     {
       for (size_t j = 0; j < mRank && j < rank; j++)
       {
-        t_garray *array = getArray(channelName(i, j));
+        t_garray *array = getArray(i, j);
           
         if (array)
           garray_resize_long(array, static_cast<int>(frames));
@@ -96,7 +97,7 @@ public:
 
   FluidTensorView<float, 1> samps(size_t channel, size_t rankIdx = 0) override
   {
-    float* samples = (float *) getChannelSamples(channel, rankIdx);
+    float* samples = (float *) getArrayData(channel, rankIdx);
       
     FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
       
@@ -105,7 +106,7 @@ public:
 
   FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) override
   {
-    float* samples = (float *) getChannelSamples(chanoffset, 0);
+    float* samples = (float *) getArrayData(chanoffset, 0);
     FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
@@ -113,7 +114,7 @@ public:
     
   size_t numFrames() const override { return getMinFrames(); }
 
-  size_t numChans() const override { return getChannelCount() / mRank; }
+  size_t numChans() const override { return getArrayCount() / mRank; }
 
   size_t rank() const override { return valid() ? mRank : 0; }
   
@@ -125,73 +126,63 @@ private:
   size_t getMinFrames() const
   {
     size_t nChans = numChans();
-    size_t frames = 0;
+    int frames = 0;
     
     for (size_t i = 0; i < nChans; i++)
     {
       for (size_t j = 0; j < mRank; j++)
       {
-        size_t chanFrames = getChannelFrames(i, j);
-        frames = (!i && !j) ? chanFrames : std::min(chanFrames, frames);
+        int arrayFrames = 0;
+        
+        getArrayData(i, j, &arrayFrames);
+        frames = (!i && !j) ? arrayFrames : std::min(arrayFrames, frames);
       }
     }
     
-    return frames;
+    return static_cast<size_t>(frames);
   }
     
-  size_t getChannelCount() const
+  size_t getArrayCount() const
   {
-    //FIX
-    return exists() ? 1 : 0;
-  }
+    size_t count = 0;
     
-  t_symbol *channelName(size_t chan, size_t rank) const
-  {
-    NOTUSED(chan);
-    NOTUSED(rank);
+    for (size_t i = 0; ; i++)
+      for (size_t j = 0; j < mRank; j++, count++)
+        if (!getArray(i, j))
+          return count;
       
-    //FIX
-    return mName;
+    return count;
   }
     
-  size_t getChannelFrames(size_t chan, size_t rank) const
+  t_word *getArrayData(size_t chan, size_t rank, int* retLength = nullptr) const
   {
-    t_word *words;
+    t_garray *array = getArray(chan, rank);
+    t_word *words = nullptr;
     int length = 0;
-    getChannel(channelName(chan, rank), words, length);
-    return static_cast<size_t>(length);
-  }
     
-  t_word *getChannelSamples(size_t chan, size_t rank)
-  {
-    t_word *words;
-    int length;
-    getChannel(channelName(chan, rank), words, length);
+    if (array)
+      garray_getfloatwords(array, &length, &words);
+    
+    if (retLength)
+      *retLength = length;
+    
     return words;
   }
     
-  bool channelExists(size_t chan, size_t rank) const
+  t_garray *getArray(size_t chan, size_t rank) const
   {
-    return getArray(channelName(chan, rank));
-  }
-    
-  void getChannel(t_symbol *name, t_word*& words, int& length) const
-  {
-    t_garray *array = getArray(name);
-    
-    if (array)
+    t_symbol *name = mName;
+      
+    if (chan || rank || !pd_findbyclass(name, garray_class))
     {
-      garray_getfloatwords(array, &length, &words);
-    }
-    else
-    {
-      words = nullptr;
-      length = 0;
-    }
-  }
+      char nameString[MAXPDSTRING];
+      int number = static_cast<int>(mRank * chan + rank) + 1;
+        
+      snprintf(nameString, MAXPDSTRING, "%s-%d", mName->s_name, number);
     
-  t_garray *getArray(t_symbol *name) const
-  {
+      name = gensym(nameString);
+    }
+
     return (t_garray *) pd_findbyclass(name, garray_class);
   }
     
