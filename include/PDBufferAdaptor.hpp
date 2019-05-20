@@ -45,7 +45,7 @@ public:
     return *this;
   }
 
-  t_symbol * name() const { return mName; }
+  t_symbol *name() const { return mName; }
 
   bool exists() const override
   {

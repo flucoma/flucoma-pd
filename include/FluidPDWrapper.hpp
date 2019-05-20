@@ -413,9 +413,9 @@ public:
     {
       NOTUSED(param);
         
-      const char* paramName = paramDescriptor<N>().name;
+      std::string paramName = lowerCase(paramDescriptor<N>().name);
         
-      if (!strcmp(paramName, name))
+      if (!strcmp(paramName.c_str(), name))
         matched = true;
     }
   };
