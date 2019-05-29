@@ -123,6 +123,7 @@ private:
     
     for (size_t i = 0; i < nChans; i++)
     {
+      int arrayFrames = 0;
       getArrayData(i, &arrayFrames);
       frames = !i ? arrayFrames : std::min(arrayFrames, frames);
     }
