@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+
+if(APPLE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -mavx -msse -msse2 -msse3 -msse4")
 
 # We shouldn't have to do this, bah:
@@ -12,6 +14,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
 # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -stdlib=libc++)
 SET(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.7" CACHE STRING "Minimum OS X deployment version")
+endif(APPLE)
 
 project (flucoma_pd LANGUAGES CXX)
 
@@ -51,17 +54,27 @@ add_library(FFTLIB STATIC ${FFT_SOURCES})
 target_link_libraries(
   FFTLIB PRIVATE ${FFT_LINK}
 )
-# target_compile_options(
-#   FFTLIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
-# )
+
+if(MSVC)
+target_compile_options(
+   FFTLIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: /arch:AVX>
+)
+else(MSVC)
+target_compile_options(
+   FFTLIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>
+)
+endif(MSVC)
 
 get_property(AUFIOFILE_SOURCES TARGET HISSTools_AudioFile PROPERTY INTERFACE_SOURCES)
 add_library(AUDIOFILELIB STATIC ${AUFIOFILE_SOURCES})
 
-# target_compile_options(
-#   AUDIOFILELIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
-# )
-
+IF(MSVC)
+  target_compile_options(AUDIOFILELIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: /arch:AVX)
+else(MSVC)
+  target_compile_options(
+    AUDIOFILELIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>
+  )
+ENDIF(MSVC)
 
 add_library(FLUID_PD_WRAPPER INTERFACE)
 
