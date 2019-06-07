@@ -13,9 +13,10 @@ target_include_directories (
 )
 
 if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W3)
+	target_link_libraries(${PROJECT_NAME} PRIVATE ${PD_LIB})
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)# $<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
 endif()
 
 if(MSVC)
@@ -36,12 +37,10 @@ else ()
 endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXTERN_OUTPUT_NAME}")
 
-# target_compile_options(
-# ${PROJECT_NAME}
-# PUBLIC
-# "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
-# )
 
+if(MSVC)
+  target_compile_definitions( ${PROJECT_NAME} PUBLIC USE_MATH_DEFINES)
+endif(MSVC)
 
 ### Output ###
 if (APPLE)
@@ -51,8 +50,10 @@ if (APPLE)
 		XCODE_ATTRIBUTE_MACH_O_TYPE mh_dylib
 		XCODE_ATTRIBUTE_EXECUTABLE_PREFIX ""
 		XCODE_ATTRIBUTE_EXECUTABLE_EXTENSION "pd_darwin"
-)
+	)
 
+elseif(UNIX AND NOT APPLE)
+		set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_linux")
 elseif (WIN32)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".dll")
@@ -60,7 +61,7 @@ elseif (WIN32)
 	# warning about constexpr not being const in c++14
 	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/wd4814")
 
-endif ()
+endif (APPLE)
 
 ### Post Build ###
 #if (WIN32)

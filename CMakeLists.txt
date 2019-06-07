@@ -32,6 +32,7 @@ MACRO(SUBDIRLIST result curdir)
 ENDMACRO()
 
 set(FLUID_PATH "" CACHE PATH "The top level of the fluid_decomposition repo")
+set(PD_PATH "" CACHE PATH "The top level of a Pure Data installation")
 set(LOCAL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 get_filename_component(FLUID_ABS_PATH ${FLUID_PATH} ABSOLUTE)
@@ -43,6 +44,13 @@ message(${FLUID_ABS_PATH})
 
 if (NOT (EXISTS "${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake"))
 	message(FATAL_ERROR "Can't find the fluid_decomposition CMake targets file at ${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake. Please go to ${FLUID_ABS_PATH}/build and run CMake")
+endif()
+
+get_filename_component(PD_ABS_PATH ${PD_PATH} ABSOLUTE)
+set(PD_LIB ${PD_ABS_PATH}/bin/pd.lib)
+
+if(NOT(EXISTS ${PD_LIB}) AND WIN32)
+  message(FATAL_ERROR "Can't find pd.lib at ${PD_LIB}. This is needed to build on Windows")
 endif()
 
 include("${FLUID_ABS_PATH}/build/fluid_decomposition-exports.cmake")
@@ -91,6 +99,10 @@ target_sources(
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/FluidPDWrapper.hpp"
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/PDBufferAdaptor.hpp"
 )
+
+if(MSVC)
+target_compile_options(FLUID_PD INTERFACE -D_USE_MATH_DEFINES)
+endif(MSVC)
 
 SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
 foreach (project_dir ${PROJECT_DIRS})
