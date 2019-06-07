@@ -2,4 +2,5 @@ bin
 build
 **/build/*
 **/.DS_Store
+.vs/*
 pd_objects/
