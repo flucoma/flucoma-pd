@@ -11,6 +11,8 @@
 
 #include <tuple>
 #include <utility>
+#include <cstdarg>
+#include <cctype>
 
 namespace fluid {
 namespace client {
