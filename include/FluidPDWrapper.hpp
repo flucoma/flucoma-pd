@@ -47,8 +47,15 @@ public:
   {
     class_addmethod(c, nullfn, gensym("signal"), A_NULL);
     class_addmethod(c, (t_method) callDSP, gensym("dsp"), A_CANT, 0);
+
+    class_addmethod(c, (t_method) getLatency, gensym("getlatency"), A_NULL);
   }
 
+  static void getLatency(Wrapper *x)
+  {
+    outlet_float(x->mLatencyOut, x->mClient.latency());
+  }
+    
   static void callDSP(Wrapper *x, t_signal **sp)
   {
     x->dsp(sp);
@@ -64,6 +71,9 @@ public:
 
   void setupAudio(t_object *pdObject, size_t numSigIns, size_t numSigOuts)
   {
+    Wrapper *wrapper = static_cast<Wrapper *>(this);
+    auto &   client  = wrapper->client();
+      
     //impl::PDBase::getPDObject()->z_misc |= Z_NO_INPLACE;
           
     mSigIns.resize(numSigIns);
@@ -78,6 +88,13 @@ public:
           
     for (size_t i = 0; i < numSigOuts; i++)
       outlet_new(pdObject, gensym("signal"));
+      
+    if (client.controlChannelsOut())
+        wrapper->mControlOutlet = outlet_new(pdObject, gensym("list"));
+      
+    // Create latency ouput
+      
+    mLatencyOut = outlet_new(pdObject, gensym("float"));
   }
     
   void dsp(t_signal **sp)
@@ -148,6 +165,7 @@ private:
   std::vector<t_sample *>   mSigOuts;
   std::vector<t_float>      mControlOutputs;
   std::vector<t_atom>       mControlAtoms;
+  t_outlet*                 mLatencyOut;
   t_clock*                  mControlClock;
 };
 
@@ -180,7 +198,7 @@ struct NonRealTime
 
   static void callProcess(Wrapper *x) { x->process(); }
     
-    void setupAudio(t_object *, size_t, size_t) {}
+  void setupAudio(t_object *, size_t, size_t) {}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,7 +381,7 @@ public:
   using ParamSetType = typename Client::ParamSetType;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom *av)
-    : mParams(Client::getParameterDescriptors()),
+    : mNRTDoneOutlet(NULL), mControlOutlet(NULL), mParams(Client::getParameterDescriptors()),
       mParamSnapshot(Client::getParameterDescriptors()),
       mClient{initParamsFromArgs(ac,av)}
   {
@@ -375,11 +393,11 @@ public:
     for (auto &r : results)
       printResult(this, r);
 
+    this->setupAudio(pdObject, mClient.audioChannelsIn(), mClient.audioChannelsOut());
+
     if (isNonRealTime<Client>::value) mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
 
-    if (mClient.controlChannelsOut()) mControlOutlet = outlet_new(pdObject, gensym("list"));
-        
-    this->setupAudio(pdObject, mClient.audioChannelsIn(), mClient.audioChannelsOut());
+    if (mClient.controlChannelsOut() && !mControlOutlet) mControlOutlet = outlet_new(pdObject, gensym("list"));
   }
 
   void doneBang() { outlet_bang(mNRTDoneOutlet); }
