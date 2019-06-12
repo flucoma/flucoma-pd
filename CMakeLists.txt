@@ -31,8 +31,8 @@ MACRO(SUBDIRLIST result curdir)
   SET(${result} ${dirlist})
 ENDMACRO()
 
-set(FLUID_PATH "" CACHE PATH "The top level of the fluid_decomposition repo")
-set(PD_PATH "" CACHE PATH "The top level of a Pure Data installation")
+set(FLUID_PATH '' CACHE PATH "The top level of the fluid_decomposition repo")
+set(PD_PATH "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "The top level of a Pure Data installation")
 set(LOCAL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 get_filename_component(FLUID_ABS_PATH ${FLUID_PATH} ABSOLUTE)
