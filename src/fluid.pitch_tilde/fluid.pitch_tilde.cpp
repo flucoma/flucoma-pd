@@ -1,8 +1,8 @@
 #include <clients/rt/PitchClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluidpitch_tilde_setup(void)
+extern "C" void fluid0x2epitch_tilde_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<PitchClient>("fluidpitch~");
+  makePDWrapper<PitchClient>("fluid.pitch~");
 }

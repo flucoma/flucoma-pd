@@ -1,8 +1,8 @@
 #include <clients/rt/MelBandsClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluidbufmelbands_tilde_setup(void)
+extern "C" void fluid0x2ebufmelbands_tilde_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTMelBandsClient>("fluidbufmelbands~");
+  makePDWrapper<NRTMelBandsClient>("fluid.bufmelbands~");
 }

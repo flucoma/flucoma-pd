@@ -1,8 +1,8 @@
 #include <clients/rt/GainClient.hpp>
 #include "FluidPDWrapper.hpp"
 
-extern "C" void fluidgain_tilde_setup(void)
+extern "C" void fluid0x2egain_tilde_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<GainClient>("fluidgain~");
+  makePDWrapper<GainClient>("fluid.gain~");
 }

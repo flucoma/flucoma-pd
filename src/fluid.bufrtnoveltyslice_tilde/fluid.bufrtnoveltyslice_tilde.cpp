@@ -1,8 +1,8 @@
 #include <clients/rt/RTNoveltySlice.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluidbufrtnoveltyslice_tilde_setup(void)
+extern "C" void fluid0x2ebufrtnoveltyslice_tilde_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTRTNoveltySlice>("fluidbufrtnoveltyslice~");
+  makePDWrapper<NRTRTNoveltySlice>("fluid.bufrtnoveltyslice~");
 }

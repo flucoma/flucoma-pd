@@ -1,8 +1,8 @@
 #include <clients/rt/BaseSTFTClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluidstftpass_tilde_setup(void)
+extern "C" void fluid0x2estftpass_tilde_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<BaseSTFTClient>("fluidstftpass~");
+  makePDWrapper<BaseSTFTClient>("fluid.stftpass~");
 }

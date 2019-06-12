@@ -1,8 +1,8 @@
 #include <clients/rt/TransientClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluidbuftransients_tilde_setup(void)
+extern "C" void fluid0x2ebuftransients_tilde_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTTransients>("fluidbuftransients~");
+  makePDWrapper<NRTTransients>("fluid.buftransients~");
 }
