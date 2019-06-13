@@ -1,7 +1,7 @@
 #include <clients/rt/SinesClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluid0x2ebufsines_tilde_setup(void)
+extern "C" void setup_fluid0x2ebufsines_tilde(void)
 {
   using namespace fluid::client;
   

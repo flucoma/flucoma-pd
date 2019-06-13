@@ -1,7 +1,7 @@
 #include <clients/rt/MFCCClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void fluid0x2ebufmfcc_tilde_setup(void)
+extern "C" void setup_fluid0x2ebufmfcc_tilde(void)
 {
   using namespace fluid::client;
   makePDWrapper<NRTMFCCClient>("fluid.bufmfcc~");
