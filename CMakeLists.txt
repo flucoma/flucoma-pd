@@ -48,6 +48,11 @@ get_property(FFT_SOURCES TARGET HISSTools_FFT  PROPERTY INTERFACE_SOURCES)
 get_property(FFT_LINK TARGET HISSTools_FFT  PROPERTY INTERFACE_LINK_LIBRARIES)
 
 add_library(FFTLIB STATIC ${FFT_SOURCES})
+
+if (UNIX AND NOT APPLE)
+target_compile_options( FFTLIB PUBLIC -fPIC)
+endif()
+
 target_link_libraries(
   FFTLIB PRIVATE ${FFT_LINK}
 )
