@@ -11,6 +11,7 @@
 
 #include <tuple>
 #include <utility>
+#include <stdarg.h>
 
 namespace fluid {
 namespace client {
