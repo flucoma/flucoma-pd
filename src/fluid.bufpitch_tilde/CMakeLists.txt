@@ -7,7 +7,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/../../scripts/pd-pretarget.cmake)
 
 add_library(
 	${PROJECT_NAME}
-	MODULE
+	SHARED
 	${PROJECT_NAME}.cpp
 )
 
