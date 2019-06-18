@@ -55,13 +55,6 @@ target_link_libraries(
 #   FFTLIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
 # )
 
-get_property(AUFIOFILE_SOURCES TARGET HISSTools_AudioFile PROPERTY INTERFACE_SOURCES)
-add_library(AUDIOFILELIB STATIC ${AUFIOFILE_SOURCES})
-
-# target_compile_options(
-#   AUDIOFILELIB PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>"
-# )
-
 
 add_library(FLUID_PD_WRAPPER INTERFACE)
 
