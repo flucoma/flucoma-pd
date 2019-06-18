@@ -11,7 +11,9 @@
 
 #include <tuple>
 #include <utility>
-#include <stdarg.h>
+#include <cstdarg>
+#include <cctype>
+#include <cstring>
 
 namespace fluid {
 namespace client {
