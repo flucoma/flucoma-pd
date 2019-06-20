@@ -1,0 +1,103 @@
+#N canvas 960 23 960 1150 10;
+#X obj 23 627 -~ 0.5;
+#X obj 23 648 abs~;
+#X obj 23 606 phasor~ 0.1;
+#X obj 23 669 *~ 2;
+#X obj 23 690 *~;
+#X obj 71 669 osc~ 320;
+#X obj 22 782 tabwrite~ ampslicesourceview;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array ampslicesourceview 413 float 2;
+#X coords 0 1 413 -1 200 140 1;
+#X restore 21 838 graph;
+#X obj 181 613 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 181 580 loadbang;
+#X obj 181 641 metro 37.7;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array ampsliceview 413 float 2;
+#X coords 0 1.1 413 -0.1 200 140 1 0 0;
+#X restore 20 993 graph;
+#X obj 206 727 fluid.ampslice~ -absrampup 10 -absrampdown 100 -absthreshon
+-12 -absthreshoff -12;
+#X obj 206 780 tabwrite~ ampsliceview;
+#X obj 355 779 biquad~ 0 0 1 -1 0;
+#X obj 355 853 clip~ 0 1;
+#X obj 418 854 clip~ -1 0;
+#X obj 354 898 *~;
+#X obj 417 899 *~;
+#X obj 354 919 dac~;
+#X obj 492 854 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 492 874 * 0.2;
+#X text 16 22 basic tests: absThresh sanity;
+#X text 20 101 basic tests: absThresh hysteresis;
+#X text 26 186 basic tests: absThresh minSlice or minSilence;
+#X text 427 41 mid-level tests: absThresh minLength in state as condition
+(induces latency), f 76;
+#X msg 18 39 reset \, getlatency;
+#X msg 22 117 reset \, absthreshoff -16 \, getlatency;
+#X text 218 996 -on;
+#X text 218 1113 -off;
+#X msg 28 203 reset \, minslicelength 441 \, getlatency;
+#X msg 27 223 reset \, minsilencelength 441 \, getlatency;
+#X msg 430 61 reset \, minlengthabove 441 \, getlatency;
+#X msg 431 80 reset \, minlengthbelow 441 \, getlatency;
+#X text 430 162 mid-level tests: absThresh greediness \, looking for
+lowest value within a window (induces latency), f 103;
+#X msg 431 186 reset \, lookback 8820 \, getlatency;
+#X msg 431 207 reset \, lookahead 8820 \, getlatency;
+#X msg 431 228 reset \, lookback 221 \, lookahead 22050 \, getlatency
+;
+#X text 34 386 advanced tests: double envelope slow RMS type envelope
+as absolute will be always on in this test case, f 70;
+#X msg 34 416 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
+-60 \, absthreshoff -60 \, getlatency, f 86;
+#X floatatom 556 764 5 0 0 0 - - -;
+#X text 33 446 advanced tests: adding a relative threshold helps capturing
+retrigger: cutting within the on state, f 98;
+#X msg 34 462 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
+-60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
+2 \, relthreshoff 1 \, getlatency, f 147;
+#X msg 31 510 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
+-60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
+2 \, relthreshoff 1 \, minslicelength 4410 \, getlatency, f 136;
+#X text 29 493 advanced tests: forcing a minimum slice helps keeping
+the threshold low., f 72;
+#X floatatom 23 585 5 0 0 0 - - -;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 4 0 12 0;
+#X connect 5 0 4 1;
+#X connect 8 0 10 0;
+#X connect 9 0 8 0;
+#X connect 10 0 6 0;
+#X connect 10 0 13 0;
+#X connect 12 0 13 0;
+#X connect 12 0 14 0;
+#X connect 12 1 40 0;
+#X connect 14 0 15 0;
+#X connect 14 0 16 0;
+#X connect 15 0 17 0;
+#X connect 16 0 18 0;
+#X connect 17 0 19 0;
+#X connect 18 0 19 1;
+#X connect 20 0 21 0;
+#X connect 21 0 18 1;
+#X connect 21 0 17 1;
+#X connect 26 0 12 0;
+#X connect 27 0 12 0;
+#X connect 30 0 12 0;
+#X connect 31 0 12 0;
+#X connect 32 0 12 0;
+#X connect 33 0 12 0;
+#X connect 35 0 12 0;
+#X connect 36 0 12 0;
+#X connect 37 0 12 0;
+#X connect 39 0 12 0;
+#X connect 42 0 12 0;
+#X connect 43 0 12 0;
+#X connect 45 0 2 0;
