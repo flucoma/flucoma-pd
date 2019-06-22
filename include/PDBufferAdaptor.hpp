@@ -101,7 +101,7 @@ public:
 
   FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) override
   {
-    float* samples = (float *) getArrayData(chanoffset, 0);
+    float* samples = (float *) getArrayData(chanoffset);
     FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
@@ -164,7 +164,7 @@ private:
     if (chan || !pd_findbyclass(name, garray_class))
     {
       char nameString[MAXPDSTRING];
-      int number = static_cast<int>(chan) + 1;
+      int number = static_cast<int>(chan);
         
       snprintf(nameString, MAXPDSTRING, "%s-%d", mName->s_name, number);
     
