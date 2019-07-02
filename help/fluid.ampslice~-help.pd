@@ -5,31 +5,31 @@
 #X obj 23 669 *~ 2;
 #X obj 23 690 *~;
 #X obj 71 669 osc~ 320;
-#X obj 22 782 tabwrite~ ampslicesourceview;
+#X obj 646 864 tabwrite~ ampslicesourceview;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array ampslicesourceview 413 float 2;
 #X coords 0 1 413 -1 200 140 1;
 #X restore 21 838 graph;
-#X obj 181 613 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 648 719 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 181 580 loadbang;
-#X obj 181 641 metro 37.7;
+#X obj 648 686 loadbang;
+#X obj 648 747 metro 37.7;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array ampsliceview 413 float 2;
 #X coords 0 1.1 413 -0.1 200 140 1 0 0;
 #X restore 20 993 graph;
 #X obj 206 727 fluid.ampslice~ -absrampup 10 -absrampdown 100 -absthreshon
 -12 -absthreshoff -12;
-#X obj 206 780 tabwrite~ ampsliceview;
-#X obj 355 779 biquad~ 0 0 1 -1 0;
-#X obj 355 853 clip~ 0 1;
-#X obj 418 854 clip~ -1 0;
-#X obj 354 898 *~;
-#X obj 417 899 *~;
-#X obj 354 919 dac~;
-#X obj 492 854 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 502 865 tabwrite~ ampsliceview;
+#X obj 236 789 biquad~ 0 0 1 -1 0;
+#X obj 236 863 clip~ 0 1;
+#X obj 299 864 clip~ -1 0;
+#X obj 235 908 *~;
+#X obj 298 909 *~;
+#X obj 235 929 dac~;
+#X obj 373 864 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 492 874 * 0.2;
+#X obj 373 884 * 0.2;
 #X text 16 22 basic tests: absThresh sanity;
 #X text 20 101 basic tests: absThresh hysteresis;
 #X text 26 186 basic tests: absThresh minSlice or minSilence;
@@ -65,12 +65,18 @@ retrigger: cutting within the on state, f 98;
 #X text 29 493 advanced tests: forcing a minimum slice helps keeping
 the threshold low., f 72;
 #X floatatom 23 585 5 0 0 0 - - -;
+#X obj 661 840 delread~ ampslicedel;
+#X obj 23 711 delwrite~ ampslicedel 1000;
+#X obj 707 794 samplerate~;
+#X obj 707 774 r pd-dsp-started;
+#X obj 685 818 / 1;
+#X obj 664 794 * 1000;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
-#X connect 4 0 6 0;
 #X connect 4 0 12 0;
+#X connect 4 0 47 0;
 #X connect 5 0 4 1;
 #X connect 8 0 10 0;
 #X connect 9 0 8 0;
@@ -98,6 +104,12 @@ the threshold low., f 72;
 #X connect 36 0 12 0;
 #X connect 37 0 12 0;
 #X connect 39 0 12 0;
+#X connect 40 0 51 0;
 #X connect 42 0 12 0;
 #X connect 43 0 12 0;
 #X connect 45 0 2 0;
+#X connect 46 0 6 0;
+#X connect 48 0 50 1;
+#X connect 49 0 48 0;
+#X connect 50 0 46 0;
+#X connect 51 0 50 0;
