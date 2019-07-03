@@ -251,7 +251,32 @@ bounds 0 1 513 0;
 #X connect 42 0 41 0;
 #X connect 43 0 28 0;
 #X connect 43 0 35 0;
-#X restore 741 804 pd didactic;
+#X restore 741 804 pd didactic updating bases;
+#N canvas 408 85 1212 874 seeding 1;
+#X obj 28 813 array define guitar;
+#X obj 231 815 clone multiarray 10 guit-bases;
+#X obj 230 834 clone multiarray 2 summed-bases;
+#X obj 433 816 clone multiarray 70 guit-stats;
+#X obj 433 835 clone multiarray 70 guit-features;
+#X obj 26 64 soundfiler;
+#X obj 26 85 t b;
+#X msg 26 21 read -resize /Users/pa/Desktop/Tremblay-AaS-AcousticStrums-M.wav
+guitar;
+#X obj 26 106 fluid.bufnmf~ -source guitar -numframes 88200 -components
+10 -bases guit-bases -resynth guit-resynth -fftsettings 1024 256 2048
+;
+#X obj 26 832 clone multiarray 10 guit-resynth;
+#X obj 26 170 fluid.bufspectralshape~ -source guit-resynth -features
+guit-features -fftsettings 1024 256 2048;
+#X msg 131 302 1 8 15 22 29 36 43 50 57 64;
+#X obj 27 212 fluid.bufstats~ -source guit-features -stats guit-stats
+;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 7 0 5 0;
+#X connect 8 0 10 0;
+#X connect 10 0 12 0;
+#X restore 742 859 pd seeding bases;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
 #X connect 4 0 12 0;
