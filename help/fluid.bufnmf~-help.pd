@@ -136,7 +136,7 @@ resynth -bases bases -activations activations -fftsettings 512 256
 #X floatatom 348 721 5 0 0 0 - - -;
 #X msg 348 741 set activations-\$1;
 #X obj 87 726 *~ 4;
-#N canvas 78 248 1269 825 didactic 0;
+#N canvas 250 97 1269 825 didactic 0;
 #X obj 36 69 array define lowsine 44100;
 #X obj 36 89 array define hisine 44100;
 #X msg 38 172 44100;
@@ -164,7 +164,6 @@ resynth -bases bases -activations activations -fftsettings 512 256
 source lowsine \, bang \, source hisine \, deststartframe 44100 \,
 bang;
 #X msg 41 439 \; didact-source2 const;
-#X msg 41 522 \; didact-source2 normalize;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-basis-0 513 float 2;
 #X coords 0 1 513 0 513 70 1 0 0;
@@ -204,13 +203,14 @@ bang;
 #X msg 844 628 basesmode 2 \, bang;
 #X obj 861 664 fluid.bufnmf~ -source didact-source2 -activations didact-activation
 -bases didact-basis -components 3;
-#X msg 849 735 \; didact-activation-0 normalize \; didact-activation-1
-normalize \; didact-activation-2 normalize;
 #X msg 981 630 basesmode 1 \, bang;
-#X msg 1054 736 \; didact-basis-0 normalize \; didact-basis-1 normalize
-\; didact-basis-2 normalize;
 #X obj 556 375 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X msg 41 521 \; didact-source2 bounds 0 1 88200 -1;
+#X msg 861 693 \; didact-activation-0 bounds 0 1 173 0 \; didact-activation-1
+bounds 0 1 173 0 \; didact-activation-2 bounds 0 1 173 0 \; didact-basis-0
+bounds 0 1 513 0 \; didact-basis-1 bounds 0 1 513 0 \; didact-basis-2
+bounds 0 1 513 0;
 #X connect 2 0 4 0;
 #X connect 3 0 6 0;
 #X connect 4 0 3 0;
@@ -230,26 +230,27 @@ normalize \; didact-activation-2 normalize;
 #X connect 15 0 13 0;
 #X connect 16 0 13 0;
 #X connect 17 0 2 0;
-#X connect 19 0 22 0;
+#X connect 19 0 44 0;
 #X connect 20 0 19 0;
-#X connect 30 0 33 0;
-#X connect 31 0 30 0;
-#X connect 31 1 32 0;
-#X connect 32 0 34 1;
+#X connect 29 0 32 0;
+#X connect 30 0 29 0;
+#X connect 30 1 31 0;
+#X connect 31 0 33 1;
+#X connect 32 0 33 0;
 #X connect 33 0 34 0;
-#X connect 34 0 35 0;
-#X connect 35 0 37 0;
-#X connect 35 1 39 1;
-#X connect 35 2 38 0;
-#X connect 35 3 40 1;
-#X connect 35 4 34 1;
-#X connect 36 0 31 0;
+#X connect 34 0 36 0;
+#X connect 34 1 38 1;
+#X connect 34 2 37 0;
+#X connect 34 3 39 1;
+#X connect 34 4 33 1;
+#X connect 35 0 30 0;
+#X connect 36 0 38 0;
 #X connect 37 0 39 0;
-#X connect 38 0 40 0;
-#X connect 41 0 42 0;
-#X connect 44 0 42 0;
-#X connect 46 0 29 0;
-#X connect 46 0 36 0;
+#X connect 40 0 41 0;
+#X connect 41 0 45 0;
+#X connect 42 0 41 0;
+#X connect 43 0 28 0;
+#X connect 43 0 35 0;
 #X restore 741 804 pd didactic;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
