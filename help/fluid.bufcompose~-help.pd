@@ -1,0 +1,22 @@
+#N canvas 646 23 922 922 10;
+#X obj 52 122 soundfiler;
+#X obj 48 593 fluid.bufcompose~ -destination dst;
+#X msg 48 255 reset \, source monosynth \, bang \, destgain 1 \, source
+stereopiano \, bang;
+#X obj 128 123 array define monosynth;
+#X obj 270 123 clone multiarray 2 stereopiano;
+#X msg 52 86 read -resize /Users/pa/Desktop/Tremblay-SA-UprightPianoPedalWide.wav
+stereopiano-0 stereopiano-1 \, read -resize /Users/pa/Desktop/Tremblay-AaS-SynthTwoVoices-M.wav
+monosynth, f 97;
+#X text 45 233 basic summing of each full buffer in all dimensions
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array dst-0 515088 float 2;
+#X coords 0 1 515088 -1 200 140 1 0 0;
+#X restore 374 257 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array dst-1 515088 float 2;
+#X coords 0 1 515088 -1 200 140 1;
+#X restore 375 420 graph;
+#X connect 2 0 1 0;
+#X connect 5 0 0 0;

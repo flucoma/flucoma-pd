@@ -59,6 +59,11 @@ get_property(FFT_SOURCES TARGET HISSTools_FFT  PROPERTY INTERFACE_SOURCES)
 get_property(FFT_LINK TARGET HISSTools_FFT  PROPERTY INTERFACE_LINK_LIBRARIES)
 
 add_library(FFTLIB STATIC ${FFT_SOURCES})
+
+if (UNIX AND NOT APPLE)
+target_compile_options( FFTLIB PUBLIC -fPIC)
+endif()
+
 target_link_libraries(
   FFTLIB PRIVATE ${FFT_LINK}
 )
@@ -72,17 +77,6 @@ target_compile_options(
    FFTLIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>
 )
 endif(MSVC)
-
-# get_property(AUFIOFILE_SOURCES TARGET HISSTools_AudioFile PROPERTY INTERFACE_SOURCES)
-# add_library(AUDIOFILELIB STATIC ${AUFIOFILE_SOURCES})
-#
-# IF(MSVC)
-#   target_compile_options(AUDIOFILELIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: /arch:AVX>)
-# else(MSVC)
-#   target_compile_options(
-#     AUDIOFILELIB PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>
-#   )
-# ENDIF(MSVC)
 
 add_library(FLUID_PD_WRAPPER INTERFACE)
 
