@@ -1,15 +1,13 @@
 #N canvas 409 44 1407 973 10;
 #X obj 52 122 soundfiler;
 #X obj 128 123 array define monosynth;
-#X msg 52 86 read -resize /Users/pa/Desktop/Tremblay-AaS-SynthTwoVoices-M.wav
-monosynth, f 74;
 #X obj 99 366 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 99 386 t b b;
 #X obj 53 455 realtime;
 #X floatatom 53 476 5 0 0 0 - - -;
 #X msg 157 387 warnings 1;
-#X floatatom 532 359 5 0 0 0 - - -;
+#X floatatom 532 358 5 0 0 0 - - -;
 #X msg 531 378 set resynth-\$1 \, bang;
 #X obj 531 399 tabplay~;
 #X obj 531 420 dac~;
@@ -206,11 +204,11 @@ bang;
 #X msg 981 630 basesmode 1 \, bang;
 #X obj 556 375 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X msg 41 521 \; didact-source2 bounds 0 1 88200 -1;
-#X msg 861 693 \; didact-activation-0 bounds 0 1 173 0 \; didact-activation-1
-bounds 0 1 173 0 \; didact-activation-2 bounds 0 1 173 0 \; didact-basis-0
-bounds 0 1 513 0 \; didact-basis-1 bounds 0 1 513 0 \; didact-basis-2
-bounds 0 1 513 0;
+#X msg 41 521 \; didact-source2 xticks 0 0 0;
+#X msg 861 693 \; didact-activation-0 xticks 0 0 0 \; didact-activation-1
+xticks 0 0 0 \; didact-activation-2 xticks 0 0 0 \; didact-basis-0
+xticks 0 0 0 \; didact-basis-1 xticks 0 0 0 \; didact-basis-2 xticks
+0 0 0;
 #X connect 2 0 4 0;
 #X connect 3 0 6 0;
 #X connect 4 0 3 0;
@@ -260,8 +258,6 @@ bounds 0 1 513 0;
 #X obj 433 835 clone multiarray 70 guit-features;
 #X obj 26 64 soundfiler;
 #X obj 26 85 t b;
-#X msg 26 21 read -resize /Users/pa/Desktop/Tremblay-AaS-AcousticStrums-M.wav
-guitar;
 #X obj 26 106 fluid.bufnmf~ -source guitar -numframes 88200 -components
 10 -bases guit-bases -resynth guit-resynth -fftsettings 1024 256 2048
 ;
@@ -381,51 +377,55 @@ guit-resynth;
 #X obj 531 399 tabplay~;
 #X obj 531 420 dac~;
 #X msg 531 378 set guit-resynth-\$1 \, bang;
+#X msg 26 21 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+guitar;
 #X connect 5 0 6 0;
-#X connect 6 0 8 0;
-#X connect 7 0 5 0;
-#X connect 8 0 10 0;
+#X connect 6 0 7 0;
+#X connect 7 0 9 0;
+#X connect 9 0 10 0;
 #X connect 10 0 11 0;
 #X connect 11 0 12 0;
 #X connect 12 0 13 0;
 #X connect 13 0 14 0;
-#X connect 14 0 15 0;
-#X connect 16 0 19 0;
-#X connect 17 0 18 0;
-#X connect 17 0 18 1;
-#X connect 19 0 17 0;
+#X connect 15 0 18 0;
+#X connect 16 0 17 0;
+#X connect 16 0 17 1;
+#X connect 18 0 16 0;
+#X connect 19 0 5 0;
 #X restore 742 859 pd fixed bases;
-#X connect 2 0 0 0;
-#X connect 3 0 4 0;
-#X connect 4 0 12 0;
-#X connect 4 1 5 0;
-#X connect 5 0 6 0;
-#X connect 7 0 12 0;
+#X msg 52 86 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+monosynth, f 65;
+#X connect 2 0 3 0;
+#X connect 3 0 11 0;
+#X connect 3 1 4 0;
+#X connect 4 0 5 0;
+#X connect 6 0 11 0;
+#X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
-#X connect 10 0 11 0;
-#X connect 10 0 11 1;
-#X connect 12 0 5 1;
-#X connect 14 0 20 0;
-#X connect 15 0 14 1;
-#X connect 15 0 17 2;
+#X connect 9 0 10 1;
+#X connect 11 0 4 1;
+#X connect 13 0 19 0;
+#X connect 14 0 13 1;
+#X connect 14 0 16 2;
+#X connect 15 0 17 0;
 #X connect 16 0 18 0;
-#X connect 17 0 19 0;
-#X connect 18 0 17 0;
-#X connect 18 1 14 0;
-#X connect 18 2 15 0;
-#X connect 22 0 27 0;
+#X connect 17 0 16 0;
+#X connect 17 1 13 0;
+#X connect 17 2 14 0;
+#X connect 21 0 26 0;
+#X connect 22 0 24 0;
 #X connect 23 0 25 0;
-#X connect 24 0 26 0;
-#X connect 25 0 24 0;
-#X connect 25 1 22 0;
-#X connect 25 2 28 0;
-#X connect 28 0 22 1;
-#X connect 28 0 24 2;
-#X connect 32 0 11 0;
-#X connect 34 0 39 0;
-#X connect 35 0 36 0;
-#X connect 36 0 32 1;
-#X connect 37 0 38 0;
-#X connect 38 0 32 2;
-#X connect 39 0 32 0;
+#X connect 24 0 23 0;
+#X connect 24 1 21 0;
+#X connect 24 2 27 0;
+#X connect 27 0 21 1;
+#X connect 27 0 23 2;
+#X connect 31 0 10 0;
+#X connect 33 0 38 0;
+#X connect 34 0 35 0;
+#X connect 35 0 31 1;
+#X connect 36 0 37 0;
+#X connect 37 0 31 2;
+#X connect 38 0 31 0;
+#X connect 41 0 0 0;

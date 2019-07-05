@@ -5,9 +5,6 @@
 stereopiano \, bang;
 #X obj 128 123 array define monosynth;
 #X obj 270 123 clone multiarray 2 stereopiano;
-#X msg 52 86 read -resize /Users/pa/Desktop/Tremblay-SA-UprightPianoPedalWide.wav
-stereopiano-0 stereopiano-1 \, read -resize /Users/pa/Desktop/Tremblay-AaS-SynthTwoVoices-M.wav
-monosynth, f 97;
 #X text 45 233 basic summing of each full buffer in all dimensions
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -18,5 +15,10 @@ monosynth, f 97;
 #X array dst-1 515088 float 2;
 #X coords 0 1 515088 -1 200 140 1;
 #X restore 375 420 graph;
+#X msg 52 86 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
+stereopiano-0 stereopiano-1 \, read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+monosynth, f 88;
+#X msg 48 614 \; dst-0 xticks 0 0 0 \; dst-1 xticks 0 0 0;
+#X connect 1 0 9 0;
 #X connect 2 0 1 0;
-#X connect 5 0 0 0;
+#X connect 8 0 0 0;
