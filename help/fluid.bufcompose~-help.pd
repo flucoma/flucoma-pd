@@ -79,6 +79,8 @@ bufcompose_dst \, bang;
 #X text 14 307 3);
 #X msg 37 308 source bufcompose_monosynth \, gain 0.7 \, destgain 1
 \, deststartchan 0 \, numchans 2 \, bang;
+#X obj 158 28 multiarray-help;
+#X text 17 29 make sure to read this:;
 #X connect 5 0 0 0;
 #X connect 9 0 0 0;
 #X restore 77 509 pd multichannel;
