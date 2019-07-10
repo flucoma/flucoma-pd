@@ -1,4 +1,4 @@
-#N canvas 27 43 907 824 10;
+#N canvas 27 42 907 824 10;
 #X obj 34 218 soundfiler;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufcompose_dst-0 515088 float 2;
@@ -17,7 +17,7 @@ the server. It can be used for thing like mixing down multichannel
 buffers \, or converting from left-right stereo to mid-side. It is
 used extensively in the example code of Fluid Decomposition. Important
 note:, f 127;
-#N canvas 460 47 585 359 mixing 0;
+#N canvas 666 302 585 359 mixing 0;
 #X obj 18 325 outlet;
 #X text 20 26 use the destgain attribute to mix into the destination
 buffer, f 61;
@@ -26,36 +26,127 @@ buffer, f 61;
 #X msg 18 124 1;
 #X msg 51 124 0.5;
 #X msg 83 124 0;
-#X text 15 102 1 try different gains;
-#X text 234 106 2 clear the destination;
-#X text 233 166 3 composite the first element;
 #X text 16 68 by default \, new content overwrites what is in the destination
 buffer. By using the destgain attribute \, you can choose how much
 old stuff gets mixed with new stuff, f 82;
-#X text 234 235 4 composite the second element \, affecting the data
-previously there by the destgain amount;
 #X msg 234 125 \; bufcompose_dst-0 const \; bufcompose_dst-1 const
 ;
-#X msg 235 186 source bufcompose_monosynth \, destination bufcompose_dst
+#X msg 234 197 source bufcompose_monosynth \, destination bufcompose_dst
 \, bang;
-#X msg 231 272 source bufcompose_stereopiano \, bang;
+#X msg 234 275 source bufcompose_stereopiano \, bang;
+#X text 15 102 1) try different gains;
+#X text 232 109 2) clear the destination;
+#X text 233 181 3) composite the first element;
+#X text 234 245 4) composite the second element \, affecting the data
+previously there by the destgain amount;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
 #X connect 5 0 3 0;
 #X connect 6 0 3 0;
-#X connect 13 0 0 0;
-#X connect 14 0 0 0;
-#X restore 62 437 pd mixing;
-#N canvas 0 23 450 300 subsections 0;
-#X restore 69 463 pd subsections;
-#N canvas 0 23 450 300 multichannel 0;
-#X restore 77 490 pd multichannel;
-#N canvas 0 23 450 300 more_examples 0;
-#X restore 87 517 pd more_examples;
-#X text 40 333 fluid.bufcompose copies from a source buffer/array to
-a destination buffer/array. use the source and destination attributes
-to set these bufers \, and bang to process;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X restore 62 456 pd mixing;
+#N canvas 669 303 450 300 subsections 0;
+#X text 16 14 copy only a section of the source \, control its placement
+;
+#X text 16 63 the attributes startframe \, numframes \, startchan \,
+numchans \, deststartframe \, and deststartchan give you fine control
+over which portion of the source you copy and where it is placed;
+#X text 13 192 2) overlay a brief burst of the first source \, with
+1" of the second \, read from an offset of 30k samples;
+#X msg 17 136 \; bufcompose_dst-0 const \; bufcompose_dst-1 const;
+#X text 15 120 1) clear the destination;
+#X obj 19 271 outlet;
+#X msg 19 228 reset \, destination bufcompose_dst \, source bufcompose_synthchoir
+\, numframes 9000 \, bang \, source bufcompose_monosynth \, startframe
+30000 \, numframes 44100 \, destgain 1 \, bang, f 68;
+#X connect 6 0 5 0;
+#X restore 69 482 pd subsections;
+#N canvas 670 305 452 440 multichannel 0;
+#X obj 19 354 outlet;
+#X text 16 7 sources can repeat channels to fit desintations;
+#X text 16 50 if numchans > the available source channels \, then channels
+will be repeated;
+#X text 13 212 here we make a stereo buffer from a stereo source \,
+and then copy in a mono source ith numchans = 2 \; it is then repeated
+across each destination channel;
+#X text 12 255 2);
+#X msg 36 257 reset \, source bufcompose_stereopiano \, destination
+bufcompose_dst \, bang;
+#X msg 35 132 \; bufcompose_dst-0 const \; bufcompose_dst-1 const;
+#X text 16 115 1) clear the destination;
+#X text 14 307 3);
+#X msg 37 308 source bufcompose_monosynth \, gain 0.7 \, destgain 1
+\, deststartchan 0 \, numchans 2 \, bang;
+#X connect 5 0 0 0;
+#X connect 9 0 0 0;
+#X restore 77 509 pd multichannel;
+#N canvas 668 306 507 364 more_examples 0;
+#X obj 12 337 outlet;
+#X text 10 8 by combining attributes for selection \, placement \,
+gain and channel behaviour we have a veritable swiss-army knife of
+buffer operations...;
+#N canvas 666 693 450 300 example5a 0;
+#X obj 58 179 outlet;
+#X obj 58 36 inlet;
+#X obj 58 57 t b b;
+#X msg 85 77 \; bufcompose_dst-0 const \; bufcompose_dst-1 const;
+#X msg 58 123 reset \, destination bufcompose_dst \, source bufcompose_monosynth
+\, numframes 9000 \, numchans 1 \, gain 0.5 \, bang \, source bufcompose_stereopiano
+\, startframe 30000 \, numframes 44100 \, numchans 1 \, gain 0.9 \,
+destgain 1 \, bang;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 4 0 0 0;
+#X restore 12 108 pd example5a;
+#X obj 12 87 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 30 81 make a mono buffer \, with a quiet punch from the synth
+\, with a choked piano resonance from the left channel;
+#X text 76 155 make a stereo buffer \, with the end of the mono synth
+in both channels \, with a piano resonance in swapped stereo;
+#X text 127 233 make a stereo buffer: the first second of each buffer
+\, the mono synth on the right \, the piano on the left;
+#X obj 57 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 108 239 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#N canvas 666 693 450 232 example5b 0;
+#X obj 57 188 outlet;
+#X obj 58 36 inlet;
+#X obj 58 57 t b b;
+#X msg 85 77 \; bufcompose_dst-0 const \; bufcompose_dst-1 const;
+#X msg 57 123 reset \, destination bufcompose_dst \, source bufcompose_monosynth
+\, startframe 441000 \, numchans 2 \, gain 0.6 \, bang \, source bufcompose_stereopiano
+\, startframe 0 \, numframes 78000 \, startchan 1 \, gain 0.5 \, deststartframe
+22050 \, destgain 1 \, bang;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 4 0 0 0;
+#X restore 57 183 pd example5b;
+#N canvas 666 693 450 228 example5c 0;
+#X obj 58 179 outlet;
+#X obj 58 36 inlet;
+#X obj 58 57 t b b;
+#X msg 85 77 \; bufcompose_dst-0 const \; bufcompose_dst-1 const;
+#X msg 58 123 reset \, destination bufcompose_dst \, source bufcompose_monosynth
+\, startframe 0 \, numframes 44100 \, deststartchan 1 \, bang \, source
+bufcompose_stereopiano \, numchans 1 \, deststartchan 0 \, bang;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 3 0;
+#X connect 4 0 0 0;
+#X restore 108 260 pd example5c;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 7 0 9 0;
+#X connect 8 0 10 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X restore 87 536 pd more_examples;
 #X obj 40 581 fluid.bufcompose~;
 #X obj 102 218 array define bufcompose_monosynth;
 #X obj 520 218 clone multiarray 2 bufcompose_stereopiano;
@@ -64,13 +155,35 @@ to set these bufers \, and bang to process;
 bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
 bufcompose_monosynth \, read -maxsize 441000 ../media/Tremblay-SlideChoirAdd-M.wav
 bufcompose_synthchoir, f 110;
-#X msg 38 381 reset \, source bufcompose_monosynth \, destination bufcompose_dst
-\, bang;
-#X msg 40 602 \; bufcompose_dst-0 xticks 0 0 0 \; bufcompose_dst-1
+#X msg 40 632 \; bufcompose_dst-0 xticks 0 0 0 \; bufcompose_dst-1
 xticks 0 0 0;
 #X obj 34 156 loadbang;
-#X connect 6 0 11 0;
-#X connect 11 0 17 0;
-#X connect 15 0 0 0;
-#X connect 16 0 11 0;
-#X connect 18 0 15 0;
+#X obj 55 608 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 73 607 bang when done;
+#X obj 44 780 dac~;
+#X obj 44 740 tabplay~ bufcompose_dst-0;
+#X obj 65 760 tabplay~ bufcompose_dst-1;
+#X obj 44 717 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 66 716 stop;
+#X text 37 331 fluid.bufcompose copies from a source buffer/array to
+a destination buffer/array at a given gain. Use the source and destination
+attributes to set these buffers \, and bang to process, f 64;
+#X msg 38 381 reset \, source bufcompose_monosynth \, gain 0.5 \, destination
+bufcompose_dst \, bang;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 10 0;
+#X connect 10 0 15 0;
+#X connect 10 0 17 0;
+#X connect 14 0 0 0;
+#X connect 16 0 14 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 1;
+#X connect 22 0 20 0;
+#X connect 22 0 21 0;
+#X connect 23 0 20 0;
+#X connect 23 0 21 0;
+#X connect 25 0 10 0;
