@@ -1,24 +1,76 @@
-#N canvas 646 23 922 922 10;
-#X obj 52 122 soundfiler;
-#X obj 48 593 fluid.bufcompose~ -destination dst;
-#X msg 48 255 reset \, source monosynth \, bang \, destgain 1 \, source
-stereopiano \, bang;
-#X obj 128 123 array define monosynth;
-#X obj 270 123 clone multiarray 2 stereopiano;
-#X text 45 233 basic summing of each full buffer in all dimensions
-;
+#N canvas 27 43 907 824 10;
+#X obj 34 218 soundfiler;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array dst-0 515088 float 2;
+#X array bufcompose_dst-0 515088 float 2;
 #X coords 0 1 515088 -1 200 140 1 0 0;
-#X restore 374 257 graph;
+#X restore 435 381 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array dst-1 515088 float 2;
-#X coords 0 1 515088 -1 200 140 1;
-#X restore 375 420 graph;
-#X msg 52 86 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-stereopiano-0 stereopiano-1 \, read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
-monosynth, f 88;
-#X msg 48 614 \; dst-0 xticks 0 0 0 \; dst-1 xticks 0 0 0;
-#X connect 1 0 9 0;
-#X connect 2 0 1 0;
-#X connect 8 0 0 0;
+#X array bufcompose_dst-1 515088 float 2;
+#X coords 0 1 515088 -1 200 140 1 0 0;
+#X restore 436 544 graph;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufcompose~ 20 12 0 36
+-262144 -66577 0;
+#X obj 530 84 multiarray-help;
+#X text 36 58 Buffer/Array Compositing Utility Buffer/Array Compositing
+Utility A flexible utility for combining the contents of buffers on
+the server. It can be used for thing like mixing down multichannel
+buffers \, or converting from left-right stereo to mid-side. It is
+used extensively in the example code of Fluid Decomposition. Important
+note:, f 127;
+#N canvas 460 47 585 359 mixing 0;
+#X obj 18 325 outlet;
+#X text 20 26 use the destgain attribute to mix into the destination
+buffer, f 61;
+#X msg 18 178 destgain \$1;
+#X floatatom 18 158 5 0 0 0 - - -;
+#X msg 18 124 1;
+#X msg 51 124 0.5;
+#X msg 83 124 0;
+#X text 15 102 1 try different gains;
+#X text 234 106 2 clear the destination;
+#X text 233 166 3 composite the first element;
+#X text 16 68 by default \, new content overwrites what is in the destination
+buffer. By using the destgain attribute \, you can choose how much
+old stuff gets mixed with new stuff, f 82;
+#X text 234 235 4 composite the second element \, affecting the data
+previously there by the destgain amount;
+#X msg 234 125 \; bufcompose_dst-0 const \; bufcompose_dst-1 const
+;
+#X msg 235 186 source bufcompose_monosynth \, destination bufcompose_dst
+\, bang;
+#X msg 231 272 source bufcompose_stereopiano \, bang;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 0;
+#X restore 62 437 pd mixing;
+#N canvas 0 23 450 300 subsections 0;
+#X restore 69 463 pd subsections;
+#N canvas 0 23 450 300 multichannel 0;
+#X restore 77 490 pd multichannel;
+#N canvas 0 23 450 300 more_examples 0;
+#X restore 87 517 pd more_examples;
+#X text 40 333 fluid.bufcompose copies from a source buffer/array to
+a destination buffer/array. use the source and destination attributes
+to set these bufers \, and bang to process;
+#X obj 40 581 fluid.bufcompose~;
+#X obj 102 218 array define bufcompose_monosynth;
+#X obj 520 218 clone multiarray 2 bufcompose_stereopiano;
+#X obj 308 218 array define bufcompose_synthchoir;
+#X msg 34 176 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
+bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+bufcompose_monosynth \, read -maxsize 441000 ../media/Tremblay-SlideChoirAdd-M.wav
+bufcompose_synthchoir, f 110;
+#X msg 38 381 reset \, source bufcompose_monosynth \, destination bufcompose_dst
+\, bang;
+#X msg 40 602 \; bufcompose_dst-0 xticks 0 0 0 \; bufcompose_dst-1
+xticks 0 0 0;
+#X obj 34 156 loadbang;
+#X connect 6 0 11 0;
+#X connect 11 0 17 0;
+#X connect 15 0 0 0;
+#X connect 16 0 11 0;
+#X connect 18 0 15 0;
