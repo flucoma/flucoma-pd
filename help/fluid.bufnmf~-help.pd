@@ -1,45 +1,44 @@
-#N canvas 409 44 1407 973 10;
-#X obj 52 122 soundfiler;
-#X obj 128 123 array define monosynth;
-#X obj 99 366 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#N canvas 32 31 1022 706 10;
+#X obj 508 528 soundfiler;
+#X obj 45 616 dac~;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnmf~ 20 12 0 36 -262144
+-66577 0;
+#X text 36 57 Buffer-Based Non-Negative Matrix Factorisation on Spectral
+Frames, f 66;
+#X msg 508 507 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+bufnmf_monosynth, f 72;
+#X obj 584 529 array define bufnmf_monosynth;
+#X obj 542 551 clone multiarray 5 bufnmf_resynth;
+#X obj 775 549 clone multiarray 5 bufnmf_bases;
+#X obj 774 530 clone multiarray 5 bufnmf_activations;
+#X text 37 116 fluid.bufnmf~ provides an interface to decompose buffers~
+into multiple parts using Nonnegative Matrix Factorization (NMF),
+f 62;
+#X text 37 154 1) At a minimum we set source buffer~ and resynthesis
+buffer~ attributes;
+#X msg 39 183 source bufnmf_monosynth \, resynth bufnmf_resynth, f
+24;
+#X obj 38 382 fluid.bufnmf~;
+#X text 79 236 2) set the desired number of components using the 'components'
+attribute, f 39;
+#X msg 80 265 components 5;
+#X text 94 284 fluid.bufnmf~ will split the source audio into that
+many parts and place the results in the resynth buffer;
+#X obj 508 488 loadbang;
+#X text 83 337 3) send a bang to start processing;
+#X obj 38 402 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 99 386 t b b;
-#X obj 53 455 realtime;
-#X floatatom 53 476 5 0 0 0 - - -;
-#X msg 157 387 warnings 1;
-#X floatatom 532 358 5 0 0 0 - - -;
-#X msg 531 378 set resynth-\$1 \, bang;
-#X obj 531 399 tabplay~;
-#X obj 531 420 dac~;
-#X obj 98 409 fluid.bufnmf~ -components 5 -source monosynth -resynth
-resynth -bases bases -activations activations -fftsettings 512 256
-1024;
-#N canvas 0 23 450 278 (subpatch) 0;
-#X array viz-b 513 float 2;
-#X coords 0 1 513 0 513 140 1 0 0;
-#X restore 770 248 graph;
-#X obj 869 178 array size;
-#X msg 889 150 symbol bases-\$1;
-#X floatatom 846 104 5 0 0 0 - - -;
-#X obj 769 178 array get;
-#X obj 846 122 t b b f;
-#X obj 770 199 array set viz-b;
-#X obj 869 199 array size viz-b;
-#N canvas 0 23 450 278 (subpatch) 0;
-#X array viz-a 2013 float 2;
-#X coords 0 1 2013 0 503 140 1 0 0;
-#X restore 773 581 graph;
-#X obj 872 511 array size;
-#X floatatom 849 437 5 0 0 0 - - -;
-#X obj 772 511 array get;
-#X obj 849 455 t b b f;
-#X obj 773 532 array set viz-a;
-#X obj 872 532 array size viz-a;
-#X msg 892 483 symbol activations-\$1;
-#X obj 270 123 clone multiarray 5 resynth;
-#X obj 270 142 clone multiarray 5 bases;
-#X obj 270 161 clone multiarray 5 activations;
-#N canvas 99 218 799 596 fluid.bufnmf.noiseplay.fft 0;
+#X obj 84 355 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 62 401 fluid.bufnmf~ will send a bang from its left outlet
+when it finishes;
+#N canvas 519 57 561 702 bases_and_activations 0;
+#X obj 69 126 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 69 155 t b b;
+#X obj 23 208 realtime;
+#X floatatom 23 229 5 0 0 0 - - -;
+#N canvas 491 222 799 596 fluid.bufnmf.noiseplay.fft 0;
 #X obj 78 96 inlet~;
 #X obj 74 137 *~;
 #X obj 74 158 rfft~;
@@ -47,7 +46,6 @@ resynth -bases bases -activations activations -fftsettings 512 256
 #X obj 55 284 *~;
 #X obj 56 342 outlet~;
 #X obj 35 73 tabreceive~ fluid.bufnmf.hann;
-#X obj 239 133 tabreceive~ bases-0;
 #X obj 105 179 *~;
 #X obj 74 179 *~;
 #X obj 239 108 inlet;
@@ -57,39 +55,44 @@ resynth -bases bases -activations activations -fftsettings 512 256
 #X obj 443 166 expr if($f3 < $f2 \, $f3 + 1 \, 0);
 #X obj 531 147 - 1;
 #X obj 531 36 inlet;
-#X obj 566 117 array size activations-0;
-#X obj 442 222 tabread activations-0;
 #X obj 55 305 *~;
 #X obj 531 57 t a b a;
 #X obj 580 84 list split 1;
+#X obj 442 222 tabread bufnmf_activations-0;
+#X obj 239 133 tabreceive~ bufnmf_bases-0;
+#X obj 566 117 array size bufnmf_activations-0;
 #X connect 0 0 1 1;
 #X connect 1 0 2 0;
-#X connect 2 0 9 0;
-#X connect 2 1 8 0;
+#X connect 2 0 8 0;
+#X connect 2 1 7 0;
 #X connect 3 0 4 1;
-#X connect 4 0 19 0;
+#X connect 4 0 16 0;
 #X connect 6 0 1 0;
 #X connect 6 0 4 0;
-#X connect 7 0 8 1;
-#X connect 7 0 9 1;
-#X connect 8 0 3 1;
-#X connect 9 0 3 0;
-#X connect 10 0 7 0;
-#X connect 11 0 14 0;
-#X connect 13 0 18 0;
-#X connect 13 1 14 2;
-#X connect 14 0 13 0;
-#X connect 15 0 14 1;
-#X connect 16 0 20 0;
-#X connect 17 0 15 0;
-#X connect 18 0 19 1;
-#X connect 19 0 5 0;
-#X connect 20 0 18 0;
-#X connect 20 1 17 0;
-#X connect 20 2 21 0;
-#X connect 21 1 17 1;
-#X restore 89 785 pd fluid.bufnmf.noiseplay.fft;
-#N canvas 556 77 450 468 make.hann.window 0;
+#X connect 7 0 3 1;
+#X connect 8 0 3 0;
+#X connect 9 0 20 0;
+#X connect 10 0 13 0;
+#X connect 12 0 19 0;
+#X connect 12 1 13 2;
+#X connect 13 0 12 0;
+#X connect 14 0 13 1;
+#X connect 15 0 17 0;
+#X connect 16 0 5 0;
+#X connect 17 0 19 0;
+#X connect 17 1 21 0;
+#X connect 17 2 18 0;
+#X connect 18 1 21 1;
+#X connect 19 0 16 1;
+#X connect 20 0 7 1;
+#X connect 20 0 8 1;
+#X connect 21 0 14 0;
+#X restore 47 373 pd fluid.bufnmf.noiseplay.fft;
+#X obj 46 331 noise~;
+#X floatatom 130 331 5 0 0 0 - - -;
+#X floatatom 268 331 5 0 0 0 - - -;
+#X obj 46 352 *~ 4;
+#N canvas 556 77 450 468 make.scaled.hann.window 0;
 #X obj 107 94 t f b;
 #X msg 107 71 1024;
 #X obj 107 136 until;
@@ -127,149 +130,226 @@ resynth -bases bases -activations activations -fftsettings 512 256
 #X connect 15 0 1 0;
 #X connect 15 1 13 0;
 #X connect 16 0 8 0;
-#X restore 88 807 pd make.hann.window;
-#X obj 87 705 noise~;
-#X floatatom 244 704 5 0 0 0 - - -;
-#X msg 244 724 set bases-\$1;
-#X floatatom 348 721 5 0 0 0 - - -;
-#X msg 348 741 set activations-\$1;
-#X obj 87 726 *~ 4;
-#N canvas 250 97 1269 825 didactic 0;
-#X obj 36 69 array define lowsine 44100;
-#X obj 36 89 array define hisine 44100;
-#X msg 38 172 44100;
-#X obj 38 217 until;
-#X obj 38 193 t f b;
-#X msg 106 238 -1;
-#X msg 38 238 1;
-#X obj 38 259 +;
-#X obj 38 326 tabwrite lowsine;
-#X obj 278 328 tabwrite hisine;
-#X obj 38 280 t f f f f f, f 40;
-#X obj 38 305 expr sin($f1 / 22050 * 3.14159 * 50);
-#X obj 278 307 expr sin($f1 / 22050 * 3.14159 * 5000);
-#X obj 695 725 tabplay~;
-#X obj 695 746 dac~;
-#X msg 696 692 set lowsine \, bang;
-#X msg 605 676 set hisine \, bang;
-#X obj 37 153 r pd-dsp-started;
+#X restore 372 254 pd make.scaled.hann.window;
+#X obj 68 178 fluid.bufnmf~ -components 5 -source bufnmf_monosynth
+-resynth bufnmf_resynth -bases bufnmf_bases -activations bufnmf_activations
+-fftsettings 512 256 1024, f 77;
+#X msg 130 352 set bufnmf_bases-\$1;
+#X msg 268 352 set bufnmf_activations-\$1;
+#N canvas 0 23 576 714 visualisation 0;
+#N canvas 0 23 450 278 (subpatch) 0;
+#X array viz-b 513 float 2;
+#X coords 0 1 513 0 513 140 1 0 0;
+#X restore 30 170 graph;
+#X obj 129 100 array size;
+#X floatatom 105 25 5 0 0 0 - - -;
+#X obj 29 100 array get;
+#X obj 106 44 t b b f;
+#X obj 30 121 array set viz-b;
+#X obj 129 121 array size viz-b;
+#N canvas 0 23 450 278 (subpatch) 0;
+#X array viz-a 2013 float 2;
+#X coords 0 1 2013 0 503 140 1 0 0;
+#X restore 33 503 graph;
+#X obj 132 433 array size;
+#X floatatom 109 359 5 0 0 0 - - -;
+#X obj 32 433 array get;
+#X obj 109 377 t b b f;
+#X obj 33 454 array set viz-a;
+#X obj 132 454 array size viz-a;
+#X msg 149 72 symbol bufnmf_bases-\$1;
+#X msg 152 405 symbol bufnmf_activations-\$1;
+#X connect 1 0 6 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 4 1 1 0;
+#X connect 4 2 14 0;
+#X connect 8 0 13 0;
+#X connect 9 0 11 0;
+#X connect 10 0 12 0;
+#X connect 11 0 10 0;
+#X connect 11 1 8 0;
+#X connect 11 2 15 0;
+#X connect 14 0 1 1;
+#X connect 14 0 3 2;
+#X connect 15 0 8 1;
+#X connect 15 0 10 2;
+#X restore 45 553 pd visualisation;
+#X text 21 15 play with NMF's components;
+#X text 19 50 Each components NMF finds has two parts: a spectral template
+('basis') and an amplitude envelope ('actiovation') describing how
+much of that spectral template contributes to our audio over time,
+f 71;
+#X text 91 124 1) get all the things;
+#X text 111 151 if we set the 'bases' and / or activations attibutes
+to buffer~ names \, fluid.bufnmf~ will also return these components
+, f 64;
+#X text 129 307 2) mix and match;
+#X text 73 392 combine the timing profile from one component with the
+spectral profile of another;
+#X obj 47 474 *~;
+#X obj 60 456 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 79 456 3) switch audio on/off;
+#X text 44 536 4) you can visualise the bases and activations in here
+;
+#X text 43 589 size of output buffers;
+#X text 43 614 - the length of the bases buffer will be a spectral
+frame: (fftSize / 2) + 1, f 77;
+#X text 43 644 - the length of the activations buffer will be (samples
+in src / hopSize) + 1, f 78;
+#X text 43 674 - both will have a channel count of (components * source
+channels), f 68;
+#X obj 47 495 dac~;
+#X connect 0 0 1 0;
+#X connect 1 0 10 0;
+#X connect 1 1 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 20 0;
+#X connect 5 0 8 0;
+#X connect 6 0 11 0;
+#X connect 7 0 12 0;
+#X connect 8 0 4 0;
+#X connect 10 0 2 1;
+#X connect 11 0 4 1;
+#X connect 12 0 4 2;
+#X connect 20 0 28 0;
+#X connect 20 0 28 1;
+#X connect 21 0 20 1;
+#X restore 520 172 pd bases_and_activations;
+#N canvas 250 97 990 675 updating_bases 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-source2 88200 float 2;
 #X coords 0 1 88200 -1 500 140 1 0 0;
-#X restore 39 599 graph;
-#X obj 41 501 fluid.bufcompose~;
-#X msg 41 464 reset \, destgain 1 \, destination didact-source2 \,
-source lowsine \, bang \, source hisine \, deststartframe 44100 \,
-bang;
-#X msg 41 439 \; didact-source2 const;
+#X restore 35 161 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-basis-0 513 float 2;
 #X coords 0 1 513 0 513 70 1 0 0;
-#X restore 617 105 graph;
+#X restore 35 401 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-basis-1 513 float 2;
 #X coords 0 1 513 0 513 70 1 0 0;
-#X restore 617 193 graph;
+#X restore 35 489 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-basis-2 513 float 2;
 #X coords 0 1 513 0 513 70 1 0 0;
-#X restore 616 280 graph;
+#X restore 34 576 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-activation-0 173 float 2;
 #X coords 0 1 173 0 173 70 1 0 0;
-#X restore 1141 105 graph;
+#X restore 559 401 graph;
 #N canvas 0 23 450 278 (subpatch) 0;
 #X array didact-activation-1 173 float 2;
 #X coords 0 1 173 0 173 70 1 0 0;
-#X restore 1141 193 graph;
+#X restore 559 489 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array didact-activation-2 173 float 2;
 #X coords 0 1 173 0 173 70 1 0 0;
-#X restore 1140 280 graph;
-#X msg 555 407 \; didact-basis-2 const 0.1;
-#X obj 723 450 until;
-#X obj 723 426 t f b;
-#X msg 791 471 -1;
-#X msg 723 471 1;
-#X obj 723 492 +;
-#X obj 723 513 t f f f f f, f 40;
-#X msg 723 405 513;
-#X obj 723 538 < 50;
-#X obj 871 538 >= 50;
-#X obj 723 559 tabwrite didact-basis-0;
-#X obj 870 559 tabwrite didact-basis-1;
-#X msg 844 628 basesmode 2 \, bang;
-#X obj 861 664 fluid.bufnmf~ -source didact-source2 -activations didact-activation
+#X restore 558 576 graph;
+#X msg 601 155 basesmode 2 \, bang;
+#X obj 610 242 fluid.bufnmf~ -source didact-source2 -activations didact-activation
 -bases didact-basis -components 3;
-#X msg 981 630 basesmode 1 \, bang;
-#X obj 556 375 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X msg 41 521 \; didact-source2 xticks 0 0 0;
-#X msg 861 693 \; didact-activation-0 xticks 0 0 0 \; didact-activation-1
+#X msg 620 216 basesmode 1 \, bang;
+#X obj 608 33 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 610 271 \; didact-activation-0 xticks 0 0 0 \; didact-activation-1
 xticks 0 0 0 \; didact-activation-2 xticks 0 0 0 \; didact-basis-0
 xticks 0 0 0 \; didact-basis-1 xticks 0 0 0 \; didact-basis-2 xticks
 0 0 0;
-#X connect 2 0 4 0;
-#X connect 3 0 6 0;
-#X connect 4 0 3 0;
-#X connect 4 1 5 0;
-#X connect 5 0 7 1;
-#X connect 6 0 7 0;
-#X connect 7 0 10 0;
-#X connect 10 0 11 0;
-#X connect 10 1 8 1;
-#X connect 10 2 12 0;
-#X connect 10 3 9 1;
-#X connect 10 4 7 1;
+#N canvas 731 210 608 628 make_2_tones 0;
+#X obj 38 104 array define lowsine 44100;
+#X obj 38 124 array define hisine 44100;
+#X msg 38 172 44100;
+#X obj 57 220 until;
+#X msg 125 241 -1;
+#X msg 57 241 1;
+#X obj 57 262 +;
+#X obj 57 329 tabwrite lowsine;
+#X obj 297 331 tabwrite hisine;
+#X obj 57 283 t f f f f f, f 40;
+#X obj 57 308 expr sin($f1 / 22050 * 3.14159 * 50);
+#X obj 297 310 expr sin($f1 / 22050 * 3.14159 * 5000);
+#X obj 37 153 r pd-dsp-started;
+#X obj 38 193 t b f b;
+#X obj 38 402 fluid.bufcompose~;
+#X msg 38 365 reset \, destgain 1 \, destination didact-source2 \,
+source lowsine \, bang \, source hisine \, deststartframe 44100 \,
+bang;
+#X msg 38 422 \; didact-source2 xticks 0 0 0;
+#X connect 2 0 13 0;
+#X connect 3 0 5 0;
+#X connect 4 0 6 1;
+#X connect 5 0 6 0;
+#X connect 6 0 9 0;
+#X connect 9 0 10 0;
+#X connect 9 1 7 1;
+#X connect 9 2 11 0;
+#X connect 9 3 8 1;
+#X connect 9 4 6 1;
+#X connect 10 0 7 0;
 #X connect 11 0 8 0;
-#X connect 12 0 9 0;
-#X connect 13 0 14 0;
-#X connect 13 0 14 1;
-#X connect 15 0 13 0;
-#X connect 16 0 13 0;
-#X connect 17 0 2 0;
-#X connect 19 0 44 0;
-#X connect 20 0 19 0;
-#X connect 29 0 32 0;
-#X connect 30 0 29 0;
-#X connect 30 1 31 0;
-#X connect 31 0 33 1;
-#X connect 32 0 33 0;
-#X connect 33 0 34 0;
-#X connect 34 0 36 0;
-#X connect 34 1 38 1;
-#X connect 34 2 37 0;
-#X connect 34 3 39 1;
-#X connect 34 4 33 1;
-#X connect 35 0 30 0;
-#X connect 36 0 38 0;
-#X connect 37 0 39 0;
-#X connect 40 0 41 0;
-#X connect 41 0 45 0;
-#X connect 42 0 41 0;
-#X connect 43 0 28 0;
-#X connect 43 0 35 0;
-#X restore 741 804 pd didactic updating bases;
-#N canvas 115 158 1212 874 fixed 0;
-#X obj 28 813 array define guitar;
-#X obj 231 815 clone multiarray 10 guit-bases;
-#X obj 230 834 clone multiarray 2 summed-bases;
-#X obj 433 816 clone multiarray 70 guit-stats;
-#X obj 433 835 clone multiarray 70 guit-features;
-#X obj 26 64 soundfiler;
-#X obj 26 85 t b;
-#X obj 26 106 fluid.bufnmf~ -source guitar -numframes 88200 -components
-10 -bases guit-bases -resynth guit-resynth -fftsettings 1024 256 2048
+#X connect 12 0 2 0;
+#X connect 13 0 15 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;
+#X restore 35 313 pd make_2_tones;
+#X text 31 17 use nmf for semi supervised decomposition;
+#X text 33 43 using the basesmode or actmode attributes in update \,
+we can set NMF's starting conditions \, but let it improve to 'find'
+particular things, f 78;
+#X text 32 130 Here are two sines of different frequencies \, one after
+the other, f 64;
+#N canvas 0 23 1247 894 init_bases 0;
+#X obj 39 57 inlet;
+#X msg 39 93 \; didact-basis-2 const 0.1;
+#X obj 207 136 until;
+#X obj 207 112 t f b;
+#X msg 275 157 -1;
+#X msg 207 157 1;
+#X obj 207 178 +;
+#X obj 207 199 t f f f f f, f 40;
+#X msg 207 91 513;
+#X obj 207 224 < 50;
+#X obj 355 224 >= 50;
+#X obj 207 245 tabwrite didact-basis-0;
+#X obj 354 245 tabwrite didact-basis-1;
+#X connect 0 0 1 0;
+#X connect 0 0 8 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 3 1 4 0;
+#X connect 4 0 6 1;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 9 0;
+#X connect 7 1 11 1;
+#X connect 7 2 10 0;
+#X connect 7 3 12 1;
+#X connect 7 4 6 1;
+#X connect 8 0 3 0;
+#X connect 9 0 11 0;
+#X connect 10 0 12 0;
+#X restore 608 53 pd init_bases;
+#X text 629 31 1) Initialise some rough guess bases;
+#X text 598 137 2) decompose in 3 components with nmf with fixed bases
 ;
-#X obj 26 832 clone multiarray 10 guit-resynth;
-#X obj 26 170 fluid.bufspectralshape~ -source guit-resynth -features
-guit-features -fftsettings 1024 256 2048;
-#X obj 27 212 fluid.bufstats~ -source guit-features -stats guit-stats
-;
+#X text 613 197 3) improve the filter by allowing to update the seed
+filters;
+#X connect 7 0 8 0;
+#X connect 8 0 11 0;
+#X connect 9 0 8 0;
+#X connect 10 0 16 0;
+#X restore 520 287 pd updating_bases;
+#N canvas 489 64 824 642 fixed_bases 0;
+#X obj 27 173 soundfiler;
+#X obj 27 194 t b;
 #N canvas 0 23 909 774 statsquery 0;
 #X obj 118 150 list split 1;
 #X obj 212 156 list length;
-#X obj 153 170 t a;
+#X obj 152 170 t a;
 #X obj 117 256 +;
 #X msg 117 223 -1;
 #X obj 215 300 tabread;
@@ -289,7 +369,7 @@ guit-features -fftsettings 1024 256 2048;
 #X text 163 61 the channels where the centroids are= the first of every
 7 (see fluid.bufstats~ help), f 85;
 #X msg 118 79 0 7 14 21 28 35 42 49 56 63;
-#X text 52 147 iterates backwards;
+#X text -4 153 iterates backwards;
 #X text 18 241 keeps the index;
 #X text 269 301 reads the index of the median stats;
 #X text 278 407 compares it- passes if larger \, and also stores the
@@ -326,7 +406,7 @@ index;
 #X connect 17 1 15 0;
 #X connect 18 0 20 0;
 #X connect 20 0 13 0;
-#X restore 27 270 pd statsquery;
+#X restore 27 395 pd statsquery;
 #N canvas 329 66 450 472 makenewbases 0;
 #X obj 16 26 inlet;
 #X obj 17 282 outlet;
@@ -342,17 +422,17 @@ index;
 #X floatatom 88 24 5 0 0 0 - - -;
 #X obj 16 177 t f f f;
 #X obj 16 198 sel 9;
-#X obj 82 358 fluid.bufcompose~ -destination summed-bases -destgain
-1 -source guit-bases -numchans 1;
 #X msg 112 298 deststartchan 0 \, startchan \$1 \, bang;
 #X msg 130 323 deststartchan 1 \, startchan \$1 \, bang;
+#X obj 82 358 fluid.bufcompose~ -destination bufnmf_summed-bases -destgain
+1 -source bufnmf_guit-bases -numchans 1;
 #X connect 0 0 3 0;
 #X connect 2 0 4 0;
-#X connect 2 1 16 0;
+#X connect 2 1 15 0;
 #X connect 3 0 5 0;
 #X connect 3 1 2 1;
 #X connect 3 1 4 1;
-#X connect 4 0 15 0;
+#X connect 4 0 14 0;
 #X connect 5 0 6 0;
 #X connect 6 0 9 0;
 #X connect 6 1 8 0;
@@ -365,67 +445,150 @@ index;
 #X connect 12 1 2 0;
 #X connect 12 2 7 1;
 #X connect 13 0 1 0;
-#X connect 15 0 14 0;
-#X connect 16 0 14 0;
-#X restore 26 308 pd makenewbases;
-#X obj 26 329 fluid.bufnmf~ -source guitar -fftsettings 1024 256 2048
--iterations 100 -bases summed-bases -basesmode 2 -components 2 -resynth
-guit-resynth;
-#X obj 28 379 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X connect 14 0 16 0;
+#X connect 15 0 16 0;
+#X restore 27 423 pd makenewbases;
+#X obj 27 501 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X floatatom 533 359 5 0 0 0 - - -;
+#X floatatom 531 357 5 0 0 0 - - -;
 #X obj 531 399 tabplay~;
 #X obj 531 420 dac~;
-#X msg 531 378 set guit-resynth-\$1 \, bang;
-#X msg 26 21 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
-guitar;
-#X connect 5 0 6 0;
+#X msg 27 141 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+bufnmf_guitar;
+#X obj 27 231 fluid.bufnmf~ -source bufnmf_guitar -numframes 88200
+-components 10 -bases bufnmf_guit-bases -resynth bufnmf_guit-resynth
+-fftsettings 1024 256 2048;
+#X obj 27 290 fluid.bufspectralshape~ -source bufnmf_guit-resynth -features
+bufnmf_guit-features -fftsettings 1024 256 2048;
+#X obj 27 343 fluid.bufstats~ -source bufnmf_guit-features -stats bufnmf_guit-stats
+;
+#X obj 27 449 fluid.bufnmf~ -source bufnmf_guitar -fftsettings 1024
+256 2048 -iterations 100 -bases bufnmf_summed-bases -basesmode 2 -components
+2 -resynth bufnmf_guit-resynth;
+#X obj 272 576 array define bufnmf_guitar;
+#X obj 272 597 clone multiarray 10 bufnmf_guit-resynth;
+#X obj 24 555 clone multiarray 10 bufnmf_guit-bases;
+#X obj 24 576 clone multiarray 2 bufnmf_summed-bases;
+#X obj 24 597 clone multiarray 70 bufnmf_guit-stats;
+#X obj 271 555 clone multiarray 70 bufnmf_guit-features;
+#X msg 531 378 set bufnmf_guit-resynth-\$1 \, bang;
+#X text 27 10 use nmf for supervised decomposition;
+#X text 29 40 using the basesmode or actmode attributes \, we can guide
+NMF's behaviour to 'find' particular things;
+#X text 427 76 what is happening: We split 2 seconds of guitar in 10
+components \, find the one that has the highest spectral entroid \,
+which we estimate to be the best guess of where the pick sound is.
+We then take the activation of that pick sound and place it in a buffer
+on channel 1 \, and sum all the others to the other channel. This 2
+channel buffer becomes our new \, fixed template dictionnary \, and
+we run 20 seconds of sound and we know where things will go.;
+#X text 24 121 1) press to start;
+#X text 530 339 3) play: 0 is pick \, 1 is string;
+#X text 48 500 2) wait for finishing;
+#X connect 0 0 1 0;
+#X connect 1 0 9 0;
+#X connect 2 0 3 0;
+#X connect 3 0 12 0;
+#X connect 5 0 19 0;
 #X connect 6 0 7 0;
-#X connect 7 0 9 0;
+#X connect 6 0 7 1;
+#X connect 8 0 0 0;
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
-#X connect 11 0 12 0;
-#X connect 12 0 13 0;
-#X connect 13 0 14 0;
-#X connect 15 0 18 0;
-#X connect 16 0 17 0;
-#X connect 16 0 17 1;
-#X connect 18 0 16 0;
-#X connect 19 0 5 0;
-#X restore 742 859 pd fixed bases;
-#X msg 52 86 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
-monosynth, f 65;
-#X connect 2 0 3 0;
-#X connect 3 0 11 0;
-#X connect 3 1 4 0;
-#X connect 4 0 5 0;
-#X connect 6 0 11 0;
-#X connect 7 0 8 0;
-#X connect 8 0 9 0;
-#X connect 9 0 10 0;
-#X connect 9 0 10 1;
-#X connect 11 0 4 1;
-#X connect 13 0 19 0;
-#X connect 14 0 13 1;
-#X connect 14 0 16 2;
-#X connect 15 0 17 0;
-#X connect 16 0 18 0;
+#X connect 11 0 2 0;
+#X connect 12 0 4 0;
+#X connect 19 0 6 0;
+#X restore 520 260 pd fixed_bases;
+#X obj 61 501 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 82 501 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 103 501 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 124 501 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 145 501 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 158 539 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#N canvas 831 479 536 263 players 0;
+#X obj 25 49 inlet;
+#X obj 25 95 tabplay~ bufnmf_resynth-0;
+#X obj 24 119 *~;
+#X obj 116 40 inlet;
+#X obj 185 116 *~;
+#X obj 206 40 inlet;
+#X obj 61 165 *~;
+#X obj 158 40 inlet;
+#X obj 239 163 *~;
+#X obj 250 40 inlet;
+#X obj 352 117 *~;
+#X obj 289 40 inlet;
+#X obj 61 144 tabplay~ bufnmf_resynth-1;
+#X obj 185 95 tabplay~ bufnmf_resynth-2;
+#X obj 239 142 tabplay~ bufnmf_resynth-3;
+#X obj 352 96 tabplay~ bufnmf_resynth-4;
+#X obj 24 240 outlet~;
+#X obj 326 194 *~;
+#X obj 348 42 inlet;
+#X obj 326 173 tabplay~ bufnmf_monosynth;
+#X connect 0 0 1 0;
+#X connect 0 0 12 0;
+#X connect 0 0 15 0;
+#X connect 0 0 14 0;
+#X connect 0 0 13 0;
+#X connect 0 0 19 0;
+#X connect 1 0 2 0;
+#X connect 2 0 16 0;
+#X connect 3 0 2 1;
+#X connect 4 0 16 0;
+#X connect 5 0 4 1;
+#X connect 6 0 16 0;
+#X connect 7 0 6 1;
+#X connect 8 0 16 0;
+#X connect 9 0 8 1;
+#X connect 10 0 16 0;
+#X connect 11 0 10 1;
+#X connect 12 0 6 0;
+#X connect 13 0 4 0;
+#X connect 14 0 8 0;
+#X connect 15 0 10 0;
 #X connect 17 0 16 0;
-#X connect 17 1 13 0;
-#X connect 17 2 14 0;
-#X connect 21 0 26 0;
-#X connect 22 0 24 0;
-#X connect 23 0 25 0;
-#X connect 24 0 23 0;
-#X connect 24 1 21 0;
-#X connect 24 2 27 0;
-#X connect 27 0 21 1;
-#X connect 27 0 23 2;
-#X connect 31 0 10 0;
-#X connect 33 0 38 0;
-#X connect 34 0 35 0;
-#X connect 35 0 31 1;
-#X connect 36 0 37 0;
-#X connect 37 0 31 2;
-#X connect 38 0 31 0;
-#X connect 41 0 0 0;
+#X connect 18 0 17 1;
+#X connect 19 0 17 0;
+#X restore 45 584 pd players;
+#X f 19;
+#X obj 158 559 * -1;
+#X obj 41 470 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 9 544 stop;
+#X obj 62 481 loadbang;
+#X text 88 606 Each component of the decomposition will be in a separate
+channel of the destination buffer~. With the demo file \, you'll find
+one component has the clicks \, and the other four have the bass: NMF
+can be used as a basic source separator!, f 62;
+#X text 176 530 this adds the original out of phase \, to check null-summing
+, f 32;
+#X text 66 461 4) Listen to the results;
+#X connect 4 0 0 0;
+#X connect 11 0 12 0;
+#X connect 12 0 18 0;
+#X connect 14 0 12 0;
+#X connect 16 0 4 0;
+#X connect 19 0 12 0;
+#X connect 24 0 30 1;
+#X connect 25 0 30 2;
+#X connect 26 0 30 3;
+#X connect 27 0 30 4;
+#X connect 28 0 30 5;
+#X connect 29 0 31 0;
+#X connect 30 0 1 0;
+#X connect 30 0 1 1;
+#X connect 31 0 30 6;
+#X connect 32 0 30 0;
+#X connect 33 0 30 0;
+#X connect 34 0 24 0;
+#X connect 34 0 25 0;
+#X connect 34 0 26 0;
+#X connect 34 0 27 0;
+#X connect 34 0 28 0;
