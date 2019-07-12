@@ -138,8 +138,8 @@ when it finishes;
 #X msg 268 352 set bufnmf_activations-\$1;
 #N canvas 0 23 576 714 visualisation 0;
 #N canvas 0 23 450 278 (subpatch) 0;
-#X array viz-b 513 float 2;
-#X coords 0 1 513 0 513 140 1 0 0;
+#X array viz-b 513 float 0;
+#X coords 0 1 512 0 513 140 1 0 0;
 #X restore 30 170 graph;
 #X obj 129 100 array size;
 #X floatatom 105 25 5 0 0 0 - - -;
@@ -148,8 +148,8 @@ when it finishes;
 #X obj 30 121 array set viz-b;
 #X obj 129 121 array size viz-b;
 #N canvas 0 23 450 278 (subpatch) 0;
-#X array viz-a 2013 float 2;
-#X coords 0 1 2013 0 503 140 1 0 0;
+#X array viz-a 2013 float 0;
+#X coords 0 1 2012 0 503 140 1 0 0;
 #X restore 33 503 graph;
 #X obj 132 433 array size;
 #X floatatom 109 359 5 0 0 0 - - -;
@@ -224,28 +224,28 @@ channels), f 68;
 #X coords 0 1 88200 -1 500 140 1 0 0;
 #X restore 35 161 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array didact-basis-0 513 float 2;
-#X coords 0 1 513 0 513 70 1 0 0;
+#X array didact-basis-0 513 float 0;
+#X coords 0 1 512 0 513 70 1 0 0;
 #X restore 35 401 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array didact-basis-1 513 float 2;
-#X coords 0 1 513 0 513 70 1 0 0;
+#X array didact-basis-1 513 float 0;
+#X coords 0 1 512 0 513 70 1 0 0;
 #X restore 35 489 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array didact-basis-2 513 float 2;
-#X coords 0 1 513 0 513 70 1 0 0;
+#X array didact-basis-2 513 float 0;
+#X coords 0 1 512 0 513 70 1 0 0;
 #X restore 34 576 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array didact-activation-0 173 float 2;
-#X coords 0 1 173 0 173 70 1 0 0;
+#X array didact-activation-0 173 float 0;
+#X coords 0 1 172 0 173 70 1 0 0;
 #X restore 559 401 graph;
 #N canvas 0 23 450 278 (subpatch) 0;
-#X array didact-activation-1 173 float 2;
-#X coords 0 1 173 0 173 70 1 0 0;
+#X array didact-activation-1 173 float 0;
+#X coords 0 1 172 0 173 70 1 0 0;
 #X restore 559 489 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array didact-activation-2 173 float 2;
-#X coords 0 1 173 0 173 70 1 0 0;
+#X array didact-activation-2 173 float 0;
+#X coords 0 1 172 0 173 70 1 0 0;
 #X restore 558 576 graph;
 #X msg 601 155 basesmode 2 \, bang;
 #X obj 610 242 fluid.bufnmf~ -source didact-source2 -activations didact-activation
@@ -258,43 +258,43 @@ xticks 0 0 0 \; didact-activation-2 xticks 0 0 0 \; didact-basis-0
 xticks 0 0 0 \; didact-basis-1 xticks 0 0 0 \; didact-basis-2 xticks
 0 0 0;
 #N canvas 731 210 608 628 make_2_tones 0;
-#X obj 39 81 array define lowsine 44100;
-#X obj 39 101 array define hisine 44100;
 #X msg 38 172 44100;
 #X obj 57 220 until;
 #X msg 125 241 -1;
 #X msg 57 241 1;
 #X obj 57 262 +;
-#X obj 57 329 tabwrite lowsine;
-#X obj 297 331 tabwrite hisine;
 #X obj 57 283 t f f f f f, f 40;
 #X obj 57 308 expr sin($f1 / 22050 * 3.14159 * 50);
 #X obj 297 310 expr sin($f1 / 22050 * 3.14159 * 5000);
 #X obj 38 193 t b f b;
 #X obj 38 402 fluid.bufcompose~;
-#X msg 38 365 reset \, destgain 1 \, destination didact-source2 \,
-source lowsine \, bang \, source hisine \, deststartframe 44100 \,
-bang;
 #X msg 38 422 \; didact-source2 xticks 0 0 0;
 #X obj 38 153 loadbang;
-#X connect 2 0 12 0;
-#X connect 3 0 5 0;
-#X connect 4 0 6 1;
+#X obj 39 82 array define lowsine2 44100;
+#X obj 39 101 array define hisine2 44100;
+#X obj 57 329 tabwrite lowsine2;
+#X obj 297 331 tabwrite hisine2;
+#X msg 38 365 reset \, destgain 1 \, destination didact-source2 \,
+source lowsine2 \, bang \, source hisine2 \, deststartframe 44100 \,
+bang;
+#X connect 0 0 8 0;
+#X connect 1 0 3 0;
+#X connect 2 0 4 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
 #X connect 5 0 6 0;
-#X connect 6 0 9 0;
+#X connect 5 1 14 1;
+#X connect 5 2 7 0;
+#X connect 5 3 15 1;
+#X connect 5 4 4 1;
+#X connect 6 0 14 0;
+#X connect 7 0 15 0;
+#X connect 8 0 16 0;
+#X connect 8 1 1 0;
+#X connect 8 2 2 0;
 #X connect 9 0 10 0;
-#X connect 9 1 7 1;
-#X connect 9 2 11 0;
-#X connect 9 3 8 1;
-#X connect 9 4 6 1;
-#X connect 10 0 7 0;
-#X connect 11 0 8 0;
-#X connect 12 0 14 0;
-#X connect 12 1 3 0;
-#X connect 12 2 4 0;
-#X connect 13 0 15 0;
-#X connect 14 0 13 0;
-#X connect 16 0 2 0;
+#X connect 11 0 0 0;
+#X connect 16 0 9 0;
 #X restore 35 313 pd make_2_tones;
 #X text 31 17 use nmf for semi supervised decomposition;
 #X text 33 43 using the basesmode or actmode attributes in update \,
@@ -647,15 +647,15 @@ and numchans to process only what you want, f 94;
 -1 -1;
 #X text 420 418 2) start the process;
 #X obj 520 564 dac~;
-#X obj 540 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 540 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 561 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 561 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 582 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 603 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 603 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 624 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 624 511 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #N canvas 0 473 979 260 players 0;
 #X obj 25 49 inlet;
