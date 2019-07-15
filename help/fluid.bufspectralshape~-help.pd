@@ -1,0 +1,61 @@
+#N canvas 87 38 983 925 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufspectralshape~ 20 12
+0 36 -262144 -66577 0;
+#X obj 34 156 loadbang;
+#X text 37 59 Seven Spectral Shape Descriptors on a Buffer;
+#X text 37 90 Seven of the spectral shape descriptors \, computed on
+a linear scale for both amplitude and frequency., f 102;
+#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufshape_drums
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 30 294 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-0 887 float 0;
+#X coords 0 1 886 0 887 53 1 0 0;
+#X restore 29 363 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-1 887 float 0;
+#X coords 0 1 886 0 887 53 1 0 0;
+#X restore 30 434 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-2 887 float 0;
+#X coords 0 7 886 0 887 53 1 0 0;
+#X restore 30 504 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-3 887 float 0;
+#X coords 0 50 886 0 887 53 1 0 0;
+#X restore 30 574 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-4 887 float 0;
+#X coords 0 1 886 0 887 53 1 0 0;
+#X restore 30 644 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-5 887 float 0;
+#X coords 0 30 886 -30 887 53 1 0 0;
+#X restore 30 714 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufshape_feats-6 887 float 0;
+#X coords 0 30 886 -30 887 53 1 0 0;
+#X restore 30 784 graph;
+#X obj 410 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 410 170 fluid.bufspectralshape~ -source bufshape_drums -features
+bufshape_feats, f 71;
+#X text 144 348 centroid(Hz):;
+#X text 145 418 spread(Hz):;
+#X text 142 488 skewness(ratio):;
+#X text 143 559 kurtosis(ratio):;
+#X text 144 628 rolloff(Hz):;
+#X text 144 698 flatness(dB):;
+#X text 146 768 crest(dB):;
+#X msg 410 189 \; bufshape_feats-0 xticks 0 0 0 \; bufshape_feats-1
+xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
+0 0 0 \; bufshape_feats-4 xticks 0 0 0 \; bufshape_feats-5 xticks 0
+0 0 \; bufshape_feats-6 xticks 0 0 0;
+#X connect 2 0 5 0;
+#X connect 5 0 0 0;
+#X connect 14 0 15 0;
+#X connect 15 0 23 0;

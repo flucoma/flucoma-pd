@@ -71,7 +71,7 @@ each.;
 1;
 #X obj 36 801 *~ 0.1;
 #X obj 36 822 dac~;
-#N canvas 280 113 678 815 example_1 0;
+#N canvas 280 113 666 815 example_1 0;
 #X obj 20 133 soundfiler;
 #X obj 20 153 t b;
 #N canvas 0 23 909 774 statsquery 0;
@@ -272,8 +272,6 @@ nmfmatch_guit-stats, f 73;
 #X obj 194 393 fluid.nmfmatch~ 2 -bases nmfmatch_summed-bases -fftsettings
 1024 256 2048, f 75;
 #X obj 193 449 unpack f f;
-#X floatatom 194 473 8 0 0 0 - - -;
-#X floatatom 298 473 8 0 0 0 - - -;
 #X obj 139 473 change;
 #N canvas 497 102 703 467 cool_compressor 0;
 #X obj 49 426 outlet~;
@@ -329,24 +327,28 @@ nmfmatch_guit-stats, f 73;
 #X connect 23 0 18 2;
 #X connect 24 0 17 0;
 #X restore 59 501 pd cool_compressor;
-#X msg 246 575 1 -180;
-#X msg 246 593 90 -3;
-#X msg 246 611 2 -3;
+#X msg 341 462 1 -180;
+#X msg 341 486 90 -3;
+#X msg 341 512 2 -3;
 #X obj 40 395 delwrite~ #0-nmfmatch 20;
-#X text 300 571 1: the dry guitar only \, 2: the guitar going 100%
-in the delay. 3: to hear the effect of compressing the send to the
-delay by the amount of pick found \, therefore not sending noisy attacks
-in the long delay.;
-#X text 243 555 3) select a compressor preset;
+#X text 338 442 3) select a compressor preset;
 #X text 85 341 4) play the guitar;
 #X text 42 295 2) wait for finishing. The basis with the highest centroid
 is copied to the first channel, f 90;
 #X text 16 13 control a compressor based on learned components;
-#X text 193 490 pick amount;
-#X text 297 491 body amount;
-#X msg 231 639 \; coolcomp-del 12 \; coolcomp-att 200 \; coolcomp-rel
+#X msg 310 558 \; coolcomp-del 12 \; coolcomp-att 200 \; coolcomp-rel
 1300 \; coolcomp-ratio 8 \; coolcomp-thresh \$1 \; coolcomp-gain \$2
 ;
+#X obj 193 470 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 210 470 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
+#X text 172 604 pick / sustain;
+#X text 387 464 1: the dry guitar only;
+#X text 387 487 2: the guitar going 100% in the delay;
+#X text 387 508 3: to hear the effect of compressing the send to the
+delay by the amount of pick found \, therefore not sending noisy attacks
+in the long delay., f 40;
 #X connect 0 0 1 0;
 #X connect 1 0 17 0;
 #X connect 2 0 3 0;
@@ -362,18 +364,140 @@ is copied to the first channel, f 90;
 #X connect 20 0 6 0;
 #X connect 20 0 6 1;
 #X connect 20 0 21 0;
-#X connect 20 0 30 0;
+#X connect 20 0 28 0;
 #X connect 21 0 22 0;
 #X connect 22 0 23 0;
-#X connect 22 0 25 0;
-#X connect 22 1 24 0;
-#X connect 25 0 26 0;
-#X connect 26 0 9 0;
-#X connect 27 0 38 0;
-#X connect 28 0 38 0;
-#X connect 29 0 38 0;
+#X connect 22 0 34 0;
+#X connect 22 1 35 0;
+#X connect 23 0 24 0;
+#X connect 24 0 9 0;
+#X connect 25 0 33 0;
+#X connect 26 0 33 0;
+#X connect 27 0 33 0;
 #X restore 459 756 pd example_1;
-#N canvas 352 127 571 680 example_2 0;
+#N canvas 627 113 757 780 example_2 1;
+#X text 21 16 make a filter bank from learned components;
+#X text 21 76 1) process an extract of the guitar \, extracting 8 complementary
+spectra, f 72;
+#X obj 24 138 soundfiler;
+#X obj 24 158 t b;
+#N canvas 474 307 909 774 statsquery 1;
+#X obj 118 150 list split 1;
+#X obj 212 156 list length;
+#X obj 152 170 t a;
+#X obj 117 256 +;
+#X msg 117 223 -1;
+#X obj 215 300 tabread;
+#X obj 117 202 t b b f;
+#X obj 116 307 sel 0;
+#X obj 118 100 t a a b, f 38;
+#X obj 118 54 inlet;
+#X text 163 61 the channels where the centroids are= the first of every
+7 (see fluid.bufstats~ help), f 85;
+#X text -4 153 iterates backwards;
+#X text 18 241 keeps the index;
+#X text 269 301 reads the index of the median stats;
+#X obj 119 450 outlet;
+#X msg 118 79 0 7 14 21 28 35 42 49;
+#X msg 245 277 set nmfmatch_guit-stats2-\$1;
+#X obj 393 393 list store;
+#X obj 522 366 t l l;
+#X obj 522 345 list prepend;
+#X obj 117 277 t f f, f 7;
+#X obj 393 414 print;
+#X msg 215 278 5;
+#X obj 505 569 tabread;
+#X msg 535 546 set nmfmatch_guit-stats2-\$1;
+#X floatatom 538 522 5 0 0 0 - - -;
+#X obj 505 590 print;
+#X floatatom 439 512 5 0 0 0 - - -;
+#X obj 200 604 tabread;
+#X floatatom 233 557 5 0 0 0 - - -;
+#X obj 200 625 print;
+#X floatatom 134 547 5 0 0 0 - - -;
+#X msg 230 581 set nmfmatch_guit-features2-\$1;
+#X floatatom 339 636 5 0 0 0 - - -;
+#X obj 306 683 tabplay~;
+#X obj 306 704 dac~;
+#X msg 336 660 set nmfmatch_guit-resynth2-\$1;
+#X obj 292 653 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 0 0 6 0;
+#X connect 0 1 2 0;
+#X connect 1 0 3 1;
+#X connect 2 0 0 0;
+#X connect 3 0 20 0;
+#X connect 4 0 3 0;
+#X connect 5 0 19 0;
+#X connect 6 0 4 0;
+#X connect 6 1 22 0;
+#X connect 6 2 16 0;
+#X connect 7 0 17 0;
+#X connect 8 0 0 0;
+#X connect 8 1 1 0;
+#X connect 8 2 19 1;
+#X connect 9 0 15 0;
+#X connect 15 0 8 0;
+#X connect 16 0 5 0;
+#X connect 17 0 21 0;
+#X connect 18 0 17 1;
+#X connect 18 1 19 1;
+#X connect 19 0 18 0;
+#X connect 20 0 7 0;
+#X connect 20 1 3 1;
+#X connect 22 0 5 0;
+#X connect 23 0 26 0;
+#X connect 24 0 23 0;
+#X connect 25 0 24 0;
+#X connect 27 0 23 0;
+#X connect 28 0 30 0;
+#X connect 29 0 32 0;
+#X connect 31 0 28 0;
+#X connect 32 0 28 0;
+#X connect 33 0 36 0;
+#X connect 34 0 35 0;
+#X connect 34 0 35 1;
+#X connect 36 0 34 0;
+#X connect 37 0 34 0;
+#X restore 24 261 pd statsquery;
+#X obj 24 300 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 38 572 dac~;
+#X obj 39 364 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 62 364 stop;
+#X obj 210 417 fluid.nmfmatch~ 2 -bases nmfmatch_summed-bases -fftsettings
+1024 256 2048, f 75;
+#X text 101 365 4) play the guitar;
+#X text 46 300 2) wait for finishing. The basis with the highest centroid
+is copied to the first channel, f 90;
+#X msg 24 107 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+nmfmatch_guitar2;
+#X obj 35 739 array define nmfmatch_guitar2;
+#X obj 35 759 clone multiarray 8 nmfmatch_guit-bases2;
+#X obj 291 780 clone multiarray 56 nmfmatch_guit-stats2;
+#X obj 291 759 clone multiarray 56 nmfmatch_guit-features2;
+#X obj 24 209 fluid.bufspectralshape~ -source nmfmatch_guit-resynth2
+-features nmfmatch_guit-features2 -fftsettings 1024 256 2048, f 86
+;
+#X obj 24 241 fluid.bufstats~ -source nmfmatch_guit-features2 -stats
+nmfmatch_guit-stats2, f 83;
+#X obj 24 178 fluid.bufnmf~ -source nmfmatch_guitar2 -numframes 88200
+-components 8 -bases nmfmatch_guit-bases2 -iterations 50 -resynth nmfmatch_guit-resynth2
+-fftsettings 1024 256 2048, f 96;
+#X obj 35 779 clone multiarray 8 nmfmatch_guit-resynth2;
+#X obj 38 386 tabplay~ nmfmatch_guitar2;
+#X connect 2 0 3 0;
+#X connect 3 0 19 0;
+#X connect 7 0 21 0;
+#X connect 8 0 21 0;
+#X connect 12 0 2 0;
+#X connect 17 0 18 0;
+#X connect 18 0 4 0;
+#X connect 19 0 17 0;
+#X connect 21 0 6 0;
+#X connect 21 0 6 1;
+#X connect 21 0 9 0;
 #X restore 459 784 pd example_2;
 #X text 34 100 Matches an incoming audio signal against a set of spectral
 templates, f 69;
