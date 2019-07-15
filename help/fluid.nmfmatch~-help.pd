@@ -407,7 +407,7 @@ spectra, f 72;
 #X msg 179 277 5;
 #X obj 116 414 t b a;
 #X obj 180 433 s bufnmfmatch_freqlist;
-#X obj 179 320 * 22050;
+#X obj 179 320 * 44100;
 #X connect 0 0 6 0;
 #X connect 0 1 2 0;
 #X connect 1 0 3 1;
