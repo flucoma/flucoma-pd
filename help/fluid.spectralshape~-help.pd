@@ -1,39 +1,336 @@
-#N canvas 176 142 912 855 10;
+#N canvas 18 100 558 507 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.spectralshape~ 20 12 0
 36 -262144 -66577 0;
 #X text 37 58 Seven Spectral Shape Descriptors in Real-Time;
 #X text 38 100 Seven of the spectral shape descriptors \, computed
 on a linear scale for both amplitude and frequency., f 76;
-#X obj 42 190 noise~;
-#X obj 42 232 *~ 0.1;
+#X obj 42 148 noise~;
 #X obj 42 253 dac~;
-#X obj 42 211 bp~ 330 0.6;
+#X obj 42 169 bp~ 330 0.6;
 #X obj 102 236 fluid.spectralshape~ 4096;
 #X obj 102 257 unpack 0 0 0 0 0 0 0;
-#X text 43 305 centroid(Hz):;
-#X text 55 325 spread(Hz):;
-#X text 25 347 skewness(ratio):;
-#X text 25 368 kurtosis(ratio):;
-#X text 49 389 rolloff(Hz):;
-#X text 43 409 flatness(dB):;
-#X text 61 430 crest(dB):;
-#X floatatom 127 305 10 0 0 0 - - -;
-#X floatatom 127 326 10 0 0 0 - - -;
-#X floatatom 127 347 10 0 0 0 - - -;
-#X floatatom 127 368 10 0 0 0 - - -;
-#X floatatom 127 389 10 0 0 0 - - -;
-#X floatatom 127 410 10 0 0 0 - - -;
-#X floatatom 127 431 10 0 0 0 - - -;
-#X connect 3 0 6 0;
-#X connect 4 0 5 0;
+#X floatatom 231 303 10 0 0 0 - - -;
+#X floatatom 231 324 10 0 0 0 - - -;
+#X floatatom 231 345 10 0 0 0 - - -;
+#X floatatom 231 366 10 0 0 0 - - -;
+#X floatatom 231 387 10 0 0 0 - - -;
+#X floatatom 231 408 10 0 0 0 - - -;
+#X floatatom 231 429 10 0 0 0 - - -;
+#X obj 42 232 *~;
+#X obj 56 197 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 56 214 * 0.1;
+#N canvas 300 178 1031 585 didactic 0;
+#X obj 215 223 fluid.spectralshape~ -fftsettings 1024 512 1024;
+#X obj 155 237 dac~;
+#X obj 215 241 unpack 0 0 0 0 0 0 0;
+#X text 403 279 centroid(Hz):;
+#X text 403 300 spread(Hz):;
+#X text 403 321 skewness(ratio):;
+#X text 403 342 kurtosis(ratio):;
+#X text 403 363 rolloff(Hz):;
+#X text 403 384 flatness(dB):;
+#X text 403 405 crest(dB):;
+#X floatatom 339 279 10 0 0 0 - - -;
+#X floatatom 339 300 10 0 0 0 - - -;
+#X floatatom 339 321 10 0 0 0 - - -;
+#X floatatom 339 342 10 0 0 0 - - -;
+#X floatatom 339 363 10 0 0 0 - - -;
+#X floatatom 339 384 10 0 0 0 - - -;
+#X floatatom 339 405 10 0 0 0 - - -;
+#X obj 49 110 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 36 88 osc~ 220;
+#X obj 155 216 *~ 0.1;
+#X obj 36 127 *~;
+#X msg 35 61 220;
+#X msg 64 61 440;
+#X msg 94 61 11000;
+#X obj 153 112 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 138 129 *~;
+#X obj 138 88 noise~;
+#X obj 213 108 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 199 127 *~;
+#N canvas 0 23 424 251 pink 0;
+#X text 26 171 signal-out;
+#X obj 28 150 outlet~;
+#X obj 29 49 noise~;
+#X obj 29 88 biquad~ 1.83221 -0.836851 0.271264 -0.456311 0.18969;
+#X obj 29 108 biquad~ 0.273097 0.087865 0.505803 0.171365 -0.03813
+;
+#X obj 29 68 biquad~ 1.98893 -0.988954 1.00554 -1.9889 0.983444;
+#X text 166 195 IEM KUG;
+#X text 150 183 musil;
+#X text 180 183 @;
+#X text 186 183 iem.at;
+#X text 149 205 Graz \, Austria;
+#X text 101 172 (c) Thomas Musil 2000 - 2018;
+#X text 109 49 3 shelving filters 2nd order;
+#X text 8 5 cheap pink-noise-generator approximation - code taken from
+pink~ with -3 dB per octave spectral slope, f 65;
+#X obj 29 129 *~ 4;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X connect 4 0 14 0;
+#X connect 5 0 3 0;
+#X connect 14 0 1 0;
+#X restore 199 85 pd pink;
+#X obj 271 68 noise~;
+#X obj 271 89 bp~ 330 0.6;
+#X obj 284 114 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 270 133 *~;
+#N canvas 134 141 610 452 spectralbrickwall 0;
+#X obj 168 90 inlet~;
+#X obj 136 320 outlet~;
+#X obj 155 124 *~;
+#X obj 155 145 rfft~;
+#X obj 155 187 rifft~;
+#X obj 136 287 *~;
+#X obj 186 166 *~;
+#X obj 155 166 *~;
+#X obj 116 60 tabreceive~ fluid.bufshape.hann;
+#X obj 279 30 block~ 1024 4;
+#X obj 221 146 tabreceive~ fluid.bufshape.filter;
+#X connect 0 0 2 1;
+#X connect 2 0 3 0;
+#X connect 3 0 7 0;
+#X connect 3 1 6 0;
 #X connect 4 0 5 1;
-#X connect 6 0 4 0;
+#X connect 5 0 1 0;
+#X connect 6 0 4 1;
+#X connect 7 0 4 0;
+#X connect 8 0 2 0;
+#X connect 8 0 5 0;
+#X connect 10 0 6 1;
+#X connect 10 0 7 1;
+#X restore 356 87 pd spectralbrickwall;
+#X obj 371 116 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 357 135 *~;
+#N canvas 556 77 719 468 make.scaled.hann.window.and.filter 0;
+#X obj 107 94 t f b;
+#X msg 107 71 1024;
+#X obj 107 136 until;
+#X msg 107 157 1;
+#X obj 107 178 +;
+#X msg 148 156 -1;
+#X obj 107 218 / 1024;
+#X obj 107 260 sin;
+#X obj 107 281 *;
+#X obj 234 134 expr 4*atan(1);
+#X obj 107 239 * 3.1;
+#X obj 107 47 t b b;
+#X obj 107 26 loadbang;
+#X obj 106 324 tabwrite fluid.bufshape.hann;
+#X obj 107 348 array define fluid.bufshape.hann 1024;
+#X obj 107 302 * 0.0255155;
+#X obj 379 321 tabwrite fluid.bufshape.filter;
+#X obj 107 197 t f f f f f;
+#X obj 371 347 array define fluid.bufshape.filter 1024;
+#X obj 365 294 expr ($f1 >4 & $f1 < 11) * 4;
+#X connect 0 0 2 0;
+#X connect 0 1 5 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 17 0;
+#X connect 5 0 4 1;
+#X connect 6 0 10 0;
+#X connect 7 0 8 0;
+#X connect 7 0 8 1;
+#X connect 8 0 15 0;
+#X connect 9 0 10 1;
+#X connect 10 0 7 0;
+#X connect 11 0 1 0;
+#X connect 11 1 9 0;
+#X connect 12 0 11 0;
+#X connect 15 0 13 0;
+#X connect 17 0 6 0;
+#X connect 17 1 4 1;
+#X connect 17 2 13 1;
+#X connect 17 3 19 0;
+#X connect 17 4 16 1;
+#X connect 19 0 16 0;
+#X restore 64 457 pd make.scaled.hann.window.and.filter;
+#X obj 435 179 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 422 197 *~;
+#N canvas 0 23 573 300 equially-spaced-sines 0;
+#X obj 368 57 inlet;
+#X obj 51 179 osc~ 55;
+#X obj 145 231 outlet~;
+#X obj 368 78 t b f;
+#X obj 51 160 +;
+#X obj 103 179 osc~ 55;
+#X obj 103 160 +;
+#X obj 160 179 osc~ 55;
+#X obj 160 160 +;
+#X obj 212 179 osc~ 55;
+#X obj 212 160 +;
+#X obj 265 179 osc~ 55;
+#X obj 265 160 +;
+#X msg 51 118 0;
+#X msg 103 119 55;
+#X msg 160 119 110;
+#X msg 212 118 165;
+#X msg 265 118 220;
+#X obj 265 200 *~ 0.15;
+#X obj 212 200 *~ 0.15;
+#X obj 160 200 *~ 0.15;
+#X obj 103 200 *~ 0.15;
+#X obj 51 200 *~ 0.15;
+#X connect 0 0 3 0;
+#X connect 1 0 22 0;
+#X connect 3 0 17 0;
+#X connect 3 0 16 0;
+#X connect 3 0 15 0;
+#X connect 3 0 14 0;
+#X connect 3 0 13 0;
+#X connect 3 1 4 1;
+#X connect 3 1 12 1;
+#X connect 3 1 10 1;
+#X connect 3 1 8 1;
+#X connect 3 1 6 1;
+#X connect 4 0 1 0;
+#X connect 5 0 21 0;
+#X connect 6 0 5 0;
+#X connect 7 0 20 0;
+#X connect 8 0 7 0;
+#X connect 9 0 19 0;
+#X connect 10 0 9 0;
+#X connect 11 0 18 0;
+#X connect 12 0 11 0;
+#X connect 13 0 4 0;
+#X connect 14 0 6 0;
+#X connect 15 0 8 0;
+#X connect 16 0 10 0;
+#X connect 17 0 12 0;
+#X connect 18 0 2 0;
+#X connect 19 0 2 0;
+#X connect 20 0 2 0;
+#X connect 21 0 2 0;
+#X connect 22 0 2 0;
+#X restore 420 151 pd equially-spaced-sines;
+#X msg 420 132 220;
+#X obj 419 113 loadbang;
+#X msg 454 132 8800;
+#X text 64 110 1;
+#X text 170 113 2;
+#X text 229 110 3;
+#X text 302 114 4;
+#X text 387 115 5;
+#X text 454 180 6;
+#X text 585 115 Change the frequency of the [cycle~] to 440 The skewness
+has changed (we are nearer the middle of the spectrogram) and the Kurtosis
+too \, although it is still so high it is quite in the same order of
+magnitude. The rest is stable \, as expected., f 74;
+#X text 585 170 Change the frequency to 11000 The kurtosis is still
+in the thousand \, but skewness is almost null \, as expected., f
+74;
+#X text 585 16 First (1) \, a sine wave. At 220 \, the centroid is
+on the frequency \, the spread is narrow \, but as wide as the FFT
+Hann window ripples \, the skewness is high as we are low and therefore
+far left of the middle bin (aka half-Nyquist) \, the Kurtosis is incredibly
+high as we have a very peaky spectrum. The rolloff is slightly higher
+than the frequency \, taking into account the FFT windowing ripples
+\, the flatness is incredibly low \, as we have one peak and not much
+else \, and the crest is quite high \, because most of the energy is
+in a few peaky bins., f 73;
+#X text 585 203 Second (2) \, broadband noises: white noise has a linear
+spread of energy \, so we would expect a centroid in the middle bin
+(aka half-Nyquist) with a spread covering the full range (+/- a quarter-Nyquist)
+\, with a skewness almost null since we are centered \, and a very
+low Kurtosis since we are flat. The rolloff should be almost at Nyquist
+\, the flatness as high as it gets \, and the crest quite low., f
+74;
+#X text 585 280 On the other hand \, pink noise (3) has a drop of 3dB
+per octave across the spectrum \, so we would \, by comparison \, expect
+a lower centroid \, a slighly higher skewness and kurtosis \, a lower
+rolloff \, a slighly lower flatness and a higher crest for the larger
+low-end energy., f 74;
+#X text 585 335 Fourth (4) \, noise bands: a second-order bandpass
+filter on white noise \, centred on 330Hz with one octave bandwidth
+\, gives us a centroid quite high., f 74;
+#X text 585 379 This is due to the exponential behaviour of the filter
+\, with a gentle slope. Observe the spectral analyser on below. At
+first it seems quite centred \, but then flip the argument logfreq
+to 0 (linear) and observe how high the spectrum goes., f 74;
+#X text 585 434 If we set it (5) to a brickwall spectral filter tuned
+on the same frequencies \, we have a much narrower register \, and
+our centroid and spread \, as well as the kurtosis and flatness \,
+agrees with this reading., f 74;
+#X text 585 478 Finally \, equally spaced sines. (6) This example shows
+a similar result to the brickwall spectral bandpass above. If we move
+the central frequency nearer the half-Nyquist \, around 8800 \, we
+can observe that the linear spread is kept the same \, since there
+is the same linear distance in Hz between our frequencies. Skewness
+is a good indication here of where we are in the spectrum with the
+shape., f 74;
+#X connect 0 0 2 0;
+#X connect 2 0 10 0;
+#X connect 2 1 11 0;
+#X connect 2 2 12 0;
+#X connect 2 3 13 0;
+#X connect 2 4 14 0;
+#X connect 2 5 15 0;
+#X connect 2 6 16 0;
+#X connect 17 0 20 1;
+#X connect 18 0 20 0;
+#X connect 19 0 1 0;
+#X connect 19 0 1 1;
+#X connect 20 0 0 0;
+#X connect 20 0 19 0;
+#X connect 21 0 18 0;
+#X connect 22 0 18 0;
+#X connect 23 0 18 0;
+#X connect 24 0 25 1;
+#X connect 25 0 0 0;
+#X connect 25 0 19 0;
+#X connect 26 0 25 0;
+#X connect 27 0 28 1;
+#X connect 28 0 0 0;
+#X connect 28 0 19 0;
+#X connect 29 0 28 0;
+#X connect 30 0 31 0;
+#X connect 30 0 34 0;
+#X connect 31 0 33 0;
+#X connect 32 0 33 1;
+#X connect 33 0 0 0;
+#X connect 33 0 19 0;
+#X connect 34 0 36 0;
+#X connect 35 0 36 1;
+#X connect 36 0 0 0;
+#X connect 36 0 19 0;
+#X connect 38 0 39 1;
+#X connect 39 0 0 0;
+#X connect 39 0 19 0;
+#X connect 40 0 39 0;
+#X connect 41 0 40 0;
+#X connect 42 0 41 0;
+#X connect 43 0 40 0;
+#X restore 364 235 pd didactic;
+#X text 297 303 centroid(Hz):;
+#X text 297 324 spread(Hz):;
+#X text 297 345 skewness(ratio):;
+#X text 297 366 kurtosis(ratio):;
+#X text 297 387 rolloff(Hz):;
+#X text 297 408 flatness(dB):;
+#X text 297 429 crest(dB):;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X connect 5 0 15 0;
 #X connect 6 0 7 0;
 #X connect 7 0 8 0;
-#X connect 8 0 16 0;
-#X connect 8 1 17 0;
-#X connect 8 2 18 0;
-#X connect 8 3 19 0;
-#X connect 8 4 20 0;
-#X connect 8 5 21 0;
-#X connect 8 6 22 0;
+#X connect 7 1 9 0;
+#X connect 7 2 10 0;
+#X connect 7 3 11 0;
+#X connect 7 4 12 0;
+#X connect 7 5 13 0;
+#X connect 7 6 14 0;
+#X connect 15 0 4 0;
+#X connect 15 0 4 1;
+#X connect 16 0 17 0;
+#X connect 17 0 15 1;
