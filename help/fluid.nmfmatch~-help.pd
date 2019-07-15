@@ -1,4 +1,4 @@
-#N canvas 61 23 584 889 10;
+#N canvas 53 43 584 889 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.nmfmatch~ 20 12 0 36 -262144
 -66577 0;
 #X text 457 719 more info:;
@@ -375,62 +375,48 @@ in the long delay., f 40;
 #X connect 26 0 33 0;
 #X connect 27 0 33 0;
 #X restore 459 756 pd example_1;
-#N canvas 627 113 757 780 example_2 1;
+#N canvas 185 66 664 727 example_2 0;
 #X text 21 16 make a filter bank from learned components;
 #X text 21 76 1) process an extract of the guitar \, extracting 8 complementary
 spectra, f 72;
 #X obj 24 138 soundfiler;
 #X obj 24 158 t b;
-#N canvas 474 307 909 774 statsquery 1;
+#N canvas 525 613 717 476 statsquery 0;
 #X obj 118 150 list split 1;
 #X obj 212 156 list length;
 #X obj 152 170 t a;
 #X obj 117 256 +;
 #X msg 117 223 -1;
-#X obj 215 300 tabread;
+#X obj 179 299 tabread;
 #X obj 117 202 t b b f;
 #X obj 116 307 sel 0;
 #X obj 118 100 t a a b, f 38;
 #X obj 118 54 inlet;
 #X text 163 61 the channels where the centroids are= the first of every
 7 (see fluid.bufstats~ help), f 85;
-#X text -4 153 iterates backwards;
+#X text 5 126 iterates backwards;
 #X text 18 241 keeps the index;
-#X text 269 301 reads the index of the median stats;
-#X obj 119 450 outlet;
+#X text 233 300 reads the index of the median stats;
+#X obj 116 448 outlet;
 #X msg 118 79 0 7 14 21 28 35 42 49;
-#X msg 245 277 set nmfmatch_guit-stats2-\$1;
-#X obj 393 393 list store;
-#X obj 522 366 t l l;
-#X obj 522 345 list prepend;
+#X msg 209 276 set nmfmatch_guit-stats2-\$1;
+#X obj 116 393 list store;
+#X obj 426 373 t l l;
+#X obj 426 352 list prepend;
 #X obj 117 277 t f f, f 7;
-#X obj 393 414 print;
-#X msg 215 278 5;
-#X obj 505 569 tabread;
-#X msg 535 546 set nmfmatch_guit-stats2-\$1;
-#X floatatom 538 522 5 0 0 0 - - -;
-#X obj 505 590 print;
-#X floatatom 439 512 5 0 0 0 - - -;
-#X obj 200 604 tabread;
-#X floatatom 233 557 5 0 0 0 - - -;
-#X obj 200 625 print;
-#X floatatom 134 547 5 0 0 0 - - -;
-#X msg 230 581 set nmfmatch_guit-features2-\$1;
-#X floatatom 339 636 5 0 0 0 - - -;
-#X obj 306 683 tabplay~;
-#X obj 306 704 dac~;
-#X msg 336 660 set nmfmatch_guit-resynth2-\$1;
-#X obj 292 653 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X msg 179 277 5;
+#X obj 116 414 t b a;
+#X obj 180 433 s bufnmfmatch_freqlist;
+#X obj 179 320 * 22050;
 #X connect 0 0 6 0;
 #X connect 0 1 2 0;
 #X connect 1 0 3 1;
 #X connect 2 0 0 0;
 #X connect 3 0 20 0;
 #X connect 4 0 3 0;
-#X connect 5 0 19 0;
+#X connect 5 0 24 0;
 #X connect 6 0 4 0;
-#X connect 6 1 22 0;
+#X connect 6 1 21 0;
 #X connect 6 2 16 0;
 #X connect 7 0 17 0;
 #X connect 8 0 0 0;
@@ -439,44 +425,27 @@ spectra, f 72;
 #X connect 9 0 15 0;
 #X connect 15 0 8 0;
 #X connect 16 0 5 0;
-#X connect 17 0 21 0;
+#X connect 17 0 22 0;
 #X connect 18 0 17 1;
 #X connect 18 1 19 1;
 #X connect 19 0 18 0;
 #X connect 20 0 7 0;
 #X connect 20 1 3 1;
-#X connect 22 0 5 0;
-#X connect 23 0 26 0;
-#X connect 24 0 23 0;
-#X connect 25 0 24 0;
-#X connect 27 0 23 0;
-#X connect 28 0 30 0;
-#X connect 29 0 32 0;
-#X connect 31 0 28 0;
-#X connect 32 0 28 0;
-#X connect 33 0 36 0;
-#X connect 34 0 35 0;
-#X connect 34 0 35 1;
-#X connect 36 0 34 0;
-#X connect 37 0 34 0;
+#X connect 21 0 5 0;
+#X connect 22 0 14 0;
+#X connect 22 1 23 0;
+#X connect 24 0 19 0;
 #X restore 24 261 pd statsquery;
-#X obj 24 300 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 38 572 dac~;
+#X obj 136 568 dac~;
 #X obj 39 364 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X msg 62 364 stop;
-#X obj 210 417 fluid.nmfmatch~ 2 -bases nmfmatch_summed-bases -fftsettings
-1024 256 2048, f 75;
-#X text 101 365 4) play the guitar;
-#X text 46 300 2) wait for finishing. The basis with the highest centroid
-is copied to the first channel, f 90;
 #X msg 24 107 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar2;
-#X obj 35 739 array define nmfmatch_guitar2;
-#X obj 35 759 clone multiarray 8 nmfmatch_guit-bases2;
-#X obj 291 780 clone multiarray 56 nmfmatch_guit-stats2;
-#X obj 291 759 clone multiarray 56 nmfmatch_guit-features2;
+#X obj 38 643 array define nmfmatch_guitar2;
+#X obj 38 663 clone multiarray 8 nmfmatch_guit-bases2;
+#X obj 294 684 clone multiarray 56 nmfmatch_guit-stats2;
+#X obj 294 663 clone multiarray 56 nmfmatch_guit-features2;
 #X obj 24 209 fluid.bufspectralshape~ -source nmfmatch_guit-resynth2
 -features nmfmatch_guit-features2 -fftsettings 1024 256 2048, f 86
 ;
@@ -485,19 +454,40 @@ nmfmatch_guit-stats2, f 83;
 #X obj 24 178 fluid.bufnmf~ -source nmfmatch_guitar2 -numframes 88200
 -components 8 -bases nmfmatch_guit-bases2 -iterations 50 -resynth nmfmatch_guit-resynth2
 -fftsettings 1024 256 2048, f 96;
-#X obj 35 779 clone multiarray 8 nmfmatch_guit-resynth2;
+#X obj 38 683 clone multiarray 8 nmfmatch_guit-resynth2;
 #X obj 38 386 tabplay~ nmfmatch_guitar2;
+#X obj 38 432 fluid.hpss~ -fftsettings 1024 256 -1 -maskingmode 1 -harmthresh
+0.005869 -9.6875 0.006609 -4.375;
+#X obj 24 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X text 46 283 2) wait for finishing. Each component's centroid is
+used to tune a filter, f 73;
+#X obj 357 430 fluid.nmfmatch~ 8 -bases nmfmatch_guit-bases2 -fftsettings
+1024 256 2048, f 45;
+#X obj 357 462 list prepend all;
+#X obj 357 483 list trim;
+#X obj 136 530 clone fluid.nmfmatch.polyfilter 8;
+#X obj 38 464 *~ 0.5;
+#X text 101 363 3) play!;
 #X connect 2 0 3 0;
-#X connect 3 0 19 0;
-#X connect 7 0 21 0;
-#X connect 8 0 21 0;
-#X connect 12 0 2 0;
+#X connect 3 0 15 0;
+#X connect 4 0 19 0;
+#X connect 6 0 17 0;
+#X connect 7 0 17 0;
+#X connect 8 0 2 0;
+#X connect 13 0 14 0;
+#X connect 14 0 4 0;
+#X connect 15 0 13 0;
 #X connect 17 0 18 0;
-#X connect 18 0 4 0;
-#X connect 19 0 17 0;
-#X connect 21 0 6 0;
-#X connect 21 0 6 1;
-#X connect 21 0 9 0;
+#X connect 17 0 21 0;
+#X connect 18 0 25 0;
+#X connect 18 1 24 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 24 1;
+#X connect 24 0 5 0;
+#X connect 24 1 5 1;
+#X connect 25 0 24 0;
 #X restore 459 784 pd example_2;
 #X text 34 100 Matches an incoming audio signal against a set of spectral
 templates, f 69;
