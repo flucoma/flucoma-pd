@@ -1,0 +1,112 @@
+#N canvas 185 55 1171 1101 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufmfcc~ 20 12 0 36 -262144
+-66577 0;
+#X obj 34 156 loadbang;
+#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 134 257 dac~;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 152 215 stop;
+#N canvas 0 23 450 300 multichannel 1;
+#X restore 826 169 pd multichannel;
+#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufmfcc_drums
+;
+#X obj 134 236 tabplay~ bufmfcc_drums;
+#X msg 379 136 \; bufmfcc_feats-0 xticks 0 0 0 \; bufmfcc_feats-1 xticks
+0 0 0 \; bufmfcc_feats-2 xticks 0 0 0 \; bufmfcc_feats-3 xticks 0 0
+0 \; bufmfcc_feats-4 xticks 0 0 0 \; bufmfcc_feats-5 xticks 0 0 0 \;
+bufmfcc_feats-6 xticks 0 0 0 \; bufmfcc_feats-7 xticks 0 0 0 \; bufmfcc_feats-8
+xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
+0 0 0 \; bufmfcc_feats-11 xticks 0 0 0 \; bufmfcc_feats-12 xticks 0
+0 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-0 887 float 0;
+#X coords 0 1 886 -1 887 40 1 0 0;
+#X restore 31 367 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-1 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 422 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-2 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 477 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-3 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 532 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-4 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 587 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-5 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 642 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-6 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 697 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-7 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 752 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-8 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 807 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-9 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 862 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-10 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 917 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-11 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 972 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-12 887 float 0;
+#X coords 0 1 886 0 887 40 1 0 0;
+#X restore 31 1027 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 31 299 graph;
+#X obj 688 38 tabread bufmfcc_feats-0;
+#X floatatom 689 15 5 0 0 0 - - -;
+#X floatatom 688 58 10 0 0 0 - - -;
+#X obj 379 117 fluid.bufmfcc~ 13 -source bufmfcc_drums -features bufmfcc_feats
+, f 63;
+#X floatatom 739 95 10 0 0 0 - - -;
+#X obj 739 75 tabread bufmfcc_feats-1;
+#X floatatom 815 120 10 0 0 0 - - -;
+#X obj 815 100 tabread bufmfcc_feats-2;
+#X obj 968 41 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 968 61 array min bufmfcc_feats-0;
+#X obj 997 81 array max bufmfcc_feats-0;
+#X floatatom 969 121 10 0 0 0 - - -;
+#X floatatom 1032 121 10 0 0 0 - - -;
+#X connect 2 0 8 0;
+#X connect 3 0 28 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
+#X connect 8 0 0 0;
+#X connect 9 0 4 0;
+#X connect 9 0 4 1;
+#X connect 25 0 27 0;
+#X connect 26 0 25 0;
+#X connect 26 0 30 0;
+#X connect 26 0 32 0;
+#X connect 28 0 10 0;
+#X connect 30 0 29 0;
+#X connect 32 0 31 0;
+#X connect 33 0 34 0;
+#X connect 33 0 35 0;
+#X connect 34 0 36 0;
+#X connect 35 0 37 0;

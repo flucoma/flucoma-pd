@@ -62,7 +62,7 @@ public:
       
     size_t nChans = numChans();
       
-    for (size_t i = 0; i < nChans && i < channels; i++)
+    for (size_t i = 0; i < nChans; ++i)// && i < channels; i++)
     {
       t_garray *array = getArray(i);
           
@@ -70,7 +70,7 @@ public:
         garray_resize_long(array, static_cast<int>(frames));
     }
       
-    assert(frames == numFrames() && channels == numChans());
+    assert(frames == numFrames() && channels <= numChans());
   }
 
   bool acquire() override
