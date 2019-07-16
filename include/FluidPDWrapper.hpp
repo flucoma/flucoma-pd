@@ -46,6 +46,10 @@ class RealTime
   using ViewType = FluidTensorView<t_sample, 1>;
 
 public:
+
+  //Make sure we free the clock if it's in use, otherwise badness
+  ~RealTime() { if(mControlClock) clock_free(mControlClock); }
+
   static void setup(t_class *c)
   {
     class_addmethod(c, nullfn, gensym("signal"), A_NULL);
@@ -169,7 +173,7 @@ private:
   std::vector<t_float>      mControlOutputs;
   std::vector<t_atom>       mControlAtoms;
   t_outlet*                 mLatencyOut;
-  t_clock*                  mControlClock;
+  t_clock*                  mControlClock{nullptr};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
