@@ -55,16 +55,19 @@ if (APPLE)
 	)
 
 elseif(UNIX AND NOT APPLE)
-		set_target_properties(${PROJECT_NAME}
-                          PROPERTIES
-                          SUFFIX ".pd_linux"
-                          PREFIX "")
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+                SUFFIX ".pd_linux"
+                PREFIX ""
+		POSITION_INDEPENDENT_CODE ON)
+	
 elseif (WIN32)
 
-	set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".dll")
+	set_target_properties(${PROJECT_NAME} PROPERTIES 
+		SUFFIX ".dll")
 
 	# warning about constexpr not being const in c++14
-	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/wd4814")
+	set_target_properties(${PROJECT_NAME} PROPERTIES 
+		COMPILE_FLAGS "/wd4814")
 
 endif (APPLE)
 
