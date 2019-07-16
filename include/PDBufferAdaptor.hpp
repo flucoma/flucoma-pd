@@ -18,9 +18,10 @@ void NOTUSED(T& a)
 class PDBufferAdaptor : public BufferAdaptor
 {
 public:
-  PDBufferAdaptor(t_symbol *name)
+  PDBufferAdaptor(t_symbol *name, double sr)
       : mName(name)
       , mLock(false)
+      , mSampleRate(sr)
   {}
 
   ~PDBufferAdaptor()
@@ -62,7 +63,7 @@ public:
       
     size_t nChans = numChans();
       
-    for (size_t i = 0; i < nChans; ++i)// && i < channels; i++)
+    for (size_t i = 0; i < nChans; ++i)
     {
       t_garray *array = getArray(i);
           
@@ -112,7 +113,8 @@ public:
   size_t numChans() const override { return getArrayCount(); }
   
   //FIX
-  double sampleRate() const override { return valid() ? 1 : 0 ; } // N.B. pd has no notion of sample rates for buffers...
+  double sampleRate() const override { return mSampleRate; } // N.B. pd has no notion of sample rates for buffers...
+  void   sampleRate(double sr) { mSampleRate = sr; }
 
 private:
     
@@ -203,6 +205,7 @@ private:
   t_symbol *mName;
     
   std::atomic<bool> mLock;
+  double mSampleRate;
 };
 } // namespace client
 } // namespace fluid
