@@ -1,0 +1,85 @@
+#N canvas 40 42 584 889 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufloudness~ 20 12 0 36
+-262144 -66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array loudness-source 22050 float 0;
+#X coords 0 1 22049 -1 516 141 1 0 0;
+#X restore 35 160 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufloudness-feats-0 8 float 2;
+#X coords 0 6 8 -160 513 70 1 0 0;
+#X restore 38 526 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufloudness-feats-1 8 float 2;
+#X coords 0 6 8 -314 513 70 1 0 0;
+#X restore 38 611 graph;
+#X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#N canvas 731 210 424 490 make_burst 0;
+#X msg 38 172 44100;
+#X obj 57 220 until;
+#X msg 125 241 -1;
+#X msg 57 241 1;
+#X obj 57 262 +;
+#X obj 38 193 t b f b;
+#X obj 38 153 loadbang;
+#X obj 39 81 array define sine 44100;
+#X obj 57 329 tabwrite sine;
+#X obj 57 283 t f f f, f 40;
+#X obj 57 308 expr sin($f1 / 22050 * 3.14159 * 220);
+#X obj 38 381 fluid.bufcompose~ -source sine -destination loudness-source
+-deststartframe 8192 -numframes 1024;
+#X msg 38 422 \; loudness-source xticks 0 0 0;
+#X connect 0 0 5 0;
+#X connect 1 0 3 0;
+#X connect 2 0 4 1;
+#X connect 3 0 4 0;
+#X connect 4 0 9 0;
+#X connect 5 0 11 0;
+#X connect 5 1 1 0;
+#X connect 5 2 2 0;
+#X connect 6 0 0 0;
+#X connect 9 0 10 0;
+#X connect 9 1 8 1;
+#X connect 9 2 4 1;
+#X connect 10 0 8 0;
+#X connect 11 0 12 0;
+#X restore 35 313 pd make_burst;
+#X text 65 379 1) process;
+#X floatatom 58 741 5 0 0 0 - - -;
+#X floatatom 58 787 5 0 0 0 - - -;
+#X floatatom 230 787 5 0 0 0 - - -;
+#X text 36 57 A Loudness and True-Peak Descriptor on a Buffer, f 48
+;
+#X text 35 100 Two loudness descriptors \, computing the true peak
+of the signal as well as applying the filters proposed by broadcasting
+standards to emulate the perception of amplitude., f 91;
+#X obj 37 398 fluid.bufloudness~ 17640 -source loudness-source -features
+bufloudness-feats -windowsize 17640 -hopsize 4410, f 76;
+#X msg 37 429 \; bufloudness-feats-1 xticks 0 0 0 \; bufloudness-feats-0
+xticks 0 0 0;
+#X obj 58 766 tabread bufloudness-feats-0;
+#X obj 230 766 tabread bufloudness-feats-1;
+#X text 92 786 loudness;
+#X text 265 785 peak;
+#X text 92 853 number of frames: ((source #frames + windowsize) / hopSize)
+- 1, f 63;
+#X text 35 494 2) watch for loudness (top) and truepeak;
+#N canvas 0 23 450 300 multichannel 0;
+#X restore 454 346 pd multichannel;
+#X text 100 715 3) here you can enter the numFrame from the analysis.
+Observe that the first frame is silent \, as expected. We can appreciate
+the overshoot of the true peak of a full range sinewave \, starting
+on the second sample., f 71;
+#X obj 58 812 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 58 832 array size bufloudness-feats-0;
+#X floatatom 58 853 5 0 0 0 - - -;
+#X connect 4 0 12 0;
+#X connect 7 0 14 0;
+#X connect 7 0 15 0;
+#X connect 12 0 13 0;
+#X connect 14 0 8 0;
+#X connect 15 0 9 0;
+#X connect 22 0 23 0;
+#X connect 23 0 24 0;

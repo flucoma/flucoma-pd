@@ -1,0 +1,8 @@
+#N canvas 0 23 450 124 10;
+#X text 19 20 As PureData arrays are simply list of numbers \, they
+do not have a sampling rate per se \, and therefore the frequency of
+the various descriptors can only be as true as long as we provide the
+algorythm with a sampling rate. By default \, the objects will take
+the current sampling rate of the real-time audio \, but a [sr VALUE]
+message can be send to the object to change that value \, should that
+be desired and/or required.;

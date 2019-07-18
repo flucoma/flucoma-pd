@@ -6,13 +6,13 @@
 #X coords 0 1 44099 -1 516 141 1 0 0;
 #X restore 35 160 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats-0 513 float 0;
-#X coords 0 1 512 0 513 70 1 0 0;
+#X array bufpitch-feats-0 87 float 2;
+#X coords 0 2205 87 0 513 70 1 0 0;
 #X restore 38 526 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats-1 513 float 0;
-#X coords 0 1 512 0 513 70 1 0 0;
-#X restore 37 611 graph;
+#X array bufpitch-feats-1 87 float 2;
+#X coords 0 1 87 0 513 70 1 0 0;
+#X restore 38 611 graph;
 #X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X text 35 494 2) watch for clearly different bases - ideally a spike
@@ -51,9 +51,19 @@ and the confidence in its value., f 91;
 #X connect 12 0 11 0;
 #X restore 35 313 pd make_burst;
 #X text 65 379 1) process;
-#X obj 37 398 fluid.bufpitch~ -source pitch-source -features bufpitch-feats
-, f 74;
 #X msg 37 417 \; bufpitch-feats-1 xticks 0 0 0 \; bufpitch-feats-0
 xticks 0 0 0;
-#X connect 4 0 10 0;
-#X connect 10 0 11 0;
+#X floatatom 58 746 5 0 0 0 - - -;
+#X obj 58 766 tabread bufpitch-feats-0;
+#X floatatom 58 787 5 0 0 0 - - -;
+#X floatatom 216 789 5 0 0 0 - - -;
+#X obj 216 768 tabread bufpitch-feats-1;
+#X obj 37 398 fluid.bufpitch~ -source pitch-source -features bufpitch-feats
+, f 61;
+#X obj 256 380 note_on_assumed_sampling_rates_of_arrays;
+#X connect 4 0 16 0;
+#X connect 11 0 12 0;
+#X connect 11 0 15 0;
+#X connect 12 0 13 0;
+#X connect 15 0 14 0;
+#X connect 16 0 10 0;

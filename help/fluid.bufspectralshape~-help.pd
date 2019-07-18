@@ -14,11 +14,11 @@ a linear scale for both amplitude and frequency., f 102;
 #X restore 30 294 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_feats-0 887 float 0;
-#X coords 0 1 886 0 887 53 1 0 0;
+#X coords 0 22050 886 0 887 53 1 0 0;
 #X restore 29 363 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_feats-1 887 float 0;
-#X coords 0 1 886 0 887 53 1 0 0;
+#X coords 0 22050 886 0 887 53 1 0 0;
 #X restore 30 434 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_feats-2 887 float 0;
@@ -30,7 +30,7 @@ a linear scale for both amplitude and frequency., f 102;
 #X restore 30 574 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_feats-4 887 float 0;
-#X coords 0 1 886 0 887 53 1 0 0;
+#X coords 0 22050 886 0 887 53 1 0 0;
 #X restore 30 644 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_feats-5 887 float 0;
@@ -42,8 +42,6 @@ a linear scale for both amplitude and frequency., f 102;
 #X restore 30 784 graph;
 #X obj 410 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 410 170 fluid.bufspectralshape~ -source bufshape_drums -features
-bufshape_feats, f 71;
 #X text 142 488 skewness(ratio):;
 #X text 143 559 kurtosis(ratio):;
 #X text 144 698 flatness(dB):;
@@ -52,29 +50,28 @@ bufshape_feats, f 71;
 xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
 0 0 0 \; bufshape_feats-4 xticks 0 0 0 \; bufshape_feats-5 xticks 0
 0 0 \; bufshape_feats-6 xticks 0 0 0;
-#X text 144 348 centroid(normalised frequency):;
-#X text 145 418 spread(normalised frequency):;
-#X text 144 628 rolloff(normalised frequency):;
 #X obj 134 236 tabplay~ bufshape_drums;
 #X obj 134 257 dac~;
 #X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X msg 152 215 stop;
-#N canvas 0 23 450 300 multichannel 1;
+#N canvas 0 23 450 300 multichannel 0;
 #X restore 704 239 pd multichannel;
-#N canvas 0 23 399 123 note_on_normalised_frequencies 1;
-#X text 19 20 As PureData arrays are simply list of numbers \, they
-do not have a sampling rate per se \, and therefore the frequency of
-the various descriptors can only be as true as the relationship between
-the sampling rate of the input array and the size of the FFT processing
-them. The object therefore returns a value between 0 and 1 \, where
-0 is 0 Hz and 1 is the Nyquist frequency of the input array.;
-#X restore 704 217 pd note_on_normalised_frequencies;
+#X text 144 348 centroid(Hz):;
+#X text 145 418 spread(Hz):;
+#X text 144 628 rolloff(Hz):;
+#X obj 704 217 note_on_assumed_sampling_rates_of_arrays;
+#X msg 453 141 sr \$1 \, bang;
+#X floatatom 457 118 5 0 0 0 - - -;
+#X obj 410 170 fluid.bufspectralshape~ -source bufshape_drums -features
+bufshape_feats, f 71;
 #X connect 2 0 5 0;
 #X connect 5 0 0 0;
-#X connect 14 0 15 0;
-#X connect 15 0 20 0;
-#X connect 24 0 25 0;
-#X connect 24 0 25 1;
-#X connect 26 0 24 0;
-#X connect 27 0 24 0;
+#X connect 14 0 31 0;
+#X connect 20 0 21 0;
+#X connect 20 0 21 1;
+#X connect 22 0 20 0;
+#X connect 23 0 20 0;
+#X connect 29 0 31 0;
+#X connect 30 0 29 0;
+#X connect 31 0 19 0;
