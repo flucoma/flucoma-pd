@@ -1,0 +1,102 @@
+#N canvas 60 44 946 806 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufmelbands~ 20 12 0 36
+-262144 -66577 0;
+#X obj 34 156 loadbang;
+#X obj 399 109 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 134 257 dac~;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 152 215 stop;
+#N canvas 0 23 450 300 multichannel 0;
+#X restore 826 169 pd multichannel;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-0 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 367 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 31 299 graph;
+#X obj 677 194 note_on_assumed_sampling_rates_of_arrays;
+#X obj 398 128 fluid.bufmelbands~ 10 -source bufmelbands_drums -features
+bufmelbands_feats, f 75;
+#X msg 33 177 read -resize ../media/Nicol-LoopE-M.wav bufmelbands_drums
+;
+#X obj 134 236 tabplay~ bufmelbands_drums;
+#X text 36 58 A Perceptually Spread Spectral Contour Descriptor on
+a Buffer, f 62;
+#X msg 399 147 \; bufmelbands_feats-0 xticks 0 0 0 \; bufmelbands_feats-1
+xticks 0 0 0 \; bufmelbands_feats-2 xticks 0 0 0 \; bufmelbands_feats-3
+xticks 0 0 0 \; bufmelbands_feats-4 xticks 0 0 0 \; bufmelbands_feats-5
+xticks 0 0 0 \; bufmelbands_feats-6 xticks 0 0 0 \; bufmelbands_feats-7
+xticks 0 0 0 \; bufmelbands_feats-8 xticks 0 0 0 \; bufmelbands_feats-9
+xticks 0 0 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-1 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 410 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-2 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 453 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-3 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 496 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-4 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 539 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-5 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 582 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-6 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 625 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-7 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 668 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-8 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 711 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmelbands_feats-9 887 float 0;
+#X coords 0 3000 886 0 887 30 1 0 0;
+#X restore 31 754 graph;
+#X text 416 110 1) process;
+#X msg 550 107 numbands \$1;
+#X msg 630 107 minfreq \$1;
+#X msg 704 107 maxfreq \$1;
+#X floatatom 550 90 8 0 0 0 - - -;
+#X floatatom 630 90 8 0 0 0 - - -;
+#X floatatom 704 90 8 0 0 0 - - -;
+#X obj 703 51 loadbang;
+#X msg 550 69 10;
+#X msg 630 69 20;
+#X msg 703 69 20000;
+#X connect 2 0 12 0;
+#X connect 3 0 11 0;
+#X connect 5 0 13 0;
+#X connect 6 0 13 0;
+#X connect 11 0 15 0;
+#X connect 12 0 0 0;
+#X connect 13 0 4 0;
+#X connect 13 0 4 1;
+#X connect 26 0 11 0;
+#X connect 27 0 11 0;
+#X connect 28 0 11 0;
+#X connect 29 0 26 0;
+#X connect 30 0 27 0;
+#X connect 31 0 28 0;
+#X connect 32 0 33 0;
+#X connect 32 0 34 0;
+#X connect 32 0 35 0;
+#X connect 33 0 29 0;
+#X connect 34 0 30 0;
+#X connect 35 0 31 0;
