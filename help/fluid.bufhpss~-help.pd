@@ -1,6 +1,6 @@
 #N canvas 48 41 971 666 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufmfcc~ 20 12 0 36 -262144
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufhpss~ 20 12 0 36 -262144
 -66577 0;
 #X obj 34 156 loadbang;
 #X obj 392 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -216,4 +216,5 @@ xticks 0 0 0 \; bufhpss_residual xticks 0 0 0;
 #X connect 18 0 9 0;
 #X connect 19 0 9 0;
 #X connect 20 0 23 0;
+#X connect 21 0 23 0;
 #X connect 23 0 22 0;
