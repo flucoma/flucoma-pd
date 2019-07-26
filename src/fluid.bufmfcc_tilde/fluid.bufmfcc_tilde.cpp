@@ -4,5 +4,5 @@
 extern "C" void setup_fluid0x2ebufmfcc_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTMFCCClient>("fluid.bufmfcc~");
+  makePDWrapper<NRTThreadedMFCCClient>("fluid.bufmfcc~");
 }

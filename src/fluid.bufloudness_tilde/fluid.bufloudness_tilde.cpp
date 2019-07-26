@@ -4,5 +4,5 @@
 extern "C" void setup_fluid0x2ebufloudness_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTLoudnessClient>("fluid.bufloudness~");
+  makePDWrapper<NRTThreadedLoudnessClient>("fluid.bufloudness~");
 }

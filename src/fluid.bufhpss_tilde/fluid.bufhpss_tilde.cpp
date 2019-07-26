@@ -4,5 +4,5 @@
 extern "C" void setup_fluid0x2ebufhpss_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTHPSS>("fluid.bufhpss~");
+  makePDWrapper<NRTThreadedHPSS>("fluid.bufhpss~");
 }
