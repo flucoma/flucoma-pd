@@ -147,7 +147,7 @@ public:
 
     for (auto i = 0u; i < client.controlChannelsOut(); ++i) mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
-    client.process(mInputs, mOutputs);
+    client.process(mInputs, mOutputs, mContext);
 
     if (mControlClock)
       clock_delay(mControlClock, 0);
@@ -174,6 +174,7 @@ private:
   std::vector<t_atom>       mControlAtoms;
   t_outlet*                 mLatencyOut;
   t_clock*                  mControlClock{nullptr};
+  FluidContext              mContext;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,37 +182,101 @@ private:
 template <class Wrapper>
 struct NonRealTime
 {
+  
+  NonRealTime()
+  {
+  
+    auto w = static_cast<Wrapper*>(this);
+  
+    mProgressClock = clock_new((t_object*) w  , (t_method)checkProcess);
+  }
+  
+  ~NonRealTime()
+  {
+    if(mProgressClock) clock_free(mProgressClock);
+  }
+  
   static void setup(t_class *c)
   {
     class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL);
     class_addmethod(c, (t_method) callSR, gensym("sr"), A_FLOAT, 0);
+    
+    //concurrency messages
+    class_addmethod(c, (t_method) callCancel, gensym("cancel"), A_NULL);
+    class_addmethod(c, (t_method) doSynchronous, gensym("synchronous"), A_FLOAT,0);
   }
 
+  bool checkResult(Result& res)
+  {
+    auto &wrapper = static_cast<Wrapper &>(*this);
+    
+    if (!res.ok())
+    {
+      Wrapper::printResult(&wrapper,res);
+      return false;
+    }
+    return true;
+  }
+
+  void cancel()
+  {
+    auto &wrapper = static_cast<Wrapper &>(*this);
+    auto &client  = wrapper.mClient;
+    client.cancel();
+  }
+  
   void process()
   {
     auto &wrapper = static_cast<Wrapper &>(*this);
     auto &client  = wrapper.mClient;
-
+    bool synchronous = mSynchronous;
+    
+    client.setSynchronous(synchronous);
+    
     Result res = client.process();
-    if (!res.ok())
+    if (checkResult(res))
     {
-      switch (res.status())
-      {
-        case Result::Status::kWarning: object_warn(&wrapper, res.message().c_str()); break;
-        case Result::Status::kError: pd_error(&wrapper, "%s", res.message().c_str()); break;
-        default: {
-      }
-      }
-      return;
+      if (synchronous)
+        wrapper.doneBang();
+      else
+        clockWait();
     }
-    wrapper.doneBang();
   }
-
+  static void callCancel(Wrapper *x) { x->cancel(); }
   static void callProcess(Wrapper *x) { x->process(); }
+  
+  static void checkProcess(Wrapper *x)
+  {
+    Result res;
+    auto &client  = x->mClient;
+    
+    if (client.checkProgress(res) == ProcessState::kDone)
+    {
+      if (x->checkResult(res))
+        x->doneBang();
+    }
+    else
+    {
+      x->progress(client.progress());
+      x->clockWait();
+    }
+  }
+  
+  void clockWait()
+  {
+    clock_delay(mProgressClock, 20);  // FIX - set at 20ms for now...
+  }
   
   void setupAudio(t_object *, size_t, size_t) {}
   
   static void callSR(Wrapper *x, t_float sr) { x->sampleRate(sr); }
+  
+  static void doSynchronous(Wrapper *x, t_float s) { x->mSynchronous = static_cast<bool>(s);   }
+  
+private:
+  t_clock* mProgressClock;
+  bool     mSynchronous;
+  
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -292,6 +357,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
       {
         case Result::Status::kWarning: object_warn(x, r.message().c_str()); break;
         case Result::Status::kError: pd_error(x, "%s", r.message().c_str()); break;
+        case Result::Status::kCancelled: object_warn(x, "Job cancelled"); break;
         default: {
         }
       }
@@ -394,7 +460,7 @@ public:
   using ParamSetType = typename Client::ParamSetType;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom *av)
-    : mNRTDoneOutlet(NULL), mControlOutlet(NULL), mParams(Client::getParameterDescriptors()),
+    : mNRTProgressOutlet{nullptr},mNRTDoneOutlet(nullptr), mControlOutlet(nullptr), mParams(Client::getParameterDescriptors()),
       mParamSnapshot(Client::getParameterDescriptors()),
       mClient{initParamsFromArgs(ac,av)}
   {
@@ -408,7 +474,11 @@ public:
 
     this->setupAudio(pdObject, mClient.audioChannelsIn(), mClient.audioChannelsOut());
 
-    if (isNonRealTime<Client>::value) mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
+    if (isNonRealTime<Client>::value)
+    {      
+        mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
+        mNRTProgressOutlet = outlet_new(pdObject,gensym("float"));
+    }
 
     if (mClient.controlChannelsOut() && !mControlOutlet) mControlOutlet = outlet_new(pdObject, gensym("list"));
   }
@@ -464,7 +534,10 @@ public:
       mParams.template forEachParam<MatchName>(s->s_name + 1, matched);
       if (!strcmp(s->s_name + 1, "warnings"))
         matched = true;
-          
+      
+      if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "synchronous"))
+        matched = true;
+      
       if (!matched)
       {
         pd_error(impl::PDBase::getPDObject(), "No parameter named %s", s->s_name + 1);
@@ -522,6 +595,8 @@ public:
   Client &client() { return mClient; }
   ParamSetType &params() { return mParams; }
 
+
+  void progress(double progress) { outlet_float(mNRTProgressOutlet, progress); }
 
   void sampleRate(float sr)
   {
@@ -584,6 +659,7 @@ private:
   };
   
   Result        mResult;
+  t_outlet*     mNRTProgressOutlet;
   t_outlet*     mNRTDoneOutlet;
   t_outlet*     mControlOutlet;
   bool          mVerbose;
