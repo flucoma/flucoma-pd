@@ -596,7 +596,7 @@ public:
   ParamSetType &params() { return mParams; }
 
 
-  void progress(double progress) { outlet_float(mNRTProgressOutlet, progress); }
+  void progress(double progress) { outlet_float(mNRTProgressOutlet, static_cast<float>(progress)); }
 
   void sampleRate(float sr)
   {
