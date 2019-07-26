@@ -275,7 +275,7 @@ struct NonRealTime
   
 private:
   t_clock* mProgressClock;
-  bool     mSynchronous;
+  bool     mSynchronous{true};
   
 };
 
