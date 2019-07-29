@@ -120,19 +120,19 @@ public:
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
   
-  const FluidTensorView<float, 1> samps(size_t channel) const override
+  FluidTensorView<const float, 1> samps(size_t channel) const override
   {
     float* samples = (float *) getArrayData(channel);
     
-    FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
+    FluidTensorView<const float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     
     return v.col(0);
   }
 
-  const FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) const override
+  FluidTensorView<const float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) const override
   {
     float* samples = (float *) getArrayData(chanoffset);
-    FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
+    FluidTensorView<const float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
     
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
@@ -141,9 +141,8 @@ public:
 
   size_t numChans() const override { return getArrayCount(); }
   
-  //FIX
   double sampleRate() const override { return mSampleRate; } // N.B. pd has no notion of sample rates for buffers...
-  void   sampleRate(double sr) { mSampleRate = sr; }
+  void sampleRate(double sr) { mSampleRate = sr; }
   std::string asString() const override { return mName->s_name; }
 private:
     
