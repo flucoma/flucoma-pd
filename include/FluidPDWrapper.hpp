@@ -404,6 +404,12 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
       return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
+    static auto fromAtom(FluidPDWrapper<Client>* x, t_atom *a, InputBufferT::type)
+    {
+      return InputBufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
+    }
+    
+    
     static void set(FluidPDWrapper<Client>* x, t_symbol *s, int ac, t_atom *av)
     {
       NOTUSED(s);
@@ -436,6 +442,12 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
     static auto toAtom(t_atom *a, BufferT::type v)
     {
       auto b = static_cast<PDBufferAdaptor *>(v.get());
+      SETSYMBOL(a, (b ? b->name() : nullptr));
+    }
+    
+    static auto toAtom(t_atom *a, InputBufferT::type v)
+    {
+      auto b = static_cast<const PDBufferAdaptor *>(v.get());
       SETSYMBOL(a, (b ? b->name() : nullptr));
     }
 
