@@ -185,10 +185,8 @@ struct NonRealTime
   
   NonRealTime()
   {
-  
-    auto w = static_cast<Wrapper*>(this);
-  
-    mProgressClock = clock_new((t_object*) w  , (t_method)checkProcess);
+    auto wrapper = static_cast<Wrapper*>(this);
+    mProgressClock = clock_new((t_object*) wrapper, (t_method)checkProcess);
   }
   
   ~NonRealTime()
@@ -212,7 +210,7 @@ struct NonRealTime
     
     if (!res.ok())
     {
-      Wrapper::printResult(&wrapper,res);
+      Wrapper::printResult(&wrapper, res);
       return false;
     }
     return true;
@@ -276,7 +274,6 @@ struct NonRealTime
 private:
   t_clock* mProgressClock;
   bool     mSynchronous{true};
-  
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
