@@ -1,0 +1,63 @@
+#N canvas 244 160 955 577 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufsines~ 20 12 0 36 -262144
+-66577 0;
+#X obj 34 156 loadbang;
+#X obj 424 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 133 325 dac~;
+#X msg 97 234 stop;
+#N canvas 0 23 450 300 multichannel 0;
+#X restore 789 317 pd multichannel;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufsines_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 369 graph;
+#X obj 133 304 tabplay~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufsines_sines 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 437 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufsines_residual 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 505 graph;
+#X text 451 215 1) process;
+#X text 37 52 Buffer-Based Sinusoidal Modelling and Resynthesis, f
+50;
+#X text 40 91 This class triggers a Sinusoidal Modelling process on
+buffers in non-real-time \, It implements a mix and match algorithms
+taken from classic papers., f 134;
+#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufsines_drums
+;
+#X msg 133 213 set bufsines_drums \, bang;
+#X msg 153 254 set bufsines_sines \, bang;
+#X msg 165 274 set bufsines_residual \, bang;
+#X msg 424 268 \; bufsines_sines xticks 0 0 0 \; bufsines_residual
+xticks 0 0 0;
+#X obj 424 237 fluid.bufsines~ -threshold 0.5 -source bufsines_drums
+-sines bufsines_sines -residual bufsines_residual -fftsettings 1024
+512 8192, f 75;
+#X floatatom 607 188 8 0 0 0 - - -;
+#X floatatom 747 188 8 0 0 0 - - -;
+#X text 605 151 change the threshold and bandwidth;
+#X msg 747 207 bandwidth \$1 \, bang;
+#X msg 747 169 76;
+#X msg 607 169 0.5;
+#X msg 607 207 threshold \$1 \, bang;
+#X connect 2 0 14 0;
+#X connect 3 0 19 0;
+#X connect 5 0 8 0;
+#X connect 8 0 4 0;
+#X connect 8 0 4 1;
+#X connect 14 0 0 0;
+#X connect 15 0 8 0;
+#X connect 16 0 8 0;
+#X connect 17 0 8 0;
+#X connect 19 0 18 0;
+#X connect 20 0 26 0;
+#X connect 21 0 23 0;
+#X connect 23 0 19 0;
+#X connect 24 0 21 0;
+#X connect 25 0 20 0;
+#X connect 26 0 19 0;

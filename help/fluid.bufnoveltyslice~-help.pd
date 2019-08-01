@@ -1,0 +1,189 @@
+#N canvas 96 30 582 680 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnoveltyslice~ 20 12
+0 36 -262144 -66577 0;
+#X obj 59 197 until;
+#X msg 41 149 6;
+#X msg 59 338 1;
+#X msg 180 200 const 0;
+#X obj 40 401 list store;
+#X obj 192 374 t l l;
+#X obj 40 430 t b l;
+#X obj 59 240 + 20;
+#X obj 59 261 * 50;
+#X obj 59 316 t b f f f;
+#X obj 59 282 +;
+#X obj 192 353 list prepend;
+#X obj 59 218 random 81;
+#X msg 115 263 0;
+#X obj 41 170 t b f b, f 14;
+#X text 70 149 trigger 6 random spikes in the buffer;
+#X obj 67 459 print original_positions;
+#X obj 40 612 print discovered_onsets;
+#X text 220 461 the actual locations;
+#N canvas 473 171 536 554 musical_example 0;
+#X obj 17 77 soundfiler;
+#X obj 17 97 t b;
+#X obj 20 356 t f f;
+#X obj 21 514 dac~;
+#X obj 46 452 -;
+#X obj 20 473 pack;
+#X floatatom 20 334 5 0 0 0 - - -;
+#X floatatom 17 231 5 0 0 0 - - -;
+#X obj 20 435 f;
+#X text 18 35 1) read a source \, and triggers the analysis;
+#X text 54 231 number of slices found;
+#X floatatom 209 136 8 0 0 0 - - -;
+#X floatatom 349 136 8 0 0 0 - - -;
+#X text 18 314 2) play a give slice \, by retrieving the onset and
+offset indices, f 65;
+#X obj 19 414 t f f;
+#X obj 19 375 + 1;
+#X msg 209 155 threshold \$1 \, bang;
+#X msg 17 57 read -resize ../media/Nicol-LoopE-M.wav bufnovslice_source
+;
+#X obj 255 473 array define bufnovslice_source;
+#X obj 20 492 tabplay~ bufnovslice_source;
+#X obj 255 494 array define bufnovslice_indices;
+#X obj 203 392 tabread bufnovslice_indices;
+#X obj 19 393 tabread bufnovslice_indices;
+#X obj 17 177 fluid.bufnoveltyslice~ -source bufnovslice_source -indices
+bufnovslice_indices -kernelsize 31 -threshold 0.25, f 80;
+#X obj 17 210 array size bufnovslice_indices;
+#X text 207 99 change the threshold and kernel size;
+#X msg 349 117 31;
+#X msg 209 117 0.25;
+#X msg 349 155 kernelsize \$1 \, bang;
+#X connect 0 0 1 0;
+#X connect 1 0 23 0;
+#X connect 2 0 15 0;
+#X connect 2 1 21 0;
+#X connect 4 0 5 1;
+#X connect 5 0 19 0;
+#X connect 6 0 2 0;
+#X connect 8 0 5 0;
+#X connect 11 0 16 0;
+#X connect 12 0 28 0;
+#X connect 14 0 8 0;
+#X connect 14 1 4 0;
+#X connect 15 0 22 0;
+#X connect 16 0 23 0;
+#X connect 17 0 0 0;
+#X connect 19 0 3 0;
+#X connect 19 0 3 1;
+#X connect 21 0 4 1;
+#X connect 21 0 8 1;
+#X connect 22 0 14 0;
+#X connect 23 0 24 0;
+#X connect 24 0 7 0;
+#X connect 26 0 12 0;
+#X connect 27 0 11 0;
+#X connect 28 0 23 0;
+#X restore 417 297 pd musical_example;
+#X obj 180 218 array define novelspikes 30000;
+#X obj 180 238 array define novelslicepoints;
+#X obj 59 358 tabwrite novelspikes;
+#X obj 40 591 array get novelslicepoints;
+#X obj 40 518 fluid.bufnoveltyslice~ -source novelspikes -indices novelslicepoints
+-fftsettings 128, f 66;
+#X text 203 590 the detected locations (samps): these will be at the
+begining of the window an attack is detected in. Note that all source
+channels are summed for detection;
+#X text 37 50 Buffer-Based Novelty-Based Slicer;
+#X text 36 92 A non-real-time slicer using an algorithm assessing novelty
+in the signal to estimate the slicing points., f 86;
+#N canvas 631 75 634 515 filter_size 0;
+#X text 19 7 use filtersize attribute to control sensitivity;
+#X text 18 45 1) In the first example \, the novelty line is jittery
+and therefore overtriggers on the arpegiated guitar. We also can hear
+attacks at the end of the segment. Setting the threshold higher (like
+in the 'Basic Example' tab) misses some more subtle variations., f
+97;
+#X text 44 123 2) In the second example \, we smooth the novelty line
+a little \, which allows us to catch small differences that are not
+jittery. It also corrects the ending cutting by the same trick: the
+averaging of the sharp pick is sliding up \, crossing the threshold
+slightly earlier., f 93;
+#X text 65 220 3) If we smooth too much \, like the third settings
+here \, we start to loose precision. Have fun with different values
+of theshold then will allow you to find the perfect segment for your
+signal., f 90;
+#X obj 22 354 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 22 316 fluid.bufnoveltyslice~ -source bufnov_guit -indices bufnov_segments
+-kernelsize 31 -threshold 0.1, f 67;
+#X obj 22 459 array define bufnov_guit;
+#X obj 179 459 array define bufnov_segments;
+#X obj 22 441 soundfiler;
+#X obj 22 405 loadbang;
+#X msg 22 423 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+bufnov_guit, f 68;
+#X msg 22 88 filtersize 1 \, bang;
+#X msg 47 168 filtersize 4 \, bang;
+#X msg 73 273 filtersize 12 \, bang;
+#N canvas 1125 80 450 300 player 0;
+#X obj 18 30 inlet;
+#X obj 18 48 t f f;
+#X obj 45 144 -;
+#X obj 19 165 pack;
+#X obj 19 127 f;
+#X obj 18 106 t f f;
+#X obj 18 67 + 1;
+#X obj 20 206 outlet~;
+#X obj 202 85 tabread bufnov_segments;
+#X obj 18 85 tabread bufnov_segments;
+#X obj 19 184 tabplay~ bufnov_guit;
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 1 1 8 0;
+#X connect 2 0 3 1;
+#X connect 3 0 10 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 5 1 2 0;
+#X connect 6 0 9 0;
+#X connect 8 0 2 1;
+#X connect 8 0 4 1;
+#X connect 9 0 5 0;
+#X connect 10 0 7 0;
+#X restore 484 360 pd player;
+#X obj 484 381 dac~;
+#X msg 518 339 3;
+#X msg 484 339 2;
+#X text 482 319 Play a segment;
+#X connect 5 0 4 0;
+#X connect 9 0 10 0;
+#X connect 10 0 8 0;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 13 0 5 0;
+#X connect 14 0 15 0;
+#X connect 14 0 15 1;
+#X connect 16 0 14 0;
+#X connect 17 0 14 0;
+#X restore 417 330 pd filter_size;
+#X connect 1 0 13 0;
+#X connect 2 0 15 0;
+#X connect 3 0 23 0;
+#X connect 4 0 21 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 1;
+#X connect 6 1 12 1;
+#X connect 7 0 25 0;
+#X connect 7 1 17 0;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 10 0 3 0;
+#X connect 10 1 23 1;
+#X connect 10 2 12 0;
+#X connect 10 3 11 1;
+#X connect 11 0 10 0;
+#X connect 12 0 6 0;
+#X connect 13 0 8 0;
+#X connect 14 0 11 1;
+#X connect 15 0 5 0;
+#X connect 15 1 1 0;
+#X connect 15 2 4 0;
+#X connect 15 2 12 1;
+#X connect 15 2 14 0;
+#X connect 24 0 18 0;
+#X connect 25 0 24 0;

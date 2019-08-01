@@ -1,0 +1,61 @@
+#N canvas 72 75 955 577 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.buftransients~ 20 12 0
+36 -262144 -66577 0;
+#X obj 34 156 loadbang;
+#X obj 424 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 133 325 dac~;
+#X msg 97 234 stop;
+#N canvas 0 23 450 300 multichannel 0;
+#X restore 789 317 pd multichannel;
+#N canvas 0 23 450 278 (subpatch) 0;
+#X array buftransients_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 369 graph;
+#X obj 133 304 tabplay~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array buftransients_transients 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 437 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array buftransients_residual 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 505 graph;
+#X text 451 215 1) process;
+#X text 40 91 This class triggers a Sinusoidal Modelling process on
+buffers in non-real-time \, It implements a mix and match algorithms
+taken from classic papers., f 134;
+#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav buftransients_drums
+;
+#X msg 133 213 set buftransients_drums \, bang;
+#X msg 165 274 set buftransients_residual \, bang;
+#X msg 424 268 \; buftransients_transients xticks 0 0 0 \; buftransients_residual
+xticks 0 0 0;
+#X msg 153 254 set buftransients_transients \, bang;
+#X obj 424 237 fluid.buftransients~ -source buftransients_drums -transients
+buftransients_transients -residual buftransients_residual, f 75;
+#X floatatom 614 190 8 0 0 0 - - -;
+#X floatatom 754 190 8 0 0 0 - - -;
+#X text 612 153 change the thresholds;
+#X msg 754 171 1.1;
+#X msg 614 171 2;
+#X msg 614 209 threshfwd \$1 \, bang;
+#X msg 754 209 threshback \$1 \, bang;
+#X text 37 52 Buffer-Based Transient Extractor, f 50;
+#X connect 2 0 13 0;
+#X connect 3 0 18 0;
+#X connect 5 0 8 0;
+#X connect 8 0 4 0;
+#X connect 8 0 4 1;
+#X connect 13 0 0 0;
+#X connect 14 0 8 0;
+#X connect 15 0 8 0;
+#X connect 17 0 8 0;
+#X connect 18 0 16 0;
+#X connect 19 0 24 0;
+#X connect 20 0 25 0;
+#X connect 22 0 20 0;
+#X connect 23 0 19 0;
+#X connect 24 0 18 0;
+#X connect 25 0 18 0;

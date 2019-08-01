@@ -1,0 +1,220 @@
+#N canvas 48 41 971 666 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufhpss~ 20 12 0 36 -262144
+-66577 0;
+#X obj 34 156 loadbang;
+#X obj 392 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 133 325 dac~;
+#X msg 97 234 stop;
+#N canvas 0 23 450 300 multichannel 0;
+#X restore 665 325 pd multichannel;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufhpss_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 369 graph;
+#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufhpss_drums
+;
+#X obj 133 304 tabplay~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufhpss_harmonic 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 437 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufhpss_percussive 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 505 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufhpss_residual 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 34 573 graph;
+#X text 37 52 Buffer-Based Harmonic-Percussive Source Separation Using
+Median Filtering, f 74;
+#X text 40 91 FluidBufHPSS performs Harmonic-Percussive Source Separation
+(HPSS) on the contents of a Buffer., f 96;
+#X text 419 159 1) process;
+#X msg 133 213 set bufhpss_drums \, bang;
+#X msg 143 233 set bufhpss_harmonic \, bang;
+#X msg 153 254 set bufhpss_percussive \, bang;
+#X msg 165 274 set bufhpss_residual \, bang;
+#N canvas 841 52 623 455 mode1 0;
+#X text 16 12 use mode 1 for more extreme separation;
+#X text 13 46 in mode 0 \, fluid.hpss~ uses a soft-masking approach
+that produces smooth results \, at the cost of how separated they are.
+In modes 1 and 2 \, a binary mask is used instead \, where a component
+is designated as being harmonic or percussive if the respective median
+filter output exceeds some threshold. This yields greater separation
+\, but can have more audible artefacts., f 93;
+#X text 13 99 fluid.hpss~ lets you adjust this threshold with respect
+to frequency \, to enable fine-tuning. In mode 1 \, just use the harmthresh
+attribute \, which will internally make a comlpemntary threshold for
+the percussive part – gurranteeing that the two components still
+sum to the source., f 93;
+#X obj 41 250 / 1;
+#X floatatom 41 269 6 0 0 0 - - -;
+#X floatatom 41 232 6 0 0 0 - - -;
+#X obj 303 214 samplerate~;
+#X obj 303 194 r pd-dsp-started;
+#X obj 303 235 / 2;
+#X obj 176 287 t b f;
+#X obj 176 250 / 1;
+#X floatatom 176 269 6 0 0 0 - - -;
+#X floatatom 176 232 6 0 0 0 - - -;
+#X obj 104 287 t b f;
+#X floatatom 104 269 6 0 0 0 - - -;
+#X obj 234 287 t b f;
+#X floatatom 234 269 6 0 0 0 - - -;
+#X obj 41 345 list prepend harmthresh;
+#X obj 41 366 list trim;
+#X obj 41 403 outlet;
+#X text 81 234 Hz;
+#X text 216 233 Hz;
+#X text 142 269 dB;
+#X text 273 270 dB;
+#X text 322 274 1) change the filter to taste: the spectrum is affected
+from 0 Hz to the first frequency by the first value in dB \, then it
+is progressiveley changing to the 2nd frequency and second value in
+dB \, which is then constant up to Nyquist, f 45;
+#X text 196 362 2) bang to process \, and listen/observe in the main
+window;
+#X obj 41 324 pack f 0 f 0, f 37;
+#X msg 198 381 maskingmode 1 \, bang;
+#X connect 3 0 4 0;
+#X connect 4 0 26 0;
+#X connect 5 0 3 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 3 1;
+#X connect 8 0 10 1;
+#X connect 9 0 26 0;
+#X connect 9 1 26 2;
+#X connect 10 0 11 0;
+#X connect 11 0 9 0;
+#X connect 12 0 10 0;
+#X connect 13 0 26 0;
+#X connect 13 1 26 1;
+#X connect 14 0 13 0;
+#X connect 15 0 26 0;
+#X connect 15 1 26 3;
+#X connect 16 0 15 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 26 0 17 0;
+#X connect 27 0 19 0;
+#X restore 668 148 pd mode1;
+#N canvas 866 53 907 441 mode2 0;
+#X text 10 14 use mode 2 for more extreme separation and fine-tuning
+;
+#X obj 291 251 / 1;
+#X floatatom 291 270 6 0 0 0 - - -;
+#X floatatom 291 233 6 0 0 0 - - -;
+#X obj 553 215 samplerate~;
+#X obj 553 195 r pd-dsp-started;
+#X obj 553 236 / 2;
+#X obj 426 288 t b f;
+#X obj 426 251 / 1;
+#X floatatom 426 270 6 0 0 0 - - -;
+#X floatatom 426 233 6 0 0 0 - - -;
+#X obj 354 288 t b f;
+#X floatatom 354 270 6 0 0 0 - - -;
+#X obj 484 288 t b f;
+#X floatatom 484 270 6 0 0 0 - - -;
+#X obj 291 379 list trim;
+#X obj 291 404 outlet;
+#X text 331 235 Hz;
+#X text 466 234 Hz;
+#X text 392 270 dB;
+#X text 523 271 dB;
+#X text 572 275 1) change the filter to taste: the spectrum is affected
+from 0 Hz to the first frequency by the first value in dB \, then it
+is progressiveley changing to the 2nd frequency and second value in
+dB \, which is then constant up to Nyquist, f 45;
+#X text 446 363 2) bang to process \, and listen/observe in the main
+window;
+#X obj 291 325 pack f 0 f 0, f 37;
+#X text 9 44 in mode 0 \, fluid.hpss~ uses a soft-masking approach
+that produces smooth results \, at the cost of how separated they are.
+In modes 1 and 2 \, a binary mask is used instead (see mode 1 subpatch)
+, f 138;
+#X text 9 79 In mode 2 \, the harmonic and percussive masks use separate
+thresholds. This means that two components are no longer guarranteed
+to sum to the source \, and so the residual buffer contains any leftovers.
+With some patient experimentation \, one can sometimes manage to place
+noisier material in the residual \, with tonal / persussive material
+in the other two channels., f 138;
+#X obj 34 251 / 1;
+#X floatatom 34 270 6 0 0 0 - - -;
+#X floatatom 34 233 6 0 0 0 - - -;
+#X obj 169 288 t b f;
+#X obj 169 251 / 1;
+#X floatatom 169 270 6 0 0 0 - - -;
+#X floatatom 169 233 6 0 0 0 - - -;
+#X obj 97 288 t b f;
+#X floatatom 97 270 6 0 0 0 - - -;
+#X obj 227 288 t b f;
+#X floatatom 227 270 6 0 0 0 - - -;
+#X obj 34 346 list prepend harmthresh;
+#X text 74 235 Hz;
+#X text 209 234 Hz;
+#X text 135 270 dB;
+#X obj 34 325 pack f 0 f 0, f 37;
+#X msg 448 382 maskingmode 2 \, bang;
+#X obj 291 346 list prepend percthresh;
+#X connect 1 0 2 0;
+#X connect 2 0 23 0;
+#X connect 3 0 1 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 1 1;
+#X connect 6 0 8 1;
+#X connect 6 0 30 1;
+#X connect 6 0 26 1;
+#X connect 7 0 23 0;
+#X connect 7 1 23 2;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 10 0 8 0;
+#X connect 11 0 23 0;
+#X connect 11 1 23 1;
+#X connect 12 0 11 0;
+#X connect 13 0 23 0;
+#X connect 13 1 23 3;
+#X connect 14 0 13 0;
+#X connect 15 0 16 0;
+#X connect 23 0 43 0;
+#X connect 26 0 27 0;
+#X connect 27 0 41 0;
+#X connect 28 0 26 0;
+#X connect 29 0 41 0;
+#X connect 29 1 41 2;
+#X connect 30 0 31 0;
+#X connect 31 0 29 0;
+#X connect 32 0 30 0;
+#X connect 33 0 41 0;
+#X connect 33 1 41 1;
+#X connect 34 0 33 0;
+#X connect 35 0 41 0;
+#X connect 35 1 41 3;
+#X connect 36 0 35 0;
+#X connect 37 0 15 0;
+#X connect 41 0 37 0;
+#X connect 42 0 16 0;
+#X connect 43 0 15 0;
+#X restore 724 148 pd mode2;
+#X msg 392 212 \; bufhpss_harmonic xticks 0 0 0 \; bufhpss_percussive
+xticks 0 0 0 \; bufhpss_residual xticks 0 0 0;
+#X obj 392 181 fluid.bufhpss~ -source bufhpss_drums -harmonic bufhpss_harmonic
+-percussive bufhpss_percussive -residual bufhpss_residual, f 64;
+#X connect 2 0 8 0;
+#X connect 3 0 23 0;
+#X connect 5 0 9 0;
+#X connect 8 0 0 0;
+#X connect 9 0 4 0;
+#X connect 9 0 4 1;
+#X connect 16 0 9 0;
+#X connect 17 0 9 0;
+#X connect 18 0 9 0;
+#X connect 19 0 9 0;
+#X connect 20 0 23 0;
+#X connect 21 0 23 0;
+#X connect 23 0 22 0;

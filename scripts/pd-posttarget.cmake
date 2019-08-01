@@ -37,6 +37,8 @@ else ()
 endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXTERN_OUTPUT_NAME}")
 
+message(${EXTERN_OUTPUT_NAME})
+
 
 if(MSVC)
   target_compile_definitions( ${PROJECT_NAME} PUBLIC USE_MATH_DEFINES)
@@ -66,7 +68,8 @@ elseif (MSVC)
   )
 
 	# warning about constexpr not being const in c++14
-	set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/wd4814")
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		COMPILE_FLAGS "/wd4814")
 
 endif (APPLE)
 

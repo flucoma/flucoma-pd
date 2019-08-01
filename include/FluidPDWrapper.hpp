@@ -46,6 +46,10 @@ class RealTime
   using ViewType = FluidTensorView<t_sample, 1>;
 
 public:
+
+  //Make sure we free the clock if it's in use, otherwise badness
+  ~RealTime() { if(mControlClock) clock_free(mControlClock); }
+
   static void setup(t_class *c)
   {
     class_addmethod(c, nullfn, gensym("signal"), A_NULL);
@@ -169,7 +173,7 @@ private:
   std::vector<t_float>      mControlOutputs;
   std::vector<t_atom>       mControlAtoms;
   t_outlet*                 mLatencyOut;
-  t_clock*                  mControlClock;
+  t_clock*                  mControlClock{nullptr};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,7 +181,11 @@ private:
 template <class Wrapper>
 struct NonRealTime
 {
-  static void setup(t_class *c) { class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL); }
+  static void setup(t_class *c)
+  {
+    class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL);
+    class_addmethod(c, (t_method) callSR, gensym("sr"), A_FLOAT, 0);
+  }
 
   void process()
   {
@@ -200,8 +208,10 @@ struct NonRealTime
   }
 
   static void callProcess(Wrapper *x) { x->process(); }
-    
+  
   void setupAudio(t_object *, size_t, size_t) {}
+  
+  static void callSR(Wrapper *x, t_float sr) { x->sampleRate(sr); }
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -320,14 +330,20 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   {
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
-    static auto fromAtom(t_atom *a, LongT::type) { return atom_getint(a); }
-    static auto fromAtom(t_atom *a, FloatT::type) { return atom_getfloat(a); }
+    static auto fromAtom(FluidPDWrapper<Client>*, t_atom *a, LongT::type) { return atom_getint(a); }
+    static auto fromAtom(FluidPDWrapper<Client>*, t_atom *a, FloatT::type) { return atom_getfloat(a); }
 
-    static auto fromAtom(t_atom *a, BufferT::type)
+    static auto fromAtom(FluidPDWrapper<Client>* x, t_atom *a, BufferT::type)
     {
-      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a)));
+      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
+    static auto fromAtom(FluidPDWrapper<Client>* x, t_atom *a, InputBufferT::type)
+    {
+      return InputBufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
+    }
+    
+    
     static void set(FluidPDWrapper<Client>* x, t_symbol *s, int ac, t_atom *av)
     {
       NOTUSED(s);
@@ -338,7 +354,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
       x->messages().reset();
 
       for (auto i = 0u; i < argSize && i < static_cast<size_t>(ac); i++)
-        a[i] = fromAtom(av + i, a[0]);
+        a[i] = fromAtom(x, av + i, a[0]);
 
       x->params().template set<N>(a.value(), x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
@@ -360,6 +376,12 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
     static auto toAtom(t_atom *a, BufferT::type v)
     {
       auto b = static_cast<PDBufferAdaptor *>(v.get());
+      SETSYMBOL(a, (b ? b->name() : nullptr));
+    }
+    
+    static auto toAtom(t_atom *a, InputBufferT::type v)
+    {
+      auto b = static_cast<const PDBufferAdaptor *>(v.get());
       SETSYMBOL(a, (b ? b->name() : nullptr));
     }
 
@@ -491,7 +513,7 @@ public:
     WrapperBase::setup(getClass());
 
     class_addmethod(getClass(), (t_method)doReset, gensym("reset"), A_NULL);
-    class_addmethod(getClass(), (t_method)doWarnings, gensym("warnings"), A_FLOAT);
+    class_addmethod(getClass(), (t_method)doWarnings, gensym("warnings"), A_FLOAT, 0);
 
     p.template iterateMutable<SetupParameter>();
     class_sethelpsymbol(getClass(), gensym(className));
@@ -512,6 +534,14 @@ public:
   Client &client() { return mClient; }
   ParamSetType &params() { return mParams; }
 
+
+  void sampleRate(float sr)
+  {
+      mSamplerate = sr > 0 ? sr : mSamplerate;
+      mParams.template forEachParamType<BufferT,SetBufferSR>(this);
+  }
+  
+  float sampleRate() { return mSamplerate <= 0 ? sys_getsr() : mSamplerate; }
 private:
 
   static t_class *getClass(t_class *setClass = nullptr)
@@ -554,7 +584,17 @@ private:
       class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME, 0);
     }
   };
-
+  
+  //Set the sample rate of a PD buffer adaptor param
+  template <size_t N, typename T>
+  struct SetBufferSR
+  {
+    void operator()(const typename T::type& param, FluidPDWrapper* x)
+    {
+      if(auto b = static_cast<PDBufferAdaptor*>(param.get())) b->sampleRate(x->sampleRate());
+    }
+  };
+  
   Result        mResult;
   t_outlet*     mNRTDoneOutlet;
   t_outlet*     mControlOutlet;
@@ -562,6 +602,7 @@ private:
   ParamSetType  mParams;
   ParamSetType  mParamSnapshot;
   Client        mClient;
+  float         mSamplerate{-1};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <clients/common/BufferAdaptor.hpp>
+#include <clients/common/Result.hpp>
 #include <data/FluidTensor.hpp>
 #include <atomic>
 
@@ -18,9 +19,10 @@ void NOTUSED(T& a)
 class PDBufferAdaptor : public BufferAdaptor
 {
 public:
-  PDBufferAdaptor(t_symbol *name)
+  PDBufferAdaptor(t_symbol *name, double sr)
       : mName(name)
       , mLock(false)
+      , mSampleRate(sr)
   {}
 
   ~PDBufferAdaptor()
@@ -56,13 +58,19 @@ public:
     return getMinFrames() > 0;
   }
 
-  void resize(size_t frames, size_t channels, double sampleRate) override
+  const Result resize(size_t frames, size_t channels, double /*sampleRate*/) override
   {
-    NOTUSED(sampleRate);
-      
+//    NOTUSED(sampleRate);
+    
     size_t nChans = numChans();
-      
-    for (size_t i = 0; i < nChans && i < channels; i++)
+    Result r;
+    if(channels > numChans())
+    {
+      r.set(Result::Status::kError);
+      r.addMessage("Not enough arrays to operate on ", mName->s_name, ". Found ", channels, " array(s) but need ", nChans, ".");
+    }
+    
+    for (size_t i = 0; i < nChans; ++i)
     {
       t_garray *array = getArray(i);
           
@@ -70,10 +78,15 @@ public:
         garray_resize_long(array, static_cast<int>(frames));
     }
       
-    assert(frames == numFrames() && channels == numChans());
+    if(frames != numFrames())
+    {
+      r.set(Result::Status::kError);
+      r.addMessage("Reszie failed on ", mName->s_name, ".");
+    }
+    return r;
   }
 
-  bool acquire() override
+  bool acquire() const override
   {
     bool lock = tryLock();
       
@@ -85,7 +98,7 @@ public:
     return false;
   }
 
-  void release() override
+  void release() const override
   {
     releaseLock();
   }
@@ -106,14 +119,31 @@ public:
     
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
+  
+  FluidTensorView<const float, 1> samps(size_t channel) const override
+  {
+    float* samples = (float *) getArrayData(channel);
+    
+    FluidTensorView<const float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
+    
+    return v.col(0);
+  }
+
+  FluidTensorView<const float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) const override
+  {
+    float* samples = (float *) getArrayData(chanoffset);
+    FluidTensorView<const float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
+    
+    return v(Slice(offset, nframes), Slice(0, 1)).col(0);
+  }
     
   size_t numFrames() const override { return getMinFrames(); }
 
   size_t numChans() const override { return getArrayCount(); }
   
-  //FIX
-  double sampleRate() const override { return valid() ? 1 : 0 ; } // N.B. pd has no notion of sample rates for buffers...
-
+  double sampleRate() const override { return mSampleRate; } // N.B. pd has no notion of sample rates for buffers...
+  void sampleRate(double sr) { mSampleRate = sr; }
+  std::string asString() const override { return mName->s_name; }
 private:
     
   size_t getMinFrames() const
@@ -174,17 +204,17 @@ private:
     return (t_garray *) pd_findbyclass(name, garray_class);
   }
     
-  bool tryLock()
+  bool tryLock() const
   {
     return compareExchange(false, true);
   }
   
-  void releaseLock()
+  void releaseLock() const
   {
     compareExchange(true, false);
   }
     
-  bool compareExchange(bool compare, bool exchange)
+  bool compareExchange(bool compare, bool exchange) const
   {
     return mLock.compare_exchange_strong(compare, exchange);
   }
@@ -202,7 +232,8 @@ private:
 
   t_symbol *mName;
     
-  std::atomic<bool> mLock;
+  mutable std::atomic<bool> mLock;
+  double mSampleRate;
 };
 } // namespace client
 } // namespace fluid
