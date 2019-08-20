@@ -56,7 +56,13 @@ if (APPLE)
 	)
 
 elseif(UNIX AND NOT APPLE)
-		set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pd_linux")
+
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+    SUFFIX ".pd_linux"
+    PREFIX ""
+    POSITION_INDEPENDENT_CODE ON
+  )
+  
 elseif (MSVC)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES
