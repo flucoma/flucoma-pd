@@ -1,0 +1,26 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Release",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "inheritEnvironments": [
+        "msvc_x64"
+      ],
+      "variables": [
+        {
+          "name": "FLUID_PATH",
+          "value": "c:\\code\\fluid_decomposition"
+        },
+        {
+          "name": "PD_PATH",
+          "value": "c:\\Program Files\\Pd"
+        }
+      ],
+      "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": ""
+    }
+  ]
+}
