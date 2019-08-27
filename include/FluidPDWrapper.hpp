@@ -231,6 +231,8 @@ struct NonRealTime
     
     client.setSynchronous(synchronous);
     
+    client.enqueue(client.mParams);
+    
     Result res = client.process();
     if (checkResult(res))
     {
