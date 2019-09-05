@@ -201,7 +201,7 @@ struct NonRealTime
     
     //concurrency messages
     class_addmethod(c, (t_method) callCancel, gensym("cancel"), A_NULL);
-    class_addmethod(c, (t_method) doSynchronous, gensym("synchronous"), A_FLOAT,0);
+    class_addmethod(c, (t_method) doSynchronous, gensym("blocking"), A_FLOAT,0);
   }
 
   bool checkResult(Result& res)
@@ -549,7 +549,7 @@ public:
       if (!strcmp(s->s_name + 1, "warnings"))
         matched = true;
       
-      if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "synchronous"))
+      if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "blocking"))
         matched = true;
       
       if (!matched)
