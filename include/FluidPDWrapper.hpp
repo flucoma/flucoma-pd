@@ -202,6 +202,7 @@ struct NonRealTime
     //concurrency messages
     class_addmethod(c, (t_method) callCancel, gensym("cancel"), A_NULL);
     class_addmethod(c, (t_method) doSynchronous, gensym("blocking"), A_FLOAT,0);
+    class_addmethod(c, (t_method) doQueueing, gensym("queue"), A_FLOAT, 0);
   }
 
   bool checkResult(Result& res)
@@ -230,7 +231,7 @@ struct NonRealTime
     bool synchronous = mSynchronous;
     
     client.setSynchronous(synchronous);
-    
+    client.setQueueEnabled(mQueueEnabled);
     client.enqueue(wrapper.mParams);
     
     Result res = client.process();
@@ -276,9 +277,12 @@ struct NonRealTime
   
   static void doSynchronous(Wrapper *x, t_float s) { x->mSynchronous = static_cast<bool>(s);   }
   
+  static void doQueueing(Wrapper *x, t_float s) { x->mQueueEnabled = static_cast<bool>(s); }
+  
 private:
   t_clock* mProgressClock;
   bool     mSynchronous{true};
+  bool     mQueueEnabled{false};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -551,6 +555,10 @@ public:
       
       if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "blocking"))
         matched = true;
+      
+      if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "queue"))
+        matched = true;
+      
       
       if (!matched)
       {
