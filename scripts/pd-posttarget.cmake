@@ -45,6 +45,7 @@ if(MSVC)
 endif(MSVC)
 
 ### Output ###
+
 if (APPLE)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -55,18 +56,26 @@ if (APPLE)
 	)
 
 elseif(UNIX AND NOT APPLE)
-	set_target_properties(${PROJECT_NAME} PROPERTIES
-                SUFFIX ".pd_linux"
-                PREFIX ""
-		POSITION_INDEPENDENT_CODE ON)
-	
-elseif (WIN32)
 
-	set_target_properties(${PROJECT_NAME} PROPERTIES 
-		SUFFIX ".dll")
+  set_target_properties(${PROJECT_NAME} PROPERTIES
+    SUFFIX ".pd_linux"
+    PREFIX ""
+    POSITION_INDEPENDENT_CODE ON
+  )
+
+elseif (MSVC)
+
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+    SUFFIX ".dll"
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    RUNTIME_OUTPUT_DIRECTORY_RelWithDebInfo ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+  )
 
 	# warning about constexpr not being const in c++14
-	set_target_properties(${PROJECT_NAME} PROPERTIES 
+	set_target_properties(${PROJECT_NAME} PROPERTIES
 		COMPILE_FLAGS "/wd4814")
 
 endif (APPLE)
