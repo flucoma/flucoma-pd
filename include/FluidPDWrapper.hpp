@@ -350,6 +350,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   friend impl::RealTime<FluidPDWrapper<Client>>;
   friend impl::NonRealTime<FluidPDWrapper<Client>>;
 
+
   template <size_t N>
   static constexpr auto paramDescriptor() { return Client::getParameterDescriptors().template get<N>(); }
 
@@ -357,11 +358,11 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   {
     if (!x) return;
 
-    if (x->verbose() && !x->messages().ok())
+    if (!r.ok())
     {
-      switch (x->messages().status())
+      switch (r.status())
       {
-        case Result::Status::kWarning: object_warn(x, r.message().c_str()); break;
+        case Result::Status::kWarning: if (x-> verbose()) object_warn(x, r.message().c_str()); break;
         case Result::Status::kError: pd_error(x, "%s", r.message().c_str()); break;
         case Result::Status::kCancelled: object_warn(x, "Job cancelled"); break;
         default: {
