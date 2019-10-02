@@ -1,4 +1,4 @@
-#N canvas 37 23 912 855 10;
+#N canvas 462 23 912 855 10;
 #X obj 8 524 -~ 0.5;
 #X obj 8 545 abs~;
 #X obj 8 503 phasor~ 0.1;
@@ -140,7 +140,7 @@ allow for tails \, but with added latency, f 72;
 #X text 31 7 Amplitude followers love drums;
 #X obj 30 689 *~;
 #X obj 55 690 *~;
-#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 33 92 t b f b;
 #X connect 0 0 3 0;
@@ -185,6 +185,19 @@ hysterisis \, which can help with triggering errors. This is like replacing
 minimum silence length, f 38;
 #X text 534 627 computed latency is max of latency-inducing attributes
 ;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.ampslice~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 736 154 pd;
+#X text 605 135 launch the HTML doc->;
+#X obj 737 137 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 2 0 0 0;
@@ -220,3 +233,4 @@ minimum silence length, f 38;
 #X connect 34 0 33 0;
 #X connect 39 0 12 0;
 #X connect 40 0 12 0;
+#X connect 48 0 46 0;

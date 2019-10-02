@@ -79,7 +79,7 @@
 #X connect 13 0 11 0;
 #X restore 215 103 pd parameters;
 #X obj 215 53 switch~;
-#X obj 214 34 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 214 34 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X text 232 34 1) switch the processing on;
 #X text 214 85 2) experiment with parameters;
@@ -125,6 +125,19 @@ Change the window size above to explore the changes., f 95;
 #X text 36 57 Real-Time Novelty-Based Slicer, f 46;
 #X text 34 100 A real-time slicer using an algorithm assessing novelty
 in the signal to estimate the slicing points., f 102;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.noveltyslice~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 629 166 pd;
+#X text 498 147 launch the HTML doc->;
+#X obj 630 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 2 0 4 0;
 #X connect 3 0 5 0;
 #X connect 3 0 21 0;
@@ -148,3 +161,4 @@ in the signal to estimate the slicing points., f 102;
 #X connect 20 0 17 0;
 #X connect 21 0 17 1;
 #X connect 21 1 11 0;
+#X connect 28 0 26 0;

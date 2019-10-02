@@ -488,7 +488,7 @@ used to tune a filter, f 73;
 #X connect 25 0 24 0;
 #X restore 459 784 pd example_2;
 #X text 34 100 Matches an incoming audio signal against a set of spectral
-templates, f 69;
+templates, f 40;
 #X obj 37 398 fluid.bufnmf~ -source didact-source3 -bases nmfmatch_basis
 -components 2, f 72;
 #X msg 37 417 \; nmfmatch_basis-1 xticks 0 0 0 \; nmfmatch_basis-0
@@ -501,6 +501,19 @@ xticks 0 0 0;
 #X text 35 703 3) try matching one \, the other \, and both;
 #X text 215 843 the activation levels grow in the presence of a learned
 component, f 33;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.nmfmatch~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 524 121 pd;
+#X text 393 102 launch the HTML doc->;
+#X obj 525 104 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 7 0 21 0;
 #X connect 10 0 12 0;
 #X connect 11 0 14 0;
@@ -516,3 +529,4 @@ component, f 33;
 #X connect 23 0 24 0;
 #X connect 24 0 25 0;
 #X connect 24 1 26 0;
+#X connect 32 0 30 0;

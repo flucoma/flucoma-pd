@@ -1,4 +1,4 @@
-#N canvas 40 41 584 968 10;
+#N canvas 40 41 580 968 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufpitch~ 20 12 0 36 -262144
 -66577 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -17,7 +17,7 @@
 -1;
 #X text 36 57 A Selection of Pitch Descriptors on a Buffer, f 61;
 #X text 35 100 Implements three pitch descriptors \, computed as frequency
-and the confidence in its value., f 91;
+and the confidence in its value., f 45;
 #N canvas 731 210 424 490 make_burst 0;
 #X msg 38 172 44100;
 #X obj 57 220 until;
@@ -300,6 +300,19 @@ xticks 0 0 0;
 #X connect 15 0 1 0;
 #X connect 22 0 17 0;
 #X restore 395 343 pd multichannel;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufpitch~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 528 122 pd;
+#X text 397 103 launch the HTML doc->;
+#X obj 529 105 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 4 0 15 0;
 #X connect 10 0 11 0;
 #X connect 10 0 14 0;
@@ -310,3 +323,4 @@ xticks 0 0 0;
 #X connect 20 0 10 0;
 #X connect 26 0 29 0;
 #X connect 29 0 27 0;
+#X connect 34 0 32 0;

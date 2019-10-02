@@ -96,7 +96,7 @@
 #X connect 24 0 22 0;
 #X restore 215 103 pd parameters;
 #X obj 215 53 switch~;
-#X obj 214 34 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 214 34 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 215 138 fluid.transientslice~ -order 20 -blocksize 1024 -minslicelength
 4410;
@@ -137,6 +137,19 @@
 #X obj 131 309 fexpr~ $y1[-1] + 1;
 #X text 89 462 the detection is half the window size before \, steadily
 \, on test signal, f 71;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.transientslice~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 622 151 pd;
+#X text 491 132 launch the HTML doc->;
+#X obj 623 134 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 4 0 6 0;
 #X connect 5 0 8 0;
 #X connect 5 0 7 0;
@@ -160,3 +173,4 @@
 #X connect 22 0 21 1;
 #X connect 23 0 22 0;
 #X connect 23 0 20 0;
+#X connect 27 0 25 0;

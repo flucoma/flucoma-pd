@@ -366,7 +366,7 @@ mel \, then converts them all back in Hz;
 #X obj 22 411 *~;
 #X obj 36 393 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 72 371 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 72 371 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 58 411 *~;
 #X text 135 393 select what to listen to source / resynth;
@@ -427,6 +427,19 @@ mel \, then converts them all back in Hz;
 #X connect 26 0 8 0;
 #X connect 26 1 9 0;
 #X restore 15 600 pd musical_example;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.melbands~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 839 127 pd;
+#X text 708 108 launch the HTML doc->;
+#X obj 840 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 2 0 1 0;
 #X connect 2 0 1 1;
 #X connect 2 0 23 0;
@@ -517,3 +530,4 @@ mel \, then converts them all back in Hz;
 #X connect 92 0 89 0;
 #X connect 93 0 90 0;
 #X connect 94 0 88 0;
+#X connect 98 0 96 0;

@@ -96,7 +96,7 @@ bufsinesguitar, f 90;
 50;
 #X text 40 91 This class triggers a Sinusoidal Modelling process on
 buffers in non-real-time \, It implements a mix and match algorithms
-taken from classic papers., f 134;
+taken from classic papers., f 80;
 #X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufsines_drums
 ;
 #X msg 133 213 set bufsines_drums \, bang;
@@ -114,6 +114,19 @@ xticks 0 0 0;
 #X msg 747 169 76;
 #X msg 607 169 0.5;
 #X msg 607 207 threshold \$1 \, bang;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufsines~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 862 80 pd;
+#X text 731 61 launch the HTML doc->;
+#X obj 863 63 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
 #X connect 2 0 14 0;
 #X connect 3 0 19 0;
 #X connect 5 0 8 0;
@@ -130,3 +143,4 @@ xticks 0 0 0;
 #X connect 24 0 21 0;
 #X connect 25 0 20 0;
 #X connect 26 0 19 0;
+#X connect 29 0 27 0;

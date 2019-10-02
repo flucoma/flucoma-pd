@@ -133,6 +133,19 @@ on the second sample., f 71;
 #X floatatom 58 853 5 0 0 0 - - -;
 #X text 91 853 total number of frames= ((source #frames + windowsize)
 / hopSize) - 1, f 69;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufloudness~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 535 83 pd;
+#X text 404 64 launch the HTML doc->;
+#X obj 536 66 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
 #X connect 4 0 12 0;
 #X connect 7 0 14 0;
 #X connect 7 0 15 0;
@@ -141,3 +154,4 @@ on the second sample., f 71;
 #X connect 15 0 9 0;
 #X connect 21 0 22 0;
 #X connect 22 0 23 0;
+#X connect 27 0 25 0;
