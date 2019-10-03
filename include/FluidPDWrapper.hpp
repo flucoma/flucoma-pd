@@ -271,9 +271,20 @@ struct NonRealTime
     clock_delay(mProgressClock, 20);  // FIX - set at 20ms for now...
   }
   
+  void setSampleRate(float sr)
+  {
+      auto &wrapper = static_cast<Wrapper &>(*this);
+      mSamplerate = sr > 0 ? sr : mSamplerate;
+      wrapper.mParams.template forEachParamType<BufferT, Wrapper::template SetBufferSR>(&wrapper);
+      wrapper.mParams.template forEachParamType<InputBufferT,Wrapper::template SetBufferSR>(&wrapper);
+  }
+  
+  float sampleRate() { return mSamplerate <= 0 ? sys_getsr() : mSamplerate; }
+  
+  
   void setupAudio(t_object *, size_t, size_t) {}
   
-  static void callSR(Wrapper *x, t_float sr) { x->sampleRate(sr); }
+  static void callSR(Wrapper *x, t_float sr) { x->setSampleRate(sr); }
   
   static void doSynchronous(Wrapper *x, t_float s) { x->mSynchronous = static_cast<bool>(s);   }
   
@@ -283,6 +294,7 @@ private:
   t_clock* mProgressClock;
   bool     mSynchronous{true};
   bool     mQueueEnabled{false};
+  float    mSamplerate{-1};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -559,7 +571,9 @@ public:
       
       if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "queue"))
         matched = true;
-      
+
+      if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "sr"))
+        matched = true;
       
       if (!matched)
       {
@@ -621,13 +635,24 @@ public:
 
   void progress(double progress) { outlet_float(mNRTProgressOutlet, static_cast<float>(progress)); }
 
-  void sampleRate(float sr)
+
+  void printBufferSRs()
   {
-      mSamplerate = sr > 0 ? sr : mSamplerate;
-      mParams.template forEachParamType<BufferT,SetBufferSR>(this);
+     mParams.template forEachParamType<BufferT,PrintBufferSR>(this);
+     mParams.template forEachParamType<InputBufferT,PrintBufferSR>(this);
   }
   
-  float sampleRate() { return mSamplerate <= 0 ? sys_getsr() : mSamplerate; }
+  //Set the sample rate of a PD buffer adaptor param
+  template <size_t N, typename T>
+  struct SetBufferSR
+  {
+    void operator()(const typename T::type& param, FluidPDWrapper* x)
+    {
+      if(auto b = static_cast<const PDBufferAdaptor*>(param.get())) b->sampleRate(x->sampleRate());
+    }
+  };
+  
+  
 private:
 
   static t_class *getClass(t_class *setClass = nullptr)
@@ -670,17 +695,17 @@ private:
       class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME, 0);
     }
   };
-  
-  //Set the sample rate of a PD buffer adaptor param
+
   template <size_t N, typename T>
-  struct SetBufferSR
+  struct PrintBufferSR
   {
     void operator()(const typename T::type& param, FluidPDWrapper* x)
     {
-      if(auto b = static_cast<PDBufferAdaptor*>(param.get())) b->sampleRate(x->sampleRate());
+      if(auto b = static_cast<const PDBufferAdaptor*>(param.get()))
+          post("%f",b->sampleRate());
     }
   };
-  
+
   Result        mResult;
   t_outlet*     mNRTProgressOutlet;
   t_outlet*     mNRTDoneOutlet;
@@ -689,7 +714,6 @@ private:
   ParamSetType  mParams;
   ParamSetType  mParamSnapshot;
   Client        mClient;
-  float         mSamplerate{-1};
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

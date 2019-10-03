@@ -142,7 +142,7 @@ public:
   size_t numChans() const override { return getArrayCount(); }
   
   double sampleRate() const override { return mSampleRate; } // N.B. pd has no notion of sample rates for buffers...
-  void sampleRate(double sr) { mSampleRate = sr; }
+  void sampleRate(double sr) const { mSampleRate = sr; } //we still need to set the SR on const input buffers
   std::string asString() const override { return mName->s_name; }
 private:
     
@@ -233,7 +233,7 @@ private:
   t_symbol *mName;
     
   mutable std::atomic<bool> mLock;
-  double mSampleRate;
+  mutable double mSampleRate;
 };
 } // namespace client
 } // namespace fluid
