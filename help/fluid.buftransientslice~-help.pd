@@ -90,6 +90,19 @@ offset indices, f 65;
 #X obj 40 591 array get transientslicepoints;
 #X obj 40 518 fluid.buftransientslice~ -source transientspikes -indices
 transientslicepoints -minslicelength 45, f 66;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.buftransientslice~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 528 111 pd;
+#X text 397 92 launch the HTML doc->;
+#X obj 529 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 26 0;
@@ -116,3 +129,4 @@ transientslicepoints -minslicelength 45, f 66;
 #X connect 15 2 14 0;
 #X connect 27 0 18 0;
 #X connect 28 0 27 0;
+#X connect 31 0 29 0;

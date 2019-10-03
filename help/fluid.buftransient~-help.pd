@@ -94,7 +94,7 @@ buftrans_tra -residual buftrans_res -threshfwd 1.2, f 84;
 #X text 451 215 1) process;
 #X text 40 91 This class triggers a Sinusoidal Modelling process on
 buffers in non-real-time \, It implements a mix and match algorithms
-taken from classic papers., f 134;
+taken from classic papers., f 79;
 #X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav buftransients_drums
 ;
 #X msg 133 213 set buftransients_drums \, bang;
@@ -112,6 +112,19 @@ buftransients_transients -residual buftransients_residual, f 75;
 #X msg 614 209 threshfwd \$1 \, bang;
 #X msg 754 209 threshback \$1 \, bang;
 #X text 37 52 Buffer-Based Transient Extractor, f 50;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.buftransients~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 857 109 pd;
+#X text 726 90 launch the HTML doc->;
+#X obj 858 92 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
 #X connect 2 0 13 0;
 #X connect 3 0 18 0;
 #X connect 5 0 8 0;
@@ -128,3 +141,4 @@ buftransients_transients -residual buftransients_residual, f 75;
 #X connect 23 0 19 0;
 #X connect 24 0 18 0;
 #X connect 25 0 18 0;
+#X connect 29 0 27 0;

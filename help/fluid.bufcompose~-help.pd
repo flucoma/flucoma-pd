@@ -1,4 +1,4 @@
-#N canvas 27 42 907 824 10;
+#N canvas 27 42 811 824 10;
 #X obj 34 218 soundfiler;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufcompose_dst-0 515088 float 2;
@@ -174,6 +174,19 @@ a destination buffer/array at a given gain. Use the source and destination
 attributes to set these buffers \, and bang to process, f 64;
 #X msg 38 381 reset \, source bufcompose_monosynth \, gain 0.5 \, destination
 bufcompose_dst \, bang;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufcompose~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 750 142 pd;
+#X text 619 123 launch the HTML doc->;
+#X obj 751 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 6 0 10 0;
 #X connect 7 0 10 0;
 #X connect 8 0 10 0;
@@ -189,3 +202,4 @@ bufcompose_dst \, bang;
 #X connect 23 0 20 0;
 #X connect 23 0 21 0;
 #X connect 25 0 10 0;
+#X connect 28 0 26 0;

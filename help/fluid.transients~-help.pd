@@ -1,9 +1,9 @@
-#N canvas 88 173 528 687 10;
+#N canvas 88 173 501 687 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.transients~ 20 12 0 36
 -262144 -66577 0;
 #X obj 37 632 dac~;
 #X obj 37 545 *~;
-#X obj 51 527 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 51 527 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 157 545 *~;
 #X obj 171 527 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -29,7 +29,7 @@
 #X obj 286 539 delread~ \$0-latencycomp 1;
 #X obj 43 367 loadbang;
 #X text 331 556 by inverting here \, we should hear nothing when all
-sources are enabled, f 28;
+sources are enabled, f 22;
 #X msg 43 385 getlatency;
 #X text 72 432 experiment with parameters;
 #X text 36 57 Real-Time Transient Modeller and Extractor, f 61;
@@ -90,6 +90,19 @@ sources are enabled, f 28;
 #X connect 23 0 21 0;
 #X connect 24 0 22 0;
 #X restore 74 451 pd parameters;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.transients~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 440 143 pd;
+#X text 309 124 launch the HTML doc->;
+#X obj 441 126 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 2 0 1 0;
 #X connect 2 0 1 1;
 #X connect 3 0 2 1;
@@ -129,3 +142,4 @@ sources are enabled, f 28;
 #X connect 33 1 4 0;
 #X connect 33 2 8 0;
 #X connect 34 0 33 0;
+#X connect 37 0 35 0;

@@ -1,4 +1,4 @@
-#N canvas 96 30 582 680 10;
+#N canvas 96 30 552 680 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufonsetslice~ 20 12 0
 36 -262144 -66577 0;
 #X obj 59 197 until;
@@ -21,7 +21,7 @@
 #X obj 40 612 print discovered_onsets;
 #X text 203 590 the detected locations are slightly before the click
 in this toy example \, since the envelope follower is 1 sample long
-(not very useful on real signal);
+(not very useful on real signal), f 53;
 #X text 220 461 the actual locations;
 #N canvas 473 171 536 554 musical_example 0;
 #X obj 17 77 soundfiler;
@@ -81,7 +81,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 26 0 12 0;
 #X connect 27 0 11 0;
 #X connect 28 0 16 0;
-#X restore 417 297 pd musical_example;
+#X restore 398 297 pd musical_example;
 #X obj 180 218 array define onsetspikes 30000;
 #X obj 180 238 array define onsetslicepoints;
 #X obj 59 358 tabwrite onsetspikes;
@@ -90,7 +90,20 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X obj 40 591 array get onsetslicepoints;
 #X text 37 50 Spectral Difference-Based Audio Buffer Slicer;
 #X text 36 92 Implements many spectral-based onset detection metrics
-\, most of them taken from the literature., f 86;
+\, most of them taken from the literature., f 79;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufonsetslice~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 487 168 pd;
+#X text 356 149 launch the HTML doc->;
+#X obj 488 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 24 0;
@@ -117,3 +130,4 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 15 2 14 0;
 #X connect 25 0 26 0;
 #X connect 26 0 18 0;
+#X connect 31 0 29 0;

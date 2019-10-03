@@ -129,6 +129,19 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X array bufmfcc_feats-12 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
 #X restore 31 883 graph;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufmfcc~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 891 258 pd;
+#X text 760 239 launch the HTML doc->;
+#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 2 0 8 0;
 #X connect 3 0 13 0;
 #X connect 5 0 9 0;
@@ -137,3 +150,4 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X connect 9 0 4 0;
 #X connect 9 0 4 1;
 #X connect 13 0 10 0;
+#X connect 29 0 27 0;

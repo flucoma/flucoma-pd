@@ -1,4 +1,4 @@
-#N canvas 119 66 528 783 10;
+#N canvas 119 66 493 783 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.sines~ 20 12 0 36 -262144
 -66577 0;
 #X obj 36 722 dac~;
@@ -6,7 +6,7 @@
 #X obj 50 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 130 635 *~;
-#X obj 144 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 144 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 199 182 r pd-dsp-started;
 #X obj 292 610 / 1;
@@ -33,7 +33,7 @@
 69;
 #X obj 36 571 fluid.sines~ 8192 -fftsettings 1024 -1 8192;
 #X text 337 646 by inverting here \, we should hear nothing when all
-sources are enabled, f 28;
+sources are enabled, f 21;
 #X msg 36 160 read -resize ../media/Nicol-LoopE-M.wav sines_drums;
 #X obj 37 323 tabread4~ sines_drums;
 #X obj 34 749 array define sines_drums;
@@ -48,6 +48,19 @@ sources are enabled, f 28;
 #X msg 176 542 mintracklen \$1 \, getlatency;
 #X text 57 420 experiment with parameters;
 #X msg 176 504 4;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.sines~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 422 156 pd;
+#X text 291 137 launch the HTML doc->;
+#X obj 423 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 2 0 1 0;
 #X connect 2 0 1 1;
 #X connect 3 0 2 1;
@@ -95,3 +108,4 @@ sources are enabled, f 28;
 #X connect 39 0 27 0;
 #X connect 40 0 27 0;
 #X connect 42 0 34 0;
+#X connect 45 0 43 0;

@@ -1,25 +1,25 @@
-#N canvas 96 30 582 680 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnoveltyslice~ 20 12
+#N canvas 96 30 548 661 10;
+#X obj 8 19 cnv 15 100 10 empty empty fluid.bufnoveltyslice~ 20 12
 0 36 -262144 -66577 0;
-#X obj 59 197 until;
-#X msg 41 149 6;
-#X msg 59 338 1;
-#X msg 180 200 const 0;
-#X obj 40 401 list store;
-#X obj 192 374 t l l;
-#X obj 40 430 t b l;
-#X obj 59 240 + 20;
-#X obj 59 261 * 50;
-#X obj 59 316 t b f f f;
-#X obj 59 282 +;
-#X obj 192 353 list prepend;
-#X obj 59 218 random 81;
-#X msg 115 263 0;
-#X obj 41 170 t b f b, f 14;
-#X text 70 149 trigger 6 random spikes in the buffer;
-#X obj 67 459 print original_positions;
-#X obj 40 612 print discovered_onsets;
-#X text 220 461 the actual locations;
+#X obj 55 197 until;
+#X msg 37 149 6;
+#X msg 55 338 1;
+#X msg 176 200 const 0;
+#X obj 36 401 list store;
+#X obj 188 374 t l l;
+#X obj 36 430 t b l;
+#X obj 55 240 + 20;
+#X obj 55 261 * 50;
+#X obj 55 316 t b f f f;
+#X obj 55 282 +;
+#X obj 188 353 list prepend;
+#X obj 55 218 random 81;
+#X msg 111 263 0;
+#X obj 37 170 t b f b, f 14;
+#X text 66 149 trigger 6 random spikes in the buffer;
+#X obj 63 459 print original_positions;
+#X obj 36 612 print discovered_onsets;
+#X text 216 461 the actual locations;
 #N canvas 473 171 536 554 musical_example 0;
 #X obj 17 77 soundfiler;
 #X obj 17 97 t b;
@@ -78,19 +78,19 @@ bufnovslice_indices -kernelsize 31 -threshold 0.25, f 80;
 #X connect 26 0 12 0;
 #X connect 27 0 11 0;
 #X connect 28 0 23 0;
-#X restore 417 297 pd musical_example;
-#X obj 180 218 array define novelspikes 30000;
-#X obj 180 238 array define novelslicepoints;
-#X obj 59 358 tabwrite novelspikes;
-#X obj 40 591 array get novelslicepoints;
-#X obj 40 518 fluid.bufnoveltyslice~ -source novelspikes -indices novelslicepoints
+#X restore 394 308 pd musical_example;
+#X obj 176 218 array define novelspikes 30000;
+#X obj 176 238 array define novelslicepoints;
+#X obj 55 358 tabwrite novelspikes;
+#X obj 36 591 array get novelslicepoints;
+#X obj 36 518 fluid.bufnoveltyslice~ -source novelspikes -indices novelslicepoints
 -fftsettings 128, f 66;
-#X text 203 590 the detected locations (samps): these will be at the
+#X text 199 590 the detected locations (samps): these will be at the
 begining of the window an attack is detected in. Note that all source
-channels are summed for detection;
-#X text 37 50 Buffer-Based Novelty-Based Slicer;
-#X text 36 92 A non-real-time slicer using an algorithm assessing novelty
-in the signal to estimate the slicing points., f 86;
+channels are summed for detection, f 53;
+#X text 33 50 Buffer-Based Novelty-Based Slicer;
+#X text 32 92 A non-real-time slicer using an algorithm assessing novelty
+in the signal to estimate the slicing points., f 77;
 #N canvas 631 75 634 515 filter_size 0;
 #X text 19 7 use filtersize attribute to control sensitivity;
 #X text 18 45 1) In the first example \, the novelty line is jittery
@@ -160,7 +160,20 @@ bufnov_guit, f 68;
 #X connect 14 0 15 1;
 #X connect 16 0 14 0;
 #X connect 17 0 14 0;
-#X restore 417 330 pd filter_size;
+#X restore 394 341 pd filter_size;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufnoveltyslice~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 486 184 pd;
+#X text 355 165 launch the HTML doc->;
+#X obj 487 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 23 0;
@@ -187,3 +200,4 @@ bufnov_guit, f 68;
 #X connect 15 2 14 0;
 #X connect 24 0 18 0;
 #X connect 25 0 24 0;
+#X connect 32 0 30 0;

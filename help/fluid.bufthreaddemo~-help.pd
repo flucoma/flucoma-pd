@@ -31,7 +31,7 @@ drop. In these circumstances you can opt to use a custom thread instead
 #X obj 33 333 fluid.bufthreaddemo~ -result result -time 3000;
 #X obj 33 354 expr result[0];
 #X floatatom 33 375 10 0 0 0 - - -;
-#X obj 34 187 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 34 187 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X msg 34 207 blocking \$1;
 #X obj 35 166 loadbang;
@@ -83,10 +83,10 @@ time 500 \, bang;
 #X text 37 116 In non-blocking mode \, this will give an error for
 the second and third jobs that the object is busy;
 #X obj 229 286 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 12611 1;
+-1 -1 0 1;
 #X text 57 181 If you want to enable this sort of idiom with custom
 threads \, you can turn the queue attribute on;
-#X obj 61 212 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 61 212 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X msg 61 232 queue \$1;
 #X connect 2 0 5 0;
@@ -98,6 +98,20 @@ threads \, you can turn the queue attribute on;
 #X connect 11 0 5 0;
 #X restore 39 433 pd queue_flag;
 #X text 37 392 Further information:;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 ../docs/fluid.bufthreaddemo~.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 670 302 pd;
+#X text 539 283 launch the HTML doc->;
+#X obj 671 285 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 3 0 4 0;
 #X connect 4 0 6 0;
 #X connect 6 0 7 0;
+#X connect 14 0 12 0;
