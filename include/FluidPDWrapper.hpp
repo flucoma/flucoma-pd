@@ -163,6 +163,9 @@ public:
 
     w->controlOut(static_cast<int>(client.controlChannelsOut()), mControlAtoms.data());
   }
+  
+ float sampleRate() { return sys_getsr();}
+  
 
 private:
   static void               doControlOut(Wrapper *x) { x->controlData(); }
