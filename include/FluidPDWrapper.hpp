@@ -699,7 +699,7 @@ private:
   template <size_t N, typename T>
   struct PrintBufferSR
   {
-    void operator()(const typename T::type& param, FluidPDWrapper* x)
+    void operator()(const typename T::type& param, FluidPDWrapper*)
     {
       if(auto b = static_cast<const PDBufferAdaptor*>(param.get()))
           post("%f",b->sampleRate());
