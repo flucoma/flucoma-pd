@@ -1,4 +1,4 @@
-#N canvas 38 74 917 635 10;
+#N canvas 119 139 917 635 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.melbands~ 20 12 0 36 -262144
 -66577 0;
 #X obj 45 373 dac~;
@@ -322,7 +322,6 @@ frequency modelled is helpful to focus the descriptor on a useful range
 #X obj 106 246 expr $f2 / ($f1 + 1);
 #X obj 179 207 t b f;
 #X obj 35 279 until;
-#X obj 35 73 t f b f;
 #X msg 35 299 1;
 #X obj 35 320 +;
 #X obj 35 341 t f f f;
@@ -334,7 +333,10 @@ mel \, then converts them all back in Hz;
 #X msg 71 299 -1;
 #X obj 54 378 expr (exp(((($f1 + 1) * $f2) + $f3) / 1127.01048) - 1
 ) * 700, f 62;
-#X connect 0 0 14 0;
+#X obj 35 167 f;
+#X obj 35 82 t b f;
+#X obj 35 188 t f b f;
+#X connect 0 0 24 0;
 #X connect 1 0 6 0;
 #X connect 2 0 8 0;
 #X connect 6 0 10 0;
@@ -342,22 +344,25 @@ mel \, then converts them all back in Hz;
 #X connect 9 0 12 0;
 #X connect 10 0 9 0;
 #X connect 10 1 9 1;
-#X connect 10 1 23 2;
-#X connect 11 0 23 1;
-#X connect 12 0 11 0;
+#X connect 10 1 22 2;
+#X connect 11 0 22 1;
+#X connect 12 0 23 0;
 #X connect 12 1 11 1;
-#X connect 13 0 15 0;
-#X connect 14 0 13 0;
-#X connect 14 1 22 0;
-#X connect 14 2 11 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
 #X connect 15 0 16 0;
-#X connect 16 0 17 0;
-#X connect 17 0 19 0;
-#X connect 17 1 23 0;
-#X connect 17 2 16 1;
-#X connect 19 0 18 0;
-#X connect 22 0 16 1;
-#X connect 23 0 19 1;
+#X connect 16 0 18 0;
+#X connect 16 1 22 0;
+#X connect 16 2 15 1;
+#X connect 18 0 17 0;
+#X connect 21 0 15 1;
+#X connect 22 0 18 1;
+#X connect 23 0 25 0;
+#X connect 24 0 23 0;
+#X connect 24 1 23 1;
+#X connect 25 0 13 0;
+#X connect 25 1 21 0;
+#X connect 25 2 11 0;
 #X restore 404 215 pd melbandcalculator;
 #X obj 62 312 clone fluid.melbands.polyoscil 40;
 #X obj 62 269 list prepend all;
@@ -366,7 +371,7 @@ mel \, then converts them all back in Hz;
 #X obj 22 411 *~;
 #X obj 36 393 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 72 371 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 72 371 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 58 411 *~;
 #X text 135 393 select what to listen to source / resynth;
@@ -382,7 +387,7 @@ mel \, then converts them all back in Hz;
 #X obj 295 124 expr 5000 * pow(4 \, (($f1 + 1.) / 2.));
 #X obj 77 142 outlet;
 #X obj 295 145 outlet;
-#X obj 359 63 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 359 63 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X text 296 43 switch on the mod;
 #X connect 0 0 1 0;
