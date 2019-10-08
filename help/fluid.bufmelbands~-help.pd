@@ -59,7 +59,7 @@ melbands., f 100;
 #X connect 13 0 3 1;
 #X connect 14 0 1 0;
 #X connect 17 0 18 0;
-#X restore 826 169 pd multichannel;
+#X restore 823 169 pd multichannel;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmelbands_feats-0 915 float 0;
 #X coords 0 3000 914 0 887 30 1 0 0;
@@ -68,7 +68,7 @@ melbands., f 100;
 #X array bufmelbands_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
 #X restore 31 299 graph;
-#X obj 677 194 note_on_assumed_sampling_rates_of_arrays;
+#X obj 674 194 note_on_assumed_sampling_rates_of_arrays;
 #X obj 398 128 fluid.bufmelbands~ 10 -source bufmelbands_drums -features
 bufmelbands_feats, f 75;
 #X msg 33 177 read -resize ../media/Nicol-LoopE-M.wav bufmelbands_drums
@@ -138,10 +138,11 @@ xticks 0 0 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
-#X restore 888 262 pd;
-#X text 757 243 launch the HTML doc->;
-#X obj 889 245 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 895 266 pd;
+#X text 764 247 launch the HTML doc->;
+#X obj 896 249 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X obj 782 219 note_on_multithreading;
 #X connect 2 0 12 0;
 #X connect 3 0 11 0;
 #X connect 5 0 13 0;

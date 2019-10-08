@@ -81,7 +81,7 @@ offset indices, f 65;
 #X connect 26 0 11 0;
 #X connect 27 0 23 0;
 #X connect 28 0 23 0;
-#X restore 417 297 pd musical_example;
+#X restore 439 171 pd musical_example;
 #X text 37 50 Buffer-Based Transient-Based Slicer;
 #X text 36 92 Transient-based slice extractor on buffers, f 43;
 #X obj 217 218 array define transientspikes 30000;
@@ -103,6 +103,7 @@ transientslicepoints -minslicelength 45, f 66;
 #X text 397 92 launch the HTML doc->;
 #X obj 529 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
+#X obj 416 141 note_on_multithreading;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 26 0;

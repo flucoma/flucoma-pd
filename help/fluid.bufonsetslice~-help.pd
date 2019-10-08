@@ -104,6 +104,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X text 356 149 launch the HTML doc->;
 #X obj 488 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X obj 374 345 note_on_multithreading;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 24 0;

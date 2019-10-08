@@ -496,10 +496,11 @@ Changing to channel 1 would sort by pitch confidence., f 100;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
-#X restore 684 112 pd;
-#X text 553 93 launch the HTML doc->;
-#X obj 685 95 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X restore 684 96 pd;
+#X text 553 77 launch the HTML doc->;
+#X obj 685 79 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
+#X obj 571 120 note_on_multithreading;
 #X connect 3 0 12 0;
 #X connect 5 0 3 1;
 #X connect 6 0 3 0;

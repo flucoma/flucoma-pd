@@ -1,12 +1,12 @@
-#N canvas 56 23 876 706 10;
-#X obj 522 540 soundfiler;
+#N canvas 56 23 809 703 10;
+#X obj 522 550 soundfiler;
 #X obj 45 616 dac~;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufnmf~ 20 12 0 36 -262144
 -66577 0;
 #X text 36 57 Buffer-Based Non-Negative Matrix Factorisation on Spectral
 Frames, f 66;
 #X msg 522 510 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufnmf_monosynth;
+bufnmf_monosynth, f 39;
 #X obj 528 578 array define bufnmf_monosynth;
 #X obj 528 599 clone multiarray 5 bufnmf_resynth;
 #X obj 528 620 clone multiarray 5 bufnmf_bases;
@@ -781,11 +781,12 @@ and numchans to process only what you want, f 94;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
-#X restore 693 220 pd;
-#X text 562 201 launch the HTML doc->;
-#X obj 694 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 693 131 pd;
+#X text 562 112 launch the HTML doc->;
+#X obj 694 114 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 563 260 more examples:;
+#X obj 581 159 note_on_multithreading;
 #X connect 4 0 0 0;
 #X connect 11 0 12 0;
 #X connect 12 0 18 0;
