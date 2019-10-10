@@ -280,9 +280,6 @@ struct NonRealTime
       mSamplerate = sr > 0 ? sr : mSamplerate;
       wrapper.mParams.template forEachParamType<BufferT, Wrapper::template SetBufferSR>(&wrapper);
       wrapper.mParams.template forEachParamType<InputBufferT,Wrapper::template SetBufferSR>(&wrapper);
-    
-      wrapper.mClient.recreateClient();
-  
   }
   
   float sampleRate() { return mSamplerate <= 0 ? sys_getsr() : mSamplerate; }
