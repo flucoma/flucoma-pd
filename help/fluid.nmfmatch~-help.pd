@@ -252,12 +252,12 @@ like in the fluid.bufnmf~ help file, f 95;
 #X connect 29 0 20 0;
 #X connect 30 0 18 0;
 #X restore 59 520 pd cool_delays;
-#X obj 19 736 clone multiarray 10 nmfmatch_guit-bases;
-#X obj 19 757 clone multiarray 2 nmfmatch_summed-bases;
-#X obj 19 778 clone multiarray 70 nmfmatch_guit-stats;
-#X obj 275 735 clone multiarray 70 nmfmatch_guit-features;
-#X obj 276 756 array define nmfmatch_guitar;
-#X obj 276 777 clone multiarray 10 nmfmatch_guit-resynth;
+#X obj 19 736 clone fluid.multiarray 10 nmfmatch_guit-bases;
+#X obj 19 757 clone fluid.multiarray 2 nmfmatch_summed-bases;
+#X obj 19 778 clone fluid.multiarray 70 nmfmatch_guit-stats;
+#X obj 301 736 clone fluid.multiarray 70 nmfmatch_guit-features;
+#X obj 302 757 array define nmfmatch_guitar;
+#X obj 302 778 clone fluid.multiarray 10 nmfmatch_guit-resynth;
 #X msg 20 102 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar;
 #X obj 20 173 fluid.bufnmf~ -source nmfmatch_guitar -numframes 88200
@@ -441,9 +441,9 @@ spectra, f 72;
 #X msg 24 107 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar2;
 #X obj 38 643 array define nmfmatch_guitar2;
-#X obj 38 663 clone multiarray 8 nmfmatch_guit-bases2;
-#X obj 294 684 clone multiarray 56 nmfmatch_guit-stats2;
-#X obj 294 663 clone multiarray 56 nmfmatch_guit-features2;
+#X obj 38 663 clone fluid.multiarray 8 nmfmatch_guit-bases2;
+#X obj 330 684 clone fluid.multiarray 56 nmfmatch_guit-stats2;
+#X obj 330 663 clone fluid.multiarray 56 nmfmatch_guit-features2;
 #X obj 24 209 fluid.bufspectralshape~ -source nmfmatch_guit-resynth2
 -features nmfmatch_guit-features2 -fftsettings 1024 256 2048, f 86
 ;
@@ -452,7 +452,7 @@ nmfmatch_guit-stats2, f 83;
 #X obj 24 178 fluid.bufnmf~ -source nmfmatch_guitar2 -numframes 88200
 -components 8 -bases nmfmatch_guit-bases2 -iterations 50 -resynth nmfmatch_guit-resynth2
 -fftsettings 1024 256 2048, f 96;
-#X obj 38 683 clone multiarray 8 nmfmatch_guit-resynth2;
+#X obj 38 683 clone fluid.multiarray 8 nmfmatch_guit-resynth2;
 #X obj 38 386 tabplay~ nmfmatch_guitar2;
 #X obj 38 432 fluid.hpss~ -fftsettings 1024 256 -1 -maskingmode 1 -harmthresh
 0.005869 -9.6875 0.006609 -4.375;

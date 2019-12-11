@@ -39,9 +39,9 @@
 buftrans_source-0 buftrans_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 buftransguitar, f 90;
 #X obj 118 549 array define buftransguitar;
-#X obj 290 549 clone multiarray 2 buftrans_source;
-#X obj 256 570 clone multiarray 2 buftrans_res;
-#X obj 50 570 clone multiarray 2 buftrans_tra;
+#X obj 290 549 clone fluid.multiarray 2 buftrans_source;
+#X obj 290 571 clone fluid.multiarray 2 buftrans_res;
+#X obj 50 570 clone fluid.multiarray 2 buftrans_tra;
 #X msg 65 344 set buftrans_source-0;
 #X msg 198 344 set buftrans_source-1;
 #X msg 65 362 set buftrans_tra-0;

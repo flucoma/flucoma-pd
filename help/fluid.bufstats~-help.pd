@@ -210,7 +210,7 @@ to imagine what would the values should be, f 91;
 #X text 561 693 mid;
 #X text 560 709 high;
 #X text 496 591 stats on the first derivative;
-#X obj 48 761 clone multiarray 2 bufstats_feats;
+#X obj 48 761 clone fluid.multiarray 2 bufstats_feats;
 #X obj 27 338 array get bufstats_feats-0;
 #X obj 288 329 array get bufstats_feats-1;
 #X text 233 440 stats on the first 'channel';
@@ -303,7 +303,7 @@ on the left channel \, and noise on the right channel, f 76;
 -1;
 #X obj 448 532 array define bufstats_synth;
 #X obj 449 553 array define bufstats_synth_slices;
-#X obj 449 572 clone multiarray 2 bufstats_synth_slices_pitches;
+#X obj 449 572 clone fluid.multiarray 2 bufstats_synth_slices_pitches;
 #X obj 18 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 18 128 fluid.bufonsetslice~ -minslicelength 10 -metric 9 -threshold

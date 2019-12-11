@@ -77,7 +77,7 @@ xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
 #X text 126 153 2) listen to the source;
 #X msg 28 153 stop;
 #X obj 93 810 array define bufshapeguitar;
-#X obj 265 810 clone multiarray 2 bufshape_source;
+#X obj 265 810 clone fluid.multiarray 2 bufshape_source;
 #X msg 24 779 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
 bufshape_source-0 bufshape_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 bufshapeguitar, f 90;

@@ -36,7 +36,7 @@ in this toy example \, since the envelope follower is 1 sample long
 #X obj 21 457 pack;
 #X floatatom 20 334 5 0 0 0 - - -;
 #X obj 255 473 array define bufampslice_source;
-#X obj 255 494 clone multiarray 2 bufampslice_indices;
+#X obj 255 494 clone fluid.multiarray 2 bufampslice_indices;
 #X obj 17 210 array size bufampslice_indices-0;
 #X obj 20 377 tabread bufampslice_indices-1;
 #X obj 204 376 tabread bufampslice_indices-0;
@@ -86,7 +86,7 @@ offset indices, f 65;
 #X connect 25 0 21 0;
 #X connect 27 0 17 0;
 #X connect 28 0 17 0;
-#X restore 417 232 pd musical_example;
+#X restore 435 238 pd musical_example;
 #N canvas 331 106 770 604 options_explained 0;
 #X obj 23 532 fluid.bufampslice~ -source bufampslice_wave -indices
 bufampslice_pointers -absrampup 10 -absrampdown 100 -absthreshon -12
@@ -115,7 +115,7 @@ bufampslice_pointers -absrampup 10 -absrampdown 100 -absthreshon -12
 #X connect 9 0 7 0;
 #X connect 9 1 8 1;
 #X connect 9 2 5 1;
-#X restore 265 229 pd wavemaker;
+#X restore 295 228 pd wavemaker;
 #N canvas 931 327 450 394 markermaker 0;
 #X obj 37 37 inlet;
 #X obj 37 58 t b b;
@@ -157,7 +157,7 @@ bufampslice_pointers -absrampup 10 -absrampdown 100 -absthreshon -12
 #X connect 16 1 15 0;
 #X connect 16 2 7 1;
 #X restore 23 564 pd markermaker;
-#X obj 18 228 clone multiarray 2 bufampslice_pointers;
+#X obj 18 228 clone fluid.multiarray 2 bufampslice_pointers;
 #X msg 19 298 reset \, bang;
 #N canvas 744 353 621 315 relative_thresholds 0;
 #X obj 31 278 outlet;
@@ -193,7 +193,7 @@ up further, f 75;
 #X restore 18 172 graph;
 #X text 18 281 1) At its most basic \, fluid.ampslice~ is like [high
 pass]–[half wave rectify]–[slide~]-[>~], f 91;
-#X text 373 230 +1: onsets / -1: offsets;
+#X text 400 228 +1: onsets / -1: offsets;
 #X text 35 328 2) by using different 'on' and 'off' thresholds \, we
 add hysterisis \, which can help with triggering errors. This is like
 replacing [>~] with [thresh~], f 111;
@@ -234,8 +234,8 @@ control, f 63;
 #X connect 13 0 0 0;
 #X connect 14 0 0 0;
 #X connect 16 0 0 0;
-#X restore 417 204 pd options_explained;
-#X obj 180 237 clone multiarray 2 ampslicepoints;
+#X restore 435 210 pd options_explained;
+#X obj 180 237 clone fluid.multiarray 2 ampslicepoints;
 #X obj 40 591 array get ampslicepoints-0;
 #X obj 40 518 fluid.bufampslice~ -source ampspikes -indices ampslicepoints
 -absrampup 1 -absrampdown 10;

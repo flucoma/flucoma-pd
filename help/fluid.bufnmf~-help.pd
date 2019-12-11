@@ -8,9 +8,9 @@ Frames, f 66;
 #X msg 522 510 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
 bufnmf_monosynth, f 39;
 #X obj 528 578 array define bufnmf_monosynth;
-#X obj 528 599 clone multiarray 5 bufnmf_resynth;
-#X obj 528 620 clone multiarray 5 bufnmf_bases;
-#X obj 528 641 clone multiarray 5 bufnmf_activations;
+#X obj 528 599 clone fluid.multiarray 5 bufnmf_resynth;
+#X obj 528 620 clone fluid.multiarray 5 bufnmf_bases;
+#X obj 528 641 clone fluid.multiarray 5 bufnmf_activations;
 #X text 37 116 fluid.bufnmf~ provides an interface to decompose buffers~
 into multiple parts using Nonnegative Matrix Factorization (NMF),
 f 62;
@@ -465,12 +465,12 @@ bufnmf_guit-features -fftsettings 1024 256 2048;
 #X obj 27 449 fluid.bufnmf~ -source bufnmf_guitar -fftsettings 1024
 256 2048 -iterations 100 -bases bufnmf_summed-bases -basesmode 2 -components
 2 -resynth bufnmf_guit-resynth;
-#X obj 272 576 array define bufnmf_guitar;
-#X obj 272 597 clone multiarray 10 bufnmf_guit-resynth;
-#X obj 24 555 clone multiarray 10 bufnmf_guit-bases;
-#X obj 24 576 clone multiarray 2 bufnmf_summed-bases;
-#X obj 24 597 clone multiarray 70 bufnmf_guit-stats;
-#X obj 271 555 clone multiarray 70 bufnmf_guit-features;
+#X obj 297 576 array define bufnmf_guitar;
+#X obj 297 597 clone fluid.multiarray 10 bufnmf_guit-resynth;
+#X obj 24 555 clone fluid.multiarray 10 bufnmf_guit-bases;
+#X obj 24 576 clone fluid.multiarray 2 bufnmf_summed-bases;
+#X obj 24 597 clone fluid.multiarray 70 bufnmf_guit-stats;
+#X obj 297 555 clone fluid.multiarray 70 bufnmf_guit-features;
 #X msg 531 378 set bufnmf_guit-resynth-\$1 \, bang;
 #X text 27 10 use nmf for supervised decomposition;
 #X text 29 40 using the basesmode or actmode attributes \, we can guide
@@ -582,8 +582,8 @@ input and 2 components: channel 1: channel 1 \, component 1 channel
 -components 12, f 79;
 #X obj 17 166 soundfiler;
 #X obj 17 187 t b;
-#X obj 24 455 clone multiarray 2 bufnmf_bells;
-#X obj 218 455 clone multiarray 24 bufnmf_bells_resynth;
+#X obj 24 455 clone fluid.multiarray 2 bufnmf_bells;
+#X obj 255 455 clone fluid.multiarray 24 bufnmf_bells_resynth;
 #X obj 17 228 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X msg 17 145 read -resize ../media/Tremblay-CF-ChurchBells.wav bufnmf_bells-0
@@ -619,7 +619,7 @@ details' tab for an explanation., f 89;
 and numchans to process only what you want, f 94;
 #X obj 32 147 soundfiler;
 #X obj 32 98 loadbang;
-#X obj 116 170 clone 10 multiarray bufnmf_st_resynth;
+#X obj 116 170 clone 10 fluid.multiarray bufnmf_st_resynth;
 #X text 28 304 1) select the boundaries of the source to be processed
 ;
 #X msg 32 350 startframe \$1;
@@ -636,7 +636,7 @@ and numchans to process only what you want, f 94;
 \, read ../media/Tremblay-SA-UprightPianoPedalWide.wav bufnmf_st_src-1
 , f 70;
 #X text 96 98 making an artificially wide stereo source;
-#X obj 116 150 clone 2 multiarray bufnmf_st_src 441000;
+#X obj 116 150 clone 2 fluid.multiarray bufnmf_st_src 441000;
 #X obj 476 184 dac~;
 #X obj 476 141 tabplay~ bufnmf_st_src-0;
 #X obj 497 161 tabplay~ bufnmf_st_src-1;
