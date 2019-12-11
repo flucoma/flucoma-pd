@@ -3,7 +3,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_14)
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE 
-    FLUID_DECOMPOSITION FLUID_PD FFTLIB
+    FLUID_DECOMPOSITION FLUID_PD
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -34,7 +34,8 @@ if(MSVC)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${PD_LIB})
 else()
   target_compile_options(${PROJECT_NAME} 
-    PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion
+    PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type 
+          -Wno-conversion -Wno-c++11-narrowing -Wno-sign-compare #quiten it down a bit, until we do a Big IntFix
   )
 endif()
 
