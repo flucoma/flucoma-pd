@@ -115,13 +115,14 @@ set(PD_INSTALL_PREFIX "." CACHE PATH "Prefix for assembling PD packages")
 set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published package")
 set(PD_PACKAGE_ROOT ${PD_INSTALL_PREFIX}/${FLUID_PACKAGE_NAME})
 
-install(DIRECTORY externals DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING REGEX "\\.(pd_darwin|pd_linux|dll)")
-install(DIRECTORY help DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING PATTERN "*.pd")
-install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT}/examples)
+#slashes at the end of the directories copy just the files, rather than the hierarchy; so don't remove them
+install(DIRECTORY pd_objects/ DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING REGEX "\\.(pd_darwin|pd_linux|dll)")
+install(DIRECTORY help/ DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING PATTERN "*.pd")
+install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT})
 
 # install(CODE [[ message(STATUS "${fluid_decomposition_SOURCE_DIR}") ]])
 install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "${PD_PACKAGE_ROOT}/media")
-install(FILES License.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
+install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 
 if(DOCS)
   install(DIRECTORY "${CMAKE_BINARY_DIR}/html/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
