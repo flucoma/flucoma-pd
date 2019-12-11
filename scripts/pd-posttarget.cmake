@@ -12,12 +12,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
-target_include_directories (
-	${PROJECT_NAME}
-	PRIVATE
-	"${CMAKE_CURRENT_SOURCE_DIR}/../../include"
-)
-
 if ("${PROJECT_NAME}" MATCHES ".*_tilde")
 	string(REGEX REPLACE "_tilde" "~" EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
 else ()
@@ -66,6 +60,7 @@ if (APPLE)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 		SUFFIX ".pd_darwin"
+    PREFIX ""
 		XCODE_ATTRIBUTE_MACH_O_TYPE mh_dylib
 		XCODE_ATTRIBUTE_EXECUTABLE_PREFIX ""
 		XCODE_ATTRIBUTE_EXECUTABLE_EXTENSION "pd_darwin"
