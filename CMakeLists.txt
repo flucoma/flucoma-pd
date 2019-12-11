@@ -69,7 +69,7 @@ if(DOCS)
     add_subdirectory(${fluid_paramdump_SOURCE_DIR} ${fluid_paramdump_BINARY_DIR})
   endif()
   
-  add_custom_target(MAKE_DOCS ALL DEPENDS GENERATE_HTML)
+  add_custom_target(PD_MAKE_DOCS ALL DEPENDS GENERATE_HTML)
 endif()
 
 set(LOCAL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/include)
