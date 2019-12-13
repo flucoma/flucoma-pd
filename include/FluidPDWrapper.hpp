@@ -28,7 +28,7 @@ void object_warn(T *x, const char *fmt, ...)
   char postString[1024];
   char finalString[1024];
   
-  char *objectName = class_getname(*((t_pd *)x));
+  const char *objectName = class_getname(*((t_pd *)x));
   va_list argp;
   va_start(argp, fmt);
   vsnprintf(postString, 1024, fmt, argp);
@@ -388,7 +388,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-  template <size_t N, typename T, typename U, U Method(t_atom *av)>
+  template <size_t N, typename T, typename M, M Method>
   struct FetchValue
   {
     typename T::type operator()(const long ac, t_atom *av, long &currentCount)
@@ -402,11 +402,11 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   struct Fetcher;
 
   template <size_t N>
-  struct Fetcher<N, FloatT> : public FetchValue<N, FloatT, t_float, atom_getfloat>
+  struct Fetcher<N, FloatT> : public FetchValue<N, FloatT, decltype(atom_getfloat), atom_getfloat>
   {};
 
   template <size_t N>
-  struct Fetcher<N, LongT> : public FetchValue<N, LongT, t_int, atom_getint>
+  struct Fetcher<N, LongT> : public FetchValue<N, LongT, decltype(atom_getint), atom_getint>
   {};
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
