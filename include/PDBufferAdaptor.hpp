@@ -58,11 +58,11 @@ public:
     return getMinFrames() > 0;
   }
 
-  const Result resize(size_t frames, size_t channels, double /*sampleRate*/) override
+  const Result resize(Index frames, Index channels, double /*sampleRate*/) override
   {
 //    NOTUSED(sampleRate);
     
-    size_t nChans = numChans();
+    Index nChans = numChans();
     Result r;
     if(channels > numChans())
     {
@@ -70,7 +70,7 @@ public:
       r.addMessage("Not enough arrays to operate on ", mName->s_name, ". Found ", channels, " array(s) but need ", nChans, ".");
     }
     
-    for (size_t i = 0; i < nChans; ++i)
+    for (Index i = 0; i < nChans; ++i)
     {
       t_garray *array = getArray(i);
           
@@ -103,7 +103,7 @@ public:
     releaseLock();
   }
 
-  FluidTensorView<float, 1> samps(size_t channel) override
+  FluidTensorView<float, 1> samps(Index channel) override
   {
     float* samples = (float *) getArrayData(channel);
       
@@ -112,7 +112,7 @@ public:
     return v.col(0);
   }
 
-  FluidTensorView<float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) override
+  FluidTensorView<float, 1> samps(Index offset, Index nframes, Index chanoffset) override
   {
     float* samples = (float *) getArrayData(chanoffset);
     FluidTensorView<float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
@@ -120,7 +120,7 @@ public:
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
   
-  FluidTensorView<const float, 1> samps(size_t channel) const override
+  FluidTensorView<const float, 1> samps(Index channel) const override
   {
     float* samples = (float *) getArrayData(channel);
     
@@ -129,7 +129,7 @@ public:
     return v.col(0);
   }
 
-  FluidTensorView<const float, 1> samps(size_t offset, size_t nframes, size_t chanoffset) const override
+  FluidTensorView<const float, 1> samps(Index offset, Index nframes, Index chanoffset) const override
   {
     float* samples = (float *) getArrayData(chanoffset);
     FluidTensorView<const float, 2> v{samples, 0, numFrames(), sizeof(t_word) / sizeof(float)};
@@ -137,42 +137,42 @@ public:
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
     
-  size_t numFrames() const override { return getMinFrames(); }
+  Index numFrames() const override { return getMinFrames(); }
 
-  size_t numChans() const override { return getArrayCount(); }
+  Index numChans() const override { return getArrayCount(); }
   
   double sampleRate() const override { return mSampleRate; } // N.B. pd has no notion of sample rates for buffers...
   void sampleRate(double sr) const { mSampleRate = sr; } //we still need to set the SR on const input buffers
   std::string asString() const override { return mName->s_name; }
 private:
     
-  size_t getMinFrames() const
+  Index getMinFrames() const
   {
-    size_t nChans = numChans();
+    Index nChans = numChans();
     int frames = 0;
     
-    for (size_t i = 0; i < nChans; i++)
+    for (Index i = 0; i < nChans; i++)
     {
       int arrayFrames = 0;
       getArrayData(i, &arrayFrames);
       frames = !i ? arrayFrames : std::min(arrayFrames, frames);
     }
     
-    return static_cast<size_t>(frames);
+    return static_cast<Index>(frames);
   }
     
-  size_t getArrayCount() const
+  Index getArrayCount() const
   {
-    size_t count = 0;
+    Index count = 0;
     
-    for (size_t i = 0; ; i++, count++)
+    for (Index i = 0; ; i++, count++)
         if (!getArray(i))
           break;
       
     return count;
   }
     
-  t_word *getArrayData(size_t chan, int* retLength = nullptr) const
+  t_word *getArrayData(Index chan, int* retLength = nullptr) const
   {
     t_garray *array = getArray(chan);
     t_word *words = nullptr;
@@ -187,7 +187,7 @@ private:
     return words;
   }
     
-  t_garray *getArray(size_t chan) const
+  t_garray *getArray(Index chan) const
   {
     t_symbol *name = mName;
       
