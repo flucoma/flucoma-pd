@@ -60,7 +60,7 @@ public:
 
   static void getLatency(Wrapper *x)
   {
-    outlet_float(x->mLatencyOut, x->mClient.latency());
+    outlet_float(x->mLatencyOut, static_cast<t_float>(x->mClient.latency()));
   }
     
   static void callDSP(Wrapper *x, t_signal **sp)
