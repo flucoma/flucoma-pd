@@ -4,5 +4,5 @@
 extern "C" void setup_fluid0x2ebuftransients_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTThreadedTransientsClient>("fluid.buftransients~");
+  makePDWrapper<NRTThreadedTransientsClient>("fluid.buftransients");
 }

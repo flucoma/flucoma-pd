@@ -4,5 +4,5 @@
 extern "C" void setup_fluid0x2ebufmelbands_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTThreadedMelBandsClient>("fluid.bufmelbands~");
+  makePDWrapper<NRTThreadedMelBandsClient>("fluid.bufmelbands");
 }
