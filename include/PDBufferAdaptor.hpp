@@ -158,7 +158,7 @@ private:
       frames = !i ? arrayFrames : std::min(arrayFrames, frames);
     }
     
-    return static_cast<Index>(frames);
+    return static_cast<index>(frames);
   }
     
   index getArrayCount() const
