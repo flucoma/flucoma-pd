@@ -76,24 +76,24 @@ public:
     return w + 3;
   }
 
-  void setupAudio(t_object *pdObject, Index numSigIns, Index numSigOuts)
+  void setupAudio(t_object *pdObject, index numSigIns, index numSigOuts)
   {
     Wrapper *wrapper = static_cast<Wrapper *>(this);
     auto &   client  = wrapper->client();
       
     //impl::PDBase::getPDObject()->z_misc |= Z_NO_INPLACE;
           
-    mSigIns.resize(IndexCast(numSigIns));
-    mSigOuts.resize(IndexCast(numSigOuts));
+    mSigIns.resize(asUnsigned(numSigIns));
+    mSigOuts.resize(asUnsigned(numSigOuts));
           
     // Create signal inlets
           
-    for (Index i = 0; numSigIns && i < (numSigIns - 1); i++)
+    for (index i = 0; numSigIns && i < (numSigIns - 1); i++)
         signalinlet_new(pdObject, 0.0);
           
     // Create signal outlets
           
-    for (Index i = 0; i < numSigOuts; i++)
+    for (index i = 0; i < numSigOuts; i++)
       outlet_new(pdObject, gensym("signal"));
       
     if (client.controlChannelsOut())
@@ -115,23 +115,23 @@ public:
     assert((client.audioChannelsOut() > 0) != (client.controlChannelsOut() > 0) &&
            "Client must *either* be audio out or control out, sorry");
 
-    mInputs = std::vector<ViewType>(IndexCast(client.audioChannelsIn()), ViewType(nullptr, 0, 0));
+    mInputs = std::vector<ViewType>(asUnsigned(client.audioChannelsIn()), ViewType(nullptr, 0, 0));
 
-    if (client.audioChannelsOut() > 0) mOutputs = std::vector<ViewType>(IndexCast(client.audioChannelsOut()), ViewType(nullptr, 0, 0));
+    if (client.audioChannelsOut() > 0) mOutputs = std::vector<ViewType>(asUnsigned(client.audioChannelsOut()), ViewType(nullptr, 0, 0));
     if (client.controlChannelsOut() > 0)
     {
       mControlClock = mControlClock ? mControlClock : clock_new((t_object *) wrapper, (t_method) doControlOut);
 
-      mOutputs = std::vector<ViewType>(IndexCast(client.controlChannelsOut()), ViewType(nullptr, 0, 0));
-      mControlOutputs.resize(IndexCast(client.controlChannelsOut()));
-      mControlAtoms.resize(IndexCast(client.controlChannelsOut()));
+      mOutputs = std::vector<ViewType>(asUnsigned(client.controlChannelsOut()), ViewType(nullptr, 0, 0));
+      mControlOutputs.resize(asUnsigned(client.controlChannelsOut()));
+      mControlAtoms.resize(asUnsigned(client.controlChannelsOut()));
     }
 
-    for (Index i = 0; i < SizeCast(mSigIns.size()); i++)
-      mSigIns[IndexCast(i)] = sp[i]->s_vec;
+    for (index i = 0; i < asSigned(mSigIns.size()); i++)
+      mSigIns[asUnsigned(i)] = sp[i]->s_vec;
       
-    for (Index i = 0; i < SizeCast(mSigOuts.size()); i++)
-      mSigOuts[IndexCast(i)] = sp[i + SizeCast(mSigIns.size())]->s_vec;
+    for (index i = 0; i < asSigned(mSigOuts.size()); i++)
+      mSigOuts[asUnsigned(i)] = sp[i + asSigned(mSigIns.size())]->s_vec;
       
     dsp_add(callPerform, 2, wrapper, sp[0]->s_vecsize);
   }
@@ -158,8 +158,8 @@ public:
     Wrapper *w      = static_cast<Wrapper *>(this);
     auto &   client = w->client();
       
-    for (Index i = 0; i < client.controlChannelsOut(); i++)
-      SETFLOAT(mControlAtoms.data() + i, mControlOutputs[IndexCast(i)]);
+    for (index i = 0; i < client.controlChannelsOut(); i++)
+      SETFLOAT(mControlAtoms.data() + i, mControlOutputs[asUnsigned(i)]);
 
     assert(client.controlChannelsOut() <= std::numeric_limits<int>::max());
     w->controlOut(static_cast<int>(client.controlChannelsOut()), mControlAtoms.data());
@@ -312,7 +312,7 @@ struct NonRealTimeAndRealTime : public RealTime<Wrapper>, public NonRealTime<Wra
     NonRealTime<Wrapper>::setup(c);
   }
     
-  void setupAudio(t_object *pdObject, Index numSigIns, Index numSigOuts)
+  void setupAudio(t_object *pdObject, index numSigIns, index numSigOuts)
   {
     RealTime<Wrapper>::setupAudio(pdObject, numSigIns, numSigOuts);
     NonRealTime<Wrapper>::setupAudio(pdObject, numSigIns, numSigOuts);
@@ -417,7 +417,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   template<typename T, size_t N>
   struct Setter
   {
-    static constexpr Index argSize = paramDescriptor<N>().fixedSize;
+    static constexpr index argSize = paramDescriptor<N>().fixedSize;
 
     static auto fromAtom(FluidPDWrapper<Client>*, t_atom *a, LongT::type) { return atom_getint(a); }
     static auto fromAtom(FluidPDWrapper<Client>*, t_atom *a, FloatT::type) { return atom_getfloat(a); }
@@ -442,7 +442,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
 
       x->messages().reset();
 
-      for (Index i = 0; i < argSize && i < ac; i++)
+      for (index i = 0; i < argSize && i < ac; i++)
         a[i] = fromAtom(x, av + i, a[0]);
 
       x->params().template set<N>(a.value(), x->verbose() ? &x->messages() : nullptr);
