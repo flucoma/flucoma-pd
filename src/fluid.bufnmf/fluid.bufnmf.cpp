@@ -1,7 +1,7 @@
 #include <clients/nrt/NMFClient.hpp>
 #include <FluidPDWrapper.hpp>
 
-extern "C" void setup_fluid0x2ebufnmf_tilde(void)
+extern "C" void setup_fluid0x2ebufnmf(void)
 {
   using namespace fluid::client;
   makePDWrapper<NRTThreadedNMFClient>("fluid.bufnmf");
