@@ -286,7 +286,7 @@ struct NonRealTime
   float sampleRate() { return mSamplerate <= 0 ? sys_getsr() : mSamplerate; }
   
   
-  void setupAudio(t_object *, Index, Index) {}
+  void setupAudio(t_object *, index, index) {}
   
   static void callSR(Wrapper *x, t_float sr) { x->setSampleRate(sr); }
   
@@ -597,7 +597,7 @@ public:
     void *x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
 
-    if (static_cast<Index>(paramArgOffset(ac, av)) > ParamDescType::NumFixedParams)
+    if (static_cast<index>(paramArgOffset(ac, av)) > ParamDescType::NumFixedParams)
     { impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac, ParamDescType::NumFixedParams); }
 
     return x;
