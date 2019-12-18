@@ -1,4 +1,4 @@
-#N canvas 62 38 582 680 10;
+#N canvas 106 66 582 680 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufampslice~ 20 12 0 36
 -262144 -66577 0;
 #X text 37 50 Amplitude-based Slicer for Buffers;
@@ -13,7 +13,6 @@ relative amplitude changes as onsets and offsets., f 86;
 #X obj 183 374 t l l;
 #X obj 40 430 t b l;
 #X obj 59 240 + 20;
-#X obj 59 261 * 50;
 #X obj 59 316 t b f f f;
 #X obj 59 282 +;
 #X obj 183 353 list prepend;
@@ -88,9 +87,6 @@ offset indices, f 65;
 #X connect 28 0 17 0;
 #X restore 435 238 pd musical_example;
 #N canvas 331 106 770 604 options_explained 0;
-#X obj 23 532 fluid.bufampslice~ -source bufampslice_wave -indices
-bufampslice_pointers -absrampup 10 -absrampdown 100 -absthreshon -12
--absthreshoff -12, f 73;
 #N canvas 86 337 450 300 wavemaker 0;
 #X msg 37 87 44100;
 #X obj 37 132 until;
@@ -175,10 +171,10 @@ up further, f 75;
 -60 \, absthreshoff -60 \, bang, f 86;
 #X msg 41 176 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
 -60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
-2 \, relthreshoff 1 \, bang, f 88;
+-1 \, relthreshoff -2 \, bang, f 88;
 #X msg 60 242 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
 -60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
-2 \, relthreshoff 1 \, minslicelength 4410 \, bang, f 88;
+-1 \, relthreshoff -2 \, minslicelength 2205 \, bang, f 88;
 #X connect 6 0 0 0;
 #X connect 7 0 0 0;
 #X connect 8 0 0 0;
@@ -227,19 +223,19 @@ control, f 63;
 #X connect 11 0 0 0;
 #X connect 12 0 0 0;
 #X restore 79 482 pd looking_ahead_and_back;
-#X connect 0 0 2 0;
-#X connect 4 0 0 0;
-#X connect 5 0 0 0;
-#X connect 11 0 0 0;
-#X connect 13 0 0 0;
-#X connect 14 0 0 0;
-#X connect 16 0 0 0;
+#X obj 23 532 fluid.bufampslice~ -source bufampslice_wave -indices
+bufampslice_pointers -absrampup 5 -absrampdown 50 -absthreshon -12
+-absthreshoff -12, f 73;
+#X connect 3 0 16 0;
+#X connect 4 0 16 0;
+#X connect 10 0 16 0;
+#X connect 12 0 16 0;
+#X connect 13 0 16 0;
+#X connect 15 0 16 0;
+#X connect 16 0 1 0;
 #X restore 435 210 pd options_explained;
 #X obj 180 237 clone fluid.multiarray 2 ampslicepoints;
 #X obj 40 591 array get ampslicepoints-0;
-#X obj 40 518 fluid.bufampslice~ -source ampspikes -indices ampslicepoints
--absrampup 1 -absrampdown 10;
-#X obj 180 217 array define ampspikes 30000;
 #X obj 59 358 tabwrite ampspikes;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
@@ -255,30 +251,35 @@ control, f 63;
 #X obj 525 298 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 411 352 note_on_multithreading;
-#X connect 3 0 15 0;
-#X connect 4 0 17 0;
-#X connect 5 0 29 0;
-#X connect 6 0 28 0;
+#X obj 59 261 * 150;
+#X obj 40 518 fluid.bufampslice~ -source ampspikes -indices ampslicepoints
+-absrampup 1 -absrampdown 10 -absthreshon -30 -absthreshoff -50, f
+63;
+#X obj 180 217 array define ampspikes 60000;
+#X connect 3 0 14 0;
+#X connect 4 0 16 0;
+#X connect 5 0 26 0;
+#X connect 6 0 33 0;
 #X connect 7 0 9 0;
 #X connect 8 0 7 1;
-#X connect 8 1 14 1;
-#X connect 9 0 27 0;
-#X connect 9 1 19 0;
-#X connect 10 0 11 0;
-#X connect 11 0 13 0;
-#X connect 12 0 5 0;
-#X connect 12 1 29 1;
-#X connect 12 2 14 0;
-#X connect 12 3 13 1;
-#X connect 13 0 12 0;
-#X connect 14 0 8 0;
-#X connect 15 0 10 0;
-#X connect 16 0 13 1;
-#X connect 17 0 7 0;
-#X connect 17 1 3 0;
-#X connect 17 2 6 0;
-#X connect 17 2 14 1;
-#X connect 17 2 16 0;
-#X connect 26 0 20 0;
-#X connect 27 0 26 0;
-#X connect 32 0 30 0;
+#X connect 8 1 13 1;
+#X connect 9 0 32 0;
+#X connect 9 1 18 0;
+#X connect 10 0 31 0;
+#X connect 11 0 5 0;
+#X connect 11 1 26 1;
+#X connect 11 2 13 0;
+#X connect 11 3 12 1;
+#X connect 12 0 11 0;
+#X connect 13 0 8 0;
+#X connect 14 0 10 0;
+#X connect 15 0 12 1;
+#X connect 16 0 7 0;
+#X connect 16 1 3 0;
+#X connect 16 2 6 0;
+#X connect 16 2 13 1;
+#X connect 16 2 15 0;
+#X connect 25 0 19 0;
+#X connect 29 0 27 0;
+#X connect 31 0 12 0;
+#X connect 32 0 25 0;
