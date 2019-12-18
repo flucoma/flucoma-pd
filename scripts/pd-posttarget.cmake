@@ -12,6 +12,15 @@ target_include_directories (
 	"${CMAKE_CURRENT_SOURCE_DIR}/../../include"
 )
 
+if(WIN32)
+  if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+    target_compile_definitions(${PROJECT_NAME} 
+      PRIVATE 
+      PD_LONGINTTYPE=intptr_t
+    )
+  endif()
+endif()
+
 if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${PD_LIB})

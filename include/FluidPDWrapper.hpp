@@ -107,7 +107,7 @@ public:
   void dsp(t_signal **sp)
   {
     Wrapper *wrapper = static_cast<Wrapper *>(this);
-    
+	static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t), "size of pointer int type is wrongwrongwrong"); 
     wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
     auto &   client  = wrapper->client();
     client.sampleRate(sp[0]->s_sr);
