@@ -1,5 +1,5 @@
 #N canvas 96 30 582 680 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.buftransientslice~ 20
+#X obj 12 19 cnv 15 100 10 empty empty fluid\.buftransientslice 20
 12 0 36 -262144 -66577 0;
 #X obj 59 197 until;
 #X msg 41 149 6;
@@ -49,7 +49,7 @@ offset indices, f 65;
 #X obj 19 393 tabread buftransientslice_indices;
 #X obj 226 393 tabread buftransientslice_indices;
 #X obj 20 492 tabplay~ buftransientslice_source;
-#X obj 17 177 fluid.buftransientslice~ -source buftransientslice_source
+#X obj 17 177 fluid\.buftransientslice -source buftransientslice_source
 -indices buftransientslice_indices -minslicelength 441, f 80;
 #X text 207 99 change the thresholds;
 #X msg 349 117 1.1;
@@ -88,12 +88,12 @@ offset indices, f 65;
 #X obj 217 238 array define transientslicepoints;
 #X obj 59 358 tabwrite transientspikes;
 #X obj 40 591 array get transientslicepoints;
-#X obj 40 518 fluid.buftransientslice~ -source transientspikes -indices
+#X obj 40 518 fluid\.buftransientslice -source transientspikes -indices
 transientslicepoints -minslicelength 45, f 66;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.buftransientslice~.html;
+#X msg 83 71 dir 0 ../docs/fluid\.buftransientslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

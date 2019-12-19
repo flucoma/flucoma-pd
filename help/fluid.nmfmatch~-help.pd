@@ -17,7 +17,7 @@ Bases, f 61;
 #X obj 57 283 t f f f f f, f 40;
 #X obj 297 310 expr sin($f1 / 22050 * 3.14159 * 5000);
 #X obj 38 193 t b f b;
-#X obj 38 402 fluid.bufcompose~;
+#X obj 38 402 fluid\.bufcompose;
 #X obj 38 153 loadbang;
 #X obj 57 308 expr sin($f1 / 22050 * 3.14159 * 500);
 #X obj 39 81 array define lowsine3 44100;
@@ -92,7 +92,7 @@ each.;
 #X obj 215 321 t f f;
 #X obj 118 54 inlet;
 #X text 163 61 the channels where the centroids are= the first of every
-7 (see fluid.bufstats~ help), f 85;
+7 (see fluid\.bufstats help), f 85;
 #X msg 118 79 0 7 14 21 28 35 42 49 56 63;
 #X text -4 153 iterates backwards;
 #X text 18 241 keeps the index;
@@ -151,7 +151,7 @@ index;
 #X msg 112 298 deststartchan 0 \, startchan \$1 \, bang;
 #X msg 130 323 deststartchan 1 \, startchan \$1 \, bang;
 #X obj 16 47 t b f b;
-#X obj 82 358 fluid.bufcompose~ -destination nmfmatch_summed-bases
+#X obj 82 358 fluid\.bufcompose -destination nmfmatch_summed-bases
 -destgain 1 -source nmfmatch_guit-bases -numchans 1;
 #X msg 73 72 \; nmfmatch_summed-bases const;
 #X connect 0 0 14 0;
@@ -179,7 +179,7 @@ index;
 #X obj 20 295 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X text 17 82 1) press to start the process of finding the pick component
-like in the fluid.bufnmf~ help file, f 95;
+like in the fluid\.bufnmf help file, f 95;
 #X obj 22 548 dac~;
 #X obj 23 340 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -260,13 +260,13 @@ like in the fluid.bufnmf~ help file, f 95;
 #X obj 302 778 clone fluid.multiarray 10 nmfmatch_guit-resynth;
 #X msg 20 102 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar;
-#X obj 20 173 fluid.bufnmf~ -source nmfmatch_guitar -numframes 88200
+#X obj 20 173 fluid\.bufnmf -source nmfmatch_guitar -numframes 88200
 -components 10 -bases nmfmatch_guit-bases -resynth nmfmatch_guit-resynth
 -fftsettings 1024 256 2048, f 96;
-#X obj 20 204 fluid.bufspectralshape~ -source nmfmatch_guit-resynth
+#X obj 20 204 fluid\.bufspectralshape -source nmfmatch_guit-resynth
 -features nmfmatch_guit-features -fftsettings 1024 256 2048, f 86
 ;
-#X obj 20 236 fluid.bufstats~ -source nmfmatch_guit-features -stats
+#X obj 20 236 fluid\.bufstats -source nmfmatch_guit-features -stats
 nmfmatch_guit-stats, f 73;
 #X obj 22 362 tabplay~ nmfmatch_guitar;
 #X obj 194 393 fluid.nmfmatch~ 2 -bases nmfmatch_summed-bases -fftsettings
@@ -393,7 +393,7 @@ spectra, f 72;
 #X obj 118 100 t a a b, f 38;
 #X obj 118 54 inlet;
 #X text 163 61 the channels where the centroids are= the first of every
-7 (see fluid.bufstats~ help), f 85;
+7 (see fluid\.bufstats help), f 85;
 #X text 5 126 iterates backwards;
 #X text 18 241 keeps the index;
 #X text 233 300 reads the index of the median stats;
@@ -444,12 +444,12 @@ nmfmatch_guitar2;
 #X obj 38 663 clone fluid.multiarray 8 nmfmatch_guit-bases2;
 #X obj 330 684 clone fluid.multiarray 56 nmfmatch_guit-stats2;
 #X obj 330 663 clone fluid.multiarray 56 nmfmatch_guit-features2;
-#X obj 24 209 fluid.bufspectralshape~ -source nmfmatch_guit-resynth2
+#X obj 24 209 fluid\.bufspectralshape -source nmfmatch_guit-resynth2
 -features nmfmatch_guit-features2 -fftsettings 1024 256 2048, f 86
 ;
-#X obj 24 241 fluid.bufstats~ -source nmfmatch_guit-features2 -stats
+#X obj 24 241 fluid\.bufstats -source nmfmatch_guit-features2 -stats
 nmfmatch_guit-stats2, f 83;
-#X obj 24 178 fluid.bufnmf~ -source nmfmatch_guitar2 -numframes 88200
+#X obj 24 178 fluid\.bufnmf -source nmfmatch_guitar2 -numframes 88200
 -components 8 -bases nmfmatch_guit-bases2 -iterations 50 -resynth nmfmatch_guit-resynth2
 -fftsettings 1024 256 2048, f 96;
 #X obj 38 683 clone fluid.multiarray 8 nmfmatch_guit-resynth2;
@@ -489,7 +489,7 @@ used to tune a filter, f 73;
 #X restore 459 784 pd example_2;
 #X text 34 100 Matches an incoming audio signal against a set of spectral
 templates, f 40;
-#X obj 37 398 fluid.bufnmf~ -source didact-source3 -bases nmfmatch_basis
+#X obj 37 398 fluid\.bufnmf -source didact-source3 -bases nmfmatch_basis
 -components 2, f 72;
 #X msg 37 417 \; nmfmatch_basis-1 xticks 0 0 0 \; nmfmatch_basis-0
 xticks 0 0 0;

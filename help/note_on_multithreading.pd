@@ -3,7 +3,7 @@
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
 #X msg 143 89 browse \$1;
-#X msg 83 71 dir 0 /fluid.bufthreaddemo~-help.pd;
+#X msg 83 71 dir 0 /fluid\.bufthreaddemo-help.pd;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 1 0;
@@ -17,6 +17,6 @@ object and stay in PureData's main thread \, thus blocking it. All
 fluid.buf* objects also have the possibility to spawn a new thread
 \, so PureData is free to go about with its business. For a more detailed
 discussion of the available threading and monitoring options \, please
-read the tutorial located in the fluid.bufthreaddemo~ helpfile., f
+read the tutorial located in the fluid\.bufthreaddemo helpfile., f
 61;
 #X connect 1 0 0 0;

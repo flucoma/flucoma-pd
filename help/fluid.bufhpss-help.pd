@@ -1,6 +1,6 @@
 #N canvas 48 41 958 666 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufhpss~ 20 12 0 36 -262144
+#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufhpss 20 12 0 36 -262144
 -66577 0;
 #X obj 34 156 loadbang;
 #X obj 392 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -15,7 +15,7 @@
 #X msg 49 517 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
 bufhpss_source-0 bufhpss_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 hpssguitar, f 84;
-#X obj 48 100 fluid.bufcompose~ -source hpssguitar -startframe 555000
+#X obj 48 100 fluid\.bufcompose -source hpssguitar -startframe 555000
 -numframes 468335 -deststartchan 1 -destination bufhpss_source, f
 73;
 #X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
@@ -27,7 +27,7 @@ hpssguitar, f 84;
 #X obj 54 424 dac~;
 #X obj 49 178 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 49 195 fluid.bufhpss~ -source bufhpss_source -harmonic bufhpss_harmo
+#X obj 49 195 fluid\.bufhpss -source bufhpss_source -harmonic bufhpss_harmo
 -percussive bufhpss_percu, f 61;
 #X msg 66 362 set bufhpss_harmo-0;
 #X msg 199 362 set bufhpss_harmo-1;
@@ -272,12 +272,12 @@ in the other two channels., f 138;
 #X restore 724 148 pd mode2;
 #X msg 392 212 \; bufhpss_harmonic xticks 0 0 0 \; bufhpss_percussive
 xticks 0 0 0 \; bufhpss_residual xticks 0 0 0;
-#X obj 392 181 fluid.bufhpss~ -source bufhpss_drums -harmonic bufhpss_harmonic
+#X obj 392 181 fluid\.bufhpss -source bufhpss_drums -harmonic bufhpss_harmonic
 -percussive bufhpss_percussive -residual bufhpss_residual, f 64;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.bufhpss~.html;
+#X msg 83 71 dir 0 ../docs/fluid\.bufhpss.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

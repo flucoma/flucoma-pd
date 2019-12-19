@@ -8,7 +8,7 @@
 #X array bufcompose_dst-1 515088 float 2;
 #X coords 0 1 515088 -1 200 140 1 0 0;
 #X restore 436 544 graph;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufcompose~ 20 12 0 36
+#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufcompose 20 12 0 36
 -262144 -66577 0;
 #X obj 530 84 note_on_multiarrays;
 #N canvas 666 302 585 359 mixing 0;
@@ -143,7 +143,7 @@ bufcompose_stereopiano \, numchans 1 \, deststartchan 0 \, bang;
 #X connect 9 0 0 0;
 #X connect 10 0 0 0;
 #X restore 87 536 pd more_examples;
-#X obj 40 581 fluid.bufcompose~;
+#X obj 40 581 fluid\.bufcompose;
 #X obj 102 218 array define bufcompose_monosynth;
 #X obj 520 218 clone fluid.multiarray 2 bufcompose_stereopiano;
 #X obj 308 218 array define bufcompose_synthchoir;
@@ -171,7 +171,7 @@ bufcompose_dst \, bang;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.bufcompose~.html;
+#X msg 83 71 dir 0 ../docs/fluid\.bufcompose.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

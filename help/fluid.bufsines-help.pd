@@ -1,6 +1,6 @@
 #N canvas 70 74 955 577 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufsines~ 20 12 0 36 -262144
+#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufsines 20 12 0 36 -262144
 -66577 0;
 #X obj 34 156 loadbang;
 #X obj 424 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -43,14 +43,14 @@ bufsinesguitar, f 90;
 #X msg 65 344 set bufsines_source-0;
 #X msg 65 380 set bufsines_res-0;
 #X msg 198 344 set bufsines_source-1;
-#X obj 48 100 fluid.bufcompose~ -source bufsinesguitar -startframe
+#X obj 48 100 fluid\.bufcompose -source bufsinesguitar -startframe
 555000 -numframes 468335 -deststartchan 1 -destination bufsines_source
 , f 73;
 #X obj 50 570 clone fluid.multiarray 2 bufsines_sin;
 #X msg 65 362 set bufsines_sin-0;
 #X msg 198 362 set bufsines_sin-1;
 #X msg 198 380 set bufsines_res-1;
-#X obj 49 195 fluid.bufsines~ -source bufsines_source -sines bufsines_sin
+#X obj 49 195 fluid\.bufsines -source bufsines_source -sines bufsines_sin
 -residual bufsines_res -threshold 0.2, f 84;
 #X connect 0 0 18 0;
 #X connect 2 0 26 0;
@@ -104,7 +104,7 @@ taken from classic papers., f 80;
 #X msg 165 274 set bufsines_residual \, bang;
 #X msg 424 268 \; bufsines_sines xticks 0 0 0 \; bufsines_residual
 xticks 0 0 0;
-#X obj 424 237 fluid.bufsines~ -threshold 0.5 -source bufsines_drums
+#X obj 424 237 fluid\.bufsines -threshold 0.5 -source bufsines_drums
 -sines bufsines_sines -residual bufsines_residual -fftsettings 1024
 512 8192, f 75;
 #X floatatom 607 188 8 0 0 0 - - -;
@@ -117,7 +117,7 @@ xticks 0 0 0;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.bufsines~.html;
+#X msg 83 71 dir 0 ../docs/fluid\.bufsines.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

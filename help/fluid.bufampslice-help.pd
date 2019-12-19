@@ -1,5 +1,5 @@
 #N canvas 106 66 582 680 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufampslice~ 20 12 0 36
+#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufampslice 20 12 0 36
 -262144 -66577 0;
 #X text 37 50 Amplitude-based Slicer for Buffers;
 #X text 36 92 This class implements an amplitude-based slicer \, with
@@ -45,7 +45,7 @@ in this toy example \, since the envelope follower is 1 sample long
 ;
 #X floatatom 17 231 5 0 0 0 - - -;
 #X obj 21 419 f;
-#X obj 17 177 fluid.bufampslice~ -source bufampslice_source -indices
+#X obj 17 177 fluid\.bufampslice -source bufampslice_source -indices
 bufampslice_indices -absthreshon -30 -absthreshoff -36 -absrampup 110
 -absrampdown 4410, f 76;
 #X text 18 35 1) read a source \, and triggers the analysis;
@@ -223,7 +223,7 @@ control, f 63;
 #X connect 11 0 0 0;
 #X connect 12 0 0 0;
 #X restore 79 482 pd looking_ahead_and_back;
-#X obj 23 532 fluid.bufampslice~ -source bufampslice_wave -indices
+#X obj 23 532 fluid\.bufampslice -source bufampslice_wave -indices
 bufampslice_pointers -absrampup 5 -absrampdown 50 -absthreshon -12
 -absthreshoff -12, f 73;
 #X connect 3 0 16 0;
@@ -240,7 +240,7 @@ bufampslice_pointers -absrampup 5 -absrampdown 50 -absthreshon -12
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.bufampslice~.html;
+#X msg 83 71 dir 0 ../docs/fluid\.bufampslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -252,7 +252,7 @@ bufampslice_pointers -absrampup 5 -absrampdown 50 -absthreshon -12
 -1 -1;
 #X obj 411 352 note_on_multithreading;
 #X obj 59 261 * 150;
-#X obj 40 518 fluid.bufampslice~ -source ampspikes -indices ampslicepoints
+#X obj 40 518 fluid\.bufampslice -source ampspikes -indices ampslicepoints
 -absrampup 1 -absrampdown 10 -absthreshon -30 -absthreshoff -50, f
 63;
 #X obj 180 217 array define ampspikes 60000;
