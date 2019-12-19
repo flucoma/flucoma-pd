@@ -23,14 +23,20 @@ set_target_properties(${PROJECT_NAME}
   OUTPUT_NAME "${EXTERN_OUTPUT_NAME}"
 )
     
+if(WIN32)
+  if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
+    target_compile_definitions(${PROJECT_NAME} 
+      PRIVATE 
+      PD_LONGINTTYPE=intptr_t
+    )
+  endif()
+endif()
+
 if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${PD_LIB})
 else()
-  target_compile_options(${PROJECT_NAME} 
-    PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type 
-          -Wno-conversion -Wno-c++11-narrowing -Wno-sign-compare #quiten it down a bit, until we do a Big IntFix
-  )
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
 endif()
 
 if(MSVC)

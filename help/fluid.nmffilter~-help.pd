@@ -199,12 +199,12 @@ nmffilter_guitar;
 -features nmffilter_guit-features -fftsettings 1024 256 2048;
 #X obj 20 246 fluid.bufstats~ -source nmffilter_guit-features -stats
 nmffilter_guit-stats;
-#X obj 22 514 clone multiarray 10 nmffilter_guit-bases;
-#X obj 279 534 array define nmffilter_guitar;
-#X obj 278 513 clone multiarray 70 nmffilter_guit-features;
-#X obj 279 555 clone multiarray 10 nmffilter_guit-resynth;
-#X obj 22 556 clone multiarray 70 nmffilter_guit-stats;
-#X obj 22 535 clone multiarray 2 nmffilter_summed-bases;
+#X obj 22 514 clone fluid.multiarray 10 nmffilter_guit-bases;
+#X obj 310 535 array define nmffilter_guitar;
+#X obj 310 514 clone fluid.multiarray 70 nmffilter_guit-features;
+#X obj 310 556 clone fluid.multiarray 10 nmffilter_guit-resynth;
+#X obj 22 556 clone fluid.multiarray 70 nmffilter_guit-stats;
+#X obj 22 535 clone fluid.multiarray 2 nmffilter_summed-bases;
 #X text 17 82 1) press to start the process of finding the pick component
 like in the fluid.bufnmf~ help file, f 95;
 #X text 42 317 2) wait for finishing. The basis with the lowest centroid
@@ -324,8 +324,8 @@ is copied to the first channel, f 88;
 #X obj 223 234 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 188 128 array define nmffilter_circular 44100;
-#X obj 188 148 clone multiarray 3 nmffilter_bases1;
-#X obj 188 168 clone multiarray 3 nmffilter_bases0;
+#X obj 188 148 clone fluid.multiarray 3 nmffilter_bases1;
+#X obj 188 168 clone fluid.multiarray 3 nmffilter_bases0;
 #X obj 52 351 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 52 371 int;

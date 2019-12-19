@@ -10,13 +10,7 @@
 #X restore 436 544 graph;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufcompose~ 20 12 0 36
 -262144 -66577 0;
-#X obj 530 84 multiarray-help;
-#X text 36 58 Buffer/Array Compositing Utility Buffer/Array Compositing
-Utility A flexible utility for combining the contents of buffers on
-the server. It can be used for thing like mixing down multichannel
-buffers \, or converting from left-right stereo to mid-side. It is
-used extensively in the example code of Fluid Decomposition. Important
-note:, f 127;
+#X obj 530 84 note_on_multiarrays;
 #N canvas 666 302 585 359 mixing 0;
 #X obj 18 325 outlet;
 #X text 20 26 use the destgain attribute to mix into the destination
@@ -79,7 +73,7 @@ bufcompose_dst \, bang;
 #X text 14 307 3);
 #X msg 37 308 source bufcompose_monosynth \, gain 0.7 \, destgain 1
 \, deststartchan 0 \, numchans 2 \, bang;
-#X obj 158 28 multiarray-help;
+#X obj 158 28 note_on_multiarrays;
 #X text 17 29 make sure to read this:;
 #X connect 5 0 0 0;
 #X connect 9 0 0 0;
@@ -151,7 +145,7 @@ bufcompose_stereopiano \, numchans 1 \, deststartchan 0 \, bang;
 #X restore 87 536 pd more_examples;
 #X obj 40 581 fluid.bufcompose~;
 #X obj 102 218 array define bufcompose_monosynth;
-#X obj 520 218 clone multiarray 2 bufcompose_stereopiano;
+#X obj 520 218 clone fluid.multiarray 2 bufcompose_stereopiano;
 #X obj 308 218 array define bufcompose_synthchoir;
 #X msg 34 176 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
 bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
@@ -187,19 +181,25 @@ bufcompose_dst \, bang;
 #X text 619 123 launch the HTML doc->;
 #X obj 751 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X connect 6 0 10 0;
-#X connect 7 0 10 0;
-#X connect 8 0 10 0;
-#X connect 9 0 10 0;
-#X connect 10 0 15 0;
-#X connect 10 0 17 0;
-#X connect 14 0 0 0;
-#X connect 16 0 14 0;
-#X connect 20 0 19 0;
-#X connect 21 0 19 1;
+#X text 36 58 Buffer/Array Compositing Utility Buffer/Array Compositing
+Utility A flexible utility for combining the contents of buffers on
+the server. It can be used for thing like mixing down multichannel
+buffers \, or converting from left-right stereo to mid-side. It is
+used extensively in the example code of Fluid Decomposition. Important
+read:, f 127;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
+#X connect 7 0 9 0;
+#X connect 8 0 9 0;
+#X connect 9 0 14 0;
+#X connect 9 0 16 0;
+#X connect 13 0 0 0;
+#X connect 15 0 13 0;
+#X connect 19 0 18 0;
+#X connect 20 0 18 1;
+#X connect 21 0 19 0;
+#X connect 21 0 20 0;
+#X connect 22 0 19 0;
 #X connect 22 0 20 0;
-#X connect 22 0 21 0;
-#X connect 23 0 20 0;
-#X connect 23 0 21 0;
-#X connect 25 0 10 0;
-#X connect 28 0 26 0;
+#X connect 24 0 9 0;
+#X connect 27 0 25 0;

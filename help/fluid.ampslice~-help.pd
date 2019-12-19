@@ -50,7 +50,7 @@ various customisable options and conditions to detect absolute and
 relative amplitude changes as onsets and offsets., f 121;
 #X text 16 145 At its most basic \, fluid.ampslice~ is like [high pass]–[half
 wave rectify]–[slide~]-[>~];
-#N canvas 1389 111 481 477 looking_ahead_and_or_back 0;
+#N canvas 830 29 481 477 looking_ahead_and_or_back 0;
 #X msg 10 131 reset \, minlengthabove 441 \, getlatency;
 #X msg 28 176 reset \, minlengthbelow 441 \, getlatency;
 #X msg 68 271 reset \, lookback 8820 \, getlatency;
@@ -77,15 +77,9 @@ fast, f 73;
 #X connect 3 0 7 0;
 #X connect 4 0 7 0;
 #X restore 224 459 pd looking_ahead_and_or_back;
-#N canvas 934 153 647 473 relative_thresholding 0;
+#N canvas 837 147 647 473 relative_thresholding 0;
 #X msg 28 180 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
 -60 \, absthreshoff -60 \, getlatency, f 86;
-#X msg 47 264 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
--60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
-2 \, relthreshoff 1 \, getlatency, f 88;
-#X msg 70 357 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
--60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
-2 \, relthreshoff 1 \, minslicelength 4410 \, getlatency, f 88;
 #X text 29 19 a second envelope follower allows relative thresholds
 ;
 #X text 29 73 this is useful for being able to robustly detect events
@@ -97,9 +91,15 @@ to absolute env, f 80;
 #X text 69 337 adding a minimum slice length can help clean things
 up further, f 75;
 #X obj 28 429 outlet;
-#X connect 0 0 8 0;
-#X connect 1 0 8 0;
-#X connect 2 0 8 0;
+#X msg 47 264 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
+-60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
+-1 \, relthreshoff -2 \, getlatency, f 88;
+#X msg 70 357 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
+-60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
+-1 \, relthreshoff -2 \, minslicelength 2205 \, getlatency, f 88;
+#X connect 0 0 6 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
 #X restore 296 515 pd relative_thresholding;
 #N canvas 760 23 651 739 a_musical_example 0;
 #X obj 33 29 loadbang;
@@ -123,27 +123,27 @@ up further, f 75;
 #X obj 30 655 *~;
 #X obj 83 636 biquad~ 0 0 1 -1 0;
 #X obj 83 655 clip~ 0 0.5;
-#X msg 164 292 reset \, absthreshon -60 \, absthreshoff -60 \, absrampup
-4410 \, absrampdown 4410 \, relthreshon 13 \, relthreshoff 10 \, relrampup
-10 \, relrampdown 2205 \, minsilencelength 4410 \, highpassfreq 20
-, f 75;
 #X text 164 275 a sort of click on the right \, relative envelope mostly
 \, with a gate, f 67;
 #X text 165 378 an absolute gate for fun - explore the lookahead to
 allow for tails \, but with added latency, f 72;
-#X msg 166 408 reset \, absthreshon -20 \, absthreshoff -23 \, absrampup
-44 \, absrampdown 2205 \, minsilencelength 1100 \, highpassfreq 20
-, f 73;
 #X floatatom 185 444 10 0 0 0 - - -;
-#X msg 185 461 lookahead \$1 \, getlatency;
 #X text 31 7 Amplitude followers love drums;
 #X obj 30 689 *~;
 #X obj 55 690 *~;
-#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 33 92 t b f b;
+#X msg 164 292 reset \, absthreshon -60 \, absthreshoff -70 \, absrampup
+4410 \, absrampdown 4410 \, relthreshon 12 \, relthreshoff 9 \, relrampup
+10 \, relrampdown 2205 \, minsilencelength 4410 \, highpassfreq 20
+, f 75;
+#X msg 166 408 reset \, absthreshon -27 \, absthreshoff -31 \, absrampup
+1103 \, absrampdown 4410 \, minsilencelength 1100 \, highpassfreq 40
+, f 73;
+#X msg 185 461 lookback \$1 \, getlatency;
 #X connect 0 0 3 0;
-#X connect 1 0 30 0;
+#X connect 1 0 27 0;
 #X connect 3 0 1 0;
 #X connect 4 0 8 0;
 #X connect 5 0 7 0;
@@ -160,21 +160,21 @@ allow for tails \, but with added latency, f 72;
 #X connect 16 0 17 0;
 #X connect 16 0 18 0;
 #X connect 16 1 13 0;
-#X connect 17 0 27 0;
+#X connect 17 0 24 0;
 #X connect 18 0 19 0;
-#X connect 19 0 28 0;
-#X connect 20 0 16 0;
-#X connect 23 0 16 0;
-#X connect 24 0 25 0;
-#X connect 25 0 16 0;
-#X connect 27 0 9 0;
-#X connect 28 0 9 1;
-#X connect 29 0 28 1;
-#X connect 29 0 27 1;
-#X connect 30 0 6 0;
-#X connect 30 1 4 1;
-#X connect 30 1 11 0;
-#X connect 30 2 10 0;
+#X connect 19 0 25 0;
+#X connect 22 0 30 0;
+#X connect 24 0 9 0;
+#X connect 25 0 9 1;
+#X connect 26 0 25 1;
+#X connect 26 0 24 1;
+#X connect 27 0 6 0;
+#X connect 27 1 4 1;
+#X connect 27 1 11 0;
+#X connect 27 2 10 0;
+#X connect 28 0 16 0;
+#X connect 29 0 16 0;
+#X connect 30 0 16 0;
 #X restore 402 570 pd a_musical_example;
 #X text 170 735 sonify state;
 #X text 72 232 by using different 'on' and 'off' thresholds \, we add

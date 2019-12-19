@@ -11,7 +11,7 @@
 #X obj 49 496 loadbang;
 #X obj 118 549 array define hpssguitar;
 #X obj 49 548 soundfiler;
-#X obj 264 549 clone multiarray 2 bufhpss_source;
+#X obj 264 549 clone fluid.multiarray 2 bufhpss_source;
 #X msg 49 517 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
 bufhpss_source-0 bufhpss_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
 hpssguitar, f 84;
@@ -20,8 +20,8 @@ hpssguitar, f 84;
 73;
 #X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 50 570 clone multiarray 2 bufhpss_harmo;
-#X obj 253 570 clone multiarray 2 bufhpss_percu;
+#X obj 50 570 clone fluid.multiarray 2 bufhpss_harmo;
+#X obj 285 570 clone fluid.multiarray 2 bufhpss_percu;
 #X obj 54 403 tabplay~ bufhpss_source-0;
 #X obj 210 404 tabplay~ bufhpss_source-1;
 #X obj 54 424 dac~;
