@@ -10,6 +10,11 @@ set(FLUID_PATH "" CACHE PATH "Optional top level of the fluid_decomposition repo
 option(DOCS "Generate HTML documentation" OFF)
 set(FLUID_PARAMDUMP_PATH "" CACHE PATH "Optional path to fluid_paramdump (needed for docs); will download if absent")
 
+if (APPLE)
+  set(CMAKE_XCODE_GENERATE_SCHEME ON)
+  set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
+endif()
+
 project (flucoma_pd LANGUAGES CXX)
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 

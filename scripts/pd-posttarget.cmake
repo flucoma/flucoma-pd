@@ -36,7 +36,7 @@ if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${PD_LIB})
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion -Wno-c++11-narrowing)
 endif()
 
 if(MSVC)
