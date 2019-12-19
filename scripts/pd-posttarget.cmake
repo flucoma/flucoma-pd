@@ -1,17 +1,28 @@
 
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
-add_dependencies (${PROJECT_NAME} FLUID_DECOMPOSITION)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_14)
+
 target_link_libraries(${PROJECT_NAME}
-PUBLIC FLUID_DECOMPOSITION FLUID_PD
-PRIVATE FFTLIB
+    PRIVATE 
+    FLUID_DECOMPOSITION FLUID_PD
 )
 
-target_include_directories (
-	${PROJECT_NAME}
-	PRIVATE
-	"${CMAKE_CURRENT_SOURCE_DIR}/../../include"
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
 )
 
+if ("${PROJECT_NAME}" MATCHES ".*_tilde")
+	string(REGEX REPLACE "_tilde" "~" EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
+else ()
+    set(EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
+endif ()
+
+set_target_properties(${PROJECT_NAME} 
+  PROPERTIES 
+  OUTPUT_NAME "${EXTERN_OUTPUT_NAME}"
+)
+    
 if(WIN32)
   if(${CMAKE_SIZEOF_VOID_P} EQUAL 8)
     target_compile_definitions(${PROJECT_NAME} 
@@ -25,32 +36,28 @@ if(MSVC)
   target_compile_options(${PROJECT_NAME} PRIVATE /W3)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${PD_LIB})
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion -Wno-c++11-narrowing)
 endif()
 
 if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: /arch:AVX>)
+  target_compile_options(${PROJECT_NAME} 
+    PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: /arch:AVX>
+  )
 else()
-  target_compile_options(${PROJECT_NAME} PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx -msse -msse2 -msse3 -msse4>)
+  target_compile_options(${PROJECT_NAME} 
+    PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx>
+  )
 endif()
-
-
 
 get_property(HEADERS TARGET FLUID_DECOMPOSITION PROPERTY INTERFACE_SOURCES)
-source_group(TREE "${FLUID_PATH}/include" FILES ${HEADERS})
+source_group(TREE "${fluid_decomposition_SOURCE_DIR}/include" FILES ${HEADERS})
 
-if ("${PROJECT_NAME}" MATCHES ".*_tilde")
-	string(REGEX REPLACE "_tilde" "~" EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
-else ()
-    set(EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
-endif ()
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${EXTERN_OUTPUT_NAME}")
-
-message(${EXTERN_OUTPUT_NAME})
-
+get_property(HEADERS TARGET FLUID_PD PROPERTY INTERFACE_SOURCES)
+source_group("PD Wrapper" FILES ${HEADERS})
+source_group("" FILES "${PROJECT_NAME}.cpp")
 
 if(MSVC)
-  target_compile_definitions( ${PROJECT_NAME} PUBLIC USE_MATH_DEFINES)
+  target_compile_definitions( ${PROJECT_NAME} PRIVATE USE_MATH_DEFINES)
 endif(MSVC)
 
 ### Output ###
@@ -59,11 +66,15 @@ if (APPLE)
 
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 		SUFFIX ".pd_darwin"
+    PREFIX ""
 		XCODE_ATTRIBUTE_MACH_O_TYPE mh_dylib
 		XCODE_ATTRIBUTE_EXECUTABLE_PREFIX ""
 		XCODE_ATTRIBUTE_EXECUTABLE_EXTENSION "pd_darwin"
-	)
-
+    OSX_DEPLOYMENT_TARGET "10.7"
+	) 
+  #targeting <= 10.9, need to explicitly set libc++
+  target_compile_options(${PROJECT_NAME} PRIVATE -stdlib=libc++)
+  
 elseif(UNIX AND NOT APPLE)
 
   set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -84,17 +95,9 @@ elseif (MSVC)
   )
 
 	# warning about constexpr not being const in c++14
-	set_target_properties(${PROJECT_NAME} PROPERTIES
-		COMPILE_FLAGS "/wd4814")
+	set_target_properties(${PROJECT_NAME} 
+    PROPERTIES
+		COMPILE_FLAGS "/wd4814"
+  )
 
-endif (APPLE)
-
-### Post Build ###
-#if (WIN32)
-#	add_custom_command(
-#		TARGET ${PROJECT_NAME}
-#		POST_BUILD
-#		COMMAND rm "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${EXTERN_OUTPUT_NAME}.ilk"
-#		COMMENT "ilk file cleanup"
-#	)
-#endif ()
+endif()
