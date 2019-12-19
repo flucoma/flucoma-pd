@@ -80,7 +80,7 @@ audio;
 / hopSize) - 1, f 69;
 #X obj 40 888 array size bufpitch-feats-0;
 #N canvas 384 23 561 739 musical_example 0;
-#X msg 26 62 read -resize ../media/Tremblay-ASWINE-ScratchySynth-M.wav
+#X msg 26 62 read -resize media/Tremblay-ASWINE-ScratchySynth-M.wav
 bufpitch_synthsource, f 78;
 #X obj 26 83 soundfiler;
 #X obj 26 104 t b;
@@ -263,8 +263,8 @@ a grain, f 61;
 #X msg 48 152 stop;
 #X obj 112 825 array define bufpitchguitar;
 #X obj 284 825 clone fluid.multiarray 2 bufpitch_source;
-#X msg 43 794 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-bufpitch_source-0 bufpitch_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 43 794 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufpitch_source-0 bufpitch_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 bufpitchguitar, f 90;
 #X text 64 241 3) process;
 #X msg 45 277 \; bufpitch-feats2-3 xticks 0 0 0 \; bufpitch-feats2-2
@@ -303,7 +303,7 @@ xticks 0 0 0;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufpitch.html;
+#X msg 83 71 dir 0 docs/fluid\.bufpitch.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

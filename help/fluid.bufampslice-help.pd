@@ -41,7 +41,7 @@ in this toy example \, since the envelope follower is 1 sample long
 #X obj 204 376 tabread bufampslice_indices-0;
 #X obj 20 398 t b f;
 #X obj 21 476 tabplay~ bufampslice_source;
-#X msg 17 57 read -resize ../media/Nicol-LoopE-M.wav bufampslice_source
+#X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufampslice_source
 ;
 #X floatatom 17 231 5 0 0 0 - - -;
 #X obj 21 419 f;
@@ -240,7 +240,7 @@ bufampslice_pointers -absrampup 5 -absrampdown 50 -absthreshon -12
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufampslice.html;
+#X msg 83 71 dir 0 docs/fluid\.bufampslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

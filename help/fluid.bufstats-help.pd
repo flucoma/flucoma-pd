@@ -311,7 +311,7 @@ on the left channel \, and noise on the right channel, f 76;
 , f 78;
 #X obj 18 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 16 28 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+#X msg 16 28 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
 bufstats_synth;
 #X floatatom 20 231 5 0 1 0 - - -;
 #X obj 20 266 fluid\.bufcompose -source bufstats_synth_slices_pitches
@@ -490,7 +490,7 @@ Changing to channel 1 would sort by pitch confidence., f 100;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufstats.html;
+#X msg 83 71 dir 0 docs/fluid\.bufstats.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

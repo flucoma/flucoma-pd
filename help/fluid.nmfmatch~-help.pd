@@ -258,7 +258,7 @@ like in the fluid\.bufnmf help file, f 95;
 #X obj 301 736 clone fluid.multiarray 70 nmfmatch_guit-features;
 #X obj 302 757 array define nmfmatch_guitar;
 #X obj 302 778 clone fluid.multiarray 10 nmfmatch_guit-resynth;
-#X msg 20 102 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 20 102 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar;
 #X obj 20 173 fluid\.bufnmf -source nmfmatch_guitar -numframes 88200
 -components 10 -bases nmfmatch_guit-bases -resynth nmfmatch_guit-resynth
@@ -438,7 +438,7 @@ spectra, f 72;
 #X obj 39 364 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X msg 62 364 stop;
-#X msg 24 107 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 24 107 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar2;
 #X obj 38 643 array define nmfmatch_guitar2;
 #X obj 38 663 clone fluid.multiarray 8 nmfmatch_guit-bases2;
@@ -504,7 +504,7 @@ component, f 33;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.nmfmatch~.html;
+#X msg 83 71 dir 0 docs/fluid.nmfmatch~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

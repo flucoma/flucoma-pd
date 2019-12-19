@@ -190,7 +190,7 @@ every 7 (see fluid\.bufstats help), f 87;
 #X restore 20 297 pd makenewbases;
 #X obj 20 317 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 20 102 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 20 102 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 nmffilter_guitar;
 #X obj 20 173 fluid\.bufnmf -source nmffilter_guitar -numframes 88200
 -components 10 -bases nmffilter_guit-bases -resynth nmffilter_guit-resynth
@@ -308,7 +308,7 @@ is copied to the first channel, f 88;
 #X obj 21 68 loadbang;
 #X obj 21 110 soundfiler;
 #X obj 188 108 array define nmffilter_drums;
-#X msg 21 89 read -resize ../media/Nicol-LoopE-M.wav nmffilter_drums
+#X msg 21 89 read -resize media/Nicol-LoopE-M.wav nmffilter_drums
 ;
 #X obj 22 229 *~, f 10;
 #X obj 22 189 /~;
@@ -444,7 +444,7 @@ the last second of sound \, extracting 3 complementary spectra;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.nmffilter~.html;
+#X msg 83 71 dir 0 docs/fluid.nmffilter~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

@@ -6,7 +6,7 @@
 #X text 37 59 Seven Spectral Shape Descriptors on a Buffer;
 #X text 37 90 Seven of the spectral shape descriptors \, computed on
 a linear scale for both amplitude and frequency., f 102;
-#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufshape_drums
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufshape_drums
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_drums 453932 float 0;
@@ -78,8 +78,8 @@ xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
 #X msg 28 153 stop;
 #X obj 93 810 array define bufshapeguitar;
 #X obj 265 810 clone fluid.multiarray 2 bufshape_source;
-#X msg 24 779 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-bufshape_source-0 bufshape_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 24 779 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufshape_source-0 bufshape_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 bufshapeguitar, f 90;
 #X text 650 22 3) process;
 #X msg 631 69 \; bufshape_feats-0 xticks 0 0 0 \; bufshape_feats-1
@@ -150,7 +150,7 @@ bufshape_feats, f 71;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufspectralshape.html;
+#X msg 83 71 dir 0 docs/fluid\.bufspectralshape.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

@@ -12,8 +12,8 @@
 #X obj 118 549 array define hpssguitar;
 #X obj 49 548 soundfiler;
 #X obj 264 549 clone fluid.multiarray 2 bufhpss_source;
-#X msg 49 517 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-bufhpss_source-0 bufhpss_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufhpss_source-0 bufhpss_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 hpssguitar, f 84;
 #X obj 48 100 fluid\.bufcompose -source hpssguitar -startframe 555000
 -numframes 468335 -deststartchan 1 -destination bufhpss_source, f
@@ -82,7 +82,7 @@ hpssguitar, f 84;
 #X array bufhpss_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
 #X restore 34 369 graph;
-#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufhpss_drums
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufhpss_drums
 ;
 #X obj 133 304 tabplay~;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -277,7 +277,7 @@ xticks 0 0 0 \; bufhpss_residual xticks 0 0 0;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufhpss.html;
+#X msg 83 71 dir 0 docs/fluid\.bufhpss.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

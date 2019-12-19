@@ -147,9 +147,9 @@ bufcompose_stereopiano \, numchans 1 \, deststartchan 0 \, bang;
 #X obj 102 218 array define bufcompose_monosynth;
 #X obj 520 218 clone fluid.multiarray 2 bufcompose_stereopiano;
 #X obj 308 218 array define bufcompose_synthchoir;
-#X msg 34 176 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_monosynth \, read -maxsize 441000 ../media/Tremblay-SlideChoirAdd-M.wav
+#X msg 34 176 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
+bufcompose_monosynth \, read -maxsize 441000 media/Tremblay-SlideChoirAdd-M.wav
 bufcompose_synthchoir, f 110;
 #X msg 40 632 \; bufcompose_dst-0 xticks 0 0 0 \; bufcompose_dst-1
 xticks 0 0 0;
@@ -171,7 +171,7 @@ bufcompose_dst \, bang;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufcompose.html;
+#X msg 83 71 dir 0 docs/fluid\.bufcompose.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

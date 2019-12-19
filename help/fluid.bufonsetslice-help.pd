@@ -39,7 +39,7 @@ in this toy example \, since the envelope follower is 1 sample long
 #X floatatom 349 136 8 0 9 0 - - -;
 #X text 18 314 2) play a give slice \, by retrieving the onset and
 offset indices, f 65;
-#X msg 17 57 read -resize ../media/Nicol-LoopE-M.wav bufonsetslice_source
+#X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufonsetslice_source
 ;
 #X obj 17 210 array size bufonsetslice_indices;
 #X obj 17 177 fluid\.bufonsetslice -source bufonsetslice_source -indices
@@ -94,7 +94,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufonsetslice.html;
+#X msg 83 71 dir 0 docs/fluid\.bufonsetslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

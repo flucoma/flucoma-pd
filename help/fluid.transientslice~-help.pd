@@ -15,7 +15,7 @@
 #X obj 27 77 t b f b;
 #X obj 95 77 t b b b;
 #X obj 28 221 outlet~;
-#X msg 27 37 read -resize ../media/Nicol-LoopE-M.wav translice_drums
+#X msg 27 37 read -resize media/Nicol-LoopE-M.wav translice_drums
 ;
 #X obj 124 154 array define translice_drums;
 #X obj 28 200 tabread4~ translice_drums;
@@ -140,7 +140,7 @@
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.transientslice~.html;
+#X msg 83 71 dir 0 docs/fluid.transientslice~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

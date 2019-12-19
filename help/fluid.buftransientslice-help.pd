@@ -41,7 +41,7 @@ in this toy example \, since the envelope follower is 1 sample long
 offset indices, f 65;
 #X obj 19 414 t f f;
 #X obj 19 375 + 1;
-#X msg 17 57 read -resize ../media/Nicol-LoopE-M.wav buftransientslice_source
+#X msg 17 57 read -resize media/Nicol-LoopE-M.wav buftransientslice_source
 , f 65;
 #X obj 255 473 array define buftransientslice_source;
 #X obj 255 494 array define buftransientslice_indices;
@@ -93,7 +93,7 @@ transientslicepoints -minslicelength 45, f 66;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.buftransientslice.html;
+#X msg 83 71 dir 0 docs/fluid\.buftransientslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

@@ -33,8 +33,8 @@
 #X obj 290 570 clone fluid.multiarray 2 bufsines_res;
 #X obj 290 549 clone fluid.multiarray 2 bufsines_source;
 #X obj 118 549 array define bufsinesguitar;
-#X msg 49 517 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-bufsines_source-0 bufsines_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufsines_source-0 bufsines_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 bufsinesguitar, f 90;
 #X obj 54 403 tabplay~ bufsines_source-0;
 #X obj 217 404 tabplay~ bufsines_source-1;
@@ -97,7 +97,7 @@ bufsinesguitar, f 90;
 #X text 40 91 This class triggers a Sinusoidal Modelling process on
 buffers in non-real-time \, It implements a mix and match algorithms
 taken from classic papers., f 80;
-#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav bufsines_drums
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufsines_drums
 ;
 #X msg 133 213 set bufsines_drums \, bang;
 #X msg 153 254 set bufsines_sines \, bang;
@@ -117,7 +117,7 @@ xticks 0 0 0;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufsines.html;
+#X msg 83 71 dir 0 docs/fluid\.bufsines.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

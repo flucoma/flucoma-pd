@@ -35,8 +35,8 @@
 #X obj 48 100 fluid\.bufcompose -source buftransguitar -startframe
 555000 -numframes 468335 -deststartchan 1 -destination buftrans_source
 , f 73;
-#X msg 49 517 read -resize ../media/Tremblay-SA-UprightPianoPedalWide.wav
-buftrans_source-0 buftrans_source-1 \, read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+buftrans_source-0 buftrans_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 buftransguitar, f 90;
 #X obj 118 549 array define buftransguitar;
 #X obj 290 549 clone fluid.multiarray 2 buftrans_source;
@@ -95,7 +95,7 @@ buftrans_tra -residual buftrans_res -threshfwd 1.2, f 84;
 #X text 40 91 This class triggers a Sinusoidal Modelling process on
 buffers in non-real-time \, It implements a mix and match algorithms
 taken from classic papers., f 79;
-#X msg 34 176 read -resize ../media/Nicol-LoopE-M.wav buftransients_drums
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav buftransients_drums
 ;
 #X msg 133 213 set buftransients_drums \, bang;
 #X msg 165 274 set buftransients_residual \, bang;
@@ -115,7 +115,7 @@ buftransients_transients -residual buftransients_residual, f 75;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.buftransients.html;
+#X msg 83 71 dir 0 docs/fluid\.buftransients.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

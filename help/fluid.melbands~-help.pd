@@ -40,7 +40,7 @@
 #X obj 98 121 / 1;
 #X obj 27 77 t b f b;
 #X obj 95 77 t b b b;
-#X msg 27 37 read -resize ../media/Nicol-LoopE-M.wav mfcc_drums;
+#X msg 27 37 read -resize media/Nicol-LoopE-M.wav mfcc_drums;
 #X obj 124 154 array define mfcc_drums;
 #X obj 28 200 tabread4~ mfcc_drums;
 #X obj 28 221 outlet~;
@@ -435,7 +435,7 @@ mel \, then converts them all back in Hz;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.melbands~.html;
+#X msg 83 71 dir 0 docs/fluid.melbands~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

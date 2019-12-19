@@ -5,7 +5,7 @@
 -66577 0;
 #X text 36 57 Buffer-Based Non-Negative Matrix Factorisation on Spectral
 Frames, f 66;
-#X msg 522 510 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+#X msg 522 510 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
 bufnmf_monosynth, f 39;
 #X obj 528 578 array define bufnmf_monosynth;
 #X obj 528 599 clone fluid.multiarray 5 bufnmf_resynth;
@@ -453,7 +453,7 @@ index;
 #X floatatom 531 357 5 0 0 0 - - -;
 #X obj 531 399 tabplay~;
 #X obj 531 420 dac~;
-#X msg 27 141 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 27 141 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 bufnmf_guitar;
 #X obj 27 231 fluid\.bufnmf -source bufnmf_guitar -numframes 88200
 -components 10 -bases bufnmf_guit-bases -resynth bufnmf_guit-resynth
@@ -586,7 +586,7 @@ input and 2 components: channel 1: channel 1 \, component 1 channel
 #X obj 255 455 clone fluid.multiarray 24 bufnmf_bells_resynth;
 #X obj 17 228 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 17 145 read -resize ../media/Tremblay-CF-ChurchBells.wav bufnmf_bells-0
+#X msg 17 145 read -resize media/Tremblay-CF-ChurchBells.wav bufnmf_bells-0
 bufnmf_bells-1, f 80;
 #X text 21 263 select components to hear;
 #X text 21 400 in this case we've decomposed in to enough components
@@ -632,8 +632,8 @@ and numchans to process only what you want, f 94;
 #X floatatom 272 330 8 0 0 0 - - -;
 #X floatatom 399 330 8 0 0 0 - - -;
 #X msg 397 307 -1;
-#X msg 32 117 read ../media/Tremblay-AaS-AcousticStrums-M.wav bufnmf_st_src-0
-\, read ../media/Tremblay-SA-UprightPianoPedalWide.wav bufnmf_st_src-1
+#X msg 32 117 read media/Tremblay-AaS-AcousticStrums-M.wav bufnmf_st_src-0
+\, read media/Tremblay-SA-UprightPianoPedalWide.wav bufnmf_st_src-1
 , f 70;
 #X text 96 98 making an artificially wide stereo source;
 #X obj 116 150 clone 2 fluid.multiarray bufnmf_st_src 441000;
@@ -775,7 +775,7 @@ and numchans to process only what you want, f 94;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufnmf.html;
+#X msg 83 71 dir 0 docs/fluid\.bufnmf.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

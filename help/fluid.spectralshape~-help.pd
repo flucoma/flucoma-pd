@@ -314,7 +314,7 @@ shape., f 74;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.spectralshape~.html;
+#X msg 83 71 dir 0 docs/fluid.spectralshape~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

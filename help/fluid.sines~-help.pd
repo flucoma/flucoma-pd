@@ -34,7 +34,7 @@
 #X obj 36 571 fluid.sines~ 8192 -fftsettings 1024 -1 8192;
 #X text 337 646 by inverting here \, we should hear nothing when all
 sources are enabled, f 21;
-#X msg 36 160 read -resize ../media/Nicol-LoopE-M.wav sines_drums;
+#X msg 36 160 read -resize media/Nicol-LoopE-M.wav sines_drums;
 #X obj 37 323 tabread4~ sines_drums;
 #X obj 34 749 array define sines_drums;
 #X msg 43 385 getlatency;
@@ -51,7 +51,7 @@ sources are enabled, f 21;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.sines~.html;
+#X msg 83 71 dir 0 docs/fluid.sines~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

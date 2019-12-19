@@ -39,7 +39,7 @@ offset indices, f 65;
 #X obj 19 414 t f f;
 #X obj 19 375 + 1;
 #X msg 209 155 threshold \$1 \, bang;
-#X msg 17 57 read -resize ../media/Nicol-LoopE-M.wav bufnovslice_source
+#X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufnovslice_source
 ;
 #X obj 255 473 array define bufnovslice_source;
 #X obj 20 492 tabplay~ bufnovslice_source;
@@ -115,7 +115,7 @@ signal., f 90;
 #X obj 179 459 array define bufnov_segments;
 #X obj 22 441 soundfiler;
 #X obj 22 405 loadbang;
-#X msg 22 423 read -resize ../media/Tremblay-AaS-AcousticStrums-M.wav
+#X msg 22 423 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 bufnov_guit, f 68;
 #X msg 22 88 filtersize 1 \, bang;
 #X msg 47 168 filtersize 4 \, bang;
@@ -164,7 +164,7 @@ bufnov_guit, f 68;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid\.bufnoveltyslice.html;
+#X msg 83 71 dir 0 docs/fluid\.bufnoveltyslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
