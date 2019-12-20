@@ -103,7 +103,7 @@ more precise results., f 37;
 #N canvas 730 182 450 382 musical_example 0;
 #X obj 20 148 readsf~;
 #X msg 32 127 0;
-#X msg 20 108 open ../media/Tremblay-ASWINE-ScratchySynth-M.wav \,
+#X msg 20 108 open media/Tremblay-ASWINE-ScratchySynth-M.wav \,
 1;
 #X obj 20 169 delwrite~ \$0-latencycomp 1000;
 #X obj 293 349 dac~;
@@ -219,7 +219,7 @@ gets sent to a delay effect, f 64;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.pitch~.html;
+#X msg 83 71 dir 0 docs/fluid.pitch~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

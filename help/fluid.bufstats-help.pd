@@ -1,5 +1,5 @@
 #N canvas 56 23 734 649 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufstats~ 20 12 0 36 -262144
+#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufstats 20 12 0 36 -262144
 -66577 0;
 #X text 36 57 Computing Statistics on Buffers as Series., f 66;
 #X text 37 116 Statistical analysis on buffer channels., f 62;
@@ -108,7 +108,7 @@
 #X msg 114 260 random;
 #X obj 39 318 array get bufstats_stats;
 #X obj 39 339 unpack f f f f f f f f f f f f f f;
-#X obj 39 300 fluid.bufstats~ -source bufstats_source -stats bufstats_stats
+#X obj 39 300 fluid\.bufstats -source bufstats_source -stats bufstats_stats
 -numderivs 1, f 74;
 #X text 350 365 mean;
 #X text 349 382 stddev;
@@ -258,7 +258,7 @@ on the left channel \, and noise on the right channel, f 76;
 #X array bufstats_src-1 101 float 2;
 #X coords 0 1 101 0 202 140 1 0 0;
 #X restore 400 131 graph;
-#X obj 44 298 fluid.bufstats~ -source bufstats_src -stats bufstats_feats
+#X obj 44 298 fluid\.bufstats -source bufstats_src -stats bufstats_feats
 -numderivs 1, f 88;
 #X text 63 280 2) process;
 #X connect 0 0 68 0;
@@ -306,19 +306,19 @@ on the left channel \, and noise on the right channel, f 76;
 #X obj 449 572 clone fluid.multiarray 2 bufstats_synth_slices_pitches;
 #X obj 18 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 18 128 fluid.bufonsetslice~ -minslicelength 10 -metric 9 -threshold
+#X obj 18 128 fluid\.bufonsetslice -minslicelength 10 -metric 9 -threshold
 0.4 -filtersize 7 -source bufstats_synth -indices bufstats_synth_slices
 , f 78;
 #X obj 18 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 16 28 read -resize ../media/Tremblay-AaS-SynthTwoVoices-M.wav
+#X msg 16 28 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
 bufstats_synth;
 #X floatatom 20 231 5 0 1 0 - - -;
-#X obj 20 266 fluid.bufcompose~ -source bufstats_synth_slices_pitches
+#X obj 20 266 fluid\.bufcompose -source bufstats_synth_slices_pitches
 -destination bufstats_synth_slices_selected -numchans 1;
 #X msg 20 248 startchan \$1 \, bang;
 #X obj 449 591 array define bufstats_synth_slices_selected;
-#X obj 18 157 fluid.bufpitch~ -source bufstats_synth -features bufstats_synth_slices_pitches
+#X obj 18 157 fluid\.bufpitch -source bufstats_synth -features bufstats_synth_slices_pitches
 , f 78;
 #X obj 448 610 array define bufstats_synth_slices_stats;
 #N canvas 692 137 563 541 iterate_and_rank_slices 0;
@@ -336,7 +336,7 @@ bufstats_synth;
 512)) - $f2), f 64;
 #X msg 141 285 startframe \$1;
 #X msg 141 336 numframes \$1;
-#X obj 109 361 fluid.bufstats~ -source bufstats_synth_slices_selected
+#X obj 109 361 fluid\.bufstats -source bufstats_synth_slices_selected
 -stats bufstats_synth_slices_stats -numderivs 1;
 #X obj 109 393 int;
 #X obj 109 411 tabread bufstats_synth_slices_stats;
@@ -490,7 +490,7 @@ Changing to channel 1 would sort by pitch confidence., f 100;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.bufstats~.html;
+#X msg 83 71 dir 0 docs/fluid\.bufstats.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;

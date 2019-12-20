@@ -35,7 +35,7 @@ sources are enabled, f 22;
 #X text 36 57 Real-Time Transient Modeller and Extractor, f 61;
 #X text 34 101 A real-time transient modeller on its input., f 69
 ;
-#X msg 36 160 read -resize ../media/Nicol-LoopE-M.wav trans_drums;
+#X msg 36 160 read -resize media/Nicol-LoopE-M.wav trans_drums;
 #X obj 35 659 array define trans_drums;
 #X obj 37 323 tabread4~ trans_drums;
 #X obj 37 481 fluid.transients~ -order 20 -blocksize 512;
@@ -93,7 +93,7 @@ sources are enabled, f 22;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 ../docs/fluid.transients~.html;
+#X msg 83 71 dir 0 docs/fluid.transients~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
