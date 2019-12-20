@@ -403,11 +403,11 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRea
   struct Fetcher;
 
   template <size_t N>
-  struct Fetcher<N, FloatT> : public FetchValue<N, FloatT, decltype(atom_getfloat), atom_getfloat>
+  struct Fetcher<N, FloatT> : public FetchValue<N, FloatT, std::decay_t<decltype(atom_getfloat)>, atom_getfloat>
   {};
 
   template <size_t N>
-  struct Fetcher<N, LongT> : public FetchValue<N, LongT, decltype(atom_getint), atom_getint>
+  struct Fetcher<N, LongT> : public FetchValue<N, LongT, std::decay_t<decltype(atom_getint)>, atom_getint>
   {};
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
