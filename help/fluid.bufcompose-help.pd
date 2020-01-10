@@ -8,7 +8,7 @@
 #X array bufcompose_dst-1 515088 float 2;
 #X coords 0 1 515088 -1 200 140 1 0 0;
 #X restore 436 544 graph;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufcompose 20 12 0 36
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufcompose 20 12 0 36
 -262144 -66577 0;
 #X obj 530 84 note_on_multiarrays;
 #N canvas 666 302 585 359 mixing 0;
@@ -143,14 +143,9 @@ bufcompose_stereopiano \, numchans 1 \, deststartchan 0 \, bang;
 #X connect 9 0 0 0;
 #X connect 10 0 0 0;
 #X restore 87 536 pd more_examples;
-#X obj 40 581 fluid\.bufcompose;
+#X obj 40 581 fluid.bufcompose;
 #X obj 102 218 array define bufcompose_monosynth;
-#X obj 520 218 clone fluid.multiarray 2 bufcompose_stereopiano;
-#X obj 308 218 array define bufcompose_synthchoir;
-#X msg 34 176 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_monosynth \, read -maxsize 441000 media/Tremblay-SlideChoirAdd-M.wav
-bufcompose_synthchoir, f 110;
+#X obj 102 237 clone fluid.multiarray 2 bufcompose_stereopiano;
 #X msg 40 632 \; bufcompose_dst-0 xticks 0 0 0 \; bufcompose_dst-1
 xticks 0 0 0;
 #X obj 34 156 loadbang;
@@ -171,7 +166,7 @@ bufcompose_dst \, bang;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufcompose.html;
+#X msg 83 71 dir 0 docs/fluid.bufcompose.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -187,19 +182,24 @@ the server. It can be used for thing like mixing down multichannel
 buffers \, or converting from left-right stereo to mid-side. It is
 used extensively in the example code of Fluid Decomposition. Important
 read:, f 127;
+#X msg 34 176 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufcompose_stereopiano-0 bufcompose_stereopiano-1 \, read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
+bufcompose_monosynth \, read media/Tremblay-SlideChoirAdd-M.wav bufcompose_synthchoir
+, f 110;
+#X obj 308 218 array define bufcompose_synthchoir 441000;
 #X connect 5 0 9 0;
 #X connect 6 0 9 0;
 #X connect 7 0 9 0;
 #X connect 8 0 9 0;
+#X connect 9 0 12 0;
 #X connect 9 0 14 0;
-#X connect 9 0 16 0;
-#X connect 13 0 0 0;
-#X connect 15 0 13 0;
+#X connect 13 0 27 0;
+#X connect 17 0 16 0;
+#X connect 18 0 16 1;
+#X connect 19 0 17 0;
 #X connect 19 0 18 0;
-#X connect 20 0 18 1;
-#X connect 21 0 19 0;
-#X connect 21 0 20 0;
-#X connect 22 0 19 0;
-#X connect 22 0 20 0;
-#X connect 24 0 9 0;
-#X connect 27 0 25 0;
+#X connect 20 0 17 0;
+#X connect 20 0 18 0;
+#X connect 22 0 9 0;
+#X connect 25 0 23 0;
+#X connect 27 0 0 0;
