@@ -72,7 +72,7 @@ if(DOCS)
     add_subdirectory(${fluid_paramdump_SOURCE_DIR} ${fluid_paramdump_BINARY_DIR})
   endif()
   
-  add_custom_target(PD_MAKE_DOCS ALL DEPENDS GENERATE_HTML)
+  add_custom_target(PD_MAKE_DOCS ALL DEPENDS MAKE_PD_REF)
 endif()
 
 set(LOCAL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -128,5 +128,5 @@ install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "$
 install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 
 if(DOCS)
-  install(DIRECTORY "${CMAKE_BINARY_DIR}/html/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
+  install(DIRECTORY "${CMAKE_BINARY_DIR}pdhtml/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()
