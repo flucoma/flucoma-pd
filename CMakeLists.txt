@@ -128,5 +128,5 @@ install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "$
 install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 
 if(DOCS)
-  install(DIRECTORY "${CMAKE_BINARY_DIR}/pdhtml/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
+  install(DIRECTORY ${FLUID_PD_REF_PATH} DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()
