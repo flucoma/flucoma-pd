@@ -127,6 +127,6 @@ install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT})
 install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "${PD_PACKAGE_ROOT}/media")
 install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 
-if(DOCS)
-  install(DIRECTORY ${FLUID_PD_REF_PATH} DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
+if(DOCS)  
+  install(DIRECTORY "${FLUID_PD_REF_PATH}" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()
