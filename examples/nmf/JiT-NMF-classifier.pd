@@ -1,23 +1,19 @@
-#N canvas 284 70 1148 932 12;
-#X obj 574 377 dac~;
-#X msg 171 95 stop;
-#X msg 213 97 start;
-#X obj 912 111 array define input 44100;
-#X obj 169 169 fexpr~ 1 + ($y1[-1] % 22050);
-#X obj 315 234 fexpr~ input[$x1[0]] = $x2[0] \; input[$x1[0]+22050]
+#N canvas 467 146 1148 932 12;
+#X obj 779 499 dac~;
+#X obj 55 370 array define input 44100;
+#X obj 37 290 fexpr~ 1 + ($y1[-1] % 22050);
+#X obj 54 329 fexpr~ input[$x1[0]] = $x2[0] \; input[$x1[0]+22050]
 = $x2[0];
-#X obj 172 468 samphold~;
-#X obj 276 531 snapshot~;
-#X obj 566 469 threshold~ 0.5 1 0.5 0;
-#X obj 567 504 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X floatatom 276 555 5 0 0 0 - - -;
-#X obj 639 223 fluid.ampslice~ -absthreshon -47 -absthreshoff -47 -absrampup
+#X obj 38 424 samphold~;
+#X obj 338 463 snapshot~;
+#X obj 338 367 threshold~ 0.5 1 0.5 0;
+#X floatatom 338 487 5 0 0 0 - - -;
+#X obj 296 286 fluid.ampslice~ -absthreshon -47 -absthreshoff -47 -absrampup
 2205 -absrampdown 2205 -relthreshon 12 -relthreshoff 9 -relrampup 10
 -relrampdown 1666 -minslicelength 4410 -minsilencelength 4410 -highpassfreq
 85;
-#X obj 284 407 *~ -1;
-#X obj 284 431 +~ 1;
+#X obj 291 370 *~ -1;
+#X obj 291 394 +~ 1;
 #N canvas 293 252 1377 404 bd 0;
 #X obj 28 8 inlet;
 #X obj 29 338 expr~ tanh($v1);
@@ -205,10 +201,10 @@
 #X connect 75 0 74 0;
 #X connect 76 0 68 0;
 #X connect 77 0 63 0;
-#X restore 585 165 pd bd;
-#X obj 586 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 803 171 pd bd;
+#X obj 804 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 637 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 855 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #N canvas 478 280 856 404 sn 0;
 #X obj 146 3 inlet;
@@ -312,8 +308,8 @@
 #X connect 43 0 8 0;
 #X connect 44 0 22 1;
 #X connect 45 0 22 0;
-#X restore 636 165 pd sn;
-#X obj 685 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 854 171 pd sn;
+#X obj 903 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #N canvas 251 184 686 360 hh 0;
 #X obj 487 16 inlet;
@@ -371,28 +367,40 @@
 #X connect 23 0 1 0;
 #X connect 24 0 4 0;
 #X connect 25 0 9 0;
-#X restore 684 165 pd hh;
-#X text 380 45 select a source and play (drum algo optimised and randomised
+#X restore 902 171 pd hh;
+#X text 336 86 select a source and play (drum algo optimised and randomised
 from a source from Snappizz on sc list archive - https://sccode.org/1-523
 );
-#X connect 1 0 4 0;
-#X connect 1 0 5 0;
+#X obj 833 88 text define -k theseq;
+#A set 111 1 \; 111 0 \; 111 3 \; 111 0 \; 111 2 \; 111 0 \; 111 3
+\; 111 1 \; 111 0 \; 111 1 \; 111 1 \; 0 3 \; 111 0 \; 111 2 \; 111
+0 \; 111 3 \; 111 3 \;;
+#X obj 805 66 text sequence theseq -w 1;
+#X msg 804 28 line 0 \, auto;
+#X msg 905 28 stop;
+#X obj 805 110 sel 1 2 3;
+#X connect 2 0 3 0;
 #X connect 2 0 4 0;
-#X connect 2 0 5 0;
 #X connect 4 0 5 0;
-#X connect 4 0 6 0;
-#X connect 6 0 7 0;
-#X connect 7 0 10 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
 #X connect 8 0 9 0;
-#X connect 8 0 7 0;
-#X connect 12 0 13 0;
-#X connect 13 0 6 1;
+#X connect 8 0 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 4 1;
+#X connect 11 0 0 0;
+#X connect 11 0 8 0;
+#X connect 12 0 11 0;
+#X connect 13 0 14 0;
 #X connect 14 0 0 0;
-#X connect 14 0 11 0;
-#X connect 15 0 14 0;
-#X connect 16 0 17 0;
-#X connect 17 0 0 0;
-#X connect 17 0 11 0;
-#X connect 18 0 19 0;
-#X connect 19 0 0 0;
-#X connect 19 0 11 0;
+#X connect 14 0 8 0;
+#X connect 15 0 16 0;
+#X connect 16 0 0 0;
+#X connect 16 0 8 0;
+#X connect 19 0 22 0;
+#X connect 19 2 20 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 0;
+#X connect 22 0 12 0;
+#X connect 22 1 13 0;
+#X connect 22 2 15 0;
