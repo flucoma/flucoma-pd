@@ -6,6 +6,12 @@ target_link_libraries(${PROJECT_NAME}
     FLUID_DECOMPOSITION FLUID_PD
 )
 
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE 
+  "${FLUID_VERSION_PATH}"
+)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
