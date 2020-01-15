@@ -1,13 +1,8 @@
-#N canvas 467 146 1148 932 12;
+#N canvas 390 110 1148 932 12;
 #X obj 779 499 dac~;
-#X obj 55 370 array define input 44100;
-#X obj 37 290 fexpr~ 1 + ($y1[-1] % 22050);
-#X obj 54 329 fexpr~ input[$x1[0]] = $x2[0] \; input[$x1[0]+22050]
-= $x2[0];
 #X obj 38 424 samphold~;
 #X obj 338 463 snapshot~;
 #X obj 338 367 threshold~ 0.5 1 0.5 0;
-#X floatatom 338 487 5 0 0 0 - - -;
 #X obj 296 286 fluid.ampslice~ -absthreshon -47 -absthreshoff -47 -absrampup
 2205 -absrampdown 2205 -relthreshon 12 -relthreshoff 9 -relrampup 10
 -relrampdown 1666 -minslicelength 4410 -minsilencelength 4410 -highpassfreq
@@ -379,28 +374,75 @@ from a source from Snappizz on sc list archive - https://sccode.org/1-523
 #X msg 804 28 line 0 \, auto;
 #X msg 905 28 stop;
 #X obj 805 110 sel 1 2 3;
-#X connect 2 0 3 0;
-#X connect 2 0 4 0;
+#N canvas 118 162 264 210 all_the_arrays 1;
+#X obj 13 39 array define JiTactivations-0 65;
+#X obj 13 60 array define JiTactivations-1 65;
+#X obj 13 81 array define JiTactivations-2 65;
+#X obj 13 102 array define JiTbaseTemp 65;
+#X obj 13 123 array define JiTbases-0 65;
+#X obj 13 144 array define JiTbases-1 65;
+#X obj 13 165 array define JiTbases-2 65;
+#X obj 13 18 array define input 4410;
+#X restore 55 370 pd all_the_arrays;
+#X obj 338 516 spigot 1;
+#X obj 451 516 spigot 0;
+#X msg 338 487 startframe \$1 \, bang;
+#X obj 504 460 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 504 480 == 0;
+#X obj 15 554 fluid.bufnmf -components 1 -iterations 100 -bases JiTbaseTemp
+-basesmode 1 -fftsettings 128 64 -numframes 128 -source input;
+#X floatatom 164 664 5 0 2 0 - - -;
+#X obj 164 684 int;
+#X msg 264 718 destination JiTbases-\$1;
+#X obj 264 739 fluid.bufcompose -source JiTbaseTemp;
+#X msg 101 719 \; JiTbaseTemp const 0.1;
+#X obj 455 714 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 15 610 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 37 290 fexpr~ 1 + ($y1[-1] % 2205);
+#X obj 54 329 fexpr~ input[$x1[0]] = $x2[0] \; input[$x1[0]+2205] =
+$x2[0];
+#X obj 338 391 del 2;
+#X connect 1 0 2 0;
+#X connect 2 0 22 0;
+#X connect 3 0 35 0;
 #X connect 4 0 5 0;
-#X connect 5 0 7 0;
-#X connect 6 0 5 0;
-#X connect 8 0 9 0;
-#X connect 8 0 6 0;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 1;
+#X connect 7 0 0 0;
+#X connect 7 0 4 0;
+#X connect 7 0 34 1;
+#X connect 8 0 7 0;
 #X connect 9 0 10 0;
-#X connect 10 0 4 1;
-#X connect 11 0 0 0;
-#X connect 11 0 8 0;
-#X connect 12 0 11 0;
-#X connect 13 0 14 0;
-#X connect 14 0 0 0;
-#X connect 14 0 8 0;
-#X connect 15 0 16 0;
-#X connect 16 0 0 0;
-#X connect 16 0 8 0;
-#X connect 19 0 22 0;
-#X connect 19 2 20 0;
-#X connect 20 0 19 0;
-#X connect 21 0 19 0;
-#X connect 22 0 12 0;
-#X connect 22 1 13 0;
-#X connect 22 2 15 0;
+#X connect 10 0 0 0;
+#X connect 10 0 4 0;
+#X connect 10 0 34 1;
+#X connect 11 0 12 0;
+#X connect 12 0 0 0;
+#X connect 12 0 4 0;
+#X connect 12 0 34 1;
+#X connect 15 0 18 0;
+#X connect 15 2 16 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 8 0;
+#X connect 18 1 9 0;
+#X connect 18 2 11 0;
+#X connect 20 0 25 0;
+#X connect 22 0 20 0;
+#X connect 22 0 21 0;
+#X connect 23 0 21 1;
+#X connect 23 0 24 0;
+#X connect 24 0 20 1;
+#X connect 25 0 32 0;
+#X connect 26 0 27 0;
+#X connect 27 0 28 0;
+#X connect 27 0 30 0;
+#X connect 28 0 29 0;
+#X connect 31 0 29 0;
+#X connect 33 0 1 0;
+#X connect 33 0 34 0;
+#X connect 35 0 2 0;
