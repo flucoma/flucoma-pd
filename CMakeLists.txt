@@ -129,4 +129,5 @@ install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 
 if(DOCS)
   install(DIRECTORY "${CMAKE_BINARY_DIR}/pdhtml/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
+  install(DIRECTORY "${CMAKE_BINARY_DIR}/pd_ref/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()
