@@ -1,3 +1,11 @@
+# Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+# Copyright 2017-2019 University of Huddersfield.
+# Licensed under the BSD-3 License.
+# See license.md file in the project root for full license information.
+# This project has received funding from the European Research Council (ERC)
+# under the European Union’s Horizon 2020 research and innovation programme
+# (grant agreement No 725899).
+
 cmake_minimum_required(VERSION 3.11)
 
 set(PD_PATH "" CACHE PATH "The top level of a Pure Data installation")
@@ -55,6 +63,7 @@ FetchContent_GetProperties(fluid_decomposition)
 if(NOT fluid_decomposition_POPULATED)
   FetchContent_Populate(fluid_decomposition)
   add_subdirectory(${fluid_decomposition_SOURCE_DIR} ${fluid_decomposition_BINARY_DIR})
+  include(flucoma_version)
 endif()
 
 if(DOCS)
@@ -127,7 +136,6 @@ install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT})
 install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "${PD_PACKAGE_ROOT}/media")
 install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 
-if(DOCS)
-  install(DIRECTORY "${CMAKE_BINARY_DIR}/pdhtml/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
-  install(DIRECTORY "${CMAKE_BINARY_DIR}/pd_ref/" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
+if(DOCS)  
+  install(DIRECTORY "${FLUID_PD_REF_PATH}" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()

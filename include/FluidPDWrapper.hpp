@@ -1,13 +1,25 @@
+/*
+Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+Copyright 2017-2019 University of Huddersfield.
+Licensed under the BSD-3 License.
+See license.md file in the project root for full license information.
+This project has received funding from the European Research Council (ERC)
+under the European Union’s Horizon 2020 research and innovation programme
+(grant agreement No 725899).
+*/
+
 #pragma once
 
-#include "m_pd.h"
+#include "PDBufferAdaptor.hpp"
+
+#include <FluidVersion.hpp>
 
 #include <clients/common/FluidBaseClient.hpp>
 #include <clients/common/OfflineClient.hpp>
 #include <clients/common/ParameterSet.hpp>
 #include <clients/common/ParameterTypes.hpp>
 
-#include <PDBufferAdaptor.hpp>
+#include <m_pd.h>
 
 #include <tuple>
 #include <utility>
@@ -616,9 +628,15 @@ public:
 
     class_addmethod(getClass(), (t_method)doReset, gensym("reset"), A_NULL);
     class_addmethod(getClass(), (t_method)doWarnings, gensym("warnings"), A_FLOAT, 0);
+    class_addmethod(getClass(), (t_method)doVersion,gensym("version"), A_NULL);
 
     p.template iterateMutable<SetupParameter>();
     class_sethelpsymbol(getClass(), gensym(className));
+  }
+
+  static void doVersion(FluidPDWrapper* x)
+  {
+    post("Fluid Corpus Manipulation version %s",fluidVersion());
   }
 
   static void doReset(FluidPDWrapper *x)
