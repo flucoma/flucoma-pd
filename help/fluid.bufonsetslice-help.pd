@@ -1,5 +1,5 @@
-#N canvas 96 30 552 680 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufonsetslice 20 12 0
+#N canvas 494 34 552 680 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufonsetslice 20 12 0
 36 -262144 -66577 0;
 #X obj 59 197 until;
 #X msg 41 149 6;
@@ -42,7 +42,7 @@ offset indices, f 65;
 #X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufonsetslice_source
 ;
 #X obj 17 210 array size bufonsetslice_indices;
-#X obj 17 177 fluid\.bufonsetslice -source bufonsetslice_source -indices
+#X obj 17 177 fluid.bufonsetslice -source bufonsetslice_source -indices
 bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X obj 255 473 array define bufonsetslice_source;
 #X obj 255 494 array define bufonsetslice_indices;
@@ -85,8 +85,6 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X obj 180 218 array define onsetspikes 30000;
 #X obj 180 238 array define onsetslicepoints;
 #X obj 59 358 tabwrite onsetspikes;
-#X obj 40 518 fluid\.bufonsetslice -source onsetspikes -indices onsetslicepoints
--minslicelength 2 -fftsettings 128 -threshold 0.1, f 66;
 #X obj 40 591 array get onsetslicepoints;
 #X text 37 50 Spectral Difference-Based Audio Buffer Slicer;
 #X text 36 92 Implements many spectral-based onset detection metrics
@@ -94,7 +92,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufonsetslice.html;
+#X msg 83 71 dir 0 docs/fluid.bufonsetslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -105,6 +103,8 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X obj 488 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 374 345 note_on_multithreading;
+#X obj 40 518 fluid.bufonsetslice -source onsetspikes -indices onsetslicepoints
+-minslicelength 2 -fftsettings 128 -threshold 1e-06, f 66;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 24 0;
@@ -112,7 +112,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 5 0 7 0;
 #X connect 6 0 5 1;
 #X connect 6 1 12 1;
-#X connect 7 0 25 0;
+#X connect 7 0 32 0;
 #X connect 7 1 17 0;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;
@@ -129,6 +129,6 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 15 2 4 0;
 #X connect 15 2 12 1;
 #X connect 15 2 14 0;
-#X connect 25 0 26 0;
-#X connect 26 0 18 0;
-#X connect 31 0 29 0;
+#X connect 25 0 18 0;
+#X connect 30 0 28 0;
+#X connect 32 0 25 0;
