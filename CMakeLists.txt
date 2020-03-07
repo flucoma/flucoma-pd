@@ -134,8 +134,8 @@ install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT})
 
 # install(CODE [[ message(STATUS "${fluid_decomposition_SOURCE_DIR}") ]])
 install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "${PD_PACKAGE_ROOT}/media")
-install(FILES license.md icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
-
+install(FILES icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
+install(FILES ${fluid_decomposition_SOURCE_DIR}/license-executableform.md DESTINATION ${PD_PACKAGE_ROOT} RENAME license.md)
 if(DOCS)  
   install(DIRECTORY "${FLUID_PD_REF_PATH}" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()
