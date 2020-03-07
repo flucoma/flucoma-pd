@@ -52,14 +52,9 @@ else()
   target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion -Wno-c++11-narrowing)
 endif()
 
-if(MSVC)
-  target_compile_options(${PROJECT_NAME} 
-    PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: /arch:AVX>
-  )
-else()
-  target_compile_options(${PROJECT_NAME} 
-    PRIVATE $<$<NOT:$<CONFIG:DEBUG>>: -mavx>
-  )
+#set AVX, or whatever
+if(DEFINED FLUID_ARCH)
+  target_compile_options(${PROJECT_NAME} PRIVATE ${FLUID_ARCH})
 endif()
 
 get_property(HEADERS TARGET FLUID_DECOMPOSITION PROPERTY INTERFACE_SOURCES)
