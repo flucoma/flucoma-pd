@@ -634,7 +634,7 @@ public:
     class_sethelpsymbol(getClass(), gensym(className));
   }
 
-  static void doVersion(FluidPDWrapper* x)
+  static void doVersion(FluidPDWrapper*)
   {
     post("Fluid Corpus Manipulation version %s",fluidVersion());
   }
