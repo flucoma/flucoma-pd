@@ -1,6 +1,6 @@
-#N canvas 60 44 946 806 10;
+#N canvas 242 107 946 806 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufmelbands 20 12 0 36
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufmelbands 20 12 0 36
 -262144 -66577 0;
 #X obj 34 156 loadbang;
 #X obj 399 109 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -26,7 +26,7 @@
 #X text 146 152 2) listen to the source;
 #X msg 48 152 stop;
 #X text 64 241 3) process;
-#X obj 48 100 fluid\.bufcompose -source bufmelguitar -startframe 555000
+#X obj 48 100 fluid.bufcompose -source bufmelguitar -startframe 555000
 -numframes 468335 -deststartchan 1 -destination bufmel_source, f 73
 ;
 #X obj 48 174 tabplay~ bufmel_source-0;
@@ -36,8 +36,8 @@ bufmel_source-0 bufmel_source-1 \, read -resize media/Tremblay-AaS-AcousticStrum
 bufmelguitar, f 90;
 #X obj 115 559 array define bufmelguitar;
 #X obj 287 559 clone fluid.multiarray 2 bufmel_source;
-#X obj 45 259 fluid\.bufmelbands 5 -source bufmel_source -features
-bufmelbands_feats, f 84;
+#X obj 45 259 fluid.bufmelbands 5 -source bufmel_source -features bufmelbands_feats
+, f 84;
 #X msg 45 277 \; bufmelbands_feats-0 xticks 0 0 0 \; bufmelbands_feats-1
 xticks 0 0 0 \; bufmelbands_feats-2 xticks 0 0 0 \; bufmelbands_feats-3
 xticks 0 0 0 \; bufmelbands_feats-4 xticks 0 0 0 \; bufmelbands_feats-5
@@ -61,15 +61,15 @@ melbands., f 100;
 #X connect 17 0 18 0;
 #X restore 823 169 pd multichannel;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-0 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-0 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 367 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmelbands_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
 #X restore 31 299 graph;
 #X obj 674 194 note_on_assumed_sampling_rates_of_arrays;
-#X obj 398 128 fluid\.bufmelbands 10 -source bufmelbands_drums -features
+#X obj 398 128 fluid.bufmelbands 10 -source bufmelbands_drums -features
 bufmelbands_feats, f 75;
 #X msg 33 177 read -resize media/Nicol-LoopE-M.wav bufmelbands_drums
 ;
@@ -83,40 +83,40 @@ xticks 0 0 0 \; bufmelbands_feats-6 xticks 0 0 0 \; bufmelbands_feats-7
 xticks 0 0 0 \; bufmelbands_feats-8 xticks 0 0 0 \; bufmelbands_feats-9
 xticks 0 0 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-1 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-1 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 410 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-2 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-2 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 453 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-3 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-3 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 496 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-4 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-4 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 539 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-5 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-5 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 582 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-6 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-6 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 625 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-7 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-7 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 668 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-8 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-8 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 711 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufmelbands_feats-9 915 float 0;
-#X coords 0 3000 914 0 887 30 1 0 0;
+#X array bufmelbands_feats-9 887 float 0;
+#X coords 0 1 886 0 887 30 1 0 0;
 #X restore 31 754 graph;
 #X text 416 110 1) process;
 #X msg 550 107 numbands \$1;
@@ -132,7 +132,7 @@ xticks 0 0 0;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufmelbands.html;
+#X msg 83 71 dir 0 docs/fluid.bufmelbands.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
