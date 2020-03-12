@@ -151,13 +151,13 @@ public:
   void perform(int sampleframes)
   {
     auto &client = static_cast<Wrapper *>(this)->mClient;
-    for (auto i = 0u; i < mSigIns.size(); ++i)
+    for (index i = 0; i < mSigIns.size(); ++i)
       mInputs[i].reset(mSigIns[i], 0, sampleframes);
 
-    for (auto i = 0u; i < client.audioChannelsOut(); ++i)
+    for (index i = 0; i < client.audioChannelsOut(); ++i)
       mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
 
-    for (auto i = 0u; i < client.controlChannelsOut(); ++i) mOutputs[i].reset(&mControlOutputs[i], 0, 1);
+    for (index i = 0; i < client.controlChannelsOut(); ++i) mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
     client.process(mInputs, mOutputs, mContext);
 
