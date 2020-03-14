@@ -64,7 +64,13 @@ if(NOT fluid_decomposition_POPULATED)
   FetchContent_Populate(fluid_decomposition)
   add_subdirectory(${fluid_decomposition_SOURCE_DIR} ${fluid_decomposition_BINARY_DIR})
   include(flucoma_version)
+  include(flucoma-buildtools)
 endif()
+
+set_if_toplevel(VAR CMAKE_LIBRARY_OUTPUT_DIRECTORY 
+                TOPLEVEL "${CMAKE_CURRENT_SOURCE_DIR}/../../pd_objects"
+              SUPERBUILD "${CMAKE_SOURCE_DIR}/pd_objects/${CMAKE_HOST_SYSTEM_NAME}/${CMAKE_HOST_SYSTEM_PROCESSOR}")
+
 
 if(DOCS)
   if(FLUID_PARAMDUMP_PATH)
@@ -128,7 +134,7 @@ set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published 
 set(PD_PACKAGE_ROOT ${PD_INSTALL_PREFIX}/${FLUID_PACKAGE_NAME})
 
 #slashes at the end of the directories copy just the files, rather than the hierarchy; so don't remove them
-install(DIRECTORY pd_objects/ DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING REGEX "\\.(pd_darwin|pd_linux|dll)")
+install(DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/ DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING REGEX "\\.(pd_darwin|pd_linux|dll)")
 install(DIRECTORY help/ DESTINATION ${PD_PACKAGE_ROOT} FILES_MATCHING PATTERN "*.pd")
 install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT})
 
