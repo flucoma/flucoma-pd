@@ -53,7 +53,7 @@ git clone <whereis this>
 3. Change to the directory for this repo, make a build directory, and run CMake, passing in the location for PD
 ```
 mkdir -p build && cd build 
-cmake -DMAX_SDK_PATH=<location of your PD install – see Dependencies above> ..
+cmake -DPD_PATH=<location of your PD install – see Dependencies above> ..
 ```
 At this point, CMake will set up your tool chain (i.e. look for compilers), and download all the dependencies. 
 
