@@ -1,12 +1,12 @@
-#N canvas 49 23 912 855 10;
+#N canvas 124 42 912 855 10;
 #X obj 8 524 -~ 0.5;
 #X obj 8 545 abs~;
 #X obj 8 566 *~ 2;
 #X obj 8 587 *~;
 #X obj 44 567 osc~ 320;
-#X obj 471 730 tabwrite~ ampslicesourceview;
+#X obj 471 730 tabwrite~ ampgatesourceview;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array ampslicesourceview 413 float 2;
+#X array ampgatesourceview 413 float 2;
 #X coords 0 1 413 -1 200 140 1;
 #X restore 509 204 graph;
 #X obj 449 670 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
@@ -14,12 +14,10 @@
 #X obj 449 651 loadbang;
 #X obj 449 687 metro 37.7;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array ampsliceview 413 float 2;
+#X array ampgateview 413 float 2;
 #X coords 0 1.1 413 -0.1 200 140 1 0 0;
 #X restore 508 359 graph;
-#X obj 172 615 fluid.ampslice~ -absrampup 10 -absrampdown 100 -absthreshon
--12 -absthreshoff -12;
-#X obj 329 729 tabwrite~ ampsliceview;
+#X obj 329 729 tabwrite~ ampgateview;
 #X obj 19 662 biquad~ 0 0 1 -1 0;
 #X obj 19 736 clip~ 0 1;
 #X obj 82 736 clip~ -1 0;
@@ -30,26 +28,22 @@
 1;
 #X obj 151 755 * 0.2;
 #X msg 19 176 reset \, getlatency;
-#X msg 73 269 reset \, absthreshoff -16 \, getlatency;
 #X text 706 362 -on;
 #X text 706 479 -off;
 #X msg 134 358 reset \, minslicelength 441 \, getlatency;
 #X msg 133 378 reset \, minsilencelength 441 \, getlatency;
 #X floatatom 522 646 5 0 0 0 - - -;
-#X obj 521 708 delread~ ampslicedel;
-#X obj 8 621 delwrite~ ampslicedel 1000;
+#X obj 521 708 delread~ ampgatedel;
+#X obj 8 621 delwrite~ ampgatedel 1000;
 #X obj 568 665 samplerate~;
 #X obj 568 645 r pd-dsp-started;
 #X obj 522 687 / 1;
 #X obj 522 664 * 1000;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.ampgate~ 20 12 0 36 -262144
 -66577 0;
-#X text 37 58 Amplitude-based Slicer;
 #X text 38 96 This class implements an amplitude-based slicer \, with
-various customisable options and conditions to detect absolute and
-relative amplitude changes as onsets and offsets., f 121;
-#X text 16 145 At its most basic \, fluid.ampslice~ is like [high pass]–[half
-wave rectify]–[slide~]-[>~];
+various customisable options and conditions to detect absolute amplitude
+changes as onsets and offsets., f 121;
 #N canvas 830 29 481 477 looking_ahead_and_or_back 0;
 #X msg 10 131 reset \, minlengthabove 441 \, getlatency;
 #X msg 28 176 reset \, minlengthbelow 441 \, getlatency;
@@ -77,47 +71,23 @@ fast, f 73;
 #X connect 3 0 7 0;
 #X connect 4 0 7 0;
 #X restore 224 459 pd looking_ahead_and_or_back;
-#N canvas 837 147 647 473 relative_thresholding 0;
-#X msg 28 180 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
--60 \, absthreshoff -60 \, getlatency, f 86;
-#X text 29 19 a second envelope follower allows relative thresholds
-;
-#X text 29 73 this is useful for being able to robustly detect events
-despite changes in dynamics, f 84;
-#X text 24 164 here we have a slow absolute envelope with low thresholds.
-Our toy signal is always 'on', f 89;
-#X text 45 243 use a faster relative envelope and set thresholds relative
-to absolute env, f 80;
-#X text 69 337 adding a minimum slice length can help clean things
-up further, f 75;
-#X obj 28 429 outlet;
-#X msg 47 264 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
--60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
--1 \, relthreshoff -2 \, getlatency, f 88;
-#X msg 70 357 reset \, absrampup 2205 \, absrampdown 2205 \, absthreshon
--60 \, absthreshoff -60 \, relrampup 5 \, relrampdown 220 \, relthreshon
--1 \, relthreshoff -2 \, minslicelength 2205 \, getlatency, f 88;
-#X connect 0 0 6 0;
-#X connect 7 0 6 0;
-#X connect 8 0 6 0;
-#X restore 296 515 pd relative_thresholding;
 #N canvas 760 23 651 739 a_musical_example 0;
 #X obj 33 29 loadbang;
 #X obj 33 71 soundfiler;
-#X obj 137 69 array define ampslice_drums;
+#X obj 137 69 array define ampgate_drums;
 #X obj 34 196 *~, f 11;
 #X obj 34 156 /~;
 #X msg 33 113 1;
 #X obj 34 177 phasor~;
-#X obj 34 215 tabread~ ampslice_drums;
+#X obj 34 215 tabread~ ampgate_drums;
 #X obj 30 717 dac~;
 #X obj 134 112 samplerate~;
 #X obj 108 131 / 1;
 #X obj 117 555 / 1;
 #X obj 117 532 * 1000;
-#X obj 41 237 delwrite~ ampslicedel2 1000;
-#X obj 116 576 delread~ ampslicedel2;
-#X obj 30 509 fluid.ampslice~;
+#X obj 41 237 delwrite~ ampgatedel2 1000;
+#X obj 116 576 delread~ ampgatedel2;
+#X obj 30 509 fluid.ampgate~;
 #X obj 30 655 *~;
 #X obj 83 636 biquad~ 0 0 1 -1 0;
 #X obj 83 655 clip~ 0 0.5;
@@ -129,19 +99,18 @@ allow for tails \, but with added latency, f 72;
 #X text 31 7 Amplitude followers love drums;
 #X obj 30 689 *~;
 #X obj 55 690 *~;
-#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 33 92 t b f b;
-#X msg 164 292 reset \, absthreshon -60 \, absthreshoff -70 \, absrampup
-4410 \, absrampdown 4410 \, relthreshon 12 \, relthreshoff 9 \, relrampup
-10 \, relrampdown 2205 \, minsilencelength 4410 \, highpassfreq 20
-, f 75;
-#X msg 166 408 reset \, absthreshon -27 \, absthreshoff -31 \, absrampup
-1103 \, absrampdown 4410 \, minsilencelength 1100 \, highpassfreq 40
-, f 73;
 #X msg 185 461 lookback \$1 \, getlatency;
-#X msg 33 50 read -resize media/Nicol-LoopE-M.wav ampslice_drums;
-#X connect 0 0 30 0;
+#X msg 33 50 read -resize media/Nicol-LoopE-M.wav ampgate_drums;
+#X msg 166 408 reset \, onthreshold -27 \, offthreshold -31 \, rampup
+441 \, rampdown 4410 \, minsilencelength 4410 \, highpassfreq 20 \,
+lookback 441 \, getlatency, f 73;
+#X msg 164 292 reset \, onthreshold -27 \, offthreshold -31 \, rampup
+441 \, rampdown 4410 \, minsilencelength 4410 \, highpassfreq 20 \,
+getlatency, f 75;
+#X connect 0 0 28 0;
 #X connect 1 0 26 0;
 #X connect 3 0 7 0;
 #X connect 4 0 6 0;
@@ -161,7 +130,7 @@ allow for tails \, but with added latency, f 72;
 #X connect 16 0 23 0;
 #X connect 17 0 18 0;
 #X connect 18 0 24 0;
-#X connect 21 0 29 0;
+#X connect 21 0 27 0;
 #X connect 23 0 8 0;
 #X connect 24 0 8 1;
 #X connect 25 0 24 1;
@@ -171,14 +140,11 @@ allow for tails \, but with added latency, f 72;
 #X connect 26 1 10 0;
 #X connect 26 2 9 0;
 #X connect 27 0 15 0;
-#X connect 28 0 15 0;
+#X connect 28 0 1 0;
 #X connect 29 0 15 0;
-#X connect 30 0 1 0;
-#X restore 402 570 pd a_musical_example;
+#X connect 30 0 15 0;
+#X restore 360 541 pd a_musical_example;
 #X text 170 735 sonify state;
-#X text 72 232 by using different 'on' and 'off' thresholds \, we add
-hysterisis \, which can help with triggering errors. This is like replacing
-[>~] with [thresh~];
 #X text 132 331 we can also enforce a minimum slice length \, or a
 minimum silence length, f 38;
 #X text 534 627 computed latency is max of latency-inducing attributes
@@ -186,7 +152,7 @@ minimum silence length, f 38;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.ampslice~.html;
+#X msg 83 71 dir 0 docs/fluid.ampgate~.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -197,39 +163,47 @@ minimum silence length, f 38;
 #X obj 737 137 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 8 503 phasor~ 0.2;
+#X text 37 58 Amplitude-based Gating Slicer;
+#X text 16 145 At its most basic \, fluid.ampgate~ is like [4th-order
+highpass]–[abs]–[atodb]-[slide]-[>];
+#X text 72 232 by using different 'on' and 'off' thresholds \, we add
+hysterisis \, which can help with triggering errors. This is like replacing
+[>] with [thresh];
+#X msg 73 270 reset \, offthreshold -16 \, getlatency;
+#X obj 172 615 fluid.ampgate~ -rampup 5 -rampdown 25 -onthreshold -12
+-offthreshold -12;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
-#X connect 3 0 11 0;
-#X connect 3 0 29 0;
+#X connect 3 0 27 0;
+#X connect 3 0 47 0;
 #X connect 4 0 3 1;
 #X connect 7 0 9 0;
 #X connect 8 0 7 0;
 #X connect 9 0 5 0;
-#X connect 9 0 12 0;
-#X connect 11 0 12 0;
-#X connect 11 0 13 0;
-#X connect 11 1 27 0;
-#X connect 13 0 14 0;
+#X connect 9 0 11 0;
+#X connect 12 0 13 0;
+#X connect 12 0 14 0;
 #X connect 13 0 15 0;
 #X connect 14 0 16 0;
 #X connect 15 0 17 0;
-#X connect 16 0 18 0;
-#X connect 17 0 18 1;
-#X connect 19 0 20 0;
-#X connect 20 0 17 1;
-#X connect 20 0 16 1;
-#X connect 21 0 11 0;
-#X connect 22 0 11 0;
-#X connect 25 0 11 0;
-#X connect 26 0 11 0;
-#X connect 27 0 33 0;
-#X connect 28 0 5 0;
-#X connect 30 0 32 1;
+#X connect 16 0 17 1;
+#X connect 18 0 19 0;
+#X connect 19 0 16 1;
+#X connect 19 0 15 1;
+#X connect 20 0 47 0;
+#X connect 23 0 47 0;
+#X connect 24 0 47 0;
+#X connect 25 0 31 0;
+#X connect 26 0 5 0;
+#X connect 28 0 30 1;
+#X connect 29 0 28 0;
+#X connect 30 0 26 0;
 #X connect 31 0 30 0;
-#X connect 32 0 28 0;
-#X connect 33 0 32 0;
-#X connect 38 0 11 0;
-#X connect 39 0 11 0;
-#X connect 47 0 45 0;
-#X connect 48 0 0 0;
+#X connect 34 0 47 0;
+#X connect 41 0 39 0;
+#X connect 42 0 0 0;
+#X connect 46 0 47 0;
+#X connect 47 0 11 0;
+#X connect 47 0 12 0;
+#X connect 47 1 25 0;
