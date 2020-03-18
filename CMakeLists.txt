@@ -67,8 +67,8 @@ if(NOT fluid_decomposition_POPULATED)
   include(flucoma-buildtools)
 endif()
 
-set_if_toplevel(VAR CMAKE_LIBRARY_OUTPUT_DIRECTORY 
-                TOPLEVEL "${CMAKE_CURRENT_SOURCE_DIR}/../../pd_objects"
+set_if_toplevel(VAR CMAKE_LIBRARY_OUTPUT_DIRECTORY
+                TOPLEVEL "${CMAKE_CURRENT_SOURCE_DIR}/pd_objects"
               SUPERBUILD "${CMAKE_SOURCE_DIR}/pd_objects/${CMAKE_HOST_SYSTEM_NAME}/${CMAKE_HOST_SYSTEM_PROCESSOR}")
 
 
@@ -86,7 +86,7 @@ if(DOCS)
     source_group("\\HTMLs Doc Gen" FILES ${DOC_SOURCE})
     add_subdirectory(${fluid_paramdump_SOURCE_DIR} ${fluid_paramdump_BINARY_DIR})
   endif()
-  
+
   add_custom_target(PD_MAKE_DOCS ALL DEPENDS MAKE_PD_REF)
 endif()
 
@@ -102,10 +102,10 @@ endif()
 add_library( FLUID_PD INTERFACE )
 
 target_include_directories (
-  FLUID_PD INTERFACE 
+  FLUID_PD INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
   SYSTEM INTERFACE
-  "${PD_ABS_PATH}/src" # <= include m_pd.h 
+  "${PD_ABS_PATH}/src" # <= include m_pd.h
 )
 
 target_sources(
@@ -127,7 +127,7 @@ foreach (project_dir ${PROJECT_DIRS})
 	endif ()
 endforeach ()
 
-#install 
+#install
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/release-packaging")
 set(PD_INSTALL_PREFIX "." CACHE PATH "Prefix for assembling PD packages")
 set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published package")
@@ -142,6 +142,6 @@ install(DIRECTORY examples DESTINATION ${PD_PACKAGE_ROOT})
 install(DIRECTORY "${fluid_decomposition_SOURCE_DIR}/AudioFiles/" DESTINATION "${PD_PACKAGE_ROOT}/media")
 install(FILES icon.png QuickStart.md DESTINATION ${PD_PACKAGE_ROOT})
 install(FILES ${fluid_decomposition_SOURCE_DIR}/license-executableform.md DESTINATION ${PD_PACKAGE_ROOT} RENAME license.md)
-if(DOCS)  
+if(DOCS)
   install(DIRECTORY "${FLUID_PD_REF_PATH}" DESTINATION "${PD_PACKAGE_ROOT}/docs" FILES_MATCHING REGEX "\\.(html|css)")
 endif()
