@@ -9,7 +9,6 @@ sound). Almost all objects have audio-rate and buffer-based versions.
 , f 96;
 #X obj 628 192 cnv 15 310 150 empty empty Objects 20 12 0 20 -228856
 -66577 0;
-#X obj 650 237 fluid.bufnmf~;
 #X obj 650 261 fluid.nmfmatch~;
 #X obj 650 285 fluid.nmffilter~ 2;
 #X text 769 242 Use Nonnegative Matrix Factorisation to explore and
@@ -17,7 +16,6 @@ decompose sounds, f 24;
 #X text 36 58 play with sonic slices \, layers and objects;
 #X obj 629 360 cnv 15 310 150 empty empty Utility 20 12 0 20 -228856
 -66577 0;
-#X obj 651 405 fluid.bufcompose~;
 #X text 771 401 Copy \, slice \, stack \, mix concatenate. All the
 things you've wanted to do with arrays..., f 24;
 #X obj 14 193 cnv 15 600 150 empty empty Slices 20 12 0 20 -228856
@@ -25,24 +23,17 @@ things you've wanted to do with arrays..., f 24;
 #X text 151 239 Slice by amplitude envelope, f 18;
 #X text 162 301 Slice by onsets in the spectral domain, f 19;
 #X obj 36 234 fluid.ampslice~;
-#X obj 36 258 fluid.bufampslice~;
 #X obj 36 296 fluid.onsetslice~;
-#X obj 36 320 fluid.bufonsetslice~;
 #X obj 343 233 fluid.noveltyslice~;
-#X obj 343 257 fluid.bufnoveltyslice~;
 #X text 486 232 Slice by estimated novelty on a choice of features
 , f 18;
 #X obj 343 295 fluid.transientslice~;
-#X obj 343 319 fluid.buftransientslice~;
 #X text 498 297 Slice by transient modelling, f 10;
 #X obj 14 360 cnv 15 600 150 empty empty Layers 20 12 0 20 -228856
 -66577 0;
 #X obj 36 401 fluid.sines~;
-#X obj 36 425 fluid.bufsines~;
 #X obj 36 463 fluid.transients~;
-#X obj 36 487 fluid.buftransients~;
 #X obj 370 424 fluid.hpss~;
-#X obj 370 447 fluid.bufhpss~;
 #X text 471 421 Decompose into 'harmonic' and 'percussive' layers,
 f 19;
 #X text 133 401 Decompose into sines + residual, f 16;
@@ -50,15 +41,10 @@ f 19;
 #X obj 15 527 cnv 15 925 150 empty empty Descriptors 20 12 0 20 -228856
 -66577 0;
 #X obj 36 568 fluid.loudness~;
-#X obj 36 592 fluid.bufloudness~;
 #X obj 37 630 fluid.pitch~;
-#X obj 37 654 fluid.bufpitch~;
 #X obj 366 565 fluid.loudness~;
-#X obj 366 589 fluid.bufloudness~;
 #X obj 366 631 fluid.pitch~;
-#X obj 366 655 fluid.bufpitch~;
 #X obj 642 563 fluid.loudness~;
-#X obj 642 587 fluid.bufloudness~;
 #X obj 643 640 fluid.pitch~;
 #X text 741 640 Statistics of buffers (arrays);
 #X text 764 566 Summary measures of spectral shape, f 17;
@@ -67,3 +53,17 @@ f 19;
 #X text 153 567 Report amplitude and peak \, or r128 loudness and true
 peak, f 22;
 #X text 138 638 A suite of pitch estimators, f 16;
+#X obj 36 258 fluid.bufampslice;
+#X obj 36 320 fluid.bufonsetslice;
+#X obj 343 257 fluid.bufnoveltyslice;
+#X obj 343 319 fluid.buftransientslice;
+#X obj 650 237 fluid.bufnmf;
+#X obj 36 425 fluid.bufsines;
+#X obj 36 487 fluid.buftransients;
+#X obj 370 447 fluid.bufhpss;
+#X obj 651 405 fluid.bufcompose;
+#X obj 36 592 fluid.bufloudness;
+#X obj 37 654 fluid.bufpitch;
+#X obj 366 589 fluid.bufloudness;
+#X obj 366 655 fluid.bufpitch;
+#X obj 642 587 fluid.bufloudness;
