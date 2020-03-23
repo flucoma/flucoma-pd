@@ -1,4 +1,4 @@
-#N canvas 119 66 493 783 10;
+#N canvas 119 66 578 781 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.sines~ 20 12 0 36 -262144
 -66577 0;
 #X obj 36 722 dac~;
@@ -9,45 +9,38 @@
 #X obj 144 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 199 182 r pd-dsp-started;
-#X obj 292 610 / 1;
-#X obj 292 592 * 1000;
-#X obj 292 686 *~;
-#X obj 300 651 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 374 629 / 1;
+#X obj 374 611 * 1000;
+#X obj 374 705 *~;
+#X obj 382 670 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 300 668 * -1;
-#X obj 36 140 loadbang;
+#X obj 382 687 * -1;
+#X obj 36 133 loadbang;
 #X obj 36 182 soundfiler;
 #X obj 37 303 *~, f 10;
 #X obj 37 263 /~;
 #X msg 37 244 1;
 #X obj 37 284 phasor~;
-#X obj 306 228 samplerate~;
+#X obj 239 229 samplerate~;
 #X obj 86 244 / 1;
 #X obj 36 200 t b f b;
 #X obj 200 200 t b b b;
 #X obj 56 345 delwrite~ \$0-latencycomp 1000;
-#X obj 292 629 delread~ \$0-latencycomp 1;
+#X obj 374 648 delread~ \$0-latencycomp 1;
 #X obj 43 367 loadbang;
 #X text 36 57 Sinusoidal Modelling and Resynthesis, f 61;
-#X text 34 101 Sinusoidal Modelling process on its audio input., f
+#X text 36 86 Sinusoidal Modelling process on its audio input., f
 69;
-#X obj 36 571 fluid.sines~ 8192 -fftsettings 1024 -1 8192;
-#X text 337 646 by inverting here \, we should hear nothing when all
+#X text 419 665 by inverting here \, we should hear nothing when all
 sources are enabled, f 21;
-#X msg 36 160 read -resize media/Nicol-LoopE-M.wav sines_drums;
-#X obj 37 323 tabread4~ sines_drums;
-#X obj 34 749 array define sines_drums;
 #X msg 43 385 getlatency;
-#X floatatom 58 467 8 0 0 0 - - -;
-#X floatatom 176 523 8 0 0 0 - - -;
-#X msg 58 448 0.5;
-#X msg 58 486 threshold \$1;
-#X floatatom 174 459 8 0 0 0 - - -;
-#X msg 174 440 76;
-#X msg 174 478 bandwidth \$1;
-#X msg 176 542 mintracklen \$1 \, getlatency;
+#X floatatom 58 461 8 0 0 0 - - -;
+#X floatatom 205 525 8 0 0 0 - - -;
+#X floatatom 206 461 8 0 0 0 - - -;
+#X msg 206 441 76;
+#X msg 206 479 bandwidth \$1;
+#X msg 205 544 mintracklen \$1 \, getlatency;
 #X text 57 420 experiment with parameters;
-#X msg 176 504 4;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
@@ -57,10 +50,73 @@ sources are enabled, f 21;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
-#X restore 422 156 pd;
-#X text 291 137 launch the HTML doc->;
-#X obj 423 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 445 144 pd;
+#X text 314 125 launch the HTML doc->;
+#X obj 446 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X msg 36 152 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
+sines_source;
+#X obj 37 323 tabread4~ sines_source;
+#X obj 34 749 array define sines_source;
+#X obj 36 571 fluid.sines~ 8192 -bandwidth 76 -fftsettings 2048 -1
+8192 -mintracklen 2 -detectionthreshold -40;
+#X msg 58 442 -40;
+#X msg 58 480 detectionthreshold \$1;
+#X msg 205 506 2;
+#N canvas 336 187 833 471 a 0;
+#X text 10 23 1) as the algorithm resynthesize the sinusoidal peaks
+\, we would expect to get it to work almost perfectly on a sine wave
+;
+#X text 39 223 2) with these settings that tell the process to tolerate
+everything as a sinusoid \, even short and quiet peaks;
+#X text 427 280 3) as this is a windowed process \, the frequency of
+the peak is good for that full window \, and therefore interesting
+artefacts appear when the pitch is changing.;
+#X obj 21 446 dac~;
+#X obj 21 359 *~;
+#X obj 35 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 185 359 *~;
+#X obj 199 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 21 282 fluid.sines~ 8192 fluid.sines~ -detectionthreshold -144
+-birthhighthreshold -144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange
+200 -trackfreqrange 1000 -trackprob 0;
+#X obj 21 131 *~;
+#X obj 35 113 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 21 68 osc~ 440;
+#X obj 21 89 *~ 0.1;
+#X obj 428 254 *~;
+#X obj 442 236 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 428 191 osc~ 440;
+#X obj 428 212 *~ 0.1;
+#X obj 428 114 osc~ 0.1;
+#X obj 428 132 *~ 12;
+#X obj 428 153 +~ 57;
+#X obj 428 172 mtof~;
+#X connect 4 0 3 0;
+#X connect 4 0 3 1;
+#X connect 5 0 4 1;
+#X connect 6 0 3 0;
+#X connect 6 0 3 1;
+#X connect 7 0 6 1;
+#X connect 8 0 4 0;
+#X connect 8 1 6 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 1;
+#X connect 11 0 12 0;
+#X connect 12 0 9 0;
+#X connect 13 0 8 0;
+#X connect 14 0 13 1;
+#X connect 15 0 16 0;
+#X connect 16 0 13 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;
+#X connect 20 0 15 0;
+#X restore 314 323 pd a little more explanation;
 #X connect 2 0 1 0;
 #X connect 2 0 1 1;
 #X connect 3 0 2 1;
@@ -74,9 +130,9 @@ sources are enabled, f 21;
 #X connect 9 0 1 0;
 #X connect 10 0 11 0;
 #X connect 11 0 9 1;
-#X connect 12 0 29 0;
+#X connect 12 0 39 0;
 #X connect 13 0 20 0;
-#X connect 14 0 30 0;
+#X connect 14 0 40 0;
 #X connect 15 0 17 0;
 #X connect 16 0 15 0;
 #X connect 17 0 14 0;
@@ -91,21 +147,21 @@ sources are enabled, f 21;
 #X connect 21 1 19 0;
 #X connect 21 2 18 0;
 #X connect 23 0 9 0;
-#X connect 24 0 32 0;
-#X connect 27 0 2 0;
-#X connect 27 1 4 0;
-#X connect 27 2 8 0;
-#X connect 29 0 13 0;
-#X connect 30 0 22 0;
-#X connect 30 0 27 0;
-#X connect 32 0 27 0;
-#X connect 33 0 36 0;
-#X connect 34 0 40 0;
-#X connect 35 0 33 0;
-#X connect 36 0 27 0;
-#X connect 37 0 39 0;
-#X connect 38 0 37 0;
-#X connect 39 0 27 0;
-#X connect 40 0 27 0;
-#X connect 42 0 34 0;
-#X connect 45 0 43 0;
+#X connect 24 0 28 0;
+#X connect 28 0 42 0;
+#X connect 29 0 44 0;
+#X connect 30 0 34 0;
+#X connect 31 0 33 0;
+#X connect 32 0 31 0;
+#X connect 33 0 42 0;
+#X connect 34 0 42 0;
+#X connect 38 0 36 0;
+#X connect 39 0 13 0;
+#X connect 40 0 22 0;
+#X connect 40 0 42 0;
+#X connect 42 0 2 0;
+#X connect 42 1 4 0;
+#X connect 42 2 8 0;
+#X connect 43 0 29 0;
+#X connect 44 0 42 0;
+#X connect 45 0 30 0;

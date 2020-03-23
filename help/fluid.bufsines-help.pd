@@ -1,8 +1,8 @@
-#N canvas 70 74 955 577 10;
+#N canvas 72 169 955 577 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufsines 20 12 0 36 -262144
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufsines 20 12 0 36 -262144
 -66577 0;
-#X obj 34 156 loadbang;
+#X obj 33 145 loadbang;
 #X obj 424 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 133 325 dac~;
@@ -31,65 +31,65 @@
 #X text 46 11 "multichannel" arrays will yield outputs of similar dimensions
 \, respecting the order of the input "channels", f 87;
 #X obj 290 570 clone fluid.multiarray 2 bufsines_res;
-#X obj 290 549 clone fluid.multiarray 2 bufsines_source;
 #X obj 118 549 array define bufsinesguitar;
-#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufsines_source-0 bufsines_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-bufsinesguitar, f 90;
-#X obj 54 403 tabplay~ bufsines_source-0;
-#X obj 217 404 tabplay~ bufsines_source-1;
 #X text 323 299 the extracted sinusoidal components;
 #X text 323 319 the extracted residual components;
-#X msg 65 344 set bufsines_source-0;
 #X msg 65 380 set bufsines_res-0;
-#X msg 198 344 set bufsines_source-1;
-#X obj 48 100 fluid\.bufcompose -source bufsinesguitar -startframe
-555000 -numframes 468335 -deststartchan 1 -destination bufsines_source
-, f 73;
 #X obj 50 570 clone fluid.multiarray 2 bufsines_sin;
 #X msg 65 362 set bufsines_sin-0;
-#X msg 198 362 set bufsines_sin-1;
-#X msg 198 380 set bufsines_res-1;
-#X obj 49 195 fluid\.bufsines -source bufsines_source -sines bufsines_sin
--residual bufsines_res -threshold 0.2, f 84;
-#X connect 0 0 18 0;
-#X connect 2 0 26 0;
-#X connect 4 0 31 0;
+#X msg 210 362 set bufsines_sin-1;
+#X msg 210 380 set bufsines_res-1;
+#X obj 48 100 fluid.bufcompose -source bufsinesguitar -startframe 555000
+-numframes 468335 -deststartchan 1 -destination bufsines_sources,
+f 73;
+#X obj 54 403 tabplay~ bufsines_sources-0;
+#X obj 225 404 tabplay~ bufsines_sources-1;
+#X obj 290 549 clone fluid.multiarray 2 bufsines_sources;
+#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufsines_sources-0 bufsines_sources-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
+bufsinesguitar, f 90;
+#X obj 49 195 fluid.bufsines -source bufsines_sources -sines bufsines_sin
+-residual bufsines_res -fftsettings 2048 256 16384, f 84;
+#X msg 65 344 set bufsines_sources-0;
+#X msg 210 344 set bufsines_sources-1;
+#X connect 0 0 28 0;
+#X connect 2 0 24 0;
+#X connect 4 0 29 0;
+#X connect 5 0 31 0;
+#X connect 5 0 30 0;
 #X connect 5 0 25 0;
-#X connect 5 0 23 0;
-#X connect 5 0 19 0;
-#X connect 5 0 20 0;
-#X connect 6 0 29 0;
-#X connect 6 0 28 0;
-#X connect 6 0 19 0;
-#X connect 6 0 20 0;
-#X connect 7 0 30 0;
-#X connect 7 0 24 0;
+#X connect 5 0 26 0;
+#X connect 6 0 22 0;
+#X connect 6 0 21 0;
+#X connect 6 0 25 0;
+#X connect 6 0 26 0;
+#X connect 7 0 23 0;
 #X connect 7 0 19 0;
-#X connect 7 0 20 0;
-#X connect 18 0 1 0;
-#X connect 19 0 3 0;
-#X connect 20 0 3 1;
-#X connect 23 0 19 0;
-#X connect 24 0 19 0;
-#X connect 25 0 20 0;
-#X connect 28 0 19 0;
-#X connect 29 0 20 0;
-#X connect 30 0 20 0;
-#X connect 31 0 12 0;
+#X connect 7 0 25 0;
+#X connect 7 0 26 0;
+#X connect 19 0 25 0;
+#X connect 21 0 25 0;
+#X connect 22 0 26 0;
+#X connect 23 0 26 0;
+#X connect 25 0 3 0;
+#X connect 26 0 3 1;
+#X connect 28 0 1 0;
+#X connect 29 0 12 0;
+#X connect 30 0 25 0;
+#X connect 31 0 26 0;
 #X restore 789 317 pd multichannel;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufsines_drums 453932 float 0;
-#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X array bufsines_source 515088 float 0;
+#X coords 0 0.5 515087 -0.5 887 53 1 0 0;
 #X restore 34 369 graph;
 #X obj 133 304 tabplay~;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufsines_sines 468335 float 0;
-#X coords 0 0.5 468334 -0.5 887 53 1 0 0;
+#X array bufsines_sines 515088 float 0;
+#X coords 0 0.5 515087 -0.5 887 53 1 0 0;
 #X restore 34 437 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufsines_residual 453932 float 0;
-#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X array bufsines_residual 515088 float 0;
+#X coords 0 0.5 515087 -0.5 887 53 1 0 0;
 #X restore 34 505 graph;
 #X text 451 215 1) process;
 #X text 37 52 Buffer-Based Sinusoidal Modelling and Resynthesis, f
@@ -97,27 +97,18 @@ bufsinesguitar, f 90;
 #X text 40 91 This class triggers a Sinusoidal Modelling process on
 buffers in non-real-time \, It implements a mix and match algorithms
 taken from classic papers., f 80;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufsines_drums
-;
-#X msg 133 213 set bufsines_drums \, bang;
 #X msg 153 254 set bufsines_sines \, bang;
 #X msg 165 274 set bufsines_residual \, bang;
 #X msg 424 268 \; bufsines_sines xticks 0 0 0 \; bufsines_residual
 xticks 0 0 0;
-#X obj 424 237 fluid\.bufsines -threshold 0.5 -source bufsines_drums
--sines bufsines_sines -residual bufsines_residual -fftsettings 1024
-512 8192, f 75;
-#X floatatom 607 188 8 0 0 0 - - -;
+#X floatatom 565 188 8 0 0 0 - - -;
 #X floatatom 747 188 8 0 0 0 - - -;
-#X text 605 151 change the threshold and bandwidth;
-#X msg 747 207 bandwidth \$1 \, bang;
+#X text 563 151 change the threshold and bandwidth;
 #X msg 747 169 76;
-#X msg 607 169 0.5;
-#X msg 607 207 threshold \$1 \, bang;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufsines.html;
+#X msg 83 71 dir 0 docs/fluid.bufsines.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -128,20 +119,28 @@ xticks 0 0 0;
 #X obj 863 63 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 749 343 note_on_multithreading;
-#X connect 2 0 14 0;
-#X connect 3 0 19 0;
+#X msg 33 165 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
+bufsines_source;
+#X msg 133 213 set bufsines_source \, bang;
+#X obj 424 237 fluid.bufsines -source bufsines_source -sines bufsines_sines
+-residual bufsines_residual -fftsettings 2048 256 16384, f 75;
+#X msg 565 169 -96;
+#X msg 565 207 -detectionthreshold \$1;
+#X msg 747 207 bandwidth \$1;
+#X connect 2 0 25 0;
+#X connect 3 0 27 0;
 #X connect 5 0 8 0;
 #X connect 8 0 4 0;
 #X connect 8 0 4 1;
-#X connect 14 0 0 0;
+#X connect 14 0 8 0;
 #X connect 15 0 8 0;
-#X connect 16 0 8 0;
-#X connect 17 0 8 0;
-#X connect 19 0 18 0;
-#X connect 20 0 26 0;
-#X connect 21 0 23 0;
-#X connect 23 0 19 0;
-#X connect 24 0 21 0;
-#X connect 25 0 20 0;
-#X connect 26 0 19 0;
+#X connect 17 0 29 0;
+#X connect 18 0 30 0;
+#X connect 20 0 18 0;
+#X connect 23 0 21 0;
+#X connect 25 0 0 0;
+#X connect 26 0 8 0;
+#X connect 27 0 16 0;
+#X connect 28 0 17 0;
 #X connect 29 0 27 0;
+#X connect 30 0 27 0;
