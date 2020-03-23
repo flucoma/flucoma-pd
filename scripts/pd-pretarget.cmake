@@ -10,6 +10,16 @@ string(REGEX REPLACE "(.*)/" "" THIS_FOLDER_NAME "${CMAKE_CURRENT_SOURCE_DIR}")
 
 project (${THIS_FOLDER_NAME})
 
+if(MSVC)
+  foreach(flag_var
+      CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+      CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    if(${flag_var} MATCHES "/MD")
+      string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+    endif()
+  endforeach()
+endif()
+
 if (NOT DEFINED MAIN_SCRIPTS_DIR)
 	set(MAIN_SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../scripts)
 endif ()
