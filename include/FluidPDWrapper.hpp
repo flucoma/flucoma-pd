@@ -119,7 +119,7 @@ public:
   void dsp(t_signal **sp)
   {
     Wrapper *wrapper = static_cast<Wrapper *>(this);
-	static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t), "size of pointer int type is wrongwrongwrong"); 
+	  static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t), "size of pointer int type is wrongwrongwrong"); 
     wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
     auto &   client  = wrapper->client();
     client.sampleRate(sp[0]->s_sr);
@@ -151,13 +151,15 @@ public:
   void perform(int sampleframes)
   {
     auto &client = static_cast<Wrapper *>(this)->mClient;
-    for (index i = 0; i < mSigIns.size(); ++i)
+    
+    for (index i = 0, numins = asSigned(mSigIns.size()) ; i < numins ; ++i)
       mInputs[i].reset(mSigIns[i], 0, sampleframes);
 
     for (index i = 0; i < client.audioChannelsOut(); ++i)
       mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
 
-    for (index i = 0; i < client.controlChannelsOut(); ++i) mOutputs[i].reset(&mControlOutputs[i], 0, 1);
+    for (index i = 0; i < client.controlChannelsOut(); ++i) 
+      mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
     client.process(mInputs, mOutputs, mContext);
 
