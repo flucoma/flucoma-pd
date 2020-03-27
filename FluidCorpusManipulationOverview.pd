@@ -1,4 +1,4 @@
-#N canvas 167 52 957 701 10;
+#N canvas 371 59 957 701 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid_decomposition 20 12 0
 36 -262144 -66577 0;
 #X text 34 93 The Fluid Decomposition toolbox provides an open-ended
@@ -37,11 +37,8 @@ f 19;
 -66577 0;
 #X obj 36 568 fluid.loudness~;
 #X obj 37 630 fluid.pitch~;
-#X obj 366 565 fluid.loudness~;
-#X obj 366 631 fluid.pitch~;
-#X obj 642 563 fluid.loudness~;
 #X text 741 640 Statistics of buffers (arrays);
-#X text 764 566 Summary measures of spectral shape, f 17;
+#X text 782 566 Summary measures of spectral shape, f 17;
 #X text 481 567 Energy across Mel bands, f 13;
 #X text 480 635 Mel Frequency Ceptstral Coefficients, f 13;
 #X text 153 567 Report amplitude and peak \, or r128 loudness and true
@@ -57,9 +54,6 @@ peak, f 22;
 #X obj 370 447 fluid.bufhpss;
 #X obj 36 592 fluid.bufloudness;
 #X obj 37 654 fluid.bufpitch;
-#X obj 366 589 fluid.bufloudness;
-#X obj 366 655 fluid.bufpitch;
-#X obj 642 587 fluid.bufloudness;
 #X obj 643 640 fluid.bufstats;
 #X obj 644 195 cnv 15 310 75 empty empty empty 20 12 0 20 -262144 -66577
 0;
@@ -74,3 +68,9 @@ things you've wanted to do with arrays..., f 24;
 / lookback, f 18;
 #X text 158 239 Slice by amplitude envelope onsets with detrending
 , f 18;
+#X obj 366 565 fluid.melbands~;
+#X obj 366 589 fluid.bufmelbands;
+#X obj 642 563 fluid.spectralshape~;
+#X obj 642 587 fluid.bufspectralshape;
+#X obj 366 631 fluid.mfcc~;
+#X obj 366 655 fluid.bufmfcc;
