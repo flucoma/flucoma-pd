@@ -1,4 +1,4 @@
-#N canvas 49 23 912 855 10;
+#N canvas 67 122 912 855 10;
 #X obj 8 587 *~;
 #X obj 54 565 osc~ 320;
 #X obj 471 730 tabwrite~ ampslicesourceview;
@@ -57,7 +57,7 @@ changes as onsets., f 121;
 #X text 31 7 Amplitude followers love drums;
 #X obj 30 689 *~;
 #X obj 55 690 *~;
-#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 33 92 t b f b;
 #X msg 33 50 read -resize media/Nicol-LoopE-M.wav ampslice_drums;
@@ -111,7 +111,6 @@ changes as onsets., f 121;
 220 -slowrampdown 220 -onthreshold 10 -offthreshold 10 -floor -60;
 #X obj 8 537 *~ 0.8;
 #X obj 8 558 +~ 0.2;
-#X obj 8 516 phasor~ -1;
 #X msg 42 300 reset;
 #X msg 113 365 reset \, offthreshold 7 \, getlatency;
 #X msg 158 417 reset \, offthreshold 7 \, minslicelength 220 \, getlatency
@@ -125,6 +124,31 @@ all;
 #X text 136 203 1) Our source here is a sinewave that does not go to
 silence and has sharp-ish amplitude bumps as onsets we try to track
 ;
+#X floatatom 34 722 0 0 0 0 - - -;
+#X obj 34 684 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#N canvas 0 23 450 300 counter 0;
+#X obj 92 39 inlet;
+#X obj 100 106 fexpr~ $x1[0] + $y1[-1];
+#X obj 36 71 loadbang;
+#X msg 96 75 clear y1;
+#X obj 92 130 snapshot~;
+#X obj 36 106 metro 100;
+#X obj 36 89 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+;
+#X obj 92 151 outlet;
+#X obj 244 47 inlet~;
+#X connect 0 0 3 0;
+#X connect 1 0 4 0;
+#X connect 2 0 6 0;
+#X connect 3 0 1 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 8 0 1 0;
+#X restore 34 704 pd counter;
+#X text 51 683 reset;
+#X obj 8 516 phasor~ -1.1;
 #X connect 0 0 17 0;
 #X connect 0 0 31 0;
 #X connect 1 0 0 1;
@@ -145,10 +169,13 @@ silence and has sharp-ish amplitude bumps as onsets we try to track
 #X connect 30 0 28 0;
 #X connect 31 0 8 0;
 #X connect 31 0 9 0;
+#X connect 31 0 43 1;
 #X connect 31 1 15 0;
 #X connect 32 0 33 0;
 #X connect 33 0 0 0;
-#X connect 34 0 32 0;
+#X connect 34 0 31 0;
 #X connect 35 0 31 0;
 #X connect 36 0 31 0;
-#X connect 37 0 31 0;
+#X connect 42 0 43 0;
+#X connect 43 0 41 0;
+#X connect 45 0 32 0;
