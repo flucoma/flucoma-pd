@@ -79,7 +79,7 @@ artefacts appear when the pitch is changing.;
 #X obj 185 359 *~;
 #X obj 199 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X obj 21 282 fluid.sines~ 8192 fluid.sines~ -detectionthreshold -144
+#X obj 21 282 fluid.sines~ 8192 -detectionthreshold -144
 -birthhighthreshold -144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange
 200 -trackfreqrange 1000 -trackprob 0;
 #X obj 21 131 *~;
