@@ -152,13 +152,13 @@ public:
   {
     auto &client = static_cast<Wrapper *>(this)->mClient;
     
-    for (auto i = 0ul, numins = mSigIns.size(); i < numins ; ++i)
+    for (size_t i = 0, numins = mSigIns.size(); i < numins ; ++i)
       mInputs[i].reset(mSigIns[i], 0, sampleframes);
 
-    for (auto i = 0ul, numouts = asUnsigned(client.audioChannelsOut()); i < numouts; ++i)
+    for (size_t i = 0, numouts = asUnsigned(client.audioChannelsOut()); i < numouts; ++i)
       mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
 
-    for (auto i = 0ul, numouts =  asUnsigned(client.controlChannelsOut()); i < numouts; ++i)
+    for (size_t i = 0, numouts =  asUnsigned(client.controlChannelsOut()); i < numouts; ++i)
       mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
     client.process(mInputs, mOutputs, mContext);
