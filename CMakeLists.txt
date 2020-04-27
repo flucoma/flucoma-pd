@@ -23,7 +23,7 @@ if (APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
 endif()
 
-project (flucoma_pd LANGUAGES CXX)
+project (flucoma-pd LANGUAGES CXX)
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
 MACRO(SUBDIRLIST result curdir)
