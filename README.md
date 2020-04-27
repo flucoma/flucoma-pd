@@ -1,6 +1,6 @@
 # Fluid Corpus Manipulation: PD Objects Library
 
-This repository hosts code for generating the Pure Data objects and documentation resources for the Fluid Corpus Manipulation Project. Much of the actual code that does the exciting stuff lives in this repository's principal dependency,  the [Fluid Corpus Manipulation Library](). 
+This repository hosts code for generating the Pure Data objects and documentation resources for the Fluid Corpus Manipulation Project. Much of the actual code that does the exciting stuff lives in this repository's principal dependency,  the [Fluid Corpus Manipulation Library](https://github.com/flucoma/flucoma-core). 
 
 # How to Build
 
@@ -18,7 +18,7 @@ This repository hosts code for generating the Pure Data objects and documentatio
 
 These will be downloaded and configured automatically, unless you pass CMake a source code location on disk for each (see below): 
 
-* [Fluid Corpus Manipulation Library]()
+* [Fluid Corpus Manipulation Library](https://github.com/flucoma/flucoma-core)
 * [Eigen](https://gitlab.com/libeigen/eigen) (3.3.5)
 * [HISSTools Library](https://github.com/AlexHarker/HISSTools_Library)
 
@@ -50,11 +50,11 @@ Pre-requisites:
 * Jinja python package (template engine)
 * PyYAML >= 5.1 (YAML parsing)
 
-To generate html documentation for the objects requires a further dependency, [flucoma_paramdump](), which we use to combine generated and human-written docs. We then pass `DOCS=ON` to CMake
+To generate html documentation for the objects requires a further dependency, [flucoma-docs](https://github.com/flucoma/flucoma-core), which we use to combine generated and human-written docs. We then pass `DOCS=ON` to CMake
 ```
 cmake -DDOCS=ON ..
 ```
-Unless we pass the location on disk of the `flucoma_paramdump`, CMake will again take care of downloading this dependency.
+Unless we pass the location on disk of `flucoma-docs`, CMake will again take care of downloading this dependency.
 
 This process:
 
