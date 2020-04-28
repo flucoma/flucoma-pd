@@ -58,7 +58,7 @@ if(DEFINED FLUID_ARCH)
 endif()
 
 get_property(HEADERS TARGET FLUID_DECOMPOSITION PROPERTY INTERFACE_SOURCES)
-source_group(TREE "${fluid_decomposition_SOURCE_DIR}/include" FILES ${HEADERS})
+source_group(TREE "${flucoma-core_SOURCE_DIR}/include" FILES ${HEADERS})
 
 get_property(HEADERS TARGET FLUID_PD PROPERTY INTERFACE_SOURCES)
 source_group("PD Wrapper" FILES ${HEADERS})
