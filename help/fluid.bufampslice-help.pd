@@ -1,4 +1,4 @@
-#N canvas 106 66 582 680 10;
+#N canvas 160 75 582 680 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufampslice 20 12 0 36
 -262144 -66577 0;
 #X text 37 50 Amplitude-based Detrending Slicer for Buffers;
@@ -46,8 +46,6 @@ in this toy example \, since the envelope follower is 1 sample long
 #X text 260 136 dB;
 #X text 401 137 dB;
 #X text 207 99 change the thresholds;
-#X text 18 314 2) play a give slice \, by retrieving the onset and
-offset indices, f 65;
 #X obj 17 181 fluid.bufampslice -source bufampslice_source -indices
 bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 10 -offthreshold 5 -fastrampup 10 -fastrampdown 2205 -minslicelength
@@ -61,10 +59,12 @@ bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 #X obj 204 399 tabread bufampslice_indices;
 #X obj 20 378 + 1;
 #X obj 17 232 array size bufampslice_indices;
+#X text 18 314 2) play a give slice \, by retrieving the onset indices
+, f 65;
 #X connect 0 0 1 0;
-#X connect 1 0 21 0;
-#X connect 2 0 29 0;
-#X connect 2 1 28 0;
+#X connect 1 0 20 0;
+#X connect 2 0 28 0;
+#X connect 2 1 27 0;
 #X connect 4 0 5 1;
 #X connect 5 0 9 0;
 #X connect 6 0 2 0;
@@ -74,18 +74,18 @@ bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 #X connect 9 0 3 1;
 #X connect 10 0 0 0;
 #X connect 12 0 5 0;
-#X connect 15 0 24 0;
-#X connect 16 0 25 0;
-#X connect 21 0 30 0;
-#X connect 22 0 15 0;
-#X connect 23 0 16 0;
-#X connect 24 0 21 0;
-#X connect 25 0 21 0;
-#X connect 27 0 8 0;
-#X connect 28 0 4 1;
-#X connect 28 0 12 1;
-#X connect 29 0 27 0;
-#X connect 30 0 11 0;
+#X connect 15 0 23 0;
+#X connect 16 0 24 0;
+#X connect 20 0 29 0;
+#X connect 21 0 15 0;
+#X connect 22 0 16 0;
+#X connect 23 0 20 0;
+#X connect 24 0 20 0;
+#X connect 26 0 8 0;
+#X connect 27 0 4 1;
+#X connect 27 0 12 1;
+#X connect 28 0 26 0;
+#X connect 29 0 11 0;
 #X restore 435 238 pd musical_example;
 #N canvas 466 89 770 604 options_explained 0;
 #N canvas 86 337 450 300 wavemaker 0;
@@ -153,7 +153,6 @@ bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 #X array bufampslice_markers 44100 float 2;
 #X coords 0 1 44100 -1 719 52 1;
 #X restore 18 172 graph;
-#X text 400 228 +1: onsets / -1: offsets;
 #X obj 18 228 array define bufampslice_pointers;
 #X obj 23 520 fluid.bufampslice -source bufampslice_wave -indices bufampslice_pointers
 -fastrampup 5 -fastrampdown 50 -slowrampup 220 -slowrampdown 220 -onthreshold
@@ -171,10 +170,10 @@ of the difference between a slow and a fast envelope, f 105;
 A solution: Schmidth triggers, f 89;
 #X text 124 428 3) better still \, adding a minslicelength sorts it
 all;
-#X connect 6 0 1 0;
-#X connect 7 0 6 0;
-#X connect 8 0 6 0;
-#X connect 9 0 6 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
 #X restore 435 210 pd options_explained;
 #X obj 59 358 tabwrite ampspikes;
 #N canvas 0 23 450 300 (subpatch) 0;
