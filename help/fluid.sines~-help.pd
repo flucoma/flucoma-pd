@@ -63,7 +63,7 @@ sines_source;
 #X msg 58 442 -40;
 #X msg 58 480 detectionthreshold \$1;
 #X msg 205 506 2;
-#N canvas 336 187 833 471 a 0;
+#N canvas 336 187 833 471 a little more explanation 1;
 #X text 10 23 1) as the algorithm resynthesize the sinusoidal peaks
 \, we would expect to get it to work almost perfectly on a sine wave
 ;
@@ -76,19 +76,17 @@ artefacts appear when the pitch is changing.;
 #X obj 21 359 *~;
 #X obj 35 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 185 359 *~;
-#X obj 199 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 21 282 fluid.sines~ 8192 -detectionthreshold -144
--birthhighthreshold -144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange
-200 -trackfreqrange 1000 -trackprob 0;
+#X obj 181 398 *~;
+#X obj 21 282 fluid.sines~ 8192 -detectionthreshold -144 -birthhighthreshold
+-144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange 200 -trackfreqrange
+1000 -trackprob 0;
 #X obj 21 131 *~;
 #X obj 35 113 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 21 68 osc~ 440;
 #X obj 21 89 *~ 0.1;
 #X obj 428 254 *~;
-#X obj 442 236 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 442 236 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 428 191 osc~ 440;
 #X obj 428 212 *~ 0.1;
@@ -96,26 +94,31 @@ artefacts appear when the pitch is changing.;
 #X obj 428 132 *~ 12;
 #X obj 428 153 +~ 57;
 #X obj 428 172 mtof~;
+#X floatatom 196 358 5 0 0 0 - - -;
+#X obj 196 378 dbtorms;
+#X text 246 371 the artefact are much lower on a static signal \, but
+much more apparent (and interesting) on a moving one;
 #X connect 4 0 3 0;
 #X connect 4 0 3 1;
 #X connect 5 0 4 1;
-#X connect 6 0 3 0;
 #X connect 6 0 3 1;
-#X connect 7 0 6 1;
-#X connect 8 0 4 0;
-#X connect 8 1 6 0;
-#X connect 9 0 8 0;
-#X connect 10 0 9 1;
-#X connect 11 0 12 0;
-#X connect 12 0 9 0;
-#X connect 13 0 8 0;
-#X connect 14 0 13 1;
-#X connect 15 0 16 0;
-#X connect 16 0 13 0;
+#X connect 6 0 3 0;
+#X connect 7 0 4 0;
+#X connect 7 1 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 1;
+#X connect 10 0 11 0;
+#X connect 11 0 8 0;
+#X connect 12 0 7 0;
+#X connect 13 0 12 1;
+#X connect 14 0 15 0;
+#X connect 15 0 12 0;
+#X connect 16 0 17 0;
 #X connect 17 0 18 0;
 #X connect 18 0 19 0;
-#X connect 19 0 20 0;
-#X connect 20 0 15 0;
+#X connect 19 0 14 0;
+#X connect 20 0 21 0;
+#X connect 21 0 6 1;
 #X restore 314 323 pd a little more explanation;
 #X connect 2 0 1 0;
 #X connect 2 0 1 1;
