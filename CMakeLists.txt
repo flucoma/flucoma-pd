@@ -47,12 +47,14 @@ FetchContent_Declare(
   flucoma-core
   GIT_REPOSITORY https://github.com/flucoma/flucoma-core.git
   GIT_PROGRESS TRUE
+  GIT_TAG 1.0.0-RC1
 )
 
 FetchContent_Declare(
   flucoma-docs
   GIT_REPOSITORY https://github.com/flucoma/flucoma-docs.git
   GIT_PROGRESS TRUE
+  GIT_TAG 1.0.0-RC1
 )
 
 if(FLUID_PATH)
