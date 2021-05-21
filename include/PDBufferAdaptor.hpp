@@ -138,6 +138,22 @@ public:
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
 
+
+  FluidTensorView<float, 2> allFrames() override
+  {
+
+    float*  samples = (float*) getArrayData(0);
+    FluidTensorView<float, 2> v{samples, 0, numFrames(), numChans()};
+    return v.transpose();
+  }
+
+  FluidTensorView<const float, 2> allFrames() const override
+  {
+    float*  samples = (float*) getArrayData(0);
+    FluidTensorView<const float, 2> v{samples, 0, numFrames(), numChans()};
+    return v.transpose();
+  }
+
   index numFrames() const override { return getMinFrames(); }
 
   index numChans() const override { return getArrayCount(); }
