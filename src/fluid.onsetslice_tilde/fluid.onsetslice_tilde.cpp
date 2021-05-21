@@ -14,5 +14,5 @@ under the European Union’s Horizon 2020 research and innovation programme
 extern "C" void setup_fluid0x2eonsetslice_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<OnsetSliceClient>("fluid.onsetslice~");
+  makePDWrapper<RTOnsetSliceClient>("fluid.onsetslice~");
 }

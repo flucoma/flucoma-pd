@@ -14,5 +14,5 @@ under the European Union’s Horizon 2020 research and innovation programme
 extern "C" void setup_fluid0x2enmfmatch_tilde(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NMFMatchClient>("fluid.nmfmatch~");
+  makePDWrapper<RTNMFMatchClient>("fluid.nmfmatch~");
 }
