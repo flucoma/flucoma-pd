@@ -400,12 +400,12 @@ struct FluidPDBase<Wrapper, std::true_type, std::true_type>
 
 template <typename Client>
 class FluidPDWrapper
-    : public impl::FluidPDBase<FluidPDWrapper<Client>, isNonRealTime<Client>,
-                               isRealTime<Client>>
+    : public impl::FluidPDBase<FluidPDWrapper<Client>,   typename Client::isNonRealTime,
+                                typename Client::isRealTime>
 {
   using WrapperBase =
-      impl::FluidPDBase<FluidPDWrapper<Client>, isNonRealTime<Client>,
-                        isRealTime<Client>>;
+      impl::FluidPDBase<FluidPDWrapper<Client>,   typename Client::isNonRealTime,
+                                typename Client::isRealTime>;
 
   friend impl::RealTime<FluidPDWrapper<Client>>;
   friend impl::NonRealTime<FluidPDWrapper<Client>>;
@@ -816,12 +816,13 @@ struct InputTypeWrapper<std::false_type>
   using type = float;
 };
 
-template <template <typename T> class Client>
+// template <template <typename T> class Client>
+template <class Client>
 void makePDWrapper(const char* classname)
 {
-  using InputType = typename InputTypeWrapper<isRealTime<Client<double>>>::type;
+  // using InputType = typename InputTypeWrapper<isRealTime<Client<double>>>::type;
 
-  FluidPDWrapper<Client<InputType>>::makeClass(classname);
+  FluidPDWrapper<Client>::makeClass(classname);
 }
 
 } // namespace client
