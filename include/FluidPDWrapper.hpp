@@ -464,6 +464,18 @@ class FluidPDWrapper
       : public FetchValue<N, LongT, std::decay_t<decltype(atom_getint)>,
                           atom_getint>
   {};
+  
+  
+  template <size_t N>
+  struct Fetcher<N, StringT>
+  {
+    std::string operator()(const long ac, t_atom* av, long& currentCount)
+    {
+      auto defaultValue = paramDescriptor<N>().defaultValue;
+      return {currentCount < ac ? atom_getsymbol(av + currentCount++)->s_name
+                                : defaultValue};
+    }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // Setter
