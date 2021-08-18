@@ -1,4 +1,4 @@
-#N canvas 528 76 361 440 12;
+#N canvas 528 76 529 445 12;
 #X obj 121 405 print;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array datapoint 1 float 2;
@@ -19,6 +19,8 @@
 #X msg 121 377 size \$1;
 #X msg 181 265 print;
 #X obj 26 325 fluid.dataset~ foo;
+#X msg 260 263 read /tmp/doesit.json;
+#X msg 263 297 write /tmp/didit.json;
 #X connect 2 0 16 0;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
@@ -36,3 +38,5 @@
 #X connect 14 0 0 0;
 #X connect 15 0 16 0;
 #X connect 16 2 12 0;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;

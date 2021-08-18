@@ -693,7 +693,7 @@ public:
       : mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr}, mNRTDoneOutlet(nullptr),
         mControlOutlet(nullptr), mParams(Client::getParameterDescriptors()),
         mParamSnapshot(Client::getParameterDescriptors()),
-        mClient{initParamsFromArgs(ac, av)}
+        mClient{initParamsFromArgs(ac, av)}, mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
@@ -1036,9 +1036,9 @@ private:
         SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-//              class_addmethod(getClass(),
-//                              (method) deferRead<decltype(M)::value>,
-//                              lowerCase(message.name).c_str(), A_DEFSYM, 0);
+              class_addmethod(getClass(),
+                              (t_method) doRead<decltype(M)::value>,
+                              gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
             });
         return;
       }
@@ -1047,9 +1047,9 @@ private:
         SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-//              class_addmethod(getClass(),
-//                              (method) deferWrite<decltype(M)::value>,
-//                              lowerCase(message.name).c_str(), A_DEFSYM, 0);
+              class_addmethod(getClass(),
+                              (t_method) doWrite<decltype(M)::value>,
+                              gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
             });
         return;
       }
@@ -1087,6 +1087,62 @@ private:
       outlet_anything(x->mMessageResultOutlet, gensym("print"), 0, nullptr);
     }
   }
+  
+  template <size_t N>
+  static void doRead(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
+  {
+    if(!ac) return;
+    const char* filename = av[0].a_w.w_symbol->s_name;
+    if(!filename)
+    {
+      pd_error(x, "Missing or invalid filename");
+      return;
+    }
+    char buf[MAXPDSTRING], *bufptr;
+    int fd = canvas_open(x->mCanvas,filename, "", buf, &bufptr, MAXPDSTRING, 0);
+    if(fd < 0)
+    {
+      pd_error(x, "File not found");
+      return;
+    }
+    sys_close(fd);
+    std::string complete(buf);
+    complete += "/";
+    complete += bufptr;
+    auto messageResult = x->mClient.template invoke<N>(x->mClient, complete);
+
+    if (x->checkResult(messageResult))
+    {
+      outlet_anything(x->mMessageResultOutlet, gensym("read"), 0, nullptr);
+    }
+  }
+  
+  template <size_t N>
+  static void doWrite(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
+  {
+    if(!ac) return;
+    const char* filename = av[0].a_w.w_symbol->s_name;
+    if(!filename)
+    {
+      pd_error(x, "Missing or invalid filename");
+      return;
+    }
+    char filenamebuf[MAXPDSTRING];
+    char buf2[MAXPDSTRING];
+    
+    //BIG YIKES (this is what PD does in d_soundfile)
+    strncpy(filenamebuf, filename, MAXPDSTRING);
+    filenamebuf[MAXPDSTRING-10] = 0;
+    canvas_makefilename(x->mCanvas, filenamebuf, buf2, MAXPDSTRING);
+
+    auto messageResult = x->mClient.template invoke<N>(x->mClient, buf2);
+
+    if (x->checkResult(messageResult))
+    {
+      outlet_anything(x->mMessageResultOutlet, gensym("write"), 0, nullptr);
+    }
+  }
+  
   
   ///////////////////////////////
   /// message invocation
@@ -1133,6 +1189,7 @@ private:
   t_outlet*    mNRTProgressOutlet;
   t_outlet*    mNRTDoneOutlet;
   t_outlet*    mControlOutlet;
+  t_canvas*    mCanvas;
   bool         mVerbose;
   ParamSetType mParams;
   ParamSetType mParamSnapshot;
