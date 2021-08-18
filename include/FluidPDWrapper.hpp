@@ -644,6 +644,24 @@ class FluidPDWrapper
       printResult(x, x->messages());
     }
   };
+  
+  template <size_t N>
+  struct Setter<LongArrayT, N>
+  {
+
+    static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+    {
+      x->messages().reset();
+      typename LongArrayT::type& a = x->params().template get<N>();
+
+      a.resize(ac);
+
+      using T = typename LongArrayT::type::type;
+
+      for (index i = 0; i < static_cast<index>(ac); i++)
+        a[i] = ParamAtomConverter::fromAtom(x, av + i, T{});
+    }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // Getter
