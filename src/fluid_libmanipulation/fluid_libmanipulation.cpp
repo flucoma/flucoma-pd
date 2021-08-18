@@ -9,10 +9,10 @@ under the European Union’s Horizon 2020 research and innovation programme
 */
 
 #include <clients/nrt/DataSetClient.hpp>
-// #include <clients/nrt/DataSetQueryClient.hpp>
-// #include <clients/nrt/LabelSetClient.hpp>
-// #include <clients/nrt/KDTreeClient.hpp>
-// #include <clients/nrt/KMeansClient.hpp>
+#include <clients/nrt/DataSetQueryClient.hpp>
+#include <clients/nrt/LabelSetClient.hpp>
+#include <clients/nrt/KDTreeClient.hpp>
+#include <clients/nrt/KMeansClient.hpp>
 // #include <clients/nrt/KNNClassifierClient.hpp>
 // #include <clients/nrt/KNNRegressorClient.hpp>
 // #include <clients/nrt/NormalizeClient.hpp>
@@ -35,10 +35,10 @@ extern "C" void fluid_libmanipulation_setup(void)
 {
   using namespace fluid::client;
   makePDWrapper<NRTThreadedDataSetClient>("fluid.dataset~");
-  // makePDWrapper<NRTThreadedDataSetQueryClient>("fluid.datasetquery~");
-  // makePDWrapper<NRTThreadedLabelSetClient>("fluid.labelset~");
-  // makePDWrapper<RTKDTreeClient>("fluid.kdtree~");
-  // makePDWrapper<RTKMeansClient>("fluid.kmeans~");
+  makePDWrapper<NRTThreadedDataSetQueryClient>("fluid.datasetquery~");
+  makePDWrapper<NRTThreadedLabelSetClient>("fluid.labelset~");
+  makePDWrapper<RTKDTreeClient>("fluid.kdtree~");
+  makePDWrapper<RTKMeansClient>("fluid.kmeans~");
   // makePDWrapper<RTKNNClassifierClient>("fluid.knnclassifier~");
   // makePDWrapper<RTKNNRegressorClient>("fluid.knnregressor~");
   // makePDWrapper<RTNormalizeClient>("fluid.normalize~");

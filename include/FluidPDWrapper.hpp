@@ -210,6 +210,8 @@ template <class Wrapper>
 struct NonRealTime
 {
 
+  
+
   NonRealTime()
   {
     auto wrapper = static_cast<Wrapper*>(this);
@@ -233,17 +235,7 @@ struct NonRealTime
     class_addmethod(c, (t_method) doQueueing, gensym("queue"), A_FLOAT, 0);
   }
 
-  bool checkResult(Result& res)
-  {
-    auto& wrapper = static_cast<Wrapper&>(*this);
 
-    if (!res.ok())
-    {
-      Wrapper::printResult(&wrapper, res);
-      return false;
-    }
-    return true;
-  }
 
   void cancel()
   {
@@ -263,7 +255,7 @@ struct NonRealTime
     client.enqueue(wrapper.mParams);
 
     Result res = client.process();
-    if (checkResult(res))
+    if (wrapper.checkResult(res))
     {
       if (synchronous)
         wrapper.doneBang();
@@ -329,6 +321,9 @@ struct NonRealTime
   }
 
 private:
+
+  Wrapper* wrapper() { return static_cast<Wrapper*>(this); }
+
   t_clock* mProgressClock;
   bool     mSynchronous{true};
   bool     mQueueEnabled{false};
@@ -437,6 +432,18 @@ class FluidPDWrapper
       }
     }
   }
+  
+  bool checkResult(Result& res)
+  {
+//    auto& wrapper = static_cast<Wrapper&>(*this);
+
+    if (!res.ok())
+    {
+      printResult(this, res);
+      return false;
+    }
+    return true;
+  }
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -484,47 +491,64 @@ class FluidPDWrapper
 
     static t_atomtype atom_gettype(t_atom* a) { return a->a_type; }
 
+    static void atom_setsym(t_atom* a, t_symbol* s)
+    {
+     a->a_type = A_SYMBOL;
+     a->a_w.w_symbol = s;
+    }
+    
+    static void atom_setfloat(t_atom* atom, float v)
+    {
+      (atom)->a_type = A_FLOAT;
+      (atom)->a_w.w_float = v;
+    }
+
     static std::string getString(t_atom* a)
     {
       switch (atom_gettype(a))
       {
-//      case A_LONG: return std::to_string(atom_getint(a));
       case A_FLOAT: return std::to_string(atom_getfloat(a));
-      default: return {atom_getsymbol(a)->s_name};
+      default:
+        {
+          char result[30];
+          atom_string(a,&result[0],30);
+          return result;
+        }
       }
     }
 
     template <typename T>
     static std::enable_if_t<std::is_integral<T>::value, T>
-    fromAtom(t_object* /*x*/, t_atom* a, T)
+    fromAtom(FluidPDWrapper* /*x*/, t_atom* a, T)
     {
       return atom_getint(a);
     }
 
     template <typename T>
     static std::enable_if_t<std::is_floating_point<T>::value, T>
-    fromAtom(t_object* /*x*/, t_atom* a, T)
+    fromAtom(FluidPDWrapper* /*x*/, t_atom* a, T)
     {
       return atom_getfloat(a);
     }
 
-    static auto fromAtom(t_object* x, t_atom* a, BufferT::type)
+    static auto fromAtom(FluidPDWrapper* x, t_atom* a, BufferT::type)
     {
-      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a), ((FluidPDWrapper*)x)->sampleRate()));
+      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(t_object* x, t_atom* a, InputBufferT::type)
+    static auto fromAtom(FluidPDWrapper* x, t_atom* a, InputBufferT::type)
     {
-      return InputBufferT::type(new PDBufferAdaptor(atom_getsymbol(a), ((FluidPDWrapper*)x)->sampleRate()));
+      return InputBufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(t_object*, t_atom* a, StringT::type)
+    static auto fromAtom(FluidPDWrapper*, t_atom* a, StringT::type)
     {
-      return getString(a);
+      auto s =  getString(a);
+      return s;
     }
 
     template <typename T>
-    static std::enable_if_t<IsSharedClient<T>::value, T> fromAtom(t_object*,
+    static std::enable_if_t<IsSharedClient<T>::value, T> fromAtom(FluidPDWrapper*,
                                                                   t_atom* a, T)
     {
       return {atom_getsymbol(a)->s_name};
@@ -533,58 +557,56 @@ class FluidPDWrapper
     template <typename T>
     static std::enable_if_t<std::is_integral<T>::value> toAtom(t_atom* a, T v)
     {
-      SETFLOAT(a, v);
+      atom_setfloat(a, v);
     }
 
     template <typename T>
     static std::enable_if_t<std::is_floating_point<T>::value> toAtom(t_atom* a,
                                                                      T       v)
     {
-      SETFLOAT(a, v);
+      atom_setfloat(a, v);
     }
 
     static auto toAtom(t_atom* a, BufferT::type v)
     {
       auto b = static_cast<PDBufferAdaptor*>(v.get());
-      SETSYMBOL(a, b ? b->name() : nullptr);
+      atom_setsym(a, b ? b->name() : nullptr);
     }
 
     static auto toAtom(t_atom* a, InputBufferT::type v)
     {
       auto b = static_cast<const PDBufferAdaptor*>(v.get());
-      SETSYMBOL(a, b ? b->name() : nullptr);
+      atom_setsym(a, b ? b->name() : nullptr);
     }
 
     static auto toAtom(t_atom* a, StringT::type v)
     {
-      SETSYMBOL(a, gensym(v.c_str()));
+      atom_setsym(a, gensym(v.c_str()));
     }
 
     static auto toAtom(t_atom* a, FluidTensor<std::string, 1> v)
     {
-      for (auto& s : v) SETSYMBOL(a++, gensym(s.c_str()));
+      for (auto& s : v) atom_setsym(a++, gensym(s.c_str()));
     }
 
     template <typename T>
     static std::enable_if_t<std::is_floating_point<T>::value>
     toAtom(t_atom* a, FluidTensor<T, 1> v)
     {
-      for (auto& x : v) SETFLOAT(a++, x);
+      for (auto& x : v) {atom_setfloat(a++, x);}
     }
 
     template <typename T>
     static std::enable_if_t<std::is_integral<T>::value>
     toAtom(t_atom* a, FluidTensor<T, 1> v)
     {
-      for (auto& x : v) SETFLOAT(a++, x);
+      for (auto& x : v) atom_setfloat(a++, x);
     }
 
     template <typename T>
     static std::enable_if_t<IsSharedClient<T>::value> toAtom(t_atom* a, T v)
     {
-      SETSYMBOL(a, gensym(v.name()));
-      //  else
-      //    atom_setsym(a, gensym("<undefined object>"));
+      atom_setsym(a, gensym(v.name()));
     }
 
     template <typename... Ts, size_t... Is>
@@ -610,7 +632,7 @@ class FluidPDWrapper
       NOTUSED(s);
 
       ParamLiteralConvertor<T, argSize> a;
-      a.set(paramDescriptor<N>().defaultValue);
+      a.set(Client::getParameterDescriptors().template makeValue<N>());
 
       x->messages().reset();
 
@@ -1083,7 +1105,7 @@ private:
   {
     if (N < asUnsigned(ac))
       return ParamAtomConverter::fromAtom(
-          (t_object*)x, av + N, typename std::tuple_element<N, Tuple>::type{});
+          x, av + N, typename std::tuple_element<N, Tuple>::type{});
     else
       return typename std::tuple_element<N, Tuple>::type{};
   }
