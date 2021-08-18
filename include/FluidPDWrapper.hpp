@@ -477,36 +477,133 @@ class FluidPDWrapper
     }
   };
 
-  //////////////////////////////////////////////////////////////////////////////
+
+  /// PD atom to / from Fluid params
+  struct ParamAtomConverter
+  {
+
+    static t_atomtype atom_gettype(t_atom* a) { return a->a_type; }
+
+    static std::string getString(t_atom* a)
+    {
+      switch (atom_gettype(a))
+      {
+//      case A_LONG: return std::to_string(atom_getint(a));
+      case A_FLOAT: return std::to_string(atom_getfloat(a));
+      default: return {atom_getsymbol(a)->s_name};
+      }
+    }
+
+    template <typename T>
+    static std::enable_if_t<std::is_integral<T>::value, T>
+    fromAtom(t_object* /*x*/, t_atom* a, T)
+    {
+      return atom_getint(a);
+    }
+
+    template <typename T>
+    static std::enable_if_t<std::is_floating_point<T>::value, T>
+    fromAtom(t_object* /*x*/, t_atom* a, T)
+    {
+      return atom_getfloat(a);
+    }
+
+    static auto fromAtom(t_object* x, t_atom* a, BufferT::type)
+    {
+      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a), ((FluidPDWrapper*)x)->sampleRate()));
+    }
+
+    static auto fromAtom(t_object* x, t_atom* a, InputBufferT::type)
+    {
+      return InputBufferT::type(new PDBufferAdaptor(atom_getsymbol(a), ((FluidPDWrapper*)x)->sampleRate()));
+    }
+
+    static auto fromAtom(t_object*, t_atom* a, StringT::type)
+    {
+      return getString(a);
+    }
+
+    template <typename T>
+    static std::enable_if_t<IsSharedClient<T>::value, T> fromAtom(t_object*,
+                                                                  t_atom* a, T)
+    {
+      return {atom_getsymbol(a)->s_name};
+    }
+
+    template <typename T>
+    static std::enable_if_t<std::is_integral<T>::value> toAtom(t_atom* a, T v)
+    {
+      SETFLOAT(a, v);
+    }
+
+    template <typename T>
+    static std::enable_if_t<std::is_floating_point<T>::value> toAtom(t_atom* a,
+                                                                     T       v)
+    {
+      SETFLOAT(a, v);
+    }
+
+    static auto toAtom(t_atom* a, BufferT::type v)
+    {
+      auto b = static_cast<PDBufferAdaptor*>(v.get());
+      SETSYMBOL(a, b ? b->name() : nullptr);
+    }
+
+    static auto toAtom(t_atom* a, InputBufferT::type v)
+    {
+      auto b = static_cast<const PDBufferAdaptor*>(v.get());
+      SETSYMBOL(a, b ? b->name() : nullptr);
+    }
+
+    static auto toAtom(t_atom* a, StringT::type v)
+    {
+      SETSYMBOL(a, gensym(v.c_str()));
+    }
+
+    static auto toAtom(t_atom* a, FluidTensor<std::string, 1> v)
+    {
+      for (auto& s : v) SETSYMBOL(a++, gensym(s.c_str()));
+    }
+
+    template <typename T>
+    static std::enable_if_t<std::is_floating_point<T>::value>
+    toAtom(t_atom* a, FluidTensor<T, 1> v)
+    {
+      for (auto& x : v) SETFLOAT(a++, x);
+    }
+
+    template <typename T>
+    static std::enable_if_t<std::is_integral<T>::value>
+    toAtom(t_atom* a, FluidTensor<T, 1> v)
+    {
+      for (auto& x : v) SETFLOAT(a++, x);
+    }
+
+    template <typename T>
+    static std::enable_if_t<IsSharedClient<T>::value> toAtom(t_atom* a, T v)
+    {
+      SETSYMBOL(a, gensym(v.name()));
+      //  else
+      //    atom_setsym(a, gensym("<undefined object>"));
+    }
+
+    template <typename... Ts, size_t... Is>
+    static void toAtom(t_atom* a, std::tuple<Ts...>&& x,
+                       std::index_sequence<Is...>,
+                       std::array<size_t, sizeof...(Ts)> offsets)
+    {
+      (void) std::initializer_list<int>{
+          (toAtom(a + offsets[Is], std::get<Is>(x)), 0)...};
+    }
+  };
+
+//////////////////////////////////////////////////////////////////////////////
   // Setter
 
   template <typename T, size_t N>
   struct Setter
   {
     static constexpr index argSize = paramDescriptor<N>().fixedSize;
-
-    static auto fromAtom(FluidPDWrapper<Client>*, t_atom* a, LongT::type)
-    {
-      return atom_getint(a);
-    }
-    static auto fromAtom(FluidPDWrapper<Client>*, t_atom* a, FloatT::type)
-    {
-      return atom_getfloat(a);
-    }
-
-    static auto fromAtom(FluidPDWrapper<Client>* x, t_atom* a, BufferT::type)
-    {
-      return BufferT::type(
-          new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
-    }
-
-    static auto fromAtom(FluidPDWrapper<Client>* x, t_atom* a,
-                         InputBufferT::type)
-    {
-      return InputBufferT::type(
-          new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
-    }
-
 
     static void set(FluidPDWrapper<Client>* x, t_symbol* s, int ac, t_atom* av)
     {
@@ -518,7 +615,7 @@ class FluidPDWrapper
       x->messages().reset();
 
       for (index i = 0; i < argSize && i < ac; i++)
-        a[i] = fromAtom(x, av + i, a[0]);
+        a[i] = ParamAtomConverter::fromAtom(x, av + i, a[0]);
 
       x->params().template set<N>(a.value(),
                                   x->verbose() ? &x->messages() : nullptr);
@@ -534,24 +631,6 @@ class FluidPDWrapper
   {
     static constexpr size_t argSize = paramDescriptor<N>().fixedSize;
 
-    static auto toAtom(t_atom* a, LongT::type v) { SETFLOAT(a, v); }
-    static auto toAtom(t_atom* a, FloatT::type v)
-    {
-      SETFLOAT(a, static_cast<t_float>(v));
-    }
-
-    static auto toAtom(t_atom* a, BufferT::type v)
-    {
-      auto b = static_cast<PDBufferAdaptor*>(v.get());
-      SETSYMBOL(a, (b ? b->name() : nullptr));
-    }
-
-    static auto toAtom(t_atom* a, InputBufferT::type v)
-    {
-      auto b = static_cast<const PDBufferAdaptor*>(v.get());
-      SETSYMBOL(a, (b ? b->name() : nullptr));
-    }
-
     static std::vector<t_atom> get(FluidPDWrapper<Client>* x)
     {
       ParamLiteralConvertor<T, argSize> a;
@@ -559,7 +638,7 @@ class FluidPDWrapper
 
       a.set(x->params().template get<N>());
 
-      for (auto i = 0u; i < argSize; i++) toAtom(result.data() + i, a[i]);
+      for (auto i = 0u; i < argSize; i++) ParamAtomConverter::toAtom(result.data() + i, a[i]);
 
       return result;
     }
@@ -571,7 +650,7 @@ public:
   using ParamSetType = typename Client::ParamSetType;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mNRTProgressOutlet{nullptr}, mNRTDoneOutlet(nullptr),
+      : mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr}, mNRTDoneOutlet(nullptr),
         mControlOutlet(nullptr), mParams(Client::getParameterDescriptors()),
         mParamSnapshot(Client::getParameterDescriptors()),
         mClient{initParamsFromArgs(ac, av)}
@@ -594,6 +673,12 @@ public:
 
     if (mClient.controlChannelsOut() && !mControlOutlet)
       mControlOutlet = outlet_new(pdObject, gensym("list"));
+      
+    const auto&  m = Client::getMessageDescriptors();
+
+    if(m.size())
+        mMessageResultOutlet = outlet_new(pdObject, &s_anything);
+      
   }
 
   void doneBang() { outlet_bang(mNRTDoneOutlet); }
@@ -692,6 +777,8 @@ public:
   static void makeClass(const char* className)
   {
     const ParamDescType& p = Client::getParameterDescriptors();
+    const auto&          m = Client::getMessageDescriptors();
+    
     getClass(class_new(gensym(className), (t_newmethod) create,
                        (t_method) destroy, sizeof(FluidPDWrapper), 0, A_GIMME,
                        0));
@@ -702,6 +789,9 @@ public:
                     A_FLOAT, 0);
     class_addmethod(getClass(), (t_method) doVersion, gensym("version"),
                     A_NULL);
+
+
+    m.template iterate<SetupMessage>();
 
     p.template iterateMutable<SetupParameter>();
     class_sethelpsymbol(getClass(), gensym(className));
@@ -803,8 +893,203 @@ private:
         post("%f", b->sampleRate());
     }
   };
+  
+  // Calculate output size of messages
+  template <typename T>
+  static size_t ResultSize(T)
+  {
+    return 1;
+  }
+
+  template <template <typename, size_t> class Tensor, typename T>
+  static size_t ResultSize(Tensor<T, 1>&& x)
+  {
+    return static_cast<FluidTensor<T, 1>>(x).size();
+  }
+
+  template <typename... Ts, size_t... Is>
+  static std::tuple<std::array<size_t, sizeof...(Ts)>, size_t>
+  ResultSize(std::tuple<Ts...>&& x, std::index_sequence<Is...>)
+  {
+    size_t                            size = 0;
+    std::array<size_t, sizeof...(Ts)> offsets;
+    (void) std::initializer_list<int>{
+        (offsets[Is] = size, size += ResultSize(std::get<Is>(x)), 0)...};
+    return std::make_tuple(offsets, size);
+  }
+
+  template <typename T>
+  static std::enable_if_t<!isSpecialization<T, std::tuple>::value>
+  messageOutput(FluidPDWrapper* x, t_symbol* s, MessageResult<T> r)
+  {
+    size_t              resultSize = ResultSize(static_cast<T>(r));
+    std::vector<t_atom> out(resultSize);
+    ParamAtomConverter::toAtom(out.data(), static_cast<T>(r));
+    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize), out.data());
+  }
+
+  template <typename... Ts>
+  static void messageOutput(FluidPDWrapper* x, t_symbol* s,
+                            MessageResult<std::tuple<Ts...>> r)
+  {
+    auto   indices = std::index_sequence_for<Ts...>();
+    size_t resultSize;
+    std::array<size_t, sizeof...(Ts)> offsets;
+    std::tie(offsets, resultSize) =
+        ResultSize(static_cast<std::tuple<Ts...>>(r), indices);
+    std::vector<t_atom> out(resultSize);
+    ParamAtomConverter::toAtom(out.data(), static_cast<std::tuple<Ts...>>(r),
+                               indices, offsets);
+    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize), out.data());
+  }
+
+  static void messageOutput(FluidPDWrapper* x, t_symbol* s,
+                            MessageResult<void>)
+  {
+    outlet_anything(x->mMessageResultOutlet, s, 0, nullptr);
+  }
+  
+  //////////////////////////////
+  ///message registration
+  
+  
+  template <size_t N, typename T>
+  struct SetupMessage
+  {
+    void operator()(const T& message)
+    {
+      if (message.name == "load")
+      {
+        SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
+            typename T::ReturnType{}, typename T::ArgumentTypes{},
+            [&message](auto M) {
+//              class_addmethod(getClass(),
+//                              (method) deferLoad<decltype(M)::value>,
+//                              lowerCase(message.name).c_str(), A_GIMME, 0);
+            });
+        return;
+      }
+      if (message.name == "dump")
+      {
+        SpecialCase<MessageResult<std::string>>{}.template handle<N>(
+            typename T::ReturnType{}, typename T::ArgumentTypes{},
+            [&message](auto M) {
+//              class_addmethod(getClass(),
+//                              (method) deferDump<decltype(M)::value>,
+//                              lowerCase(message.name).c_str(), A_GIMME, 0);
+            });
+        return;
+      }
+      if (message.name == "print")
+      {
+        SpecialCase<MessageResult<std::string>>{}.template handle<N>(
+            typename T::ReturnType{}, typename T::ArgumentTypes{},
+            [&message](auto M) {
+              class_addmethod(getClass(),
+                              (t_method) doPrint<decltype(M)::value>,
+                              gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
+            });
+        return;
+      }
+      if (message.name == "read")
+      {
+        SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
+            typename T::ReturnType{}, typename T::ArgumentTypes{},
+            [&message](auto M) {
+//              class_addmethod(getClass(),
+//                              (method) deferRead<decltype(M)::value>,
+//                              lowerCase(message.name).c_str(), A_DEFSYM, 0);
+            });
+        return;
+      }
+      if (message.name == "write")
+      {
+        SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
+            typename T::ReturnType{}, typename T::ArgumentTypes{},
+            [&message](auto M) {
+//              class_addmethod(getClass(),
+//                              (method) deferWrite<decltype(M)::value>,
+//                              lowerCase(message.name).c_str(), A_DEFSYM, 0);
+            });
+        return;
+      }
+      class_addmethod(getClass(), (t_method) invokeMessage<N>,
+                      gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
+    }
+
+    // This amounts to me really, really promising the compiler that it's all ok
+    //(life isn't as simple as being able to runtime dispatch on message names,
+    // I neeed to make sure messages whose sigs don't match the special case
+    // don't get even the possibility of being run)
+    template <typename Return, typename... Args>
+    struct SpecialCase
+    {
+      template <size_t M, typename F>
+      void handle(Return, std::tuple<Args...>, F&& f)
+      {
+        f(std::integral_constant<size_t, M>());
+      }
+
+      template <size_t M, typename U, typename ArgTuple, typename F>
+      void handle(U, ArgTuple, F&&)
+      {}
+    };
+  };
+  
+  template <size_t N>
+  static void doPrint(FluidPDWrapper* x, t_symbol*, long, t_atom*)
+  {
+    auto result = x->mClient.template invoke<N>(x->mClient);
+    if (x->checkResult(result))
+    {
+      poststring(/*(t_object*) x, "%s",*/
+                  static_cast<std::string>(result).c_str());
+      outlet_anything(x->mMessageResultOutlet, gensym("print"), 0, nullptr);
+    }
+  }
+  
+  ///////////////////////////////
+  /// message invocation
+  template <size_t N>
+  static void invokeMessage(FluidPDWrapper* x, t_symbol* s, long ac,
+                            t_atom* av)
+  {
+    using IndexList =
+        typename Client::MessageSetType::template MessageDescriptorAt<
+            N>::IndexList;
+    x->client().setParams(x->params());
+    invokeMessageImpl<N>(x, s, ac, av, IndexList());
+  }
+
+  template <size_t N, size_t... Is>
+  static void invokeMessageImpl(FluidPDWrapper* x, t_symbol* s, long ac,
+                                t_atom* av, std::index_sequence<Is...>)
+  {
+    using ArgTuple =
+        typename Client::MessageSetType::template MessageDescriptorAt<
+            N>::ArgumentTypes;
+
+    // Read in arguments
+    ArgTuple args{setArg<ArgTuple, Is>(x, ac, av)...};
+
+    auto result =
+        x->mClient.template invoke<N>(x->mClient, std::get<Is>(args)...);
+
+    if (x->checkResult(result)) messageOutput(x, s, result);
+  }
+
+  template <typename Tuple, size_t N>
+  static auto setArg(FluidPDWrapper* x, long ac, t_atom* av)
+  {
+    if (N < asUnsigned(ac))
+      return ParamAtomConverter::fromAtom(
+          (t_object*)x, av + N, typename std::tuple_element<N, Tuple>::type{});
+    else
+      return typename std::tuple_element<N, Tuple>::type{};
+  }
 
   Result       mResult;
+  t_outlet*    mMessageResultOutlet;
   t_outlet*    mNRTProgressOutlet;
   t_outlet*    mNRTDoneOutlet;
   t_outlet*    mControlOutlet;
