@@ -15,6 +15,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <FluidVersion.hpp>
 
 #include <clients/common/FluidBaseClient.hpp>
+#include <clients/common/FluidNRTClientWrapper.hpp>
 #include <clients/common/OfflineClient.hpp>
 #include <clients/common/ParameterSet.hpp>
 #include <clients/common/ParameterTypes.hpp>
@@ -90,7 +91,8 @@ public:
   void setupAudio(t_object* pdObject, index numSigIns, index numSigOuts)
   {
     Wrapper* wrapper = static_cast<Wrapper*>(this);
-    auto&    client = wrapper->client();
+
+    auto& client = wrapper->client();
 
     // impl::PDBase::getPDObject()->z_misc |= Z_NO_INPLACE;
 
@@ -107,12 +109,9 @@ public:
     for (index i = 0; i < numSigOuts; i++)
       outlet_new(pdObject, gensym("signal"));
 
-    if (client.controlChannelsOut())
-      wrapper->mControlOutlet = outlet_new(pdObject, gensym("list"));
-
     // Create latency ouput
-
-    mLatencyOut = outlet_new(pdObject, gensym("float"));
+    if(numSigIns || numSigOuts)
+      mLatencyOut = outlet_new(pdObject, gensym("float"));
   }
 
   void dsp(t_signal** sp)
@@ -120,12 +119,16 @@ public:
     Wrapper* wrapper = static_cast<Wrapper*>(this);
     static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t),
                   "size of pointer int type is wrongwrongwrong");
-    wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
+
+    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
+      wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
+
+
     auto& client = wrapper->client();
     client.sampleRate(sp[0]->s_sr);
 
     assert((client.audioChannelsOut() > 0) !=
-               (client.controlChannelsOut() > 0) &&
+               (client.controlChannelsOut().count > 0) &&
            "Client must *either* be audio out or control out, sorry");
 
     mInputs = std::vector<ViewType>(asUnsigned(client.audioChannelsIn()),
@@ -134,16 +137,21 @@ public:
     if (client.audioChannelsOut() > 0)
       mOutputs = std::vector<ViewType>(asUnsigned(client.audioChannelsOut()),
                                        ViewType(nullptr, 0, 0));
-    if (client.controlChannelsOut() > 0)
+
+    if (client.controlChannelsOut().count > 0 && client.audioChannelsIn() > 0)
     {
       mControlClock = mControlClock ? mControlClock
                                     : clock_new((t_object*) wrapper,
                                                 (t_method) doControlOut);
 
-      mOutputs = std::vector<ViewType>(asUnsigned(client.controlChannelsOut()),
-                                       ViewType(nullptr, 0, 0));
-      mControlOutputs.resize(asUnsigned(client.controlChannelsOut()));
-      mControlAtoms.resize(asUnsigned(client.controlChannelsOut()));
+      //      mOutputs =
+      //      std::vector<ViewType>(asUnsigned(client.controlChannelsOut()),
+      //                                       ViewType(nullptr, 0, 0));
+
+      mControlOutputs.resize(asUnsigned(client.controlChannelsOut().size));
+      mControlAtoms.resize(asUnsigned(client.controlChannelsOut().size));
+
+      mOutputs = {FluidTensorView<float,1>(mControlOutputs.data(), 0, mControlOutputs.size())};
     }
 
     for (index i = 0; i < asSigned(mSigIns.size()); i++)
@@ -152,7 +160,9 @@ public:
     for (index i = 0; i < asSigned(mSigOuts.size()); i++)
       mSigOuts[asUnsigned(i)] = sp[i + asSigned(mSigIns.size())]->s_vec;
 
-    dsp_add(callPerform, 2, wrapper, sp[0]->s_vecsize);
+
+    if (!(client.controlChannelsIn() > 0))
+      dsp_add(callPerform, 2, wrapper, sp[0]->s_vecsize);
   }
 
   void perform(int sampleframes)
@@ -162,13 +172,15 @@ public:
     for (size_t i = 0, numins = mSigIns.size(); i < numins; ++i)
       mInputs[i].reset(mSigIns[i], 0, sampleframes);
 
-    for (size_t i = 0, numouts = asUnsigned(client.audioChannelsOut());
-         i < numouts; ++i)
-      mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
+    if (client.audioChannelsOut())
+      for (size_t i = 0, numouts = asUnsigned(client.audioChannelsOut());
+           i < numouts; ++i)
+        mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
 
-    for (size_t i = 0, numouts = asUnsigned(client.controlChannelsOut());
-         i < numouts; ++i)
-      mOutputs[i].reset(&mControlOutputs[i], 0, 1);
+    //
+    // for (size_t i = 0, numouts = asUnsigned(client.controlChannelsOut());
+    //      i < numouts; ++i)
+    //   mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
     client.process(mInputs, mOutputs, mContext);
 
@@ -180,11 +192,11 @@ public:
     Wrapper* w = static_cast<Wrapper*>(this);
     auto&    client = w->client();
 
-    for (index i = 0; i < client.controlChannelsOut(); i++)
+    for (index i = 0; i < client.controlChannelsOut().size; i++)
       SETFLOAT(mControlAtoms.data() + i, mControlOutputs[asUnsigned(i)]);
 
-    assert(client.controlChannelsOut() <= std::numeric_limits<int>::max());
-    w->controlOut(static_cast<int>(client.controlChannelsOut()),
+    assert(client.controlChannelsOut().size <= std::numeric_limits<int>::max());
+    w->controlOut(static_cast<int>(client.controlChannelsOut().size),
                   mControlAtoms.data());
   }
 
@@ -209,9 +221,6 @@ private:
 template <class Wrapper>
 struct NonRealTime
 {
-
-  
-
   NonRealTime()
   {
     auto wrapper = static_cast<Wrapper*>(this);
@@ -234,7 +243,6 @@ struct NonRealTime
                     0);
     class_addmethod(c, (t_method) doQueueing, gensym("queue"), A_FLOAT, 0);
   }
-
 
 
   void cancel()
@@ -321,7 +329,6 @@ struct NonRealTime
   }
 
 private:
-
   Wrapper* wrapper() { return static_cast<Wrapper*>(this); }
 
   t_clock* mProgressClock;
@@ -394,16 +401,89 @@ struct FluidPDBase<Wrapper, std::true_type, std::true_type>
 } // namespace impl
 
 template <typename Client>
-class FluidPDWrapper
-    : public impl::FluidPDBase<FluidPDWrapper<Client>,   typename Client::isNonRealTime,
-                                typename Client::isRealTime>
+class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
+                                                typename Client::isNonRealTime,
+                                                typename Client::isRealTime>
 {
   using WrapperBase =
-      impl::FluidPDBase<FluidPDWrapper<Client>,   typename Client::isNonRealTime,
-                                typename Client::isRealTime>;
+      impl::FluidPDBase<FluidPDWrapper<Client>, typename Client::isNonRealTime,
+                        typename Client::isRealTime>;
 
   friend impl::RealTime<FluidPDWrapper<Client>>;
   friend impl::NonRealTime<FluidPDWrapper<Client>>;
+
+  struct StreamingListInput
+  {
+
+    void processInput(FluidPDWrapper* x, long ac, t_atom* av)
+    {
+    
+    }
+
+    void operator()(FluidPDWrapper* x, long ac, t_atom* av)
+    {
+      FluidContext c;
+            
+//      atom_getdouble_array(std::min<index>(x->mListSize, ac), av,
+//                           std::min<index>(x->mListSize, ac),
+//                           x->mInputListData[0].data());
+      
+      //todo handle multiple list inlets?
+      index count = std::min<index>(x->mListSize, ac);
+      for(index i = 0; i < count; ++i)
+        x->mInputListData[0][i] = atom_getfloat(av + i);
+                           
+      x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
+      
+      for (index i = 0; i <  x->mAllControlOuts.size(); ++i)
+      {
+        // atom_setdouble_array(
+        //     std::min<index>(x->mListSize, ac), x->mOutputListAtoms.data(),
+        //     std::min<index>(x->mListSize, ac), x->mOutputListData[i].data());
+        index count = std::min<index>(x->mListSize,ac); 
+        for(index j = 0; j < count; ++j)
+        {
+          SETFLOAT(x->mOutputListAtoms.data() + j,static_cast<float>(x->mOutputListData[i][j]));
+        }
+        outlet_list(x->mAllControlOuts[asUnsigned(i)],
+                    gensym("list"), x->mListSize, x->mOutputListAtoms.data());
+      }
+    }
+  };
+
+  struct NoStreamingListInput
+  {
+    void operator()(FluidPDWrapper*, long, t_atom*) {}
+  };
+
+  using ListInputHandler =
+      std::conditional_t<isControlIn<typename Client::Client>,
+                         StreamingListInput, NoStreamingListInput>;
+
+  ListInputHandler mListHandler;
+
+
+
+  template <typename T>
+  struct IsModel
+  {
+    using type = std::false_type;
+  };
+
+  template <typename T>
+  struct IsModel<NRTThreadingAdaptor<ClientWrapper<T>>>
+  {
+    using type = typename ClientWrapper<T>::isModelObject;
+  };
+
+  template <typename T>
+  struct IsModel<ClientWrapper<T>>
+  {
+    using type = typename ClientWrapper<T>::isModelObject;
+  };
+
+  template <typename T>
+  using IsModel_t = typename IsModel<T>::type;
 
 
   template <size_t N>
@@ -432,10 +512,10 @@ class FluidPDWrapper
       }
     }
   }
-  
+
   bool checkResult(Result& res)
   {
-//    auto& wrapper = static_cast<Wrapper&>(*this);
+    //    auto& wrapper = static_cast<Wrapper&>(*this);
 
     if (!res.ok())
     {
@@ -471,8 +551,8 @@ class FluidPDWrapper
       : public FetchValue<N, LongT, std::decay_t<decltype(atom_getint)>,
                           atom_getint>
   {};
-  
-  
+
+
   template <size_t N>
   struct Fetcher<N, StringT>
   {
@@ -493,10 +573,10 @@ class FluidPDWrapper
 
     static void atom_setsym(t_atom* a, t_symbol* s)
     {
-     a->a_type = A_SYMBOL;
-     a->a_w.w_symbol = s;
+      a->a_type = A_SYMBOL;
+      a->a_w.w_symbol = s;
     }
-    
+
     static void atom_setfloat(t_atom* atom, float v)
     {
       (atom)->a_type = A_FLOAT;
@@ -508,12 +588,11 @@ class FluidPDWrapper
       switch (atom_gettype(a))
       {
       case A_FLOAT: return std::to_string(atom_getfloat(a));
-      default:
-        {
-          char result[30];
-          atom_string(a,&result[0],30);
-          return result;
-        }
+      default: {
+        char result[30];
+        atom_string(a, &result[0], 30);
+        return result;
+      }
       }
     }
 
@@ -533,23 +612,25 @@ class FluidPDWrapper
 
     static auto fromAtom(FluidPDWrapper* x, t_atom* a, BufferT::type)
     {
-      return BufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
+      return BufferT::type(
+          new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
     static auto fromAtom(FluidPDWrapper* x, t_atom* a, InputBufferT::type)
     {
-      return InputBufferT::type(new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
+      return InputBufferT::type(
+          new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
     static auto fromAtom(FluidPDWrapper*, t_atom* a, StringT::type)
     {
-      auto s =  getString(a);
+      auto s = getString(a);
       return s;
     }
 
     template <typename T>
-    static std::enable_if_t<IsSharedClient<T>::value, T> fromAtom(FluidPDWrapper*,
-                                                                  t_atom* a, T)
+    static std::enable_if_t<IsSharedClient<T>::value, T>
+    fromAtom(FluidPDWrapper*, t_atom* a, T)
     {
       return {atom_getsymbol(a)->s_name};
     }
@@ -593,7 +674,7 @@ class FluidPDWrapper
     static std::enable_if_t<std::is_floating_point<T>::value>
     toAtom(t_atom* a, FluidTensor<T, 1> v)
     {
-      for (auto& x : v) {atom_setfloat(a++, x);}
+      for (auto& x : v) { atom_setfloat(a++, x); }
     }
 
     template <typename T>
@@ -619,7 +700,7 @@ class FluidPDWrapper
     }
   };
 
-//////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   // Setter
 
   template <typename T, size_t N>
@@ -644,7 +725,7 @@ class FluidPDWrapper
       printResult(x, x->messages());
     }
   };
-  
+
   template <size_t N>
   struct Setter<LongArrayT, N>
   {
@@ -678,7 +759,8 @@ class FluidPDWrapper
 
       a.set(x->params().template get<N>());
 
-      for (auto i = 0u; i < argSize; i++) ParamAtomConverter::toAtom(result.data() + i, a[i]);
+      for (auto i = 0u; i < argSize; i++)
+        ParamAtomConverter::toAtom(result.data() + i, a[i]);
 
       return result;
     }
@@ -690,8 +772,9 @@ public:
   using ParamSetType = typename Client::ParamSetType;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr}, mNRTDoneOutlet(nullptr),
-        mControlOutlet(nullptr), mParams(Client::getParameterDescriptors()),
+      : mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
+        mNRTDoneOutlet(nullptr), mControlOutlet(nullptr),
+        mParams(Client::getParameterDescriptors()),
         mParamSnapshot(Client::getParameterDescriptors()),
         mClient{initParamsFromArgs(ac, av)}, mCanvas{canvas_getcurrent()}
   {
@@ -705,20 +788,59 @@ public:
     this->setupAudio(pdObject, mClient.audioChannelsIn(),
                      mClient.audioChannelsOut());
 
-    if (isNonRealTime<Client>::value)
+    if (index new_ins = mClient.controlChannelsIn())
     {
-      mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
+      mAutosize = true;
+      if (mListSize)
+      {
+        mInputListData.resize(new_ins, mListSize);
+        for (index i = 1; i <= new_ins; ++i)
+          mInputListViews.emplace_back(mInputListData.row(i - 1));
+      }
+
+      mProxies.reserve(new_ins);
+      for (index i = 1; i < new_ins; ++i)
+        mProxies.push_back(
+            inlet_new(pdObject, &pdObject->ob_pd, gensym("list"), gensym("list")));
+    }
+
+
+    if (mClient.controlChannelsOut().count) 
+    {
+      if(mListSize)
+      {
+        mOutputListData.resize(mClient.controlChannelsOut().count, mListSize);
+        mOutputListAtoms.reserve(mListSize);
+        for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
+          mOutputListViews.emplace_back(mOutputListData.row(i));
+      }
+      mAllControlOuts.reserve(mClient.controlChannelsOut().count);
+      for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
+        mAllControlOuts.push_back(
+            outlet_new(pdObject, gensym("list")));
+      mControlOutlet = mAllControlOuts[0];
+      
+    if (isNonRealTime<Client>::value ||
+        (IsModel_t<Client>::value && Client::isRealTime::value))
+    {
       mNRTProgressOutlet = outlet_new(pdObject, gensym("float"));
     }
 
-    if (mClient.controlChannelsOut() && !mControlOutlet)
-      mControlOutlet = outlet_new(pdObject, gensym("list"));
+    if (isNonRealTime<Client>::value)
+    {
+      mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
+    }
       
-    const auto&  m = Client::getMessageDescriptors();
+      
+    }
+          
+    // 
+    // if (mClient.controlChannelsOut() && !mControlOutlet)
+    //   mControlOutlet = outlet_new(pdObject, gensym("list"));
 
-    if(m.size())
-        mMessageResultOutlet = outlet_new(pdObject, &s_anything);
-      
+    const auto& m = Client::getMessageDescriptors();
+
+    if (m.size()) mMessageResultOutlet = outlet_new(pdObject, &s_anything);
   }
 
   void doneBang() { outlet_bang(mNRTDoneOutlet); }
@@ -818,17 +940,29 @@ public:
   {
     const ParamDescType& p = Client::getParameterDescriptors();
     const auto&          m = Client::getMessageDescriptors();
-    
+
     getClass(class_new(gensym(className), (t_newmethod) create,
                        (t_method) destroy, sizeof(FluidPDWrapper), 0, A_GIMME,
                        0));
     WrapperBase::setup(getClass());
-
+    
     class_addmethod(getClass(), (t_method) doReset, gensym("reset"), A_NULL);
     class_addmethod(getClass(), (t_method) doWarnings, gensym("warnings"),
                     A_FLOAT, 0);
     class_addmethod(getClass(), (t_method) doVersion, gensym("version"),
                     A_NULL);
+
+    if (isControlIn<typename Client::Client>)
+    {
+      class_addmethod(getClass(), (t_method) handleList, gensym("list"), A_GIMME, 0);
+      // t_object* a =
+      //     attr_offset_new("autosize", USESYM(long), 0, nullptr, nullptr,
+      //                     calcoffset(FluidMaxWrapper, mAutosize));
+      // class_addattr(getClass(), a);
+      // CLASS_ATTR_FILTER_CLIP(getClass(), "autosize", 0, 1);
+      // CLASS_ATTR_STYLE_LABEL(getClass(), "autosize", 0, "onoff",
+      //                        "Report Warnings");
+    }
 
 
     m.template iterate<SetupMessage>();
@@ -879,6 +1013,41 @@ public:
   };
 
 
+  void resizeListHandlers(index newSize)
+  {
+      index numIns = mClient.controlChannelsIn();
+      mListSize = newSize; 
+      if(mListSize)
+      {
+        mInputListData.resize(numIns,mListSize);
+        mInputListViews.clear();
+        for (index i = 0; i < numIns; ++i)
+        {
+          mInputListViews.emplace_back(mInputListData.row(i));
+        }
+        
+        mOutputListData.resize(mClient.controlChannelsOut().count,mListSize);
+        mOutputListAtoms.reserve(mListSize);
+        mOutputListViews.clear();
+        for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
+        {
+          mOutputListViews.emplace_back(mOutputListData.row(i));
+        }
+        
+      }
+  }
+
+  static void doList(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
+  {
+    if(ac != x->mListSize) x->resizeListHandlers(ac);
+    x->mListHandler(x, ac, av);
+  }
+  
+  static void handleList(FluidPDWrapper* x, t_symbol* s, long ac, t_atom* av)
+  {
+      doList(x,s,ac,av);      
+  }
+
 private:
   static t_class* getClass(t_class* setClass = nullptr)
   {
@@ -900,8 +1069,18 @@ private:
     if (long numArgs = paramArgOffset(ac, av))
     {
       long argCount{0};
-      mParams.template setFixedParameterValues<Fetcher>(true, numArgs, av,
-                                                        argCount);
+      
+      if(isControlIn<typename Client::Client>)
+      {
+        mListSize = atom_getint(av);
+//        if(numArgs == 1) return;
+        numArgs -= 1;
+        av += 1;
+      }
+
+      mParams.template setFixedParameterValues<Fetcher>(
+          true, numArgs, av, argCount);
+      // for (auto& r : results) mMessages.push_back(r);    
     }
     // process in-box attributes for mutable params
     paramArgProcess(ac, av);
@@ -933,7 +1112,7 @@ private:
         post("%f", b->sampleRate());
     }
   };
-  
+
   // Calculate output size of messages
   template <typename T>
   static size_t ResultSize(T)
@@ -965,7 +1144,8 @@ private:
     size_t              resultSize = ResultSize(static_cast<T>(r));
     std::vector<t_atom> out(resultSize);
     ParamAtomConverter::toAtom(out.data(), static_cast<T>(r));
-    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize), out.data());
+    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize),
+                    out.data());
   }
 
   template <typename... Ts>
@@ -980,19 +1160,19 @@ private:
     std::vector<t_atom> out(resultSize);
     ParamAtomConverter::toAtom(out.data(), static_cast<std::tuple<Ts...>>(r),
                                indices, offsets);
-    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize), out.data());
+    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize),
+                    out.data());
   }
 
-  static void messageOutput(FluidPDWrapper* x, t_symbol* s,
-                            MessageResult<void>)
+  static void messageOutput(FluidPDWrapper* x, t_symbol* s, MessageResult<void>)
   {
     outlet_anything(x->mMessageResultOutlet, s, 0, nullptr);
   }
-  
+
   //////////////////////////////
-  ///message registration
-  
-  
+  /// message registration
+
+
   template <size_t N, typename T>
   struct SetupMessage
   {
@@ -1003,9 +1183,11 @@ private:
         SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-//              class_addmethod(getClass(),
-//                              (method) deferLoad<decltype(M)::value>,
-//                              lowerCase(message.name).c_str(), A_GIMME, 0);
+              //              class_addmethod(getClass(),
+              //                              (method)
+              //                              deferLoad<decltype(M)::value>,
+              //                              lowerCase(message.name).c_str(),
+              //                              A_GIMME, 0);
             });
         return;
       }
@@ -1014,9 +1196,11 @@ private:
         SpecialCase<MessageResult<std::string>>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-//              class_addmethod(getClass(),
-//                              (method) deferDump<decltype(M)::value>,
-//                              lowerCase(message.name).c_str(), A_GIMME, 0);
+              //              class_addmethod(getClass(),
+              //                              (method)
+              //                              deferDump<decltype(M)::value>,
+              //                              lowerCase(message.name).c_str(),
+              //                              A_GIMME, 0);
             });
         return;
       }
@@ -1025,9 +1209,9 @@ private:
         SpecialCase<MessageResult<std::string>>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-              class_addmethod(getClass(),
-                              (t_method) doPrint<decltype(M)::value>,
-                              gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
+              class_addmethod(
+                  getClass(), (t_method) doPrint<decltype(M)::value>,
+                  gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
             });
         return;
       }
@@ -1036,9 +1220,9 @@ private:
         SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-              class_addmethod(getClass(),
-                              (t_method) doRead<decltype(M)::value>,
-                              gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
+              class_addmethod(getClass(), (t_method) doRead<decltype(M)::value>,
+                              gensym(lowerCase(message.name).c_str()), A_GIMME,
+                              0);
             });
         return;
       }
@@ -1047,9 +1231,9 @@ private:
         SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
-              class_addmethod(getClass(),
-                              (t_method) doWrite<decltype(M)::value>,
-                              gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
+              class_addmethod(
+                  getClass(), (t_method) doWrite<decltype(M)::value>,
+                  gensym(lowerCase(message.name).c_str()), A_GIMME, 0);
             });
         return;
       }
@@ -1075,7 +1259,7 @@ private:
       {}
     };
   };
-  
+
   template <size_t N>
   static void doPrint(FluidPDWrapper* x, t_symbol*, long, t_atom*)
   {
@@ -1083,24 +1267,25 @@ private:
     if (x->checkResult(result))
     {
       poststring(/*(t_object*) x, "%s",*/
-                  static_cast<std::string>(result).c_str());
+                 static_cast<std::string>(result).c_str());
       outlet_anything(x->mMessageResultOutlet, gensym("print"), 0, nullptr);
     }
   }
-  
+
   template <size_t N>
   static void doRead(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if(!ac) return;
+    if (!ac) return;
     const char* filename = av[0].a_w.w_symbol->s_name;
-    if(!filename)
+    if (!filename)
     {
       pd_error(x, "Missing or invalid filename");
       return;
     }
     char buf[MAXPDSTRING], *bufptr;
-    int fd = canvas_open(x->mCanvas,filename, "", buf, &bufptr, MAXPDSTRING, 0);
-    if(fd < 0)
+    int  fd =
+        canvas_open(x->mCanvas, filename, "", buf, &bufptr, MAXPDSTRING, 0);
+    if (fd < 0)
     {
       pd_error(x, "File not found");
       return;
@@ -1116,23 +1301,23 @@ private:
       outlet_anything(x->mMessageResultOutlet, gensym("read"), 0, nullptr);
     }
   }
-  
+
   template <size_t N>
   static void doWrite(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if(!ac) return;
+    if (!ac) return;
     const char* filename = av[0].a_w.w_symbol->s_name;
-    if(!filename)
+    if (!filename)
     {
       pd_error(x, "Missing or invalid filename");
       return;
     }
     char filenamebuf[MAXPDSTRING];
     char buf2[MAXPDSTRING];
-    
-    //BIG YIKES (this is what PD does in d_soundfile)
+
+    // BIG YIKES (this is what PD does in d_soundfile)
     strncpy(filenamebuf, filename, MAXPDSTRING);
-    filenamebuf[MAXPDSTRING-10] = 0;
+    filenamebuf[MAXPDSTRING - 10] = 0;
     canvas_makefilename(x->mCanvas, filenamebuf, buf2, MAXPDSTRING);
 
     auto messageResult = x->mClient.template invoke<N>(x->mClient, buf2);
@@ -1142,13 +1327,12 @@ private:
       outlet_anything(x->mMessageResultOutlet, gensym("write"), 0, nullptr);
     }
   }
-  
-  
+
+
   ///////////////////////////////
   /// message invocation
   template <size_t N>
-  static void invokeMessage(FluidPDWrapper* x, t_symbol* s, long ac,
-                            t_atom* av)
+  static void invokeMessage(FluidPDWrapper* x, t_symbol* s, long ac, t_atom* av)
   {
     using IndexList =
         typename Client::MessageSetType::template MessageDescriptorAt<
@@ -1194,6 +1378,17 @@ private:
   ParamSetType mParams;
   ParamSetType mParamSnapshot;
   Client       mClient;
+
+  // std::deque<Result> mMessages;
+  bool               mAutosize;
+  index                                   mListSize;
+  FluidTensor<double, 2>                  mInputListData;
+  std::vector<FluidTensorView<double, 1>> mInputListViews;
+  FluidTensor<double, 2>                  mOutputListData;
+  std::vector<FluidTensorView<double, 1>> mOutputListViews;
+  std::vector<t_outlet*>                      mAllControlOuts;
+  std::vector<t_atom>                     mOutputListAtoms;
+  std::vector<t_inlet*> mProxies;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1214,7 +1409,8 @@ struct InputTypeWrapper<std::false_type>
 template <class Client>
 void makePDWrapper(const char* classname)
 {
-  // using InputType = typename InputTypeWrapper<isRealTime<Client<double>>>::type;
+  // using InputType = typename
+  // InputTypeWrapper<isRealTime<Client<double>>>::type;
 
   FluidPDWrapper<Client>::makeClass(classname);
 }
