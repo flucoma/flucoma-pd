@@ -32,17 +32,17 @@ extern "C" void fluid_libmanipulation_setup(void)
   makePDWrapper<NRTThreadedDataSetClient>("fluid.dataset~");
   makePDWrapper<NRTThreadedDataSetQueryClient>("fluid.datasetquery~");
   makePDWrapper<NRTThreadedLabelSetClient>("fluid.labelset~");
-  makePDWrapper<RTKDTreeClient>("fluid.kdtree~");
-  makePDWrapper<RTKMeansClient>("fluid.kmeans~");
-  makePDWrapper<RTKNNClassifierClient>("fluid.knnclassifier~");
-  makePDWrapper<RTKNNRegressorClient>("fluid.knnregressor~");
-  makePDWrapper<RTNormalizeClient>("fluid.normalize~");
-  makePDWrapper<RTStandardizeClient>("fluid.standardize~");
-  makePDWrapper<RTRobustScaleClient>("fluid.robustscale~");
-  makePDWrapper<RTPCAClient>("fluid.pca~");
+  makePDWrapper<NRTThreadedKDTreeClient>("fluid.kdtree~");
+  makePDWrapper<NRTThreadedKMeansClient>("fluid.kmeans~");
+  makePDWrapper<NRTThreadedKNNClassifierClient>("fluid.knnclassifier~");
+  makePDWrapper<NRTThreadedKNNRegressorClient>("fluid.knnregressor~");
+  makePDWrapper<NRTThreadedNormalizeClient>("fluid.normalize~");
+  makePDWrapper<NRTThreadedStandardizeClient>("fluid.standardize~");
+  makePDWrapper<NRTThreadedRobustScaleClient>("fluid.robustscale~");
+  makePDWrapper<NRTThreadedPCAClient>("fluid.pca~");
   makePDWrapper<NRTThreadedMDSClient>("fluid.mds~");
-  makePDWrapper<RTUMAPClient>("fluid.umap~");
+  makePDWrapper<NRTThreadedUMAPClient>("fluid.umap~");
   makePDWrapper<NRTThreadedGridClient>("fluid.grid~");
-  makePDWrapper<RTMLPRegressorClient>("fluid.mlpregressor~");
-  makePDWrapper<RTMLPClassifierClient>("fluid.mlpclassifier~");
+  makePDWrapper<NRTThreadedMLPRegressorClient>("fluid.mlpregressor~");
+  makePDWrapper<NRTThreadedMLPClassifierClient>("fluid.mlpclassifier~");
 }
