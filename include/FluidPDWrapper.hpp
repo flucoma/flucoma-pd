@@ -819,7 +819,8 @@ public:
         mAllControlOuts.push_back(
             outlet_new(pdObject, gensym("list")));
       mControlOutlet = mAllControlOuts[0];
-      
+    }
+    
     if (isNonRealTime<Client>::value ||
         (IsModel_t<Client>::value && Client::isRealTime::value))
     {
@@ -832,7 +833,6 @@ public:
     }
       
       
-    }
           
     // 
     // if (mClient.controlChannelsOut() && !mControlOutlet)
