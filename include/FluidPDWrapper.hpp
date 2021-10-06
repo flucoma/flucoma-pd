@@ -804,6 +804,16 @@ public:
             inlet_new(pdObject, &pdObject->ob_pd, gensym("list"), gensym("list")));
     }
 
+    if (isNonRealTime<Client>::value)
+    {
+      mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
+    }
+    
+    if (isNonRealTime<Client>::value ||
+        (IsModel_t<Client>::value && Client::isRealTime::value))
+    {
+      mNRTProgressOutlet = outlet_new(pdObject, gensym("float"));
+    }
 
     if (mClient.controlChannelsOut().count) 
     {
@@ -819,24 +829,7 @@ public:
         mAllControlOuts.push_back(
             outlet_new(pdObject, gensym("list")));
       mControlOutlet = mAllControlOuts[0];
-    }
-    
-    if (isNonRealTime<Client>::value ||
-        (IsModel_t<Client>::value && Client::isRealTime::value))
-    {
-      mNRTProgressOutlet = outlet_new(pdObject, gensym("float"));
-    }
-
-    if (isNonRealTime<Client>::value)
-    {
-      mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
-    }
-      
-      
-          
-    // 
-    // if (mClient.controlChannelsOut() && !mControlOutlet)
-    //   mControlOutlet = outlet_new(pdObject, gensym("list"));
+    }              
 
     const auto& m = Client::getMessageDescriptors();
 
