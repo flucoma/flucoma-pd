@@ -2,4 +2,36 @@
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufflatten 20 12 0 36
 -262144 -66577 0;
 #X obj 530 84 note_on_multiarrays;
-#X obj 98 227 fluid.bufflatten;
+#X obj 461 339 array define output;
+#X obj 55 344 array get output;
+#X obj 55 365 print;
+#X obj 355 418 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 353 584 array set;
+#X msg 402 551 symbol stereoinput-0;
+#X msg 352 487 1 0.1 1.2 1.3 1.4;
+#X msg 389 529 0 0.1 0.2 0.3 0.4;
+#X obj 352 466 t b b b b;
+#X obj 462 317 clone fluid.multiarray 2 stereoinput 5;
+#X msg 370 507 symbol stereoinput-1;
+#X obj 55 314 fluid.bufflatten -source stereoinput -destination output
+;
+#X msg 55 280 bang;
+#X obj 108 506 array get stereoinput-1;
+#X obj 102 543 print;
+#X obj 106 474 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 3 0 4 0;
+#X connect 5 0 10 0;
+#X connect 7 0 6 2;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 8 0;
+#X connect 10 1 12 0;
+#X connect 10 2 9 0;
+#X connect 10 3 7 0;
+#X connect 12 0 6 2;
+#X connect 13 0 3 0;
+#X connect 14 0 13 0;
+#X connect 15 0 16 0;
+#X connect 17 0 15 0;
