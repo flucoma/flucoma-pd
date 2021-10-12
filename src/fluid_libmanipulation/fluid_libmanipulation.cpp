@@ -24,25 +24,25 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <clients/nrt/GridClient.hpp>
 #include <clients/nrt/MLPRegressorClient.hpp>
 #include <clients/nrt/MLPClassifierClient.hpp>
-#include "FluidPDWrapper.hpp" 
+#include "FluidPDWrapper.hpp"
 
 extern "C" void fluid_libmanipulation_setup(void)
 {
   using namespace fluid::client;
-  makePDWrapper<NRTThreadedDataSetClient>("fluid.dataset~");
-  makePDWrapper<NRTThreadedDataSetQueryClient>("fluid.datasetquery~");
-  makePDWrapper<NRTThreadedLabelSetClient>("fluid.labelset~");
-  makePDWrapper<NRTThreadedKDTreeClient>("fluid.kdtree~");
-  makePDWrapper<NRTThreadedKMeansClient>("fluid.kmeans~");
-  makePDWrapper<NRTThreadedKNNClassifierClient>("fluid.knnclassifier~");
-  makePDWrapper<NRTThreadedKNNRegressorClient>("fluid.knnregressor~");
-  makePDWrapper<NRTThreadedNormalizeClient>("fluid.normalize~");
-  makePDWrapper<NRTThreadedStandardizeClient>("fluid.standardize~");
-  makePDWrapper<NRTThreadedRobustScaleClient>("fluid.robustscale~");
-  makePDWrapper<NRTThreadedPCAClient>("fluid.pca~");
-  makePDWrapper<NRTThreadedMDSClient>("fluid.mds~");
-  makePDWrapper<NRTThreadedUMAPClient>("fluid.umap~");
-  makePDWrapper<NRTThreadedGridClient>("fluid.grid~");
-  makePDWrapper<NRTThreadedMLPRegressorClient>("fluid.mlpregressor~");
-  makePDWrapper<NRTThreadedMLPClassifierClient>("fluid.mlpclassifier~");
+  makePDWrapper<NRTThreadedDataSetClient>("fluid.dataset");
+  makePDWrapper<NRTThreadedDataSetQueryClient>("fluid.datasetquery");
+  makePDWrapper<NRTThreadedLabelSetClient>("fluid.labelset");
+  makePDWrapper<NRTThreadedKDTreeClient>("fluid.kdtree");
+  makePDWrapper<NRTThreadedKMeansClient>("fluid.kmeans");
+  makePDWrapper<NRTThreadedKNNClassifierClient>("fluid.knnclassifier");
+  makePDWrapper<NRTThreadedKNNRegressorClient>("fluid.knnregressor");
+  makePDWrapper<NRTThreadedNormalizeClient>("fluid.normalize");
+  makePDWrapper<NRTThreadedStandardizeClient>("fluid.standardize");
+  makePDWrapper<NRTThreadedRobustScaleClient>("fluid.robustscale");
+  makePDWrapper<NRTThreadedPCAClient>("fluid.pca");
+  makePDWrapper<NRTThreadedMDSClient>("fluid.mds");
+  makePDWrapper<NRTThreadedUMAPClient>("fluid.umap");
+  makePDWrapper<NRTThreadedGridClient>("fluid.grid");
+  makePDWrapper<NRTThreadedMLPRegressorClient>("fluid.mlpregressor");
+  makePDWrapper<NRTThreadedMLPClassifierClient>("fluid.mlpclassifier");
 }
