@@ -6,10 +6,10 @@
 #X obj 50 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 141 282 *~;
-#X obj 155 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 155 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 197 282 *~;
-#X obj 211 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 211 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 271 282 *~;
 #X obj 285 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -20,29 +20,29 @@
 #X obj 360 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 130 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 145 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 160 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 175 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 190 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 205 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 220 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 235 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 250 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 265 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 280 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 295 489 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+-1 -1 5 1;
+#X obj 145 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 6 1;
+#X obj 160 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 38 1;
+#X obj 175 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 864 1;
+#X obj 190 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 1588 1;
+#X obj 205 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 273 1;
+#X obj 220 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 11 1;
+#X obj 235 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 8 1;
+#X obj 250 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 6 1;
+#X obj 265 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 4 1;
+#X obj 280 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 6 1;
+#X obj 295 488 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 5 1;
 #X msg 189 362 0.1;
 #X msg 218 362 0.8;
 #X floatatom 245 213 5 0 0 0 - - -;
@@ -130,7 +130,7 @@
 #X restore 345 245 pd square;
 #X text 33 163 1) select a source. Add noise. Change the gain.;
 #X obj 408 245 noise~;
-#X obj 453 246 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 453 246 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 408 282 *~;
 #X obj 453 264 * 0.2;
