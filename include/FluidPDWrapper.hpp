@@ -108,10 +108,6 @@ public:
 
     for (index i = 0; i < numSigOuts; i++)
       outlet_new(pdObject, gensym("signal"));
-
-    // Create latency ouput
-    if(numSigIns || numSigOuts)
-      mLatencyOut = outlet_new(pdObject, gensym("float"));
   }
 
   void dsp(t_signal** sp)
@@ -202,6 +198,10 @@ public:
 
   float sampleRate() { return sys_getsr(); }
 
+  void makeLatencyOutlet(t_object* pdObject){
+    if(mSigIns.size() || mSigOuts.size())
+       mLatencyOut = outlet_new(pdObject, gensym("float"));
+  }
 
 private:
   static void            doControlOut(Wrapper* x) { x->controlData(); }
@@ -315,6 +315,7 @@ struct NonRealTime
 
 
   void setupAudio(t_object*, index, index) {}
+  void makeLatencyOutlet(t_object*){}
 
   static void callSR(Wrapper* x, t_float sr) { x->setSampleRate(sr); }
 
@@ -832,7 +833,8 @@ public:
     }              
 
     const auto& m = Client::getMessageDescriptors();
-
+    
+    this->makeLatencyOutlet(pdObject);
     if (m.size()) mMessageResultOutlet = outlet_new(pdObject, &s_anything);
   }
 
