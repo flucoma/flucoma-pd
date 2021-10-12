@@ -1,5 +1,5 @@
 #N canvas 895 49 450 300 12;
-#X obj 81 184 fluid.labelset~ bar;
+#X obj 81 184 fluid.labelset bar;
 #X msg 88 126 print;
 #X obj 210 215 print;
 #X msg 146 134 getlabel bar0;

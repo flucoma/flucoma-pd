@@ -1,5 +1,5 @@
 #N canvas 609 232 600 427 12;
-#X obj 67 211 fluid.dataset~ source;
+#X obj 67 211 fluid.dataset source;
 #X obj 63 40 until;
 #X obj 65 78 f;
 #X obj 99 82 + 1;
@@ -13,12 +13,12 @@
 #X obj 197 180 tabwrite dsq1;
 #X msg 70 166 setpoint \$1 dsq1;
 #X msg 55 11 10;
-#X obj 190 389 fluid.dataset~ filtered;
-#X obj 58 305 fluid.datasetquery~;
+#X obj 190 389 fluid.dataset filtered;
 #X msg 57 253 clear \, filter 0 < 0.5 \, addcolumn 0 \, transform source
 filtered;
 #X obj 187 330 route transform;
 #X msg 188 360 print;
+#X obj 58 305 fluid.datasetquery;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 0 5 0;
@@ -28,7 +28,7 @@ filtered;
 #X connect 6 0 7 0;
 #X connect 8 0 0 0;
 #X connect 9 0 1 0;
-#X connect 11 2 13 0;
-#X connect 12 0 11 0;
-#X connect 13 0 14 0;
-#X connect 14 0 10 0;
+#X connect 11 0 14 0;
+#X connect 12 0 13 0;
+#X connect 13 0 10 0;
+#X connect 14 2 12 0;
