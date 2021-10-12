@@ -1,5 +1,33 @@
-#N canvas 56 23 809 703 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnmfcross 20 12 0 36 -262144
--66577 0;
+#N canvas 497 206 991 703 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnmfcross 20 12 0 36
+-262144 -66577 0;
 #X obj 530 84 note_on_multiarrays;
-#X obj 98 227 fluid.bufnmfcross;
+#X obj 493 225 array define fluid.nmfcross.src;
+#X obj 494 245 array define fluid.nmfcross.tgt;
+#X obj 35 197 fluid.bufnmfcross -source fluid.nmfcross.src -target
+fluid.nmfcross.tgt -output fluid.nmfcross.out -fftsettings 2048 -blocking
+0;
+#X obj 493 266 array define fluid.nmfcross.out;
+#X obj 490 375 soundfiler;
+#X floatatom 307 259 5 0 0 0 - - -;
+#X obj 42 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 37 259 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 85 435 tabplay~;
+#X obj 83 479 dac~;
+#X msg 85 360 set fluid.nmfcross.src \, bang;
+#X msg 97 382 set fluid.nmfcross.tgt \, bang;
+#X msg 107 404 set fluid.nmfcross.out \, bang;
+#X msg 392 317 read -resize media/Tremblay-CF-ChurchBells.wav fluid.nmfcross.tgt
+\, read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav fluid.nmfcross.src
+, f 74;
+#X connect 4 0 9 0;
+#X connect 4 1 7 0;
+#X connect 8 0 4 0;
+#X connect 10 0 11 0;
+#X connect 10 0 11 1;
+#X connect 12 0 10 0;
+#X connect 13 0 10 0;
+#X connect 14 0 10 0;
+#X connect 15 0 6 0;
