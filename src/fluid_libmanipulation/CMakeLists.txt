@@ -20,3 +20,7 @@ add_library(
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../scripts/pd-posttarget.cmake)
+
+if(MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE /bigobj)
+endif()
