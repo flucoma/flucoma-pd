@@ -1,0 +1,5 @@
+#N canvas 40 40 716 635 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.nmfmorph~ 20 12 0 36 -262144
+-66577 0;
+#X obj 530 84 note_on_multiarrays;
+#X obj 98 227 fluid.nmfmorph~;

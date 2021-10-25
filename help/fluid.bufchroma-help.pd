@@ -1,0 +1,151 @@
+#N canvas 623 60 946 934 10;
+#X obj 33 195 soundfiler;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufchroma 20 12 0 36 -262144
+-66577 0;
+#X obj 34 156 loadbang;
+#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 134 257 dac~;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 152 215 stop;
+#N canvas 805 51 707 604 multichannel 0;
+#X obj 46 510 loadbang;
+#X obj 46 559 soundfiler;
+#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 48 195 dac~;
+#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 67 80 1) compose an artificially wide "stereo" array;
+#X text 46 11 "multichannel" arrays will process each channel in turn
+\, and output 'channels' will be consecutive \, i.e. all features of
+"channel" 1 \, then all features of "channel" 2 \, etc, f 87;
+#X text 146 152 2) listen to the source;
+#X msg 48 152 stop;
+#X text 64 241 3) process;
+#X obj 48 100 fluid.bufcompose -source bufchromaguitar -startframe
+555000 -numframes 468335 -deststartchan 1 -destination bufchroma_source
+, f 73;
+#X obj 48 174 tabplay~ bufchroma_source-0;
+#X obj 211 175 tabplay~ bufchroma_source-1;
+#X obj 45 259 fluid.bufchroma 6 -source bufchroma_source -features
+bufchroma_feats, f 84;
+#X obj 115 559 array define bufchromaguitar;
+#X obj 287 559 clone fluid.multiarray 2 bufchroma_source;
+#X msg 46 529 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufchroma_source-0 bufchroma_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
+bufchromaguitar, f 90;
+#X text 44 450 4) Look in the main window: since we have requested
+6 MFCC coefficients on a stereo buffer \, the first 6 feats arrays
+are the left channel's coefficients \, and the following 6 feats are
+the right channel melbands., f 100;
+#X msg 45 277 \; bufchroma_feats-0 xticks 0 0 0 \; bufchroma_feats-1
+xticks 0 0 0 \; bufchroma_feats-2 xticks 0 0 0 \; bufchroma_feats-3
+xticks 0 0 0 \; bufchroma_feats-4 xticks 0 0 0 \; bufchroma_feats-5
+xticks 0 0 0 \; bufchroma_feats-6 xticks 0 0 0 \; bufchroma_feats-7
+xticks 0 0 0 \; bufchroma_feats-8 xticks 0 0 0 \; bufchroma_feats-9
+xticks 0 0 0 \; bufchroma_feats-10 xticks 0 0 0 \; bufchroma_feats-11
+xticks 0 0 0;
+#X connect 0 0 17 0;
+#X connect 2 0 11 0;
+#X connect 4 0 14 0;
+#X connect 5 0 12 0;
+#X connect 5 0 13 0;
+#X connect 9 0 12 0;
+#X connect 9 0 13 0;
+#X connect 12 0 3 0;
+#X connect 13 0 3 1;
+#X connect 14 0 19 0;
+#X connect 17 0 1 0;
+#X restore 824 161 pd multichannel;
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufchroma_drums
+;
+#X obj 134 236 tabplay~ bufchroma_drums;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-0 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 367 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 31 299 graph;
+#X obj 675 186 note_on_assumed_sampling_rates_of_arrays;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-1 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 410 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-2 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 453 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-3 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 496 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-4 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 539 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-5 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 582 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-6 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 625 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-7 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 668 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-8 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 711 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-9 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 754 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-10 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 797 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-11 915 float 0;
+#X coords 0 1 914 0 887 30 1 0 0;
+#X restore 31 840 graph;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 docs/fluid.bufchroma.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 891 258 pd;
+#X text 760 239 launch the HTML doc->;
+#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 782 209 note_on_multithreading;
+#X obj 379 117 fluid.bufchroma 12 -source bufchroma_drums -features
+bufchroma_feats, f 71;
+#X msg 379 136 \; bufchroma_feats-0 xticks 0 0 0 \; bufchroma_feats-1
+xticks 0 0 0 \; bufchroma_feats-2 xticks 0 0 0 \; bufchroma_feats-3
+xticks 0 0 0 \; bufchroma_feats-4 xticks 0 0 0 \; bufchroma_feats-5
+xticks 0 0 0 \; bufchroma_feats-6 xticks 0 0 0 \; bufchroma_feats-7
+xticks 0 0 0 \; bufchroma_feats-8 xticks 0 0 0 \; bufchroma_feats-9
+xticks 0 0 0 \; bufchroma_feats-10 xticks 0 0 0 \; bufchroma_feats-11
+xticks 0 0 0;
+#X connect 2 0 8 0;
+#X connect 3 0 28 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
+#X connect 8 0 0 0;
+#X connect 9 0 4 0;
+#X connect 9 0 4 1;
+#X connect 26 0 24 0;
+#X connect 28 0 29 0;

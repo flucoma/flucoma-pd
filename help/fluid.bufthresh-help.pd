@@ -1,0 +1,41 @@
+#N canvas 30 42 734 649 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufthresh 20 12 0 36 -262144
+-66577 0;
+#X obj 530 84 note_on_multiarrays;
+#X obj 355 418 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 353 584 array set;
+#X msg 402 551 symbol stereoinput-0;
+#X msg 389 529 0 0.1 0.2 0.3 0.4;
+#X obj 352 466 t b b b b;
+#X obj 462 317 clone fluid.multiarray 2 stereoinput 5;
+#X msg 370 507 symbol stereoinput-1;
+#X msg 44 232 bang;
+#X msg 352 487 1 1.1 1.2 1.3 1.4;
+#X obj 461 344 clone fluid.multiarray 2 stereooutput 5;
+#X obj 95 331 array get stereooutput-0;
+#X obj 95 352 print left;
+#X obj 40 375 array get stereooutput-1;
+#X obj 40 395 print right;
+#X obj 44 266 fluid.bufthresh -source stereoinput -destination stereooutput
+-threshold 0.4;
+#X floatatom 126 195 5 0 0 0 - - -;
+#X msg 126 215 threshold \$1 \, bang;
+#X text 374 416 1 make arrays;
+#X text 49 167 2 threshold processing;
+#X connect 2 0 6 0;
+#X connect 4 0 3 2;
+#X connect 5 0 3 0;
+#X connect 6 0 10 0;
+#X connect 6 1 8 0;
+#X connect 6 2 5 0;
+#X connect 6 3 4 0;
+#X connect 8 0 3 2;
+#X connect 9 0 16 0;
+#X connect 10 0 3 0;
+#X connect 12 0 13 0;
+#X connect 14 0 15 0;
+#X connect 16 0 12 0;
+#X connect 16 0 14 0;
+#X connect 17 0 18 0;
+#X connect 18 0 16 0;

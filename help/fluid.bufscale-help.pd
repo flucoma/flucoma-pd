@@ -1,0 +1,33 @@
+#N canvas 776 112 811 824 10;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufscale 20 12 0 36 -262144
+-66577 0;
+#X obj 530 84 note_on_multiarrays;
+#X obj 429 496 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 427 662 array set;
+#X msg 476 629 symbol stereoinput-0;
+#X msg 463 607 0 0.1 0.2 0.3 0.4;
+#X obj 426 544 t b b b b;
+#X msg 444 585 symbol stereoinput-1;
+#X msg 426 565 1 1.1 1.2 1.3 1.4;
+#X text 446 493 1 make the arrays;
+#X obj 452 298 clone fluid.multiarray 2 stereoinput 5;
+#X obj 50 270 print;
+#X obj 51 203 fluid.bufscale -source stereoinput -destination stereo_output
+;
+#X obj 461 333 clone fluid.multiarray 2 stereo_output 5;
+#X msg 50 174 inputlow 0 \, inputhigh 1 \, outputlow 0 \, outputhigh
+2 \, bang;
+#X obj 50 250 array get stereo_output-0;
+#X connect 2 0 6 0;
+#X connect 4 0 3 2;
+#X connect 5 0 3 0;
+#X connect 6 0 8 0;
+#X connect 6 1 7 0;
+#X connect 6 2 5 0;
+#X connect 6 3 4 0;
+#X connect 7 0 3 2;
+#X connect 8 0 3 0;
+#X connect 12 0 15 0;
+#X connect 14 0 12 0;
+#X connect 15 0 11 0;

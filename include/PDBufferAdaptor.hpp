@@ -96,7 +96,11 @@ public:
     return false;
   }
 
-  void release() const override { releaseLock(); }
+  void release() const override
+  {
+    if (mMirrorDirty) { copyBufferOut(); }
+    releaseLock();
+  }
 
   FluidTensorView<float, 1> samps(index channel) override
   {
@@ -138,6 +142,20 @@ public:
     return v(Slice(offset, nframes), Slice(0, 1)).col(0);
   }
 
+
+  FluidTensorView<float, 2> allFrames() override
+  {
+    copyBufferIn();
+    mMirrorDirty = true;
+    return mMirrorBuffer.transpose();
+  }
+
+  FluidTensorView<const float, 2> allFrames() const override
+  {
+    copyBufferIn();
+    return mMirrorBuffer.transpose();
+  }
+
   index numFrames() const override { return getMinFrames(); }
 
   index numChans() const override { return getArrayCount(); }
@@ -146,13 +164,45 @@ public:
   {
     return mSampleRate;
   } // N.B. pd has no notion of sample rates for buffers...
+
   void sampleRate(double sr) const
   {
     mSampleRate = sr;
   } // we still need to set the SR on const input buffers
+
   std::string asString() const override { return mName->s_name; }
 
 private:
+  void copyBufferIn() const
+  {
+    index nFrames = getMinFrames();
+    index nChans = getArrayCount();
+    mMirrorBuffer.resize(nFrames, nChans);
+    for (index i = 0; i < nChans; ++i)
+    {
+      auto   s = samps(0, nFrames, i);
+      mMirrorBuffer.col(i) = s;
+    }
+  }
+
+  void copyBufferOut() const
+  {
+    if (mMirrorBuffer.size() == 0) return;
+    index nFrames = getMinFrames();
+    index nChans = getArrayCount();
+    for (index i = 0; i < nChans; ++i)
+    {
+      float* samples = (float*) getArrayData(i);
+
+      FluidTensorView<float, 2> v{samples, 0, nFrames,
+                                  sizeof(t_word) / sizeof(float)};
+
+      v(Slice(0, nFrames), Slice(0, 1)).col(0) =
+          mMirrorBuffer.col(i)(Slice(0, nFrames));
+    }
+  }
+
+
   index getMinFrames() const
   {
     index nChans = numChans();
@@ -230,6 +280,9 @@ private:
   }
 
   t_symbol* mName;
+
+  mutable FluidTensor<float, 2> mMirrorBuffer;
+  bool                          mMirrorDirty;
 
   mutable std::atomic<bool> mLock;
   mutable double            mSampleRate;
