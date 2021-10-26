@@ -19,12 +19,14 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <clients/common/OfflineClient.hpp>
 #include <clients/common/ParameterSet.hpp>
 #include <clients/common/ParameterTypes.hpp>
+#include <clients/nrt/FluidSharedInstanceAdaptor.hpp>
 
 #include <m_pd.h>
 
 #include <cctype>
 #include <cstdarg>
 #include <cstring>
+#include <chrono>
 #include <tuple>
 #include <utility>
 
@@ -412,6 +414,16 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
 
   friend impl::RealTime<FluidPDWrapper<Client>>;
   friend impl::NonRealTime<FluidPDWrapper<Client>>;
+
+
+  template <typename T>
+  struct IsThreadedShared : std::false_type
+  {};
+
+  template <typename T>
+  struct IsThreadedShared<NRTThreadingAdaptor<NRTSharedInstanceAdaptor<T>>>
+      : std::true_type
+  {};
 
   struct StreamingListInput
   {
@@ -1079,9 +1091,30 @@ private:
     }
     // process in-box attributes for mutable params
     paramArgProcess(ac, av);
+    checkName(mParams);
     // return params so this can be called in client initaliser
     return mParams;
   }
+  
+  template<typename ClientType = Client>
+  std::enable_if_t<IsThreadedShared<ClientType>::value>
+  checkName(ParamSetType& params)
+  {
+    if(params.template get<0>().size() == 0)
+    {
+      const auto p1 = std::chrono::steady_clock::now();
+      std::stringstream ss;
+      ss << 'u' << std::chrono::duration_cast<std::chrono::nanoseconds>(
+                   p1.time_since_epoch()).count();
+
+      params.template set<0>(ss.str(),nullptr);
+    }
+  }
+
+  template<typename ClientType = Client>
+  std::enable_if_t<!IsThreadedShared<ClientType>::value>
+  checkName(ParamSetType&){}
+
 
   // Sets up a single parameter
 
