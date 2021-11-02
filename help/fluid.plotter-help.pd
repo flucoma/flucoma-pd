@@ -1,6 +1,6 @@
-#N struct 1064-draw-item float x float y float c float a float b;
-#N struct 1065-rectangle float x float c;
-#N struct 1065-pixel float x0 float y0 float x1 float y1;
+#N struct 1008-draw-item float x float y float c float a float b;
+#N struct 1009-rectangle float x float c;
+#N struct 1009-pixel float x0 float y0 float x1 float y1;
 #N canvas 634 126 1065 914 12;
 #N canvas 536 104 617 462 makepoints 0;
 #X obj 23 141 until;
@@ -12,24 +12,24 @@
 #X obj 32 56 inlet;
 #X obj 32 80 t b b;
 #X obj 299 290 array define plotterdatapoint 2;
-#X obj 227 237 expr plotterdatapoint[$f1] = random(-10000 \, 10001)/10000.
-;
 #X msg 24 288 setpoint index\$1 plotterdatapoint;
 #X obj 24 312 outlet;
 #X obj 57 227 trigger f f b;
+#X obj 227 237 expr plotterdatapoint[$f1] = random(0 \, 10001)/10000.
+;
 #X connect 0 0 1 0;
-#X connect 1 0 12 0;
+#X connect 1 0 11 0;
 #X connect 2 0 1 1;
 #X connect 3 0 1 1;
 #X connect 4 0 0 0;
-#X connect 5 0 9 0;
+#X connect 5 0 12 0;
 #X connect 6 0 7 0;
 #X connect 7 0 4 0;
 #X connect 7 1 3 0;
-#X connect 10 0 11 0;
-#X connect 12 0 2 0;
-#X connect 12 1 10 0;
-#X connect 12 2 5 0;
+#X connect 9 0 10 0;
+#X connect 11 0 2 0;
+#X connect 11 1 9 0;
+#X connect 11 2 5 0;
 #X restore 46 82 pd makepoints;
 #X obj 44 56 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
@@ -52,7 +52,6 @@
 #X obj 64 726 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 63 695 fluid.ls2text plotter-help-LS plotter-help-LS-text;
-#X text 67 60 1 generate a random set of points \, 2D \, -1 to +1;
 #X text 68 228 2 transfer the dataset to text for Pd manipulations
 ;
 #X text 56 426 3 cluster the points in 4 \, generating a labelset of
@@ -70,6 +69,8 @@ classes;
 #X msg 757 151 highlight index1 index17 index29;
 #X msg 754 127 highlight;
 #X msg 732 243 setlabels plotter-help-LS-text;
+#X text 67 60 1 generate a random set of points \, 2D from 0 to +1
+;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
@@ -80,14 +81,14 @@ classes;
 #X connect 11 0 10 0;
 #X connect 14 0 16 0;
 #X connect 16 0 15 0;
-#X connect 22 0 21 0;
+#X connect 21 0 20 0;
+#X connect 22 0 24 0;
 #X connect 23 0 25 0;
 #X connect 24 0 26 0;
-#X connect 25 0 27 0;
-#X connect 26 0 25 0;
-#X connect 26 1 25 1;
-#X connect 27 0 21 0;
-#X connect 28 0 21 0;
-#X connect 29 0 21 0;
-#X connect 30 0 21 0;
-#X connect 31 0 21 1;
+#X connect 25 0 24 0;
+#X connect 25 1 24 1;
+#X connect 26 0 20 0;
+#X connect 27 0 20 0;
+#X connect 28 0 20 0;
+#X connect 29 0 20 0;
+#X connect 30 0 20 1;
