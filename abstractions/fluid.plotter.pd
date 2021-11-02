@@ -1,6 +1,6 @@
 #N struct 1055-draw-item float x float y float c float a float b;
-#N struct 1060-rectangle float x float c;
-#N struct 1060-pixel float x0 float y0 float x1 float y1;
+#N struct 1004-rectangle float x float c;
+#N struct 1004-pixel float x0 float y0 float x1 float y1;
 #N canvas 84 -1080 1920 1058 12;
 #X obj 479 66 inlet;
 #X obj 1148 421 inlet;
@@ -303,6 +303,7 @@ https://forum.pdpatchrepo.info/topic/10854/xy-abstraction-to-get-mouse-click-and
 #X connect 40 1 54 0;
 #X connect 41 0 42 0;
 #X connect 41 1 53 0;
+#X connect 41 1 54 0;
 #X connect 43 0 33 0;
 #X connect 44 0 45 0;
 #X connect 44 1 23 0;
