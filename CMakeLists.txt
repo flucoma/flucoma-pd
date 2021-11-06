@@ -145,6 +145,9 @@ install(DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/
 install(DIRECTORY help/ 
         DESTINATION ${PD_PACKAGE_ROOT} 
         FILES_MATCHING PATTERN "*.pd")
+install(DIRECTORY abstractions
+		DESTINATION ${PD_PACKAGE_ROOT}
+		FILES_MATCHING PATTERN "*.pd")
 install(DIRECTORY examples 
         DESTINATION ${PD_PACKAGE_ROOT})
 install(DIRECTORY "${flucoma-core_SOURCE_DIR}/AudioFiles/" 
