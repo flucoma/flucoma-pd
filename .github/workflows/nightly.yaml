@@ -41,8 +41,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: get pd source
-        run: git clone https://github.com/pure-data/pure-data.git sdk
+      - name: get pd binaries
+        run : Invoke-WebRequest -Uri https://msp.puredata.info/Software/pd-0.51-4.msw.zip -OutFile sdk.zip
+
+      - name: unzip pd binaries
+        run: Expand-Archive sdk.zip -DestinationPath ./ -Force
+
+      - name: ls
         
       - name: make build directory
         run: mkdir -p build
@@ -72,16 +77,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: get pd source
-      #   run: git clone https://github.com/pure-data/pure-data.git sdk
-
-      - name: get pd binaries
-        run : Invoke-WebRequest -Uri https://msp.puredata.info/Software/pd-0.51-4.msw.zip -OutFile sdk.zip
-
-      - name: unzip pd binaries
-        run: Expand-Archive sdk.zip -DestinationPath ./ -Force
-
-      - name: ls
+      - name: get pd source
+        run: git clone https://github.com/pure-data/pure-data.git sdk
         
       - name: make build directory
         run: mkdir -p build
