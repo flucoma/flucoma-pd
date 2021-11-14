@@ -60,9 +60,6 @@ jobs:
         run: cmake --build . --target install --config Release
         working-directory: build
 
-      - name: remove pdb files
-        run: Remove-Item install -Recurse -Include *.pdb
-
       - name: zip release
         run: Compress-Archive release-packaging/FluidCorpusManipulation FluCoMa-PD-Windows-nightly.zip
 
