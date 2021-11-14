@@ -16,9 +16,12 @@ jobs:
         
       - name: make build directory
         run: mkdir -p build
+
+      - name: clone latest flucoma-core
+        run: git clone --branch dev https://github.com/flucoma/flucoma-sc.git core   
         
       - name: cmake
-        run: cmake -DPD_PATH=../sdk ..
+        run: cmake -DPD_PATH=../sdk -DFLUID_CORE=../core ..
         working-directory: build
         
       - name: install
@@ -51,9 +54,12 @@ jobs:
         
       - name: make build directory
         run: mkdir -p build
+
+      - name: clone latest flucoma-core
+        run: git clone --branch dev https://github.com/flucoma/flucoma-sc.git core   
         
       - name: cmake
-        run: cmake -DPD_PATH="../pd-0.51-4" ..
+        run: cmake -DPD_PATH="../pd-0.51-4" -DFLUID_CORE="../core" ..
         working-directory: build
         
       - name: install
@@ -79,9 +85,12 @@ jobs:
         
       - name: make build directory
         run: mkdir -p build
+
+      - name: clone latest flucoma-core
+        run: git clone --branch dev https://github.com/flucoma/flucoma-sc.git core
         
       - name: cmake
-        run: cmake -DPD_PATH=../sdk ..
+        run: cmake -DPD_PATH=../sdk -DFLUID_CORE=../core ..
         working-directory: build
         
       - name: install
