@@ -21,7 +21,7 @@ jobs:
         run: git clone --branch dev https://github.com/flucoma/flucoma-sc.git core   
         
       - name: cmake
-        run: cmake -DPD_PATH=../sdk -DFLUID_CORE=../core ..
+        run: cmake -DPD_PATH=../sdk -DFLUID_PATH=../core ..
         working-directory: build
         
       - name: install
