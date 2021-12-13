@@ -7,12 +7,12 @@ on:
 jobs:
 
   docs:
-      runs-on: ubuntu-18.04
+      runs-on: macos-11
       steps:
         - uses: actions/checkout@v2
 
         - name: install ninja
-          run: sudo apt update && sudo apt install ninja-build
+          run: brew install ninja
 
         - name: install python dependencies
           run: pip3 install pyyaml docutils jinja2
