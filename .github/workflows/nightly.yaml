@@ -175,7 +175,7 @@ jobs:
         run: cp -r docs win
 
       - name: compress windows
-        run: zip -r ../FluCoMa-CLI-Windows-nightly.zip .
+        run: zip -r ../FluCoMa-PD-Windows-nightly.zip .
         working-directory: win
       
       #### UPLOAD RELEASE ####
