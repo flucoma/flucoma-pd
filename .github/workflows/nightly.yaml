@@ -27,7 +27,7 @@ jobs:
           run: git clone --branch dev https://github.com/flucoma/flucoma-docs.git docs
         
         - name: cmake
-          run: cmake -GNinja -DFLUID_PATH=../core -DDOCS=ON -DFLUID_DOCS_PATH=../docs ..
+          run: cmake -GNinja -DFLUID_PATH=../core -DPD_PATH=../sdk -DDOCS=ON -DFLUID_DOCS_PATH=../docs ..
           working-directory: build
           
         - name: install
