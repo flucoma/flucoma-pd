@@ -2,7 +2,7 @@ name: Nightly Releases
 
 on:
   push:
-    branches: [ dev, ci/nightlies ]
+    branches: [ dev, ci/** ]
 
 jobs:
 
@@ -44,25 +44,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: install ninja
-        run: brew install ninja
-
-      - name: get pd source
-        run: git clone https://github.com/pure-data/pure-data.git sdk
+      - name: setup environment
+        uses: flucoma/actions/env@v2 
         
-      - name: make build directory
-        run: mkdir -p build
-
-      - name: clone latest flucoma-core
-        run: git clone --branch dev https://github.com/flucoma/flucoma-core.git core   
-        
-      - name: cmake
-        run: cmake -GNinja -DPD_PATH=../sdk -DFLUID_PATH=../core ..
-        working-directory: build
-        
-      - name: install
-        run: ninja install
-        working-directory: build
+      - name: build toolkit
+        uses: flucoma/actions/pd@v2
 
       - uses: actions/upload-artifact@v2                                                                                                                                                 
         with:                                                                                                                                                                            
@@ -74,25 +60,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: get pd binaries
-        run : Invoke-WebRequest -Uri https://msp.puredata.info/Software/pd-0.51-4.msw.zip -OutFile sdk.zip
-
-      - name: unzip pd binaries
-        run: Expand-Archive sdk.zip -DestinationPath ./ -Force
+      - name: setup environment
+        uses: flucoma/actions/env@v2 
         
-      - name: make build directory
-        run: mkdir -p build
-
-      - name: clone latest flucoma-core
-        run: git clone --branch dev https://github.com/flucoma/flucoma-core.git core   
-        
-      - name: cmake
-        run: cmake -DPD_PATH="../pd-0.51-4" -DFLUID_PATH="../core" ..
-        working-directory: build
-        
-      - name: install
-        run: cmake --build . --target install --config Release
-        working-directory: build
+      - name: build toolkit
+        uses: flucoma/actions/pd@v2
 
       - uses: actions/upload-artifact@v2                                                                                                                                                 
         with:                                                                                                                                                                            
@@ -104,25 +76,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: install ninja 
-        run: sudo apt update && sudo apt install ninja-build
-
-      - name: get pd source
-        run: git clone https://github.com/pure-data/pure-data.git sdk
+      - name: setup environment
+        uses: flucoma/actions/env@v2 
         
-      - name: make build directory
-        run: mkdir -p build
-
-      - name: clone latest flucoma-core
-        run: git clone --branch dev https://github.com/flucoma/flucoma-core.git core
-        
-      - name: cmake
-        run: cmake -GNinja -DPD_PATH=../sdk -DFLUID_PATH=../core ..
-        working-directory: build
-        
-      - name: install
-        run: ninja install
-        working-directory: build
+      - name: build toolkit
+        uses: flucoma/actions/pd@v2
 
       - uses: actions/upload-artifact@v2                                                                                                                                                 
         with:                                                                                                                                                                            
