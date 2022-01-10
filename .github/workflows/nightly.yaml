@@ -5,39 +5,21 @@ on:
     branches: [ dev, ci/** ]
 
 jobs:
-
   docs:
-      runs-on: macos-11
-      steps:
-        - uses: actions/checkout@v2
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
 
-        - name: install ninja
-          run: brew install ninja
+      - name: setup environment
+        uses: flucoma/actions/env@v2
 
-        - name: install python dependencies
-          run: pip3 install pyyaml docutils jinja2
-          
-        - name: make build directory
-          run: mkdir -p build
+      - name: build docs
+        uses: flucoma/actions/pddocs@v2
 
-        - name: clone latest flucoma-core 
-          run: git clone --branch dev https://github.com/flucoma/flucoma-core.git core
-
-        - name: clone latest flucoma-docs
-          run: git clone --branch dev https://github.com/flucoma/flucoma-docs.git docs
-        
-        - name: cmake
-          run: cmake -GNinja -DFLUID_PATH=../core -DPD_PATH=../sdk -DDOCS=ON -DFLUID_DOCS_PATH=../docs ..
-          working-directory: build
-          
-        - name: install
-          run: ninja MAKE_PD_REF
-          working-directory: build
-
-        - uses: actions/upload-artifact@v2
-          with:
-            name: docs
-            path: build/pd_ref
+      - uses: actions/upload-artifact@v2
+        with:
+          name: docs
+          path: build/pd_ref
 
   macbuild:
     runs-on: macos-11
