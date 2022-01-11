@@ -9,12 +9,8 @@ jobs:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
-
-      - name: setup environment
-        uses: flucoma/actions/env@v2
-
-      - name: build docs
-        uses: flucoma/actions/pddocs@v2
+      - uses: flucoma/actions/env@v2
+      - uses: flucoma/actions/pddocs@v2
 
       - uses: actions/upload-artifact@v2
         with:
@@ -25,49 +21,37 @@ jobs:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
-
-      - name: setup environment
-        uses: flucoma/actions/env@v2 
-        
-      - name: build toolkit
-        uses: flucoma/actions/pd@v2
+      - uses: flucoma/actions/env@v2 
+      - uses: flucoma/actions/pd@v2
 
       - uses: actions/upload-artifact@v2                                                                                                                                                 
         with:                                                                                                                                                                            
           name: macbuild                                                                                                                                                                 
-          path: release-packaging/FluidCorpusManipulation
+          path: release-packaging
 
   winbuild:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: setup environment
-        uses: flucoma/actions/env@v2 
-        
-      - name: build toolkit
-        uses: flucoma/actions/pd@v2
+      - uses: flucoma/actions/env@v2         
+      - uses: flucoma/actions/pd@v2
 
       - uses: actions/upload-artifact@v2                                                                                                                                                 
         with:                                                                                                                                                                            
           name: winbuild                                                                                                                                                                
-          path: "release-packaging/FluidCorpusManipulation"
+          path: "release-packaging"
 
   linuxbuild:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-
-      - name: setup environment
-        uses: flucoma/actions/env@v2 
-        
-      - name: build toolkit
-        uses: flucoma/actions/pd@v2
+      - uses: flucoma/actions/env@v2 
+      - uses: flucoma/actions/pd@v2
 
       - uses: actions/upload-artifact@v2                                                                                                                                                 
         with:                                                                                                                                                                            
           name: linuxbuild                                                                                                                                                                
-          path: release-packaging/FluidCorpusManipulation
+          path: release-packaging
   
   release:
     runs-on: ubuntu-latest
@@ -86,7 +70,7 @@ jobs:
           path: linux
       
       - name: copy docs to linux
-        run: cp -r docs linux
+        run: cp -r docs linux/FluidCorpusManipulation
 
       - name: compress linux
         run: zip -r ../FluCoMa-PD-Linux-nightly.zip .
@@ -99,7 +83,7 @@ jobs:
           path: mac
 
       - name: copy docs to mac
-        run: cp -r docs mac
+        run: cp -r docs mac/FluidCorpusManipulation
 
       - name: compress mac
         run: zip -r ../FluCoMa-PD-Mac-nightly.zip .
@@ -112,7 +96,7 @@ jobs:
           path: win
 
       - name: copy docs to windows
-        run: cp -r docs win
+        run: cp -r docs win/FluidCorpusManipulation
 
       - name: compress windows
         run: zip -r ../FluCoMa-PD-Windows-nightly.zip .
