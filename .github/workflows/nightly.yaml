@@ -73,8 +73,8 @@ jobs:
         run: cp -r docs linux/FluidCorpusManipulation
 
       - name: compress linux
-        run: zip -r ../../FluCoMa-PD-Linux-nightly.zip .
-        working-directory: linux/FluidCorpusManipulation
+        run: zip -r ../FluCoMa-PD-Linux-nightly.zip .
+        working-directory: linux
 
       #### MAC ####
       - uses: actions/download-artifact@v2
@@ -86,8 +86,8 @@ jobs:
         run: cp -r docs mac/FluidCorpusManipulation
 
       - name: compress mac
-        run: zip -r ../../FluCoMa-PD-Mac-nightly.zip .
-        working-directory: mac/FluidCorpusManipulation
+        run: zip -r ../FluCoMa-PD-Mac-nightly.zip .
+        working-directory: mac
 
       #### WINDOWS ####
       - uses: actions/download-artifact@v2
@@ -99,8 +99,8 @@ jobs:
         run: cp -r docs win/FluidCorpusManipulation
 
       - name: compress windows
-        run: zip -r ../../FluCoMa-PD-Windows-nightly.zip .
-        working-directory: win/FluidCorpusManipulation
+        run: zip -r ../FluCoMa-PD-Windows-nightly.zip .
+        working-directory: win
       
       #### UPLOAD RELEASE ####
       - uses: dev-drprasad/delete-tag-and-release@v0.2.0
