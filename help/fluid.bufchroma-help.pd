@@ -1,24 +1,23 @@
 #N canvas 623 60 946 934 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufchroma 20 12 0 36 -262144
--66577 0;
-#X obj 34 156 loadbang;
-#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufchroma 20 12 0 36 #fcfcfc
+#404040 0;
+#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 134 257 dac~;
-#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X msg 152 215 stop;
 #N canvas 805 51 707 604 multichannel 0;
 #X obj 46 510 loadbang;
 #X obj 46 559 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 48 195 dac~;
-#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X text 67 80 1) compose an artificially wide "stereo" array;
 #X text 46 11 "multichannel" arrays will process each channel in turn
 \, and output 'channels' will be consecutive \, i.e. all features of
@@ -61,61 +60,59 @@ xticks 0 0 0;
 #X connect 14 0 19 0;
 #X connect 17 0 1 0;
 #X restore 824 161 pd multichannel;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufchroma_drums
-;
 #X obj 134 236 tabplay~ bufchroma_drums;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-0 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-0 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 367 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_drums 453932 float 0;
-#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X array bufchroma_drums 131072 float 0;
+#X coords 0 0.5 131071 -0.5 887 53 1 0 0;
 #X restore 31 299 graph;
 #X obj 675 186 note_on_assumed_sampling_rates_of_arrays;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-1 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-1 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 410 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-2 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-2 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 453 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-3 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-3 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 496 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-4 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-4 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 539 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-5 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-5 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 582 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-6 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-6 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 625 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-7 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-7 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 668 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-8 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-8 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 711 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-9 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-9 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 754 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-10 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-10 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 797 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-11 915 float 0;
-#X coords 0 1 914 0 887 30 1 0 0;
+#X array bufchroma_feats-11 2098 float 0;
+#X coords 0 1 2097 0 887 30 1 0 0;
 #X restore 31 840 graph;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
@@ -128,8 +125,8 @@ xticks 0 0 0;
 #X connect 3 0 1 0;
 #X restore 891 258 pd;
 #X text 760 239 launch the HTML doc->;
-#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 782 209 note_on_multithreading;
 #X obj 379 117 fluid.bufchroma 12 -source bufchroma_drums -features
 bufchroma_feats, f 71;
@@ -140,12 +137,14 @@ xticks 0 0 0 \; bufchroma_feats-6 xticks 0 0 0 \; bufchroma_feats-7
 xticks 0 0 0 \; bufchroma_feats-8 xticks 0 0 0 \; bufchroma_feats-9
 xticks 0 0 0 \; bufchroma_feats-10 xticks 0 0 0 \; bufchroma_feats-11
 xticks 0 0 0;
-#X connect 2 0 8 0;
-#X connect 3 0 28 0;
-#X connect 5 0 9 0;
-#X connect 6 0 9 0;
-#X connect 8 0 0 0;
-#X connect 9 0 4 0;
-#X connect 9 0 4 1;
-#X connect 26 0 24 0;
-#X connect 28 0 29 0;
+#X msg 34 176 read -resize \$1 bufchroma_drums;
+#X obj 33 128 fluid.demoaudiofiles;
+#X connect 2 0 26 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 7 0 3 0;
+#X connect 7 0 3 1;
+#X connect 24 0 22 0;
+#X connect 26 0 27 0;
+#X connect 28 0 0 0;
+#X connect 29 0 28 0;
