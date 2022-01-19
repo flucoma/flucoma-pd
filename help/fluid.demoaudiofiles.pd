@@ -72,8 +72,10 @@ empty 0 -8 0 10 #fcfcfc #000000 #000000 0, f 47;
 #X obj 331 175 openpanel;
 #X obj 278 123 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X text 105 102 Click to select a source;
-#X text 104 121 or here to load your own;
+#X text 105 102 Select a FluCoMa sound;
+#X text 105 121 Browse your own files;
+#X text 267 102 >;
+#X text 267 120 >;
 #X connect 0 0 33 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
