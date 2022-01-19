@@ -1,0 +1,31 @@
+#N canvas 286 200 1005 578 12;
+#X obj 547 322 pdcontrol;
+#X msg 621 291 browse \$1;
+#X msg 649 268 symbol https://www.flucoma.org/;
+#X obj 548 118 symbol \$1;
+#X msg 548 143 dir 0 docs/\$1;
+#X msg 600 222 symbol https://learn.flucoma.org/\$1;
+#X obj 600 199 symbol \$2;
+#X obj 286 104 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 286 123 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 275 101 >;
+#X text 275 120 >;
+#X text 103 101 Launch the documentation;
+#X text 130 119 Launch the reference;
+#X text 151 138 Visit FluCoMa.org;
+#X obj 286 142 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 275 139 >;
+#X connect 0 0 1 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 3 0;
+#X connect 8 0 6 0;
+#X connect 14 0 2 0;
+#X coords 0 0 1 1 205 60 2 100 100;
