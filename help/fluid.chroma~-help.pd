@@ -1,49 +1,46 @@
-#N canvas 59 79 716 663 12;
-#X obj 34 15 cnv 15 290 40 empty empty fluid.chroma~ 0 20 0 36 #dfdfdf
-#404040 0;
-#X obj 37 620 dac~;
-#X obj 118 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#N canvas 12 49 683 659 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.chroma~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 20 620 dac~;
+#X obj 101 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 137 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 120 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 156 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 139 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 175 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 158 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 194 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 177 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 213 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 196 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 232 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 215 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 251 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 234 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 270 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 253 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 289 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 272 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 308 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 291 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 327 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#X obj 310 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 118 382 unpack f f f f f f f f f f f f;
-#X obj 37 179 fluid.demosound~;
-#X text 35 53 A histogram of pitch classes in real-time;
-#X text 34 87 This class computes a histogram of the energy contained
-in each pitch class across the analysis frequency range;
-#X text 120 539 A;
-#X text 137 539 A#;
-#X text 158 539 B;
-#X text 177 539 C;
-#X text 194 539 C#;
-#X text 215 539 D;
-#X text 232 539 D#;
-#X text 253 539 E;
-#X text 272 539 F;
-#X text 289 539 F#;
-#X text 310 539 G;
-#X text 327 539 G#;
-#X obj 119 308 fluid.chroma~ 12 -numchroma 12;
+#X obj 101 382 unpack f f f f f f f f f f f f;
+#X obj 20 179 fluid.demosound~;
+#X text 103 539 A;
+#X text 120 539 A#;
+#X text 141 539 B;
+#X text 160 539 C;
+#X text 177 539 C#;
+#X text 198 539 D;
+#X text 215 539 D#;
+#X text 236 539 E;
+#X text 255 539 F;
+#X text 272 539 F#;
+#X text 293 539 G;
+#X text 310 539 G#;
+#X obj 102 308 fluid.chroma~ 12 -numchroma 12;
 #N canvas 257 304 1382 293 oscillator\ bank 0;
 #X obj 49 30 inlet;
 #X obj 51 240 outlet~;
@@ -157,19 +154,12 @@ in each pitch class across the analysis frequency range;
 #X connect 48 0 31 1;
 #X connect 49 0 34 1;
 #X connect 50 0 37 1;
-#X restore 62 575 pd oscillator\ bank;
-#X obj 490 17 fluid.referencelauncher fluid.chroma~.html reference/chroma/
+#X restore 45 575 pd oscillator\ bank;
+#X obj 509 60 fluid.referencelauncher fluid.chroma~.html reference/chroma/
 ;
-#X text 349 405 2 Each index of the list is a pitch class. The strength
-of that pitch class is determined by the corresponding element.comment
-, f 46;
-#X obj 119 339 fluid.stats -size 40;
-#X text 270 335 3.Consecutive frames of analysis are smoothed to make
-the visualisation easier to follow., f 45;
-#X text 36 159 1) select a source. It works well with the polyphonic
-piano., f 66;
-#X obj 522 587 cnv 15 165 50 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 102 339 fluid.stats -size 40;
+#X obj 511 590 cnv 15 165 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 106 137 697 686 some\ more\ details 0;
 #X obj 38 645 dac~;
 #X obj 119 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
@@ -484,7 +474,18 @@ has to be set also. This is the first argument of the object., f 61
 #X connect 22 17 28 0;
 #X connect 22 18 29 0;
 #X connect 32 0 15 0;
-#X restore 525 613 pd some\ more\ details;
+#X restore 514 616 pd some\ more\ details;
+#X obj 17 60 cnv 15 488 17 empty empty A\ histogram\ of\ pitch\ classes\ in\ real-time.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 This object computes a histogram of the energy contained
+in each pitch class across the analysis frequency range, f 56;
+#X text 19 159 1 Select a source. It works well with polyphonic piano.
+, f 66;
+#X text 332 405 2 Each index of the list is a pitch class. The strength
+of that pitch class is determined by the corresponding element.comment
+, f 46;
+#X text 253 335 3 Consecutive frames of analysis are smoothed to make
+the visualisation easier to follow., f 46;
 #X connect 14 0 2 0;
 #X connect 14 1 3 0;
 #X connect 14 2 4 0;
@@ -497,9 +498,9 @@ has to be set also. This is the first argument of the object., f 61
 #X connect 14 9 11 0;
 #X connect 14 10 12 0;
 #X connect 14 11 13 0;
-#X connect 15 0 30 0;
+#X connect 15 0 28 0;
 #X connect 15 0 1 0;
-#X connect 30 0 34 0;
-#X connect 31 0 1 1;
-#X connect 34 0 14 0;
-#X connect 34 0 31 0;
+#X connect 28 0 31 0;
+#X connect 29 0 1 1;
+#X connect 31 0 14 0;
+#X connect 31 0 29 0;
