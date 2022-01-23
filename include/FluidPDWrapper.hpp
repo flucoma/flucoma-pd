@@ -602,8 +602,8 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       {
       case A_FLOAT: return std::to_string(atom_getfloat(a));
       default: {
-        char result[30];
-        atom_string(a, &result[0], 30);
+        char result[MAXPDSTRING];
+        atom_string(a, &result[0], MAXPDSTRING);
         return result;
       }
       }
