@@ -69,7 +69,7 @@ public:
     {
       r.set(Result::Status::kError);
       r.addMessage("Not enough arrays to operate on ", mName->s_name,
-                   ". Found ", channels, " array(s) but need ", nChans, ".");
+                   ". Found ", nChans, " array(s) but need ", channels, ".");
     }
 
     for (index i = 0; i < nChans; ++i)
