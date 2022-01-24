@@ -6,7 +6,7 @@ on:
 
 jobs:
   docs:
-    runs-on: macos-11
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - uses: flucoma/actions/env@v4
