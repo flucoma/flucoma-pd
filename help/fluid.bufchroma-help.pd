@@ -1,472 +1,389 @@
-#N canvas 8 23 2048 1235 12;
-#X obj 873 434 soundfiler;
-#X obj 1219 337 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 974 496 dac~;
-#X obj 973 455 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X msg 992 454 stop;
-#N canvas 805 51 707 604 multichannel 0;
-#X obj 46 510 loadbang;
-#X obj 46 559 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#N canvas 0 25 697 655 12;
+#X obj 18 230 soundfiler;
+#X obj 18 266 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 48 195 dac~;
-#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 506 285 dac~;
+#X obj 505 244 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X text 67 80 1) compose an artificially wide "stereo" array;
-#X text 46 11 "multichannel" arrays will process each channel in turn
-\, and output 'channels' will be consecutive \, i.e. all features of
-"channel" 1 \, then all features of "channel" 2 \, etc, f 87;
-#X text 146 152 2) listen to the source;
-#X msg 48 152 stop;
-#X text 64 241 3) process;
-#X obj 48 100 fluid.bufcompose -source bufchromaguitar -startframe
-555000 -numframes 468335 -deststartchan 1 -destination bufchroma_source
-, f 73;
-#X obj 48 174 tabplay~ bufchroma_source-0;
-#X obj 211 175 tabplay~ bufchroma_source-1;
-#X obj 45 259 fluid.bufchroma 6 -source bufchroma_source -features
-bufchroma_feats, f 84;
-#X obj 115 559 array define bufchromaguitar;
-#X obj 287 559 clone fluid.multiarray 2 bufchroma_source;
-#X msg 46 529 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufchroma_source-0 bufchroma_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-bufchromaguitar, f 90;
-#X text 44 450 4) Look in the main window: since we have requested
-6 MFCC coefficients on a stereo buffer \, the first 6 feats arrays
-are the left channel's coefficients \, and the following 6 feats are
-the right channel melbands., f 100;
-#X msg 45 277 \; bufchroma_feats-0 xticks 0 0 0 \; bufchroma_feats-1
+#X msg 524 243 stop;
+#X obj 18 163 fluid.demoaudiofiles;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufchroma 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufchroma.html reference/chroma/
+;
+#X obj 515 527 cnv 15 165 110 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#N canvas 32 99 692 686 some\ more\ details 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufchroma 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ on\\\ an\\\ array.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 112 More chromas can be specified with both the -numchroma
+attribute and by providing the maximum number of chromas as the first
+argument., f 82;
+#X text 15 219 The chroma values can also scaled with -normalize 1
+\, meaning each collection of chromas will sum to a value of 1, f
+87;
+#X text 15 155 The first argument specifies the maximum number of chroma
+bins \, and therefore the number of output "channels" \, and is not
+interactive after instantiation of the object. The -numchroma attribute
+can be changed dynamically \, and the excess "channels" will be zero'd.
+, f 90;
+#X text 30 336 In the instance below \, a maximum of 19 chroma bins
+can be computed. In the initial settings \, 6 chroma bins will be computed
+and the other 13 "channels" will be zero'd. The sum of the 6 chroma
+amplitudes in each time frame will be 1, f 85;
+#X floatatom 28 465 5 2 19 0 - - - 0;
+#X msg 28 442 6;
+#X obj 28 421 loadbang;
+#X msg 28 488 numchroma \$1 \, bang;
+#X obj 28 511 fluid.bufchroma 19 -source bufchroma_in -features bufchroma_feats2
+-numchroma 6 -normalize 1, f 92;
+#X obj 28 616 clone 19 fluid.multiarray bufchroma_feats2;
+#X msg 28 592 vis \$1 1;
+#X floatatom 28 571 5 0 18 0 - - - 0;
+#X text 69 570 open the "channel" to see;
+#X connect 6 0 9 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X restore 518 547 pd some\ more\ details;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ on\\\ an\\\ array.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 This object computes a histogram of the energy contained
+in each pitch class across the analysis frequency range, f 56;
+#X msg 19 211 read -resize \$1 bufchroma_in;
+#X obj 506 264 tabplay~ bufchroma_in;
+#N canvas 131 166 688 294 refresh 0;
+#X obj 37 37 inlet;
+#X msg 37 70 \; bufchroma_feats-0 xticks 0 0 0 \; bufchroma_feats-1
 xticks 0 0 0 \; bufchroma_feats-2 xticks 0 0 0 \; bufchroma_feats-3
 xticks 0 0 0 \; bufchroma_feats-4 xticks 0 0 0 \; bufchroma_feats-5
 xticks 0 0 0 \; bufchroma_feats-6 xticks 0 0 0 \; bufchroma_feats-7
 xticks 0 0 0 \; bufchroma_feats-8 xticks 0 0 0 \; bufchroma_feats-9
 xticks 0 0 0 \; bufchroma_feats-10 xticks 0 0 0 \; bufchroma_feats-11
 xticks 0 0 0;
-#X connect 0 0 17 0;
-#X connect 2 0 11 0;
-#X connect 4 0 14 0;
-#X connect 5 0 12 0;
-#X connect 5 0 13 0;
-#X connect 9 0 12 0;
-#X connect 9 0 13 0;
-#X connect 12 0 3 0;
-#X connect 13 0 3 1;
-#X connect 14 0 19 0;
-#X connect 17 0 1 0;
-#X restore 1664 400 pd multichannel;
-#X obj 974 475 tabplay~ bufchroma_drums;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-0 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 606 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_drums 131072 float 0;
-#X coords 0 0.5 131071 -0.5 887 53 1 0 0;
-#X restore 871 538 graph;
-#X obj 1515 425 note_on_assumed_sampling_rates_of_arrays;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-1 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 649 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-2 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 692 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-3 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 735 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-4 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 778 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-5 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 821 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-6 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 864 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-7 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 907 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-8 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 950 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-9 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 993 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-10 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 1036 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufchroma_feats-11 2098 float 0;
-#X coords 0 1 2097 0 887 30 1 0 0;
-#X restore 871 1079 graph;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.bufchroma.html;
-#X msg 143 89 browse \$1;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 1731 497 pd;
-#X text 1600 478 launch the HTML doc->;
-#X obj 1732 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 1622 448 note_on_multithreading;
-#X obj 1219 356 fluid.bufchroma 12 -source bufchroma_drums -features
-bufchroma_feats, f 71;
-#X msg 1219 375 \; bufchroma_feats-0 xticks 0 0 0 \; bufchroma_feats-1
-xticks 0 0 0 \; bufchroma_feats-2 xticks 0 0 0 \; bufchroma_feats-3
-xticks 0 0 0 \; bufchroma_feats-4 xticks 0 0 0 \; bufchroma_feats-5
-xticks 0 0 0 \; bufchroma_feats-6 xticks 0 0 0 \; bufchroma_feats-7
-xticks 0 0 0 \; bufchroma_feats-8 xticks 0 0 0 \; bufchroma_feats-9
-xticks 0 0 0 \; bufchroma_feats-10 xticks 0 0 0 \; bufchroma_feats-11
-xticks 0 0 0;
-#X msg 874 415 read -resize \$1 bufchroma_drums;
-#X obj 873 367 fluid.demoaudiofiles;
-#X obj 34 15 cnv 15 330 40 empty empty fluid.bufchroma 0 20 0 36 #dfdfdf
-#404040 0;
-#X text 35 53 A histogram of pitch classes in real-time;
-#X text 34 87 This class computes a histogram of the energy contained
-in each pitch class across the analysis frequency range;
-#X obj 490 17 fluid.referencelauncher fluid.chroma~.html reference/chroma/
-;
-#X obj 522 587 cnv 15 165 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 106 137 697 686 some\ more\ details 0;
-#X obj 38 645 dac~;
-#X obj 119 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 138 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 157 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 176 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 195 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 214 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 233 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 252 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 271 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 290 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 309 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 328 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 37 121 fluid.demosound~;
-#N canvas 257 304 1501 490 oscillator\ bank 0;
-#X obj 52 47 inlet;
-#X obj 50 450 outlet~;
-#X obj 51 394 *~, f 6;
-#X obj 51 372 line~;
-#X msg 51 348 \$1 10;
-#X obj 51 233 unpack f f f f f f f f f f f f f f f f f f f;
-#X obj 1060 90 until;
-#X obj 1060 66 t f f b, f 17;
-#X obj 1060 114 f;
-#X obj 1032 126 + 1;
-#X msg 1176 90 0;
-#X obj 1132 164 expr ($f1 * 12 / $f2) + 69;
-#X obj 1060 138 t f f f;
-#X obj 1081 211 pack f f;
-#X obj 1081 235 route 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
-;
-#X obj 1132 188 mtof;
-#X obj 92 372 osc~;
-#X obj 126 394 *~, f 6;
-#X obj 126 372 line~;
-#X msg 126 348 \$1 10;
-#X obj 167 372 osc~;
-#X obj 202 394 *~, f 6;
-#X obj 202 372 line~;
-#X msg 202 348 \$1 10;
-#X obj 243 372 osc~;
-#X obj 277 394 *~, f 6;
-#X obj 277 372 line~;
-#X msg 277 348 \$1 10;
-#X obj 318 372 osc~;
-#X obj 352 394 *~, f 6;
-#X obj 352 372 line~;
-#X msg 352 348 \$1 10;
-#X obj 393 372 osc~;
-#X obj 427 394 *~, f 6;
-#X obj 427 372 line~;
-#X msg 427 348 \$1 10;
-#X obj 468 372 osc~;
-#X obj 503 394 *~, f 6;
-#X obj 503 372 line~;
-#X msg 503 348 \$1 10;
-#X obj 544 372 osc~;
-#X obj 578 394 *~, f 6;
-#X obj 578 372 line~;
-#X msg 578 348 \$1 10;
-#X obj 619 372 osc~;
-#X obj 653 393 *~, f 6;
-#X obj 653 371 line~;
-#X msg 653 347 \$1 10;
-#X obj 694 371 osc~;
-#X obj 728 393 *~, f 6;
-#X obj 728 371 line~;
-#X msg 728 347 \$1 10;
-#X obj 769 371 osc~;
-#X obj 804 393 *~, f 6;
-#X obj 804 371 line~;
-#X msg 804 347 \$1 10;
-#X obj 845 371 osc~;
-#X obj 879 393 *~, f 6;
-#X obj 879 371 line~;
-#X msg 879 347 \$1 10;
-#X obj 920 371 osc~;
-#X obj 954 393 *~, f 6;
-#X obj 954 371 line~;
-#X msg 954 347 \$1 10;
-#X obj 995 371 osc~;
-#X obj 1029 393 *~, f 6;
-#X obj 1029 371 line~;
-#X msg 1029 347 \$1 10;
-#X obj 1070 371 osc~;
-#X obj 1105 393 *~, f 6;
-#X obj 1105 371 line~;
-#X msg 1105 347 \$1 10;
-#X obj 1146 371 osc~;
-#X obj 1180 393 *~, f 6;
-#X obj 1180 371 line~;
-#X msg 1180 347 \$1 10;
-#X obj 1221 371 osc~;
-#X obj 1255 392 *~, f 6;
-#X obj 1255 370 line~;
-#X msg 1255 346 \$1 10;
-#X obj 1296 370 osc~;
-#X obj 1331 392 *~, f 6;
-#X obj 1331 370 line~;
-#X msg 1331 346 \$1 10;
-#X obj 1372 370 osc~;
-#X obj 1406 392 *~, f 6;
-#X obj 1406 370 line~;
-#X msg 1406 346 \$1 10;
-#X obj 1447 370 osc~;
-#X obj 1060 43 r #0-n;
-#X connect 0 0 5 0;
-#X connect 2 0 1 0;
+#X msg 294 114 \; bufchroma-head-pos range 0 \$1;
+#X obj 294 67 array size bufchroma_feats-0;
+#X connect 0 0 1 0;
+#X connect 0 0 3 0;
 #X connect 3 0 2 0;
+#X restore 18 308 pd refresh;
+#X obj 18 285 fluid.bufchroma 12 -source bufchroma_in -features bufchroma_feats
+, f 65;
+#N canvas 692 23 685 655 visualizer 0;
+#X obj 56 22 hsl 599 590 0 4727 0 0 bufchroma-head-click bufchroma-head-pos
+empty -2 -8 0 10 #fcfcfc #49a3fa #000000 0 1;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-0 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 112 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-1 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 155 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-2 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 198 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-3 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 241 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-4 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 284 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-5 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 327 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-6 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 370 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-7 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 413 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-8 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 456 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-9 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 499 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-10 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 542 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_feats-11 4727 float 0;
+#X coords 0 1 4726 0 600 25 1 0 0;
+#X restore 55 585 graph;
+#X text 39 123 A;
+#X text 34 164 A#;
+#X text 39 203 B;
+#X text 38 244 C;
+#X text 30 285 C#;
+#X text 36 327 D;
+#X text 33 371 D#;
+#X text 38 415 E;
+#X text 40 458 F;
+#X text 33 502 F#;
+#X text 38 544 G;
+#X text 33 587 G#;
+#X text 21 40 wave;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufchroma_in 2.42018e+06 float 2;
+#X coords 0 0.75 2.42018e+06 -0.75 600 53 1 0 0;
+#X restore 55 24 graph;
+#X obj 53 635 outlet;
+#X msg 53 616 set \$1;
+#X connect 0 0 28 0;
+#X connect 28 0 27 0;
+#X restore 19 357 pd visualizer;
+#X floatatom 19 424 8 0 1e+06 0 - - - 12;
+#X obj 518 591 note_on_sampling_rates;
+#X obj 518 614 note_on_multithreading;
+#X obj 518 569 note_on_multiarrays;
+#X text 17 141 1) Pick a source. Piano works well with this example.
+;
+#X text 503 220 2) Listen to the source;
+#X text 116 353 3) Open this subpatch to see the results. Each "channel"
+will contain a single pitch class. Each frame of each channel describes
+the strength of that pitch class in a single FFT analysis window.,
+f 78;
+#X text 80 424 4) Lookup the value for each chroma at any given point
+of time in the source sound., f 83;
+#N canvas 950 34 625 524 frame\ lookup 0;
+#X obj 37 39 inlet;
+#X obj 37 84 r bufchroma-head-click;
+#X floatatom 37 106 5 0 0 0 - - - 0;
+#X obj 37 61 s bufchroma-head-pos;
+#X obj 36 325 array get bufchroma_feats-0 1;
+#X obj 79 196 until;
+#X msg 79 172 12;
+#X obj 71 221 f;
+#X obj 71 245 t f b f;
+#X msg 215 208 0;
+#X obj 40 232 + 1;
+#X obj 73 278 f;
+#X msg 105 277 symbol bufchroma_feats-\$1;
+#X obj 14 436 list store, f 46;
+#X obj 36 349 list prepend, f 37;
+#X obj 36 373 t l l;
+#X obj 37 148 t b b f b, f 35;
+#X obj 38 300 pack f 1;
+#X obj 14 460 outlet;
+#X text 350 220 querying the 12 arrays at the same frame and assembling
+into a list, f 24;
+#X text 207 67 getting and setting the GUI reading head;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 16 0;
+#X connect 4 0 14 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 8 1 11 0;
+#X connect 8 2 12 0;
+#X connect 9 0 7 1;
+#X connect 10 0 7 1;
+#X connect 11 0 17 0;
+#X connect 12 0 4 2;
+#X connect 13 0 18 0;
+#X connect 14 0 15 0;
+#X connect 15 0 13 1;
+#X connect 15 1 14 1;
+#X connect 16 0 13 0;
+#X connect 16 1 6 0;
+#X connect 16 2 11 1;
+#X connect 16 3 9 0;
+#X connect 16 3 13 1;
+#X connect 16 3 14 1;
+#X connect 17 0 4 0;
+#X restore 19 447 pd frame\ lookup;
+#X obj 19 564 dac~;
+#X obj 167 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 186 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 205 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 224 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 243 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 262 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 281 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 300 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 319 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 338 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 357 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 376 503 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 167 477 unpack f f f f f f f f f f f f;
+#X text 169 634 A;
+#X text 186 634 A#;
+#X text 207 634 B;
+#X text 226 634 C;
+#X text 243 634 C#;
+#X text 264 634 D;
+#X text 281 634 D#;
+#X text 302 634 E;
+#X text 321 634 F;
+#X text 338 634 F#;
+#X text 359 634 G;
+#X text 376 634 G#;
+#N canvas 257 304 1382 293 oscillator\ bank 0;
+#X obj 49 30 inlet;
+#X obj 51 240 outlet~;
+#X obj 49 71 unpack f f f f f f f f f f f f;
+#X obj 50 163 *~, f 7;
+#X obj 50 141 line~;
+#X msg 50 117 \$1 10;
+#X obj 96 141 osc~ 440;
+#X obj 160 162 *~, f 7;
+#X obj 160 140 line~;
+#X msg 160 116 \$1 10;
+#X obj 270 162 *~, f 7;
+#X obj 270 140 line~;
+#X msg 270 116 \$1 10;
+#X obj 380 161 *~, f 7;
+#X obj 380 139 line~;
+#X msg 380 115 \$1 10;
+#X obj 490 161 *~, f 7;
+#X obj 490 139 line~;
+#X msg 490 115 \$1 10;
+#X obj 600 160 *~, f 7;
+#X obj 600 138 line~;
+#X msg 600 114 \$1 10;
+#X obj 710 160 *~, f 7;
+#X obj 710 138 line~;
+#X msg 710 114 \$1 10;
+#X obj 820 159 *~, f 7;
+#X obj 820 137 line~;
+#X msg 820 113 \$1 10;
+#X obj 930 158 *~, f 7;
+#X obj 930 136 line~;
+#X msg 930 112 \$1 10;
+#X obj 1040 157 *~, f 7;
+#X obj 1040 135 line~;
+#X msg 1040 111 \$1 10;
+#X obj 1150 157 *~, f 7;
+#X obj 1150 135 line~;
+#X msg 1150 111 \$1 10;
+#X obj 1260 156 *~, f 7;
+#X obj 1260 134 line~;
+#X msg 1260 110 \$1 10;
+#X obj 206 140 osc~ 466;
+#X obj 426 139 osc~ 523;
+#X obj 316 140 osc~ 494;
+#X obj 536 139 osc~ 554;
+#X obj 646 138 osc~ 587;
+#X obj 756 138 osc~ 622;
+#X obj 866 137 osc~ 659;
+#X obj 976 136 osc~ 698;
+#X obj 1086 135 osc~ 740;
+#X obj 1196 135 osc~ 784;
+#X obj 1306 134 osc~ 831;
+#X connect 0 0 2 0;
+#X connect 2 0 5 0;
+#X connect 2 1 9 0;
+#X connect 2 2 12 0;
+#X connect 2 3 15 0;
+#X connect 2 4 18 0;
+#X connect 2 5 21 0;
+#X connect 2 6 24 0;
+#X connect 2 7 27 0;
+#X connect 2 8 30 0;
+#X connect 2 9 33 0;
+#X connect 2 10 36 0;
+#X connect 2 11 39 0;
+#X connect 3 0 1 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;
-#X connect 5 1 19 0;
-#X connect 5 2 23 0;
-#X connect 5 3 27 0;
-#X connect 5 4 31 0;
-#X connect 5 5 35 0;
-#X connect 5 6 39 0;
-#X connect 5 7 43 0;
-#X connect 5 8 47 0;
-#X connect 5 9 51 0;
-#X connect 5 10 55 0;
-#X connect 5 11 59 0;
-#X connect 5 12 63 0;
-#X connect 5 13 67 0;
-#X connect 5 14 71 0;
-#X connect 5 15 75 0;
-#X connect 5 16 79 0;
-#X connect 5 17 83 0;
-#X connect 5 18 87 0;
-#X connect 6 0 8 0;
-#X connect 7 0 6 0;
-#X connect 7 1 11 1;
-#X connect 7 2 10 0;
-#X connect 8 0 12 0;
-#X connect 9 0 8 1;
-#X connect 10 0 8 1;
-#X connect 11 0 15 0;
-#X connect 12 0 9 0;
-#X connect 12 1 13 0;
-#X connect 12 2 11 0;
-#X connect 13 0 14 0;
-#X connect 14 0 16 0;
-#X connect 14 1 20 0;
-#X connect 14 2 24 0;
-#X connect 14 3 28 0;
-#X connect 14 4 32 0;
-#X connect 14 5 36 0;
-#X connect 14 6 40 0;
-#X connect 14 7 44 0;
-#X connect 14 8 48 0;
-#X connect 14 9 52 0;
-#X connect 14 10 56 0;
-#X connect 14 11 60 0;
-#X connect 14 12 64 0;
-#X connect 14 13 68 0;
-#X connect 14 14 72 0;
-#X connect 14 15 76 0;
-#X connect 14 16 80 0;
-#X connect 14 17 84 0;
-#X connect 14 18 88 0;
-#X connect 15 0 13 1;
-#X connect 16 0 2 1;
-#X connect 17 0 1 0;
+#X connect 6 0 3 1;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 0;
+#X connect 16 0 1 0;
+#X connect 17 0 16 0;
 #X connect 18 0 17 0;
-#X connect 19 0 18 0;
-#X connect 20 0 17 1;
-#X connect 21 0 1 0;
-#X connect 22 0 21 0;
+#X connect 19 0 1 0;
+#X connect 20 0 19 0;
+#X connect 21 0 20 0;
+#X connect 22 0 1 0;
 #X connect 23 0 22 0;
-#X connect 24 0 21 1;
+#X connect 24 0 23 0;
 #X connect 25 0 1 0;
 #X connect 26 0 25 0;
 #X connect 27 0 26 0;
-#X connect 28 0 25 1;
-#X connect 29 0 1 0;
+#X connect 28 0 1 0;
+#X connect 29 0 28 0;
 #X connect 30 0 29 0;
-#X connect 31 0 30 0;
-#X connect 32 0 29 1;
-#X connect 33 0 1 0;
-#X connect 34 0 33 0;
+#X connect 31 0 1 0;
+#X connect 32 0 31 0;
+#X connect 33 0 32 0;
+#X connect 34 0 1 0;
 #X connect 35 0 34 0;
-#X connect 36 0 33 1;
+#X connect 36 0 35 0;
 #X connect 37 0 1 0;
 #X connect 38 0 37 0;
 #X connect 39 0 38 0;
-#X connect 40 0 37 1;
-#X connect 41 0 1 0;
-#X connect 42 0 41 0;
-#X connect 43 0 42 0;
-#X connect 44 0 41 1;
-#X connect 45 0 1 0;
-#X connect 46 0 45 0;
-#X connect 47 0 46 0;
-#X connect 48 0 45 1;
-#X connect 49 0 1 0;
-#X connect 50 0 49 0;
-#X connect 51 0 50 0;
-#X connect 52 0 49 1;
-#X connect 53 0 1 0;
-#X connect 54 0 53 0;
-#X connect 55 0 54 0;
-#X connect 56 0 53 1;
-#X connect 57 0 1 0;
-#X connect 58 0 57 0;
-#X connect 59 0 58 0;
-#X connect 60 0 57 1;
-#X connect 61 0 1 0;
-#X connect 62 0 61 0;
-#X connect 63 0 62 0;
-#X connect 64 0 61 1;
-#X connect 65 0 1 0;
-#X connect 66 0 65 0;
-#X connect 67 0 66 0;
-#X connect 68 0 65 1;
-#X connect 69 0 1 0;
-#X connect 70 0 69 0;
-#X connect 71 0 70 0;
-#X connect 72 0 69 1;
-#X connect 73 0 1 0;
-#X connect 74 0 73 0;
-#X connect 75 0 74 0;
-#X connect 76 0 73 1;
-#X connect 77 0 1 0;
-#X connect 78 0 77 0;
-#X connect 79 0 78 0;
-#X connect 80 0 77 1;
-#X connect 81 0 1 0;
-#X connect 82 0 81 0;
-#X connect 83 0 82 0;
-#X connect 84 0 81 1;
-#X connect 85 0 1 0;
-#X connect 86 0 85 0;
-#X connect 87 0 86 0;
-#X connect 88 0 85 1;
-#X connect 89 0 7 0;
-#X restore 62 617 pd oscillator\ bank;
-#X obj 120 364 fluid.stats -size 40;
-#X text 35 53 A histogram of pitch classes in real-time;
-#X text 36 101 1) select a source. It works well with the oboe multiphonic.
-;
-#X floatatom 136 282 5 2 19 0 - - - 0;
-#X obj 136 236 loadbang;
-#X msg 136 260 19;
-#X msg 136 305 numchroma \$1;
-#X obj 119 407 unpack f f f f f f f f f f f f f f f f f f f, f 49
-;
-#X obj 347 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 366 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 385 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 404 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 423 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 442 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 461 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X text 121 568 3) The list is now 19 elements long: each element in
-the list is a chroma bin., f 42;
-#X text 238 282 2) The number of chroma can be changed. Note \, the
-maximum number of chroma is always returned and so the maximum chroma
-has to be set also. This is the first argument of the object., f 61
-;
-#X obj 120 333 fluid.chroma~ 19 -fftsettings 4096 512 -normalize 1
--numchroma 19, f 65;
-#X obj 67 332 s #0-n;
-#X obj 34 15 cnv 15 290 40 empty empty fluid.chroma~ 0 20 0 36 #dfdfdf
-#404040 0;
-#X connect 13 0 0 0;
-#X connect 13 0 32 0;
-#X connect 14 0 0 1;
+#X connect 40 0 7 1;
+#X connect 41 0 13 1;
+#X connect 42 0 10 1;
+#X connect 43 0 16 1;
+#X connect 44 0 19 1;
+#X connect 45 0 22 1;
+#X connect 46 0 25 1;
+#X connect 47 0 28 1;
+#X connect 48 0 31 1;
+#X connect 49 0 34 1;
+#X connect 50 0 37 1;
+#X restore 19 533 pd oscillator\ bank;
+#X connect 0 0 1 0;
+#X connect 1 0 15 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 0;
+#X connect 5 0 12 0;
+#X connect 12 0 0 0;
+#X connect 13 0 2 0;
+#X connect 13 0 2 1;
 #X connect 15 0 14 0;
-#X connect 15 0 22 0;
-#X connect 18 0 21 0;
-#X connect 18 0 33 0;
-#X connect 19 0 20 0;
-#X connect 20 0 18 0;
-#X connect 21 0 32 0;
-#X connect 22 0 1 0;
-#X connect 22 1 2 0;
-#X connect 22 2 3 0;
-#X connect 22 3 4 0;
-#X connect 22 4 5 0;
-#X connect 22 5 6 0;
-#X connect 22 6 7 0;
-#X connect 22 7 8 0;
-#X connect 22 8 9 0;
-#X connect 22 9 10 0;
-#X connect 22 10 11 0;
-#X connect 22 11 12 0;
-#X connect 22 12 23 0;
-#X connect 22 13 24 0;
-#X connect 22 14 25 0;
-#X connect 22 15 26 0;
-#X connect 22 16 27 0;
-#X connect 22 17 28 0;
-#X connect 22 18 29 0;
-#X connect 32 0 15 0;
-#X restore 525 613 pd some\ more\ details;
-#X connect 1 0 25 0;
-#X connect 3 0 6 0;
-#X connect 4 0 6 0;
-#X connect 6 0 2 0;
-#X connect 6 0 2 1;
-#X connect 23 0 21 0;
-#X connect 25 0 26 0;
-#X connect 27 0 0 0;
-#X connect 28 0 27 0;
+#X connect 16 0 17 0;
+#X connect 17 0 25 0;
+#X connect 25 0 39 0;
+#X connect 25 0 52 0;
+#X connect 39 0 27 0;
+#X connect 39 1 28 0;
+#X connect 39 2 29 0;
+#X connect 39 3 30 0;
+#X connect 39 4 31 0;
+#X connect 39 5 32 0;
+#X connect 39 6 33 0;
+#X connect 39 7 34 0;
+#X connect 39 8 35 0;
+#X connect 39 9 36 0;
+#X connect 39 10 37 0;
+#X connect 39 11 38 0;
+#X connect 52 0 26 1;
+#X connect 52 0 26 0;
