@@ -4,7 +4,7 @@ This repository hosts code for generating the Pure Data objects and documentatio
 
 # Minimal Quick Build
 
-Minimal build steps below. For detailed guidance see https://github.com/flucoma/flucoma-cli/wiki/Compiling
+Minimal build steps below. For detailed guidance see https://github.com/flucoma/flucoma-pd/wiki/Compiling
 
 ## Prerequisites 
 
