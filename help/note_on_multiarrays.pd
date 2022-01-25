@@ -1,4 +1,4 @@
-#N canvas 0 23 410 167 10;
+#N canvas 0 23 536 178 12;
 #X text 24 29 Most objects working on arrays/buffers are multichannel.
 The toolbox uses the following convention: a named array is expected
 to have a name \, followed by -x where x is the 'channel' number \,
@@ -6,4 +6,4 @@ to have a name \, followed by -x where x is the 'channel' number \,
 will expect an array named 'mybuf-0' for the left channel \, and an
 array named 'mybuf-1' for the right channel. A utility [multiarray.pd]
 is used throughout the helpfiles in conjonction with the [clone] to
-programmatically generate such 'multichannel' buffers.;
+programmatically generate such 'multichannel' buffers., f 69;
