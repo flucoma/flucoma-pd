@@ -1,0 +1,8 @@
+#N canvas 89 120 721 685 12;
+#X obj 19 17 cnv 15 660 42 empty empty fluid.concataudiofiles 1 22
+0 36 #4ba3fb #ffffff 0;
+#X obj 19 64 cnv 15 488 17 empty empty A\ multiple\ file\ loading\ utility.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 19 86 Take a list of audio files \, load them one afer the
+other into a multiarray \, returning a text of filenames with start
+and end times., f 67;

@@ -21,21 +21,29 @@
 #X msg 41 980 getpoint tree2 treepoint;
 #X msg 171 1034 numneighbours 5 \, knearest treepoint;
 #X obj 114 1094 fluid.kdtree;
-#X obj 20 25 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 512 72 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
+#X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
 ;
-#X obj 514 602 cnv 15 165 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 20 72 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ in\\\ real-time.
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 20 91 This object computes a histogram of the energy contained
-in each pitch class across the analysis frequency range, f 56;
+#X obj 508 580 cnv 15 165 70 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 18 66 cnv 15 488 17 empty empty A\ K-D\ tree. 4 8 0 13 #e0e0e0
+#404040 0;
 #X obj 505 802 array define treepoint 10;
 #N canvas 30 128 692 686 radius_&_neighbours 0;
-#X restore 517 663 pd radius_&_neighbours;
-#N canvas 30 128 692 686 stripping_it_back 0;
-#X restore 517 628 pd stripping_it_back;
+#X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
+#404040 0;
+#X restore 511 628 pd radius_&_neighbours;
+#N canvas 569 252 696 686 stripping_it_back 0;
+#X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
+#404040 0;
+#X restore 511 606 pd stripping_it_back;
+#X text 18 85 A K-dimensional tree for efficient neighbourhood searches
+of multi-dimensional data.;
 #X connect 1 0 15 0;
 #X connect 2 0 3 0;
 #X connect 3 0 5 0;
