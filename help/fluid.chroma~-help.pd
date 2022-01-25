@@ -1,202 +1,507 @@
-#N canvas 971 135 716 635 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.chroma~ 20 12 0 36 -262144
--66577 0;
-#X obj 37 373 dac~;
-#X obj 36 282 *~;
-#X obj 50 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 141 282 *~;
-#X obj 155 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 197 282 *~;
-#X obj 211 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 271 282 *~;
-#X obj 285 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 141 245 osc~ 220;
-#X obj 212 313 *~ 0.1;
-#X obj 345 282 *~;
-#X obj 360 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 130 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5 1;
-#X obj 145 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 6 1;
-#X obj 160 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 38 1;
-#X obj 175 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 864 1;
-#X obj 190 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1588 1;
-#X obj 205 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 273 1;
-#X obj 220 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 11 1;
-#X obj 235 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 8 1;
-#X obj 250 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 6 1;
-#X obj 265 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 4 1;
-#X obj 280 489 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 6 1;
-#X obj 295 488 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 5 1;
-#X msg 189 362 0.1;
-#X msg 218 362 0.8;
-#X floatatom 245 213 5 0 0 0 - - -;
-#X msg 245 192 220;
-#X msg 277 191 333;
-#X msg 308 192 555;
-#X msg 340 193 789;
-#N canvas 765 239 363 247 drums_players 0;
-#X obj 94 59 r pd-dsp-started;
-#X obj 27 17 loadbang;
-#X obj 27 59 soundfiler;
-#X obj 28 180 *~, f 10;
-#X obj 28 140 /~;
-#X msg 28 121 1;
-#X obj 28 161 phasor~;
-#X obj 125 100 samplerate~;
-#X obj 98 121 / 1;
-#X obj 27 77 t b f b;
-#X obj 95 77 t b b b;
-#X msg 27 37 read -resize media/Nicol-LoopE-M.wav chroma_drums;
-#X obj 124 154 array define chroma_drums;
-#X obj 28 200 tabread4~ chroma_drums;
-#X obj 28 221 outlet~;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 9 0;
-#X connect 3 0 13 0;
-#X connect 4 0 6 0;
-#X connect 5 0 4 0;
-#X connect 6 0 3 0;
-#X connect 7 0 8 1;
-#X connect 8 0 4 1;
-#X connect 9 0 5 0;
-#X connect 9 1 3 1;
-#X connect 9 1 8 0;
-#X connect 9 2 7 0;
-#X connect 10 0 5 0;
-#X connect 10 1 8 0;
-#X connect 10 2 7 0;
-#X connect 11 0 2 0;
-#X connect 13 0 14 0;
-#X restore 36 245 pd drums_players;
-#X obj 134 387 *~ 1;
-#N canvas 0 23 450 300 triangle 0;
-#X obj 37 47 inlet;
-#X obj 37 67 phasor~ 220;
-#X obj 37 85 -~ 0.5;
-#X obj 37 103 abs~;
-#X obj 37 121 *~ 4;
-#X obj 37 139 -~ 1;
-#X obj 37 160 outlet~;
-#X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 5 0;
-#X connect 5 0 6 0;
-#X restore 197 245 pd triangle;
-#N canvas 0 23 450 300 sawtooth 0;
-#X obj 37 37 inlet;
-#X obj 37 79 phasor~ 220;
-#X obj 37 115 -~ 1;
-#X obj 37 97 *~ 2;
-#X obj 37 136 outlet~;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
-#X restore 271 245 pd sawtooth;
-#N canvas 0 23 450 300 square 0;
-#X obj 37 37 inlet;
-#X obj 37 64 phasor~ 220;
-#X obj 37 119 -~;
-#X obj 51 83 -~ 0.5;
-#X obj 51 101 wrap~;
-#X obj 37 137 *~ 2;
-#X obj 37 158 outlet~;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 1 0 2 0;
-#X connect 2 0 5 0;
-#X connect 3 0 4 0;
-#X connect 4 0 2 1;
-#X connect 5 0 6 0;
-#X restore 345 245 pd square;
-#X text 33 163 1) select a source. Add noise. Change the gain.;
-#X obj 408 245 noise~;
-#X obj 453 246 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 408 282 *~;
-#X obj 453 264 * 0.2;
-#X text 382 195 Observe how stable is the spectral description \, apart
-from the first coefficient \, which is amplitude-dependant, f 47;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.chroma~.html;
-#X msg 143 89 browse \$1;
+#N canvas 12 49 692 659 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.chroma~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 20 620 dac~;
+#X obj 101 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 120 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 139 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 158 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 177 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 196 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 215 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 234 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 253 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 272 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 291 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 310 408 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 101 382 unpack f f f f f f f f f f f f;
+#X obj 20 179 fluid.demosound~;
+#X text 103 539 A;
+#X text 120 539 A#;
+#X text 141 539 B;
+#X text 160 539 C;
+#X text 177 539 C#;
+#X text 198 539 D;
+#X text 215 539 D#;
+#X text 236 539 E;
+#X text 255 539 F;
+#X text 272 539 F#;
+#X text 293 539 G;
+#X text 310 539 G#;
+#X obj 102 308 fluid.chroma~ 12 -numchroma 12;
+#X obj 509 60 fluid.referencelauncher fluid.chroma~.html reference/chroma/
+;
+#X obj 102 339 fluid.stats -size 40;
+#X obj 511 590 cnv 15 165 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ in\\\ real-time.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 This object computes a histogram of the energy contained
+in each pitch class across the analysis frequency range, f 56;
+#X text 19 159 1) Select a source. It works well with polyphonic piano.
+, f 66;
+#X text 253 335 3) Consecutive frames of analysis are smoothed to make
+the visualisation easier to follow., f 46;
+#X text 332 405 2) Each index of the list is a pitch class. The strength
+of that pitch class is determined by the corresponding element.comment
+, f 46;
+#N canvas 257 304 1382 293 oscillator_bank 0;
+#X obj 49 30 inlet;
+#X obj 51 240 outlet~;
+#X obj 49 71 unpack f f f f f f f f f f f f;
+#X obj 50 163 *~, f 7;
+#X obj 50 141 line~;
+#X msg 50 117 \$1 10;
+#X obj 96 141 osc~ 440;
+#X obj 160 162 *~, f 7;
+#X obj 160 140 line~;
+#X msg 160 116 \$1 10;
+#X obj 270 162 *~, f 7;
+#X obj 270 140 line~;
+#X msg 270 116 \$1 10;
+#X obj 380 161 *~, f 7;
+#X obj 380 139 line~;
+#X msg 380 115 \$1 10;
+#X obj 490 161 *~, f 7;
+#X obj 490 139 line~;
+#X msg 490 115 \$1 10;
+#X obj 600 160 *~, f 7;
+#X obj 600 138 line~;
+#X msg 600 114 \$1 10;
+#X obj 710 160 *~, f 7;
+#X obj 710 138 line~;
+#X msg 710 114 \$1 10;
+#X obj 820 159 *~, f 7;
+#X obj 820 137 line~;
+#X msg 820 113 \$1 10;
+#X obj 930 158 *~, f 7;
+#X obj 930 136 line~;
+#X msg 930 112 \$1 10;
+#X obj 1040 157 *~, f 7;
+#X obj 1040 135 line~;
+#X msg 1040 111 \$1 10;
+#X obj 1150 157 *~, f 7;
+#X obj 1150 135 line~;
+#X msg 1150 111 \$1 10;
+#X obj 1260 156 *~, f 7;
+#X obj 1260 134 line~;
+#X msg 1260 110 \$1 10;
+#X obj 206 140 osc~ 466;
+#X obj 426 139 osc~ 523;
+#X obj 316 140 osc~ 494;
+#X obj 536 139 osc~ 554;
+#X obj 646 138 osc~ 587;
+#X obj 756 138 osc~ 622;
+#X obj 866 137 osc~ 659;
+#X obj 976 136 osc~ 698;
+#X obj 1086 135 osc~ 740;
+#X obj 1196 135 osc~ 784;
+#X obj 1306 134 osc~ 831;
 #X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
+#X connect 2 0 5 0;
+#X connect 2 1 9 0;
+#X connect 2 2 12 0;
+#X connect 2 3 15 0;
+#X connect 2 4 18 0;
+#X connect 2 5 21 0;
+#X connect 2 6 24 0;
+#X connect 2 7 27 0;
+#X connect 2 8 30 0;
+#X connect 2 9 33 0;
+#X connect 2 10 36 0;
+#X connect 2 11 39 0;
 #X connect 3 0 1 0;
-#X restore 640 121 pd;
-#X text 509 102 launch the HTML doc->;
-#X obj 641 104 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 130 423 fluid.chroma~ 12;
-#X obj 130 448 unpack f f f f f f f f f f f f;
-#X connect 2 0 1 0;
-#X connect 2 0 1 1;
-#X connect 2 0 34 0;
-#X connect 3 0 2 1;
-#X connect 4 0 11 0;
-#X connect 5 0 4 1;
-#X connect 6 0 11 0;
-#X connect 7 0 6 1;
-#X connect 8 0 11 0;
-#X connect 9 0 8 1;
-#X connect 10 0 4 0;
-#X connect 11 0 1 0;
-#X connect 11 0 1 1;
-#X connect 11 0 34 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 3 1;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 11 0 10 0;
 #X connect 12 0 11 0;
-#X connect 13 0 12 1;
-#X connect 26 0 34 1;
-#X connect 27 0 34 1;
-#X connect 28 0 10 0;
-#X connect 28 0 35 0;
-#X connect 28 0 36 0;
-#X connect 28 0 37 0;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 0;
+#X connect 16 0 1 0;
+#X connect 17 0 16 0;
+#X connect 18 0 17 0;
+#X connect 19 0 1 0;
+#X connect 20 0 19 0;
+#X connect 21 0 20 0;
+#X connect 22 0 1 0;
+#X connect 23 0 22 0;
+#X connect 24 0 23 0;
+#X connect 25 0 1 0;
+#X connect 26 0 25 0;
+#X connect 27 0 26 0;
+#X connect 28 0 1 0;
 #X connect 29 0 28 0;
-#X connect 30 0 28 0;
-#X connect 31 0 28 0;
-#X connect 32 0 28 0;
-#X connect 33 0 2 0;
-#X connect 34 0 47 0;
-#X connect 35 0 6 0;
-#X connect 36 0 8 0;
-#X connect 37 0 12 0;
-#X connect 39 0 41 0;
-#X connect 40 0 42 0;
-#X connect 41 0 11 0;
-#X connect 42 0 41 1;
-#X connect 46 0 44 0;
-#X connect 47 0 48 0;
-#X connect 48 0 14 0;
-#X connect 48 1 15 0;
-#X connect 48 2 16 0;
-#X connect 48 3 17 0;
-#X connect 48 4 18 0;
-#X connect 48 5 19 0;
-#X connect 48 6 20 0;
-#X connect 48 7 21 0;
-#X connect 48 8 22 0;
-#X connect 48 9 23 0;
-#X connect 48 10 24 0;
-#X connect 48 11 25 0;
+#X connect 30 0 29 0;
+#X connect 31 0 1 0;
+#X connect 32 0 31 0;
+#X connect 33 0 32 0;
+#X connect 34 0 1 0;
+#X connect 35 0 34 0;
+#X connect 36 0 35 0;
+#X connect 37 0 1 0;
+#X connect 38 0 37 0;
+#X connect 39 0 38 0;
+#X connect 40 0 7 1;
+#X connect 41 0 13 1;
+#X connect 42 0 10 1;
+#X connect 43 0 16 1;
+#X connect 44 0 19 1;
+#X connect 45 0 22 1;
+#X connect 46 0 25 1;
+#X connect 47 0 28 1;
+#X connect 48 0 31 1;
+#X connect 49 0 34 1;
+#X connect 50 0 37 1;
+#X restore 45 575 pd oscillator_bank;
+#N canvas 30 128 692 686 some_more_details 0;
+#X obj 38 645 dac~;
+#X obj 119 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 138 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 157 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 176 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 195 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 214 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 233 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 252 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 271 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 290 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 309 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 328 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 37 121 fluid.demosound~;
+#X obj 120 364 fluid.stats -size 40;
+#X floatatom 136 282 5 2 19 0 - - - 0;
+#X obj 136 236 loadbang;
+#X msg 136 260 19;
+#X msg 136 305 numchroma \$1;
+#X obj 119 407 unpack f f f f f f f f f f f f f f f f f f f, f 49
+;
+#X obj 347 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 366 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 385 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 404 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 423 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 442 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 461 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X text 121 568 3) The list is now 19 elements long: each element in
+the list is a chroma bin., f 42;
+#X text 238 282 2) The number of chroma can be changed. Note \, the
+maximum number of chroma is always returned and so the maximum chroma
+has to be set also. This is the first argument of the object., f 61
+;
+#X obj 120 333 fluid.chroma~ 19 -fftsettings 4096 512 -normalize 1
+-numchroma 19, f 65;
+#X obj 67 332 s #0-n;
+#X text 36 101 1) Select a source. It works well with oboe multiphonic.
+;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.chroma~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ in\\\ real-time.
+4 8 0 13 #e0e0e0 #404040 0;
+#N canvas 257 304 1501 490 oscillator_bank 0;
+#X obj 52 47 inlet;
+#X obj 50 450 outlet~;
+#X obj 51 394 *~, f 6;
+#X obj 51 372 line~;
+#X msg 51 348 \$1 10;
+#X obj 51 233 unpack f f f f f f f f f f f f f f f f f f f;
+#X obj 1060 90 until;
+#X obj 1060 66 t f f b, f 17;
+#X obj 1060 114 f;
+#X obj 1032 126 + 1;
+#X msg 1176 90 0;
+#X obj 1132 164 expr ($f1 * 12 / $f2) + 69;
+#X obj 1060 138 t f f f;
+#X obj 1081 211 pack f f;
+#X obj 1081 235 route 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
+;
+#X obj 1132 188 mtof;
+#X obj 92 372 osc~;
+#X obj 126 394 *~, f 6;
+#X obj 126 372 line~;
+#X msg 126 348 \$1 10;
+#X obj 167 372 osc~;
+#X obj 202 394 *~, f 6;
+#X obj 202 372 line~;
+#X msg 202 348 \$1 10;
+#X obj 243 372 osc~;
+#X obj 277 394 *~, f 6;
+#X obj 277 372 line~;
+#X msg 277 348 \$1 10;
+#X obj 318 372 osc~;
+#X obj 352 394 *~, f 6;
+#X obj 352 372 line~;
+#X msg 352 348 \$1 10;
+#X obj 393 372 osc~;
+#X obj 427 394 *~, f 6;
+#X obj 427 372 line~;
+#X msg 427 348 \$1 10;
+#X obj 468 372 osc~;
+#X obj 503 394 *~, f 6;
+#X obj 503 372 line~;
+#X msg 503 348 \$1 10;
+#X obj 544 372 osc~;
+#X obj 578 394 *~, f 6;
+#X obj 578 372 line~;
+#X msg 578 348 \$1 10;
+#X obj 619 372 osc~;
+#X obj 653 393 *~, f 6;
+#X obj 653 371 line~;
+#X msg 653 347 \$1 10;
+#X obj 694 371 osc~;
+#X obj 728 393 *~, f 6;
+#X obj 728 371 line~;
+#X msg 728 347 \$1 10;
+#X obj 769 371 osc~;
+#X obj 804 393 *~, f 6;
+#X obj 804 371 line~;
+#X msg 804 347 \$1 10;
+#X obj 845 371 osc~;
+#X obj 879 393 *~, f 6;
+#X obj 879 371 line~;
+#X msg 879 347 \$1 10;
+#X obj 920 371 osc~;
+#X obj 954 393 *~, f 6;
+#X obj 954 371 line~;
+#X msg 954 347 \$1 10;
+#X obj 995 371 osc~;
+#X obj 1029 393 *~, f 6;
+#X obj 1029 371 line~;
+#X msg 1029 347 \$1 10;
+#X obj 1070 371 osc~;
+#X obj 1105 393 *~, f 6;
+#X obj 1105 371 line~;
+#X msg 1105 347 \$1 10;
+#X obj 1146 371 osc~;
+#X obj 1180 393 *~, f 6;
+#X obj 1180 371 line~;
+#X msg 1180 347 \$1 10;
+#X obj 1221 371 osc~;
+#X obj 1255 392 *~, f 6;
+#X obj 1255 370 line~;
+#X msg 1255 346 \$1 10;
+#X obj 1296 370 osc~;
+#X obj 1331 392 *~, f 6;
+#X obj 1331 370 line~;
+#X msg 1331 346 \$1 10;
+#X obj 1372 370 osc~;
+#X obj 1406 392 *~, f 6;
+#X obj 1406 370 line~;
+#X msg 1406 346 \$1 10;
+#X obj 1447 370 osc~;
+#X obj 1060 43 r #0-n;
+#X connect 0 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 5 1 19 0;
+#X connect 5 2 23 0;
+#X connect 5 3 27 0;
+#X connect 5 4 31 0;
+#X connect 5 5 35 0;
+#X connect 5 6 39 0;
+#X connect 5 7 43 0;
+#X connect 5 8 47 0;
+#X connect 5 9 51 0;
+#X connect 5 10 55 0;
+#X connect 5 11 59 0;
+#X connect 5 12 63 0;
+#X connect 5 13 67 0;
+#X connect 5 14 71 0;
+#X connect 5 15 75 0;
+#X connect 5 16 79 0;
+#X connect 5 17 83 0;
+#X connect 5 18 87 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 7 1 11 1;
+#X connect 7 2 10 0;
+#X connect 8 0 12 0;
+#X connect 9 0 8 1;
+#X connect 10 0 8 1;
+#X connect 11 0 15 0;
+#X connect 12 0 9 0;
+#X connect 12 1 13 0;
+#X connect 12 2 11 0;
+#X connect 13 0 14 0;
+#X connect 14 0 16 0;
+#X connect 14 1 20 0;
+#X connect 14 2 24 0;
+#X connect 14 3 28 0;
+#X connect 14 4 32 0;
+#X connect 14 5 36 0;
+#X connect 14 6 40 0;
+#X connect 14 7 44 0;
+#X connect 14 8 48 0;
+#X connect 14 9 52 0;
+#X connect 14 10 56 0;
+#X connect 14 11 60 0;
+#X connect 14 12 64 0;
+#X connect 14 13 68 0;
+#X connect 14 14 72 0;
+#X connect 14 15 76 0;
+#X connect 14 16 80 0;
+#X connect 14 17 84 0;
+#X connect 14 18 88 0;
+#X connect 15 0 13 1;
+#X connect 16 0 2 1;
+#X connect 17 0 1 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X connect 20 0 17 1;
+#X connect 21 0 1 0;
+#X connect 22 0 21 0;
+#X connect 23 0 22 0;
+#X connect 24 0 21 1;
+#X connect 25 0 1 0;
+#X connect 26 0 25 0;
+#X connect 27 0 26 0;
+#X connect 28 0 25 1;
+#X connect 29 0 1 0;
+#X connect 30 0 29 0;
+#X connect 31 0 30 0;
+#X connect 32 0 29 1;
+#X connect 33 0 1 0;
+#X connect 34 0 33 0;
+#X connect 35 0 34 0;
+#X connect 36 0 33 1;
+#X connect 37 0 1 0;
+#X connect 38 0 37 0;
+#X connect 39 0 38 0;
+#X connect 40 0 37 1;
+#X connect 41 0 1 0;
+#X connect 42 0 41 0;
+#X connect 43 0 42 0;
+#X connect 44 0 41 1;
+#X connect 45 0 1 0;
+#X connect 46 0 45 0;
+#X connect 47 0 46 0;
+#X connect 48 0 45 1;
+#X connect 49 0 1 0;
+#X connect 50 0 49 0;
+#X connect 51 0 50 0;
+#X connect 52 0 49 1;
+#X connect 53 0 1 0;
+#X connect 54 0 53 0;
+#X connect 55 0 54 0;
+#X connect 56 0 53 1;
+#X connect 57 0 1 0;
+#X connect 58 0 57 0;
+#X connect 59 0 58 0;
+#X connect 60 0 57 1;
+#X connect 61 0 1 0;
+#X connect 62 0 61 0;
+#X connect 63 0 62 0;
+#X connect 64 0 61 1;
+#X connect 65 0 1 0;
+#X connect 66 0 65 0;
+#X connect 67 0 66 0;
+#X connect 68 0 65 1;
+#X connect 69 0 1 0;
+#X connect 70 0 69 0;
+#X connect 71 0 70 0;
+#X connect 72 0 69 1;
+#X connect 73 0 1 0;
+#X connect 74 0 73 0;
+#X connect 75 0 74 0;
+#X connect 76 0 73 1;
+#X connect 77 0 1 0;
+#X connect 78 0 77 0;
+#X connect 79 0 78 0;
+#X connect 80 0 77 1;
+#X connect 81 0 1 0;
+#X connect 82 0 81 0;
+#X connect 83 0 82 0;
+#X connect 84 0 81 1;
+#X connect 85 0 1 0;
+#X connect 86 0 85 0;
+#X connect 87 0 86 0;
+#X connect 88 0 85 1;
+#X connect 89 0 7 0;
+#X restore 63 617 pd oscillator_bank;
+#X connect 13 0 0 0;
+#X connect 13 0 29 0;
+#X connect 14 0 34 0;
+#X connect 14 0 19 0;
+#X connect 15 0 18 0;
+#X connect 15 0 30 0;
+#X connect 16 0 17 0;
+#X connect 17 0 15 0;
+#X connect 18 0 29 0;
+#X connect 19 0 1 0;
+#X connect 19 1 2 0;
+#X connect 19 2 3 0;
+#X connect 19 3 4 0;
+#X connect 19 4 5 0;
+#X connect 19 5 6 0;
+#X connect 19 6 7 0;
+#X connect 19 7 8 0;
+#X connect 19 8 9 0;
+#X connect 19 9 10 0;
+#X connect 19 10 11 0;
+#X connect 19 11 12 0;
+#X connect 19 12 20 0;
+#X connect 19 13 21 0;
+#X connect 19 14 22 0;
+#X connect 19 15 23 0;
+#X connect 19 16 24 0;
+#X connect 19 17 25 0;
+#X connect 19 18 26 0;
+#X connect 29 0 14 0;
+#X connect 34 0 0 1;
+#X restore 514 616 pd some_more_details;
+#X connect 14 0 2 0;
+#X connect 14 1 3 0;
+#X connect 14 2 4 0;
+#X connect 14 3 5 0;
+#X connect 14 4 6 0;
+#X connect 14 5 7 0;
+#X connect 14 6 8 0;
+#X connect 14 7 9 0;
+#X connect 14 8 10 0;
+#X connect 14 9 11 0;
+#X connect 14 10 12 0;
+#X connect 14 11 13 0;
+#X connect 15 0 28 0;
+#X connect 15 0 1 0;
+#X connect 28 0 30 0;
+#X connect 30 0 14 0;
+#X connect 30 0 37 0;
+#X connect 37 0 1 1;
