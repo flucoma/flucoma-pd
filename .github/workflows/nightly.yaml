@@ -110,15 +110,13 @@ jobs:
           tag_name: nightly
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+
       - name: package and upload
-        uses: svenstaro/upload-release-action@v2
+        uses: softprops/action-gh-release@v1
         with:
-          release_name: FluCoMa PureData Nightly Build
-          prerelease: true
+          name: FluCoMa PureData Nightly Release
           body: "This is a nightly build of the FluCoMa PureData package. As such, be warned there may be bugs or other unexpected behaviour. The build hash is ${{ github.sha }}"
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: FluCoMa-PD-*.zip
-          file_glob: true
-          tag: nightly
-          overwrite: true
+          files: FluCoMa-PD-*.zip
+          prerelease: true
+          tag_name: nightly
+          draft: false
