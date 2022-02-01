@@ -150,8 +150,10 @@ install(DIRECTORY abstractions/
         FILES_MATCHING PATTERN "*.pd")
 install(DIRECTORY examples 
         DESTINATION ${PD_PACKAGE_ROOT})
-install(DIRECTORY "${flucoma-core_SOURCE_DIR}/AudioFiles/" 
+install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/AudioFiles/" 
         DESTINATION "${PD_PACKAGE_ROOT}/media")
+install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/DataSets/"
+        DESTINATION "${PD_PACKAGE_ROOT}/")
 install(FILES icon.png QuickStart.md 
         DESTINATION ${PD_PACKAGE_ROOT})
 install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic 
