@@ -153,7 +153,7 @@ install(DIRECTORY examples
 install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/AudioFiles/" 
         DESTINATION "${PD_PACKAGE_ROOT}/media")
 install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/DataSets/"
-        DESTINATION "${PD_PACKAGE_ROOT}/")
+        DESTINATION "${PD_PACKAGE_ROOT}/datasets")
 install(FILES icon.png QuickStart.md 
         DESTINATION ${PD_PACKAGE_ROOT})
 install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic 
