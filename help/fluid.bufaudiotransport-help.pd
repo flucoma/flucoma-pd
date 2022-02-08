@@ -18,7 +18,7 @@
 #X obj 526 474 expr high[$f1] = sin($f1 / 50);
 #X msg 109 354 set interp \, bang;
 #X msg 37 125 interpolation 0.5 \, bang;
-#X obj 176 173 fluid.bufaudiotransport -source1 low -source2 high -destination
+#X obj 176 173 fluid.bufaudiotransport -sourcea low -sourceb high -destination
 interp;
 #X obj 179 224 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
