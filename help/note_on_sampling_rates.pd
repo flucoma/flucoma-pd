@@ -1,4 +1,4 @@
-#N canvas 0 23 450 124 10;
+#N canvas 0 23 498 145 12;
 #X text 18 20 As PureData arrays are simply list of numbers \, they
 do not have a sampling rate per se \, and therefore the frequency of
 the various descriptors can only be as true as long as we provide the

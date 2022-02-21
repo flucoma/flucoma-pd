@@ -602,8 +602,8 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       {
       case A_FLOAT: return std::to_string(atom_getfloat(a));
       default: {
-        char result[30];
-        atom_string(a, &result[0], 30);
+        char result[MAXPDSTRING];
+        atom_string(a, &result[0], MAXPDSTRING);
         return result;
       }
       }
@@ -1245,7 +1245,16 @@ private:
       }
       if (message.name == "read")
       {
-        SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
+        using ParamValues = typename ParamSetType::ValueTuple;
+        using ReturnType = typename T::ReturnType;
+        using ArgumentTypes = typename T::ArgumentTypes;
+        constexpr bool isVoid = std::is_same<ReturnType, MessageResult<void>>::value;
+        
+        using IfVoid = SpecialCase<MessageResult<void>,std::string>;
+        using IfParams = SpecialCase<MessageResult<ParamValues>,std::string>;
+        using Handler = std::conditional_t<isVoid, IfVoid, IfParams>;
+        
+        Handler{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
             [&message](auto M) {
               class_addmethod(getClass(), (t_method) doRead<decltype(M)::value>,

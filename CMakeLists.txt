@@ -67,6 +67,8 @@ FetchContent_GetProperties(flucoma-core)
 if(NOT flucoma-core_POPULATED)
   FetchContent_Populate(flucoma-core)
   add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
+  file(GLOB FLUCOMA_CORE_RESOURCES ${flucoma-core_SOURCE_DIR}/Resources/Data/*.*)
+  file(COPY ${FLUCOMA_CORE_RESOURCES} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/data)
   include(flucoma_version)
   include(flucoma-buildtools)
   include(flucoma-buildtype)
@@ -145,13 +147,15 @@ install(DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/
 install(DIRECTORY help/ 
         DESTINATION ${PD_PACKAGE_ROOT} 
         FILES_MATCHING PATTERN "*.pd")
-install(DIRECTORY abstractions
-		DESTINATION ${PD_PACKAGE_ROOT}
-		FILES_MATCHING PATTERN "*.pd")
+install(DIRECTORY abstractions/
+        DESTINATION ${PD_PACKAGE_ROOT}
+        FILES_MATCHING PATTERN "*.pd")
 install(DIRECTORY examples 
         DESTINATION ${PD_PACKAGE_ROOT})
-install(DIRECTORY "${flucoma-core_SOURCE_DIR}/AudioFiles/" 
+install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/AudioFiles/" 
         DESTINATION "${PD_PACKAGE_ROOT}/media")
+install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/Data/"
+        DESTINATION "${PD_PACKAGE_ROOT}/data")
 install(FILES icon.png QuickStart.md 
         DESTINATION ${PD_PACKAGE_ROOT})
 install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic 

@@ -29,7 +29,7 @@ This will assemble a package in `release-packaging`.
 #### FluCoMa core development team (in alphabetical order)
 Owen Green, Gerard Roma, Pierre Alexandre Tremblay
 
-#### Other contributors:
-Alex Harker, Francesco Cameli
- 
+#### Other contributors (in alphabetical order):
+James Bradbury, Francesco Cameli, Alex Harker, Ted Moore
+
 > This project has received funding from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme (grant agreement No 725899).
