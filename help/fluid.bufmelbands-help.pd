@@ -68,7 +68,7 @@ melbands., f 100;
 #X array bufmelbands_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
 #X restore 31 299 graph;
-#X obj 674 194 note_on_assumed_sampling_rates_of_arrays;
+#X obj 674 194 note_on_sampling_rates
 #X obj 398 128 fluid.bufmelbands 10 -source bufmelbands_drums -features
 bufmelbands_feats, f 75;
 #X msg 33 177 read -resize media/Nicol-LoopE-M.wav bufmelbands_drums
