@@ -80,7 +80,7 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X restore 31 299 graph;
 #X obj 379 117 fluid\.bufmfcc 13 -source bufmfcc_drums -features bufmfcc_feats
 , f 63;
-#X obj 675 186 note_on_assumed_sampling_rates_of_arrays;
+#X obj 675 186 note_on_sampling_rates
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-1 915 float 0;
 #X coords 0 200 914 -200 887 30 1 0 0;

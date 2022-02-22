@@ -144,7 +144,7 @@ bufshape_feats, f 40;
 #X text 144 348 centroid(Hz):;
 #X text 145 418 spread(Hz):;
 #X text 144 628 rolloff(Hz):;
-#X obj 671 217 note_on_assumed_sampling_rates_of_arrays;
+#X obj 671 217 note_on_sampling_rates
 #X obj 410 170 fluid\.bufspectralshape -source bufshape_drums -features
 bufshape_feats, f 71;
 #N canvas 0 23 450 300 (subpatch) 0;

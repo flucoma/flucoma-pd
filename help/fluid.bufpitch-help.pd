@@ -58,7 +58,7 @@ xticks 0 0 0;
 #X obj 195 810 tabread bufpitch-feats-1;
 #X obj 37 398 fluid\.bufpitch -source pitch-source -features bufpitch-feats
 , f 61;
-#X obj 306 437 note_on_assumed_sampling_rates_of_arrays;
+#X obj 306 437 note_on_sampling_rates
 #X text 35 495 2) observe the pitch estimate (top) and the confidence
 in this value (bottom), f 82;
 #X floatatom 37 750 5 0 0 0 - - -;
