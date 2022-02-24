@@ -623,19 +623,19 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       return atom_getfloat(a);
     }
 
-    static auto fromAtom(FluidPDWrapper* x, t_atom* a, BufferT::type)
+    static auto fromAtom(FluidPDWrapper* x, t_atom* a, const BufferT::type& )
     {
       return BufferT::type(
           new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(FluidPDWrapper* x, t_atom* a, InputBufferT::type)
+    static auto fromAtom(FluidPDWrapper* x, t_atom* a, const InputBufferT::type&)
     {
       return InputBufferT::type(
           new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(FluidPDWrapper*, t_atom* a, StringT::type)
+    static auto fromAtom(FluidPDWrapper*, t_atom* a, const StringT::type&)
     {
       auto s = getString(a);
       return s;
@@ -648,6 +648,12 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       return {atom_getsymbol(a)->s_name};
     }
 
+    template<typename T> 
+    static Optional<T> fromAtom(FluidPDWrapper* x, t_atom* a, const Optional<T>) 
+    {
+      return {fromAtom(x,a,T{})}; 
+    }
+    
     template <typename T>
     static std::enable_if_t<std::is_integral<T>::value> toAtom(t_atom* a, T v)
     {
