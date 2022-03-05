@@ -1,24 +1,24 @@
 #N canvas 60 44 946 934 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufmfcc 20 12 0 36 -262144
--66577 0;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufmfcc 20 12 0 36 #fcfcfc
+#404040 0;
 #X obj 34 156 loadbang;
-#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 134 257 dac~;
-#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X msg 152 215 stop;
 #N canvas 805 51 707 604 multichannel 0;
 #X obj 46 510 loadbang;
 #X obj 46 559 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 48 195 dac~;
-#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X text 67 80 1) compose an artificially wide "stereo" array;
 #X text 46 11 "multichannel" arrays will process each channel in turn
 \, and output 'channels' will be consecutive \, i.e. all features of
@@ -26,12 +26,12 @@
 #X text 146 152 2) listen to the source;
 #X msg 48 152 stop;
 #X text 64 241 3) process;
-#X obj 48 100 fluid\.bufcompose -source bufmfccguitar -startframe 555000
+#X obj 48 100 fluid.bufcompose -source bufmfccguitar -startframe 555000
 -numframes 468335 -deststartchan 1 -destination bufmfcc_source, f
 73;
 #X obj 48 174 tabplay~ bufmfcc_source-0;
 #X obj 211 175 tabplay~ bufmfcc_source-1;
-#X obj 45 259 fluid\.bufmfcc 6 -source bufmfcc_source -features bufmfcc_feats
+#X obj 45 259 fluid.bufmfcc 6 -source bufmfcc_source -features bufmfcc_feats
 , f 84;
 #X obj 115 559 array define bufmfccguitar;
 #X obj 287 559 clone fluid.multiarray 2 bufmfcc_source;
@@ -60,8 +60,7 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X connect 14 0 19 0;
 #X connect 17 0 1 0;
 #X restore 824 161 pd multichannel;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufmfcc_drums
-;
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufmfcc_drums;
 #X obj 134 236 tabplay~ bufmfcc_drums;
 #X msg 379 136 \; bufmfcc_feats-0 xticks 0 0 0 \; bufmfcc_feats-1 xticks
 0 0 0 \; bufmfcc_feats-2 xticks 0 0 0 \; bufmfcc_feats-3 xticks 0 0
@@ -78,9 +77,9 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X array bufmfcc_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
 #X restore 31 299 graph;
-#X obj 379 117 fluid\.bufmfcc 13 -source bufmfcc_drums -features bufmfcc_feats
+#X obj 379 117 fluid.bufmfcc 13 -source bufmfcc_drums -features bufmfcc_feats
 , f 63;
-#X obj 675 186 note_on_sampling_rates
+#X obj 782 185 note_on_sampling_rates;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-1 915 float 0;
 #X coords 0 200 914 -200 887 30 1 0 0;
@@ -132,7 +131,7 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufmfcc.html;
+#X msg 83 71 dir 0 docs/fluid.bufmfcc.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -140,8 +139,8 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X connect 3 0 1 0;
 #X restore 891 258 pd;
 #X text 760 239 launch the HTML doc->;
-#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 782 209 note_on_multithreading;
 #X connect 2 0 8 0;
 #X connect 3 0 13 0;

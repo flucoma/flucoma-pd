@@ -1,24 +1,24 @@
 #N canvas 242 107 946 806 10;
 #X obj 33 195 soundfiler;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufmelbands 20 12 0 36
--262144 -66577 0;
+#fcfcfc #404040 0;
 #X obj 34 156 loadbang;
-#X obj 399 109 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 399 109 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 134 257 dac~;
-#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X msg 152 215 stop;
 #N canvas 739 43 703 617 multichannel 0;
 #X obj 46 510 loadbang;
 #X obj 46 559 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 48 195 dac~;
-#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X text 67 80 1) compose an artificially wide "stereo" array;
 #X text 46 11 "multichannel" arrays will process each channel in turn
 \, and output 'channels' will be consecutive \, i.e. all features of
@@ -68,7 +68,7 @@ melbands., f 100;
 #X array bufmelbands_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
 #X restore 31 299 graph;
-#X obj 674 194 note_on_sampling_rates
+#X obj 781 193 note_on_sampling_rates;
 #X obj 398 128 fluid.bufmelbands 10 -source bufmelbands_drums -features
 bufmelbands_feats, f 75;
 #X msg 33 177 read -resize media/Nicol-LoopE-M.wav bufmelbands_drums
@@ -122,9 +122,9 @@ xticks 0 0 0;
 #X msg 550 107 numbands \$1;
 #X msg 630 107 minfreq \$1;
 #X msg 704 107 maxfreq \$1;
-#X floatatom 550 90 8 0 0 0 - - -;
-#X floatatom 630 90 8 0 0 0 - - -;
-#X floatatom 704 90 8 0 0 0 - - -;
+#X floatatom 550 90 8 0 0 0 - - - 0;
+#X floatatom 630 90 8 0 0 0 - - - 0;
+#X floatatom 704 90 8 0 0 0 - - - 0;
 #X obj 703 51 loadbang;
 #X msg 550 69 10;
 #X msg 630 69 20;
@@ -140,8 +140,8 @@ xticks 0 0 0;
 #X connect 3 0 1 0;
 #X restore 895 266 pd;
 #X text 764 247 launch the HTML doc->;
-#X obj 896 249 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 896 249 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 782 219 note_on_multithreading;
 #X connect 2 0 12 0;
 #X connect 3 0 11 0;

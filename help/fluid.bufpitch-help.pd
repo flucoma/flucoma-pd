@@ -1,6 +1,6 @@
 #N canvas 40 41 580 968 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufpitch 20 12 0 36 -262144
--66577 0;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufpitch 20 12 0 36 #fcfcfc
+#404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array pitch-source 44100 float 0;
 #X coords 0 1 44099 -1 516 141 1 0 0;
@@ -13,8 +13,8 @@
 #X array bufpitch-feats-1 87 float 2;
 #X coords 0 1 87 0 513 70 1 0 0;
 #X restore 38 611 graph;
-#X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X text 36 57 A Selection of Pitch Descriptors on a Buffer, f 61;
 #X text 35 100 Implements three pitch descriptors \, computed as frequency
 and the confidence in its value., f 45;
@@ -31,7 +31,7 @@ and the confidence in its value., f 45;
 #X obj 57 283 t f f f, f 40;
 #X obj 57 308 expr sin($f1 / 22050 * 3.14159 * 220);
 #X msg 38 422 \; pitch-source xticks 0 0 0;
-#X obj 38 381 fluid\.bufcompose -source sine -destination pitch-source
+#X obj 38 381 fluid.bufcompose -source sine -destination pitch-source
 -deststartframe 8192 -numframes 1024 -gain 0.2;
 #X connect 0 0 5 0;
 #X connect 1 0 3 0;
@@ -51,17 +51,17 @@ and the confidence in its value., f 45;
 #X text 65 379 1) process;
 #X msg 37 417 \; bufpitch-feats-1 xticks 0 0 0 \; bufpitch-feats-0
 xticks 0 0 0;
-#X floatatom 37 788 5 0 0 0 - - -;
+#X floatatom 37 788 5 0 0 0 - - - 0;
 #X obj 37 808 tabread bufpitch-feats-0;
-#X floatatom 37 829 5 0 0 0 - - -;
-#X floatatom 195 831 5 0 0 0 - - -;
+#X floatatom 37 829 5 0 0 0 - - - 0;
+#X floatatom 195 831 5 0 0 0 - - - 0;
 #X obj 195 810 tabread bufpitch-feats-1;
-#X obj 37 398 fluid\.bufpitch -source pitch-source -features bufpitch-feats
+#X obj 37 398 fluid.bufpitch -source pitch-source -features bufpitch-feats
 , f 61;
-#X obj 306 437 note_on_sampling_rates
+#X obj 413 436 note_on_sampling_rates;
 #X text 35 495 2) observe the pitch estimate (top) and the confidence
 in this value (bottom), f 82;
-#X floatatom 37 750 5 0 0 0 - - -;
+#X floatatom 37 750 5 0 0 0 - - - 0;
 #X text 37 699 3) here you can enter the numFrame from SRC you know
 signal should be at (starting at 8192) - notice the confidence and
 the graph: the analysis padded by (windowsize - hopsize) to make sure
@@ -73,9 +73,9 @@ audio;
 #X text 69 788 frame index to query;
 #X text 73 830 pitch (Hz);
 #X text 230 832 confidence;
-#X obj 40 868 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X floatatom 40 909 5 0 0 0 - - -;
+#X obj 40 868 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X floatatom 40 909 5 0 0 0 - - - 0;
 #X text 73 909 total number of frames= ((source #frames + windowsize)
 / hopSize) - 1, f 69;
 #X obj 40 888 array size bufpitch-feats-0;
@@ -84,7 +84,7 @@ audio;
 bufpitch_synthsource, f 78;
 #X obj 26 83 soundfiler;
 #X obj 26 104 t b;
-#X obj 26 125 fluid\.bufpitch -source bufpitch_synthsource -features
+#X obj 26 125 fluid.bufpitch -source bufpitch_synthsource -features
 bufpitch_synth-pitches, f 77;
 #X obj 32 649 array define bufpitch_synthsource;
 #X obj 32 669 clone fluid.multiarray 2 bufpitch_synth-pitches;
@@ -186,28 +186,28 @@ bufpitch_synth-pitches, f 77;
 #X connect 23 0 5 0;
 #X connect 23 1 21 3;
 #X restore 26 292 pd filter_acceptable_grains;
-#X floatatom 105 252 5 0 0 0 - - -;
-#X floatatom 184 275 5 0 0 0 - - -;
+#X floatatom 105 252 5 0 0 0 - - - 0;
+#X floatatom 184 275 5 0 0 0 - - - 0;
 #X text 141 251 minimum frequency;
 #X text 219 275 minimum confidence;
 #X msg 105 229 500;
 #X obj 104 207 loadbang;
-#X floatatom 26 313 5 0 0 0 - - -;
+#X floatatom 26 313 5 0 0 0 - - - 0;
 #X msg 184 229 0.99;
 #X obj 32 570 clone fluid.bufpitch.grain 5;
 #X obj 32 592 *~ 0.1;
 #X obj 32 613 dac~;
-#X floatatom 32 473 5 0 0 0 - - -;
+#X floatatom 32 473 5 0 0 0 - - - 0;
 #X obj 32 490 tabread acceptable_grains;
-#X floatatom 32 511 5 0 0 0 - - -;
+#X floatatom 32 511 5 0 0 0 - - - 0;
 #X obj 32 531 * 512;
 #X msg 32 551 next \$1;
-#X obj 31 412 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 31 412 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 31 453 random 300;
 #X text 76 413 2)start the pitched material granulator on the selected
 grains only, f 67;
-#X floatatom 42 169 5 0 0 0 - - -;
+#X floatatom 42 169 5 0 0 0 - - - 0;
 #X text 80 168 number of frames;
 #X text 63 313 number of acceptable grains;
 #X text 162 208 minimum freq and pitch detection confidence to accept
@@ -243,20 +243,20 @@ a grain, f 61;
 #N canvas 440 41 683 958 multichannel 0;
 #X obj 43 773 loadbang;
 #X obj 43 825 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 48 195 dac~;
-#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X text 67 80 1) compose an artificially wide "stereo" array;
 #X text 46 11 "multichannel" arrays will process each channel in turn
 \, and output 'channels' will be consecutive \, i.e. all features of
 "channel" 1 \, then all features of "channel" 2 \, etc, f 87;
-#X obj 48 100 fluid\.bufcompose -source bufpitchguitar -startframe
-555000 -numframes 468335 -deststartchan 1 -destination bufpitch_source
-, f 73;
+#X obj 48 100 fluid.bufcompose -source bufpitchguitar -startframe 555000
+-numframes 468335 -deststartchan 1 -destination bufpitch_source, f
+73;
 #X obj 48 174 tabplay~ bufpitch_source-0;
 #X obj 211 175 tabplay~ bufpitch_source-1;
 #X text 146 152 2) listen to the source;
@@ -286,7 +286,7 @@ xticks 0 0 0;
 #X array bufpitch-feats2-3 915 float 2;
 #X coords 0 1 915 0 513 70 1 0 0;
 #X restore 43 637 graph;
-#X obj 45 259 fluid\.bufpitch -source bufpitch_source -features bufpitch-feats2
+#X obj 45 259 fluid.bufpitch -source bufpitch_source -features bufpitch-feats2
 -unit 1, f 73;
 #X connect 0 0 15 0;
 #X connect 2 0 8 0;
@@ -303,7 +303,7 @@ xticks 0 0 0;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufpitch.html;
+#X msg 83 71 dir 0 docs/fluid.bufpitch.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -311,8 +311,8 @@ xticks 0 0 0;
 #X connect 3 0 1 0;
 #X restore 528 122 pd;
 #X text 397 103 launch the HTML doc->;
-#X obj 529 105 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 529 105 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 413 459 note_on_multithreading;
 #X connect 4 0 15 0;
 #X connect 10 0 11 0;
