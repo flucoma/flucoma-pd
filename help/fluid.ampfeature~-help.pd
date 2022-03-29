@@ -7,15 +7,32 @@
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Realtime\\\ Amplitude\\\ Differential\\\ Feature
 4 8 0 13 #e0e0e0 #404040 0;
-#X obj 204 381 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
 #X text 17 79 Calculate the amplitude differential feature used by
 fluid.ampslice~;
 #X text 22 121 1) Select a source., f 66;
-#X obj 49 321 fluid.ampslice~;
-#X obj 205 321 fluid.ampfeature~;
+#X obj 206 320 fluid.ampfeature~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array ampfeature_helpviewer 300 float 2;
+#X coords 0 100 300 -100 300 140 1 0 0;
+#X restore 379 337 graph;
+#X obj 205 486 tabwrite~ ampfeature_helpviewer;
+#X obj 220 416 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 220 436 metro 100;
+#X msg 212 263 reset \, slowrampup 4410 \, slowrampdown 4410 \, fastrampup
+10 \, fastrampdown 2205 \, highpassfreq 20 \, floor -40;
+#X obj 48 319 fluid.ampslice~ -onthreshold 10 -offthreshold 5, f 16
+;
+#X obj 212 242 loadbang;
+#X obj 220 391 loadbang;
 #X connect 2 0 1 0;
-#X connect 2 0 8 0;
-#X connect 2 0 9 0;
-#X connect 8 0 1 1;
-#X connect 9 0 5 0;
+#X connect 2 0 7 0;
+#X connect 2 0 13 0;
+#X connect 7 0 9 0;
+#X connect 10 0 11 0;
+#X connect 11 0 9 0;
+#X connect 12 0 7 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 1;
+#X connect 14 0 12 0;
+#X connect 15 0 10 0;
