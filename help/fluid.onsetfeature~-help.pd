@@ -1,0 +1,25 @@
+#N canvas 12 49 707 598 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.onsetfeature~ 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 20 450 dac~;
+#X obj 20 179 fluid.demosound~;
+#X obj 509 60 fluid.referencelauncher fluid.chroma~.html reference/chroma/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Realtime\\\ Spectral\\\ Difference\\\ Feature
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 19 159 1) Select a source. It works well with polyphonic piano.
+, f 66;
+#X text 17 79 Calculate the spectral difference feature used by fluid.onsetslice~
+;
+#X obj 67 420 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 46 359 fluid.onsetslice~;
+#X obj 183 358 fluid.onsetfeature~;
+#X obj 182 418 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X connect 2 0 1 0;
+#X connect 2 0 8 0;
+#X connect 2 0 9 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X connect 9 0 10 0;
