@@ -93,7 +93,7 @@
 #X restore 165 304 pd parameters;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array onsetfeature_helpviewer 300 float 2;
-#X coords 0 1 300 -1 300 140 1 0 0;
+#X coords 0 35 300 -35 300 140 1 0 0;
 #X restore 353 324 graph;
 #X obj 224 506 array set onsetfeature_helpviewer;
 #X obj 256 481 f;
