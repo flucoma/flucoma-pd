@@ -1,0 +1,80 @@
+#N canvas 0 25 701 658 12;
+#X obj 18 240 soundfiler;
+#X obj 18 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 369 233 dac~;
+#X obj 368 186 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 387 185 stop;
+#X obj 18 163 fluid.demoaudiofiles;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufonsetfeature 1 22 0
+36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufchroma.html reference/chroma/
+;
+#X obj 515 527 cnv 15 165 110 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Spectral\\\ Difference\\\ Feature
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 369 206 tabplay~ bufchroma_in;
+#X obj 518 591 note_on_sampling_rates;
+#X obj 518 614 note_on_multithreading;
+#X obj 518 569 note_on_multiarrays;
+#X text 366 162 2) Listen to the source;
+#N canvas 32 99 692 686 some_more_details 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufchroma 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ on\\\ an\\\ array.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 112 More chromas can be specified with both the -numchroma
+attribute and by providing the maximum number of chromas as the first
+argument., f 82;
+#X text 15 219 The chroma values can also scaled with -normalize 1
+\, meaning each collection of chromas will sum to a value of 1, f
+87;
+#X text 15 155 The first argument specifies the maximum number of chroma
+bins \, and therefore the number of output "channels" \, and is not
+interactive after instantiation of the object. The -numchroma attribute
+can be changed dynamically \, and the excess "channels" will be zero'd.
+, f 90;
+#X text 30 336 In the instance below \, a maximum of 19 chroma bins
+can be computed. In the initial settings \, 6 chroma bins will be computed
+and the other 13 "channels" will be zero'd. The sum of the 6 chroma
+amplitudes in each time frame will be 1, f 85;
+#X floatatom 28 465 5 2 19 0 - - - 0;
+#X msg 28 442 6;
+#X obj 28 421 loadbang;
+#X msg 28 488 numchroma \$1 \, bang;
+#X obj 28 511 fluid.bufchroma 19 -source bufchroma_in -features bufchroma_feats2
+-numchroma 6 -normalize 1, f 92;
+#X obj 28 616 clone 19 fluid.multiarray bufchroma_feats2;
+#X msg 28 592 vis \$1 1;
+#X floatatom 28 571 5 0 18 0 - - - 0;
+#X text 69 570 open the "channel" to see;
+#X connect 6 0 9 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 12 0 11 0;
+#X connect 13 0 12 0;
+#X restore 518 547 pd some_more_details;
+#X text 17 79 Calculate the spectral difference feature used by fluid.bufonsetfeature.
+;
+#X text 17 141 1) Pick a source.;
+#X msg 18 210 read -resize \$1 bufonsetfeature-src;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufonsetfeature-features 1956 float 0;
+#X coords 0 1 1955 -1 649 55 1 0 0;
+#X restore 23 437 graph;
+#X obj 96 240 array define bufonsetfeature-src;
+#X msg 18 337 \; bufonsetfeature-features xticks 0 0 0;
+#X obj 18 295 fluid.bufonsetfeature -source bufonsetfeature-src -features
+bufonsetfeature-features -metric 3, f 85;
+#X connect 0 0 1 0;
+#X connect 1 0 22 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 18 0;
+#X connect 10 0 2 0;
+#X connect 10 0 2 1;
+#X connect 18 0 0 0;
+#X connect 22 0 21 0;
