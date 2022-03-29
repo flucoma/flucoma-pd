@@ -1,0 +1,25 @@
+#N canvas 12 49 707 598 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyfeature~ 1 22 0
+36 #4ba3fb #ffffff 0;
+#X obj 23 412 dac~;
+#X obj 23 141 fluid.demosound~;
+#X obj 509 60 fluid.referencelauncher fluid.chroma~.html reference/chroma/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Realtime\ Novelty\ Feature 4
+8 0 13 #e0e0e0 #404040 0;
+#X text 22 121 1) Select a source. It works well with polyphonic piano.
+, f 66;
+#X obj 70 382 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 204 381 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 205 321 fluid.noveltyfeature~;
+#X obj 49 321 fluid.noveltyslice~;
+#X text 17 79 Calculates the novelty feature of audio in realtime.
+;
+#X connect 2 0 1 0;
+#X connect 2 0 8 0;
+#X connect 2 0 9 0;
+#X connect 6 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 1 1;
