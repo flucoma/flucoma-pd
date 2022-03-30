@@ -1,6 +1,6 @@
 #N canvas 66 157 683 540 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.noveltyslice~ 20 12 0
-36 -262144 -66577 0;
+36 #fcfcfc #404040 0;
 #N canvas 750 160 713 331 musical_example 0;
 #N canvas 765 239 407 247 drums_players 0;
 #X obj 94 59 r pd-dsp-started;
@@ -44,16 +44,15 @@
 #X obj 505 207 delread~ \$0-latencydrums;
 #X obj 216 287 dac~;
 #N canvas 64 720 879 183 parameters 0;
-#X floatatom 203 86 8 0 0 0 - - -;
-#X floatatom 120 86 8 0 0 0 - - -;
-#X floatatom 361 86 8 0 0 0 - - -;
+#X floatatom 203 86 8 0 0 0 - - - 0;
+#X floatatom 120 86 8 0 0 0 - - - 0;
+#X floatatom 361 86 8 0 0 0 - - - 0;
 #X obj 121 147 outlet;
 #X msg 120 104 threshold \$1;
 #X msg 203 104 filtersize \$1 \, getlatency;
 #X msg 361 104 kernelsize \$1 \, getlatency;
 #X msg 203 67 3;
-#X floatatom 23 108 8 0 0 0 - - -;
-#X msg 23 126 feature \$1;
+#X floatatom 23 108 8 0 0 0 - - - 0;
 #X msg 23 89 0;
 #X text 15 19 0: spectrum, f 17;
 #X text 15 30 1: MFCC, f 11;
@@ -61,8 +60,8 @@
 #X text 15 52 3: loudness;
 #X msg 361 67 11;
 #X msg 120 67 0.33;
-#X obj 731 27 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 731 27 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #N canvas 0 23 450 176 anotherpreset 0;
 #X obj 37 37 inlet;
 #X msg 38 80 1;
@@ -95,19 +94,20 @@
 #X connect 14 0 13 0;
 #X restore 731 68 pd anotherpreset;
 #X msg 522 103 minslicelength \$1;
-#X floatatom 522 85 8 0 0 0 - - -;
+#X floatatom 522 85 8 0 0 0 - - - 0;
 #X msg 522 66 2;
 #X msg 543 143 fftsettings \$1 \$2 \, getlatency;
-#X floatatom 641 87 8 0 0 0 - - -;
-#X floatatom 693 87 8 0 0 0 - - -;
+#X floatatom 641 87 8 0 0 0 - - - 0;
+#X floatatom 693 87 8 0 0 0 - - - 0;
 #X obj 694 104 t b f;
 #X obj 641 123 pack 1024 512;
 #X msg 641 67 1024;
 #X msg 693 66 512;
-#X obj 203 33 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 203 33 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X text 229 31 first preset;
 #X obj 202 13 loadbang;
+#X msg 23 126 algorithm \$1;
 #X connect 0 0 5 0;
 #X connect 1 0 4 0;
 #X connect 2 0 6 0;
@@ -115,41 +115,41 @@
 #X connect 5 0 3 0;
 #X connect 6 0 3 0;
 #X connect 7 0 0 0;
-#X connect 8 0 9 0;
-#X connect 9 0 3 0;
-#X connect 10 0 8 0;
-#X connect 15 0 2 0;
-#X connect 16 0 1 0;
-#X connect 17 0 18 0;
-#X connect 18 0 8 0;
-#X connect 18 1 1 0;
-#X connect 18 2 0 0;
-#X connect 18 3 2 0;
-#X connect 18 4 20 0;
-#X connect 18 5 23 0;
-#X connect 18 6 24 0;
-#X connect 19 0 3 0;
+#X connect 8 0 31 0;
+#X connect 9 0 8 0;
+#X connect 14 0 2 0;
+#X connect 15 0 1 0;
+#X connect 16 0 17 0;
+#X connect 17 0 8 0;
+#X connect 17 1 1 0;
+#X connect 17 2 0 0;
+#X connect 17 3 2 0;
+#X connect 17 4 19 0;
+#X connect 17 5 22 0;
+#X connect 17 6 23 0;
+#X connect 18 0 3 0;
+#X connect 19 0 18 0;
 #X connect 20 0 19 0;
-#X connect 21 0 20 0;
-#X connect 22 0 3 0;
-#X connect 23 0 26 0;
+#X connect 21 0 3 0;
+#X connect 22 0 25 0;
+#X connect 23 0 24 0;
 #X connect 24 0 25 0;
-#X connect 25 0 26 0;
-#X connect 25 1 26 1;
+#X connect 24 1 25 1;
+#X connect 25 0 21 0;
 #X connect 26 0 22 0;
 #X connect 27 0 23 0;
-#X connect 28 0 24 0;
-#X connect 29 0 15 0;
-#X connect 29 0 7 0;
-#X connect 29 0 16 0;
-#X connect 29 0 21 0;
-#X connect 29 0 27 0;
-#X connect 29 0 28 0;
-#X connect 31 0 29 0;
+#X connect 28 0 14 0;
+#X connect 28 0 7 0;
+#X connect 28 0 15 0;
+#X connect 28 0 20 0;
+#X connect 28 0 26 0;
+#X connect 28 0 27 0;
+#X connect 30 0 28 0;
+#X connect 31 0 3 0;
 #X restore 215 103 pd parameters;
 #X obj 215 53 switch~;
-#X obj 214 34 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
+#X obj 214 34 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X text 232 34 1) switch the processing on;
 #X text 214 85 2) experiment with parameters;
 #X obj 215 138 fluid.noveltyslice~ -threshold 0.2 -kernelsize 31 -filtersize
@@ -178,7 +178,7 @@
 #X obj 397 270 / 1;
 #X msg 347 217 getlatency;
 #X obj 46 437 snapshot~;
-#X floatatom 46 462 5 0 0 0 - - -;
+#X floatatom 46 462 5 0 0 0 - - - 0;
 #X obj 56 411 metro 100;
 #X obj 56 389 loadbang;
 #X obj 45 339 samphold~;
@@ -203,8 +203,8 @@ in the signal to estimate the slicing points., f 102;
 #X connect 3 0 1 0;
 #X restore 629 166 pd;
 #X text 498 147 launch the HTML doc->;
-#X obj 630 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 630 149 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 96 241 fluid.noveltyslice~ -threshold 0.01 -fftsettings 64 -kernelsize
 31;
 #X connect 2 0 4 0;
