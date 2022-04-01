@@ -92,11 +92,6 @@ public:
 
   void setupAudio(t_object* pdObject, index numSigIns, index numSigOuts)
   {
-    Wrapper* wrapper = static_cast<Wrapper*>(this);
-
-    auto& client = wrapper->client();
-
-    // impl::PDBase::getPDObject()->z_misc |= Z_NO_INPLACE;
 
     mSigIns.resize(asUnsigned(numSigIns));
     mSigOuts.resize(asUnsigned(numSigOuts));
@@ -428,7 +423,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   struct StreamingListInput
   {
 
-    void processInput(FluidPDWrapper* x, long ac, t_atom* av)
+    void processInput(FluidPDWrapper*, long, t_atom*)
     {
     
     }
@@ -448,7 +443,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
                            
       x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
       
-      for (index i = 0; i <  x->mAllControlOuts.size(); ++i)
+      for (index i = 0; i <  asSigned(x->mAllControlOuts.size()); ++i)
       {
         // atom_setdouble_array(
         //     std::min<index>(x->mListSize, ac), x->mOutputListAtoms.data(),
@@ -459,7 +454,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
           SETFLOAT(x->mOutputListAtoms.data() + j,static_cast<float>(x->mOutputListData[i][j]));
         }
         outlet_list(x->mAllControlOuts[asUnsigned(i)],
-                    gensym("list"), x->mListSize, x->mOutputListAtoms.data());
+                    gensym("list"), static_cast<int>(x->mListSize), x->mOutputListAtoms.data());
       }
     }
   };
@@ -658,7 +653,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     static std::enable_if_t<std::is_floating_point<T>::value> toAtom(t_atom* a,
                                                                      T       v)
     {
-      atom_setfloat(a, v);
+      atom_setfloat(a, static_cast<float>(v));
     }
 
     static auto toAtom(t_atom* a, BufferT::type v)
@@ -687,7 +682,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     static std::enable_if_t<std::is_floating_point<T>::value>
     toAtom(t_atom* a, FluidTensor<T, 1> v)
     {
-      for (auto& x : v) { atom_setfloat(a++, x); }
+      for (auto& x : v) { atom_setfloat(a++, static_cast<float>(x)); }
     }
 
     template <typename T>
@@ -789,7 +784,7 @@ public:
         mNRTDoneOutlet(nullptr), mControlOutlet(nullptr),
         mParams(Client::getParameterDescriptors()),
         mParamSnapshot(Client::getParameterDescriptors()),
-        mClient{initParamsFromArgs(ac, av)}, mCanvas{canvas_getcurrent()}
+        mClient{initParamsFromArgs(ac, av)},mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
@@ -811,7 +806,7 @@ public:
           mInputListViews.emplace_back(mInputListData.row(i - 1));
       }
 
-      mProxies.reserve(new_ins);
+      mProxies.reserve(asUnsigned(new_ins));
       for (index i = 1; i < new_ins; ++i)
         mProxies.push_back(
             inlet_new(pdObject, &pdObject->ob_pd, gensym("list"), gensym("list")));
@@ -833,11 +828,11 @@ public:
       if(mListSize)
       {
         mOutputListData.resize(mClient.controlChannelsOut().count, mListSize);
-        mOutputListAtoms.reserve(mListSize);
+        mOutputListAtoms.reserve(asUnsigned(mListSize));
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
           mOutputListViews.emplace_back(mOutputListData.row(i));
       }
-      mAllControlOuts.reserve(mClient.controlChannelsOut().count);
+      mAllControlOuts.reserve(asUnsigned(mClient.controlChannelsOut().count));
       for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
         mAllControlOuts.push_back(
             outlet_new(pdObject, gensym("list")));
@@ -1034,7 +1029,7 @@ public:
         }
         
         mOutputListData.resize(mClient.controlChannelsOut().count,mListSize);
-        mOutputListAtoms.reserve(mListSize);
+        mOutputListAtoms.reserve(asUnsigned(mListSize));
         mOutputListViews.clear();
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
         {
@@ -1151,7 +1146,7 @@ private:
   template <template <typename, size_t> class Tensor, typename T>
   static size_t ResultSize(Tensor<T, 1>&& x)
   {
-    return static_cast<FluidTensor<T, 1>>(x).size();
+    return asUnsigned(static_cast<FluidTensor<T, 1>>(x).size());
   }
 
   template <typename... Ts, size_t... Is>
@@ -1172,7 +1167,7 @@ private:
     size_t              resultSize = ResultSize(static_cast<T>(r));
     std::vector<t_atom> out(resultSize);
     ParamAtomConverter::toAtom(out.data(), static_cast<T>(r));
-    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize),
+    outlet_anything(x->mMessageResultOutlet, s, static_cast<int>(resultSize),
                     out.data());
   }
 
@@ -1188,7 +1183,7 @@ private:
     std::vector<t_atom> out(resultSize);
     ParamAtomConverter::toAtom(out.data(), static_cast<std::tuple<Ts...>>(r),
                                indices, offsets);
-    outlet_anything(x->mMessageResultOutlet, s, static_cast<long>(resultSize),
+    outlet_anything(x->mMessageResultOutlet, s, static_cast<int>(resultSize),
                     out.data());
   }
 
@@ -1210,7 +1205,7 @@ private:
       {
         SpecialCase<MessageResult<void>, std::string>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
-            [&message](auto M) {
+            [](auto) {
               //              class_addmethod(getClass(),
               //                              (method)
               //                              deferLoad<decltype(M)::value>,
@@ -1223,7 +1218,7 @@ private:
       {
         SpecialCase<MessageResult<std::string>>{}.template handle<N>(
             typename T::ReturnType{}, typename T::ArgumentTypes{},
-            [&message](auto M) {
+            [](auto) {
               //              class_addmethod(getClass(),
               //                              (method)
               //                              deferDump<decltype(M)::value>,
@@ -1247,7 +1242,6 @@ private:
       {
         using ParamValues = typename ParamSetType::ValueTuple;
         using ReturnType = typename T::ReturnType;
-        using ArgumentTypes = typename T::ArgumentTypes;
         constexpr bool isVoid = std::is_same<ReturnType, MessageResult<void>>::value;
         
         using IfVoid = SpecialCase<MessageResult<void>,std::string>;
@@ -1410,7 +1404,6 @@ private:
   t_outlet*    mNRTProgressOutlet;
   t_outlet*    mNRTDoneOutlet;
   t_outlet*    mControlOutlet;
-  t_canvas*    mCanvas;
   bool         mVerbose;
   ParamSetType mParams;
   ParamSetType mParamSnapshot;
@@ -1426,6 +1419,7 @@ private:
   std::vector<t_outlet*>                      mAllControlOuts;
   std::vector<t_atom>                     mOutputListAtoms;
   std::vector<t_inlet*> mProxies;
+  t_canvas*    mCanvas;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
