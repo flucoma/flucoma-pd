@@ -143,8 +143,7 @@ public:
 
       mControlOutputs.resize(asUnsigned(client.controlChannelsOut().size));
       mControlAtoms.resize(asUnsigned(client.controlChannelsOut().size));
-
-      mOutputs = {FluidTensorView<float,1>(mControlOutputs.data(), 0, mControlOutputs.size())};
+      mOutputs.emplace_back(mControlOutputs.data(), 0, mControlOutputs.size()); 
     }
 
     for (index i = 0; i < asSigned(mSigIns.size()); i++)

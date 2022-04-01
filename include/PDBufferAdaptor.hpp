@@ -181,7 +181,7 @@ private:
     for (index i = 0; i < nChans; ++i)
     {
       auto   s = samps(0, nFrames, i);
-      mMirrorBuffer.col(i) = s;
+      mMirrorBuffer.col(i) <<= s;
     }
   }
 
@@ -197,7 +197,7 @@ private:
       FluidTensorView<float, 2> v{samples, 0, nFrames,
                                   sizeof(t_word) / sizeof(float)};
 
-      v(Slice(0, nFrames), Slice(0, 1)).col(0) =
+      v(Slice(0, nFrames), Slice(0, 1)).col(0) <<=
           mMirrorBuffer.col(i)(Slice(0, nFrames));
     }
   }
