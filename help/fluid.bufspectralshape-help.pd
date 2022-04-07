@@ -1,13 +1,12 @@
 #N canvas 55 112 956 851 10;
 #X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufspectralshape 20 12
-0 36 -262144 -66577 0;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufspectralshape 20 12
+0 36 #fcfcfc #404040 0;
 #X obj 34 156 loadbang;
 #X text 37 59 Seven Spectral Shape Descriptors on a Buffer;
 #X text 37 90 Seven of the spectral shape descriptors \, computed on
 a linear scale for both amplitude and frequency., f 102;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufshape_drums
-;
+#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufshape_drums;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufshape_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
@@ -40,8 +39,8 @@ a linear scale for both amplitude and frequency., f 102;
 #X array bufshape_feats-6 915 float 0;
 #X coords 0 30 914 -30 887 53 1 0 0;
 #X restore 30 784 graph;
-#X obj 410 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 410 151 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X text 142 488 skewness(ratio):;
 #X text 143 559 kurtosis(ratio):;
 #X text 144 698 flatness(dB):;
@@ -52,26 +51,26 @@ xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
 0 0 \; bufshape_feats-6 xticks 0 0 0;
 #X obj 134 236 tabplay~ bufshape_drums;
 #X obj 134 257 dac~;
-#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X msg 152 215 stop;
 #N canvas 635 112 939 850 multichannel 0;
 #X obj 24 758 loadbang;
 #X obj 24 810 soundfiler;
-#X obj 28 81 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 28 81 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 28 196 dac~;
-#X obj 631 23 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 102 154 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 631 23 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 102 154 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X text 47 81 1) compose an artificially wide "stereo" array;
 #X text 26 12 "multichannel" arrays will process each channel in turn
 \, and output 'channels' will be consecutive \, i.e. all features of
 "channel" 1 \, then all features of "channel" 2 \, etc, f 87;
-#X obj 28 101 fluid\.bufcompose -source bufshapeguitar -startframe
-555000 -numframes 468335 -deststartchan 1 -destination bufshape_source
-, f 73;
+#X obj 28 101 fluid.bufcompose -source bufshapeguitar -startframe 555000
+-numframes 468335 -deststartchan 1 -destination bufshape_source, f
+73;
 #X obj 28 175 tabplay~ bufshape_source-0;
 #X obj 191 176 tabplay~ bufshape_source-1;
 #X text 126 153 2) listen to the source;
@@ -124,7 +123,7 @@ xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
 #X text 140 664 crest(dB):;
 #X text 139 314 spread(Hz):;
 #X text 138 524 rolloff(Hz):;
-#X obj 631 40 fluid\.bufspectralshape -source bufshape_source -features
+#X obj 631 40 fluid.bufspectralshape -source bufshape_source -features
 bufshape_feats, f 40;
 #X text 138 244 centroid(Hz):;
 #X text 156 223 All 'channel 2' features follow here. For 'channel
@@ -140,17 +139,17 @@ bufshape_feats, f 40;
 #X connect 12 0 10 0;
 #X connect 15 0 1 0;
 #X connect 31 0 17 0;
-#X restore 672 240 pd multichannel;
+#X restore 821 209 pd multichannel;
 #X text 144 348 centroid(Hz):;
 #X text 145 418 spread(Hz):;
 #X text 144 628 rolloff(Hz):;
-#X obj 671 217 note_on_assumed_sampling_rates_of_arrays;
-#X obj 410 170 fluid\.bufspectralshape -source bufshape_drums -features
+#X obj 779 231 note_on_sampling_rates;
+#X obj 410 170 fluid.bufspectralshape -source bufshape_drums -features
 bufshape_feats, f 71;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufspectralshape.html;
+#X msg 83 71 dir 0 docs/fluid.bufspectralshape.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -158,9 +157,9 @@ bufshape_feats, f 71;
 #X connect 3 0 1 0;
 #X restore 892 111 pd;
 #X text 761 92 launch the HTML doc->;
-#X obj 893 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 779 240 note_on_multithreading;
+#X obj 893 94 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 779 252 note_on_multithreading;
 #X connect 2 0 5 0;
 #X connect 5 0 0 0;
 #X connect 14 0 29 0;

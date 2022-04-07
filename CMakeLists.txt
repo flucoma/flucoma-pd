@@ -67,6 +67,8 @@ FetchContent_GetProperties(flucoma-core)
 if(NOT flucoma-core_POPULATED)
   FetchContent_Populate(flucoma-core)
   add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
+  file(GLOB FLUCOMA_CORE_RESOURCES ${flucoma-core_SOURCE_DIR}/Resources/Data/*.*)
+  file(COPY ${FLUCOMA_CORE_RESOURCES} DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/data)
   include(flucoma_version)
   include(flucoma-buildtools)
   include(flucoma-buildtype)
@@ -78,6 +80,7 @@ set_if_toplevel(VAR CMAKE_LIBRARY_OUTPUT_DIRECTORY
 
 
 if(DOCS)
+  
   if(FLUID_DOCS_PATH)
     get_filename_component(
       FETCHCONTENT_SOURCE_DIR_FLUCOMA-DOCS ${FLUID_DOCS_PATH} ABSOLUTE
@@ -150,8 +153,10 @@ install(DIRECTORY abstractions/
         FILES_MATCHING PATTERN "*.pd")
 install(DIRECTORY examples 
         DESTINATION ${PD_PACKAGE_ROOT})
-install(DIRECTORY "${flucoma-core_SOURCE_DIR}/AudioFiles/" 
+install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/AudioFiles/" 
         DESTINATION "${PD_PACKAGE_ROOT}/media")
+install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/Data/"
+        DESTINATION "${PD_PACKAGE_ROOT}/data")
 install(FILES icon.png QuickStart.md 
         DESTINATION ${PD_PACKAGE_ROOT})
 install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic 
@@ -160,7 +165,7 @@ install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/FluidCorpusManipulationOverview.pd 
         DESTINATION ${PD_PACKAGE_ROOT})
 if(DOCS)
-  install(DIRECTORY "${FLUID_PD_REF_PATH}/" 
+  install(DIRECTORY "${PD_DOC_OUT}/" 
           DESTINATION "${PD_PACKAGE_ROOT}/docs" 
           FILES_MATCHING REGEX "\\.(html|css)")
 endif()
