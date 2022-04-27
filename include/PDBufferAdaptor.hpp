@@ -99,6 +99,7 @@ public:
   void release() const override
   {
     if (mMirrorDirty) { copyBufferOut(); }
+    redraw();
     releaseLock();
   }
 
@@ -171,6 +172,17 @@ public:
   } // we still need to set the SR on const input buffers
 
   std::string asString() const override { return mName->s_name; }
+  
+  void redraw() const
+  {
+    index  nChans = numChans();
+    
+    for(index i = 0; i < nChans; ++i)
+    {
+      t_garray* a = nullptr;
+      if((a = getArray(i))) garray_redraw(a);
+    }
+  }
 
 private:
   void copyBufferIn() const
