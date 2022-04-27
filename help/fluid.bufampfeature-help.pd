@@ -1,0 +1,44 @@
+#N canvas 0 25 701 658 12;
+#X obj 18 240 soundfiler;
+#X obj 18 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 369 233 dac~;
+#X obj 368 186 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 387 185 stop;
+#X obj 18 163 fluid.demoaudiofiles;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufampfeature 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufampfeature.html reference/ampfeature/
+;
+#X obj 515 527 cnv 15 165 110 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Amplitude\\\ Differential\\\ Feature
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 518 591 note_on_sampling_rates;
+#X obj 518 614 note_on_multithreading;
+#X obj 518 569 note_on_multiarrays;
+#X text 366 162 2) Listen to the source;
+#X text 17 141 1) Pick a source.;
+#X msg 18 211 read -resize \$1 bufampfeature-src;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufampfeature-features 453932 float 0;
+#X coords 0 36 453931 -36 649 55 1 0 0;
+#X restore 23 437 graph;
+#X obj 96 240 array define bufampfeature-src;
+#X msg 18 337 \; bufampfeature-features xticks 0 0 0;
+#X text 17 79 Calculate the amplitude differential feature used by
+fluid.bufampslice.;
+#X obj 18 295 fluid.bufampfeature -source bufampfeature-src -features
+bufampfeature-features -fastrampup 100 -fastrampdown 100 -slowrampup
+2000 -slowrampdown 2000, f 78;
+#X obj 369 206 tabplay~ bufampfeature-src;
+#X connect 0 0 1 0;
+#X connect 1 0 20 0;
+#X connect 3 0 21 0;
+#X connect 4 0 21 0;
+#X connect 5 0 15 0;
+#X connect 15 0 0 0;
+#X connect 20 0 18 0;
+#X connect 21 0 2 0;
+#X connect 21 0 2 1;

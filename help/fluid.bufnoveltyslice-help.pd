@@ -1,6 +1,6 @@
 #N canvas 409 47 548 661 10;
 #X obj 8 19 cnv 15 100 10 empty empty fluid.bufnoveltyslice 20 12 0
-36 -262144 -66577 0;
+36 #fcfcfc #404040 0;
 #X obj 55 197 until;
 #X msg 55 338 1;
 #X msg 176 200 const 0;
@@ -26,13 +26,13 @@
 #X obj 21 514 dac~;
 #X obj 46 452 -;
 #X obj 20 473 pack;
-#X floatatom 20 334 5 0 0 0 - - -;
-#X floatatom 17 231 5 0 0 0 - - -;
+#X floatatom 20 334 5 0 0 0 - - - 0;
+#X floatatom 17 231 5 0 0 0 - - - 0;
 #X obj 20 435 f;
 #X text 18 35 1) read a source \, and triggers the analysis;
 #X text 54 231 number of slices found;
-#X floatatom 209 136 8 0 0 0 - - -;
-#X floatatom 349 136 8 0 0 0 - - -;
+#X floatatom 209 136 8 0 0 0 - - - 0;
+#X floatatom 349 136 8 0 0 0 - - - 0;
 #X text 18 314 2) play a give slice \, by retrieving the onset and
 offset indices, f 65;
 #X obj 19 414 t f f;
@@ -106,8 +106,8 @@ slightly earlier., f 93;
 here \, we start to loose precision. Have fun with different values
 of theshold then will allow you to find the perfect segment for your
 signal., f 90;
-#X obj 22 354 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 22 354 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 22 316 fluid.bufnoveltyslice -source bufnov_guit -indices bufnov_segments
 -kernelsize 31 -threshold 0.1, f 67;
 #X obj 22 459 array define bufnov_guit;
@@ -171,8 +171,8 @@ bufnov_guit, f 68;
 #X connect 3 0 1 0;
 #X restore 486 184 pd;
 #X text 355 165 launch the HTML doc->;
-#X obj 487 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 487 167 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 370 380 note_on_multithreading;
 #X msg 37 149 6;
 #X connect 1 0 12 0;

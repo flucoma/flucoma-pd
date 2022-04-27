@@ -78,6 +78,7 @@ set_if_toplevel(VAR CMAKE_LIBRARY_OUTPUT_DIRECTORY
 
 
 if(DOCS)
+  
   if(FLUID_DOCS_PATH)
     get_filename_component(
       FETCHCONTENT_SOURCE_DIR_FLUCOMA-DOCS ${FLUID_DOCS_PATH} ABSOLUTE
@@ -162,7 +163,7 @@ install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/FluidCorpusManipulationOverview.pd 
         DESTINATION ${PD_PACKAGE_ROOT})
 if(DOCS)
-  install(DIRECTORY "${FLUID_PD_REF_PATH}/" 
+  install(DIRECTORY "${PD_DOC_OUT}/" 
           DESTINATION "${PD_PACKAGE_ROOT}/docs" 
           FILES_MATCHING REGEX "\\.(html|css)")
 endif()
