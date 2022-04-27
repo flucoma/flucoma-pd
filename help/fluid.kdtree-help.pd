@@ -1,35 +1,15 @@
-#N canvas 1024 23 1024 1235 12;
-#X obj 65 953 fluid.dataset somedata;
-#X obj 277 934 list store;
-#X obj 287 831 until;
-#X obj 284 861 random 100;
-#X msg 223 729 10;
-#X msg 281 896 append \$1;
-#X obj 224 762 trigger bang float bang;
-#X obj 66 844 trigger float bang;
-#X obj 75 727 until;
-#X obj 72 765 f 0;
-#X obj 115 781 + 1;
-#X msg 66 875 setpoint tree\$1 treepoint;
-#X msg 75 680 100;
-#X msg 89 913 print;
-#X msg 145 914 clear;
-#X obj 278 961 array set treepoint;
-#X msg 125 729 0;
-#X msg 63 1030 fit somedata;
-#X obj 199 1136 print;
-#X msg 41 980 getpoint tree2 treepoint;
-#X msg 171 1034 numneighbours 5 \, knearest treepoint;
-#X obj 114 1094 fluid.kdtree;
+#N struct 1017-draw-item float x float y float c float a float b;
+#N struct 1018-rectangle float x float c;
+#N struct 1018-pixel float x0 float y0 float x1 float y1;
+#N canvas 1024 23 698 704 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
 ;
-#X obj 508 580 cnv 15 165 70 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
-#X obj 18 66 cnv 15 488 17 empty empty A\ K-D\ tree. 4 8 0 13 #e0e0e0
+#X obj 508 580 cnv 15 165 70 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 18 66 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
 #404040 0;
-#X obj 505 802 array define treepoint 10;
 #N canvas 30 128 692 686 radius_&_neighbours 0;
 #X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -44,26 +24,145 @@
 #X restore 511 606 pd stripping_it_back;
 #X text 18 85 A K-dimensional tree for efficient neighbourhood searches
 of multi-dimensional data.;
-#X connect 1 0 15 0;
-#X connect 2 0 3 0;
-#X connect 3 0 5 0;
-#X connect 4 0 6 0;
-#X connect 5 0 1 0;
-#X connect 6 0 1 0;
-#X connect 6 1 2 0;
-#X connect 6 2 1 1;
+#X obj 22 157 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 401 -983 972 651 load_data 0;
+#X obj 37 44 inlet;
+#X obj 630 618 outlet;
+#X obj 37 90 fluid.labelset corpus_files;
+#X obj 406 292 route getlabel;
+#X msg 37 67 read data/flucoma_corpus_files.json \, size;
+#X obj 223 111 route size;
+#X obj 246 176 until;
+#X obj 246 200 f;
+#X obj 279 200 + 1;
+#X obj 246 269 fluid.labelset corpus_files;
+#X msg 287 176 0;
+#X obj 246 224 makefilename %d;
+#X msg 246 247 getlabel \$1;
+#X obj 223 135 t b f b;
+#X obj 406 358 list append;
+#X obj 223 359 list store;
+#X obj 406 336 makefilename media/%s;
+#X obj 406 314 symbol;
+#X msg 223 431 read data/flucoma_corpus.json;
+#X obj 444 477 route read;
+#X obj 630 548 route fit;
+#X obj 341 90 soundfiler;
+#X msg 444 501 fit kdtree_h1_analysis;
+#X obj 630 572 fluid.ds2text kdtree_h1_analysis kdtree_h1_txt;
+#X obj 444 525 fluid.kdtree kdtree_h1_tree;
+#X obj 223 455 fluid.dataset kdtree_h1_analysis;
+#X obj 432 149 clone fluid.multiarray 2 kdtree_h1;
+#X obj 433 198 array define kdtree_h1_slices 1;
+#X obj 433 174 text define kdtree_h1_files;
+#X obj 223 381 fluid.concataudiofiles kdtree_h1 kdtree_h1_files;
+#X obj 433 224 text define kdtree_h1_txt;
+#X msg 630 596 setpoints kdtree_h1_txt;
+#X msg 341 66 read -resize data/flucoma_corpus_slices.wav kdtree_h1_slices
+;
+#X connect 0 0 4 0;
+#X connect 0 0 32 0;
+#X connect 2 2 5 0;
+#X connect 3 0 17 0;
+#X connect 4 0 2 0;
+#X connect 5 0 13 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
 #X connect 7 0 11 0;
-#X connect 7 1 4 0;
+#X connect 8 0 7 1;
+#X connect 9 2 3 0;
+#X connect 10 0 7 1;
+#X connect 11 0 12 0;
+#X connect 12 0 9 0;
+#X connect 13 0 15 0;
+#X connect 13 1 6 0;
+#X connect 13 2 10 0;
+#X connect 13 2 14 1;
+#X connect 14 0 15 1;
+#X connect 15 0 29 0;
+#X connect 16 0 14 0;
+#X connect 17 0 16 0;
+#X connect 18 0 25 0;
+#X connect 19 0 22 0;
+#X connect 20 0 23 0;
+#X connect 22 0 24 0;
+#X connect 23 0 31 0;
+#X connect 24 2 20 0;
+#X connect 25 2 19 0;
+#X connect 29 0 18 0;
+#X connect 31 0 1 0;
+#X connect 32 0 21 0;
+#X restore 22 177 pd load_data;
+#X obj 22 201 fluid.plotter;
+#X obj 53 530 array set kdtree_h1_query;
+#X obj 22 506 t b l;
+#X msg 21 553 knearest kdtree_h1_query;
+#X obj 21 577 fluid.kdtree kdtree_h1_tree -numneighbours 1;
+#X obj 239 530 array define kdtree_h1_query 2;
+#X obj 326 599 route knearest;
+#X obj 326 621 symbol;
+#X obj 119 177 r kd_tree_h1_plotter;
+#X msg 326 644 highlight \$1;
+#X obj 326 668 s kd_tree_h1_plotter;
+#X text 327 203 2) Click and drag around this space.;
+#X text 41 142 1) For demonstrative purposes much of this first example
+is preanalused and pretrained data. This button loads in this subpatch
+when the helpfle is opened, f 86;
+#X text 330 266 Each of these points on this space represents a small
+segment of a large sound file. Using audio descriptors each segment
+is assigned two values \, loudness and spectral centroid \, that attempt
+to represent perceived qualities of the sound. The fluid.kdtree~ performs
+the function of mapping our mouse inside the space \, to the point
+that has the most similar set of descriptor values. In effect \, it
+is a fast lookup mechanism so that we can scrub through the analysis
+space., f 49;
+#X text 330 478 For a relevant tutorial \, see https://learn.flucoma.org/overviews
+, f 37;
+#X obj 108 687 dac~;
+#X floatatom 108 621 5 0 0 0 - - - 0;
+#X obj 108 665 *~;
+#X obj 178 645 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 108 600 fluid.s2f;
+#N canvas 739 591 308 296 player 1;
+#X obj 37 15 inlet;
+#X obj 51 145 phasor~;
+#X obj 51 169 *~, f 18;
+#X obj 18 200 +~;
+#X obj 37 69 t f l;
+#X obj 175 96 expr $f2 - $f1;
+#X obj 18 247 outlet~;
+#X obj 51 121 expr 44100 / $f1;
+#X obj 37 45 array get kdtree_h1_slices 0 2;
+#X obj 18 223 tabread~ kdtree_h1-0;
+#X connect 0 0 8 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 1;
+#X connect 4 1 5 0;
+#X connect 5 0 2 1;
+#X connect 5 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 4 0;
+#X connect 9 0 6 0;
+#X restore 108 644 pd player;
+#X connect 7 0 8 0;
 #X connect 8 0 9 0;
-#X connect 9 0 10 0;
-#X connect 9 0 7 0;
-#X connect 10 0 9 1;
-#X connect 11 0 0 0;
-#X connect 12 0 8 0;
-#X connect 13 0 0 0;
-#X connect 14 0 0 0;
-#X connect 16 0 9 1;
-#X connect 17 0 21 0;
-#X connect 19 0 0 0;
-#X connect 20 0 21 0;
-#X connect 21 2 18 0;
+#X connect 9 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 1 10 0;
+#X connect 12 0 13 0;
+#X connect 13 2 15 0;
+#X connect 15 0 16 0;
+#X connect 15 0 28 0;
+#X connect 16 0 18 0;
+#X connect 17 0 9 0;
+#X connect 18 0 19 0;
+#X connect 25 0 29 0;
+#X connect 26 0 24 1;
+#X connect 26 0 24 0;
+#X connect 27 0 26 1;
+#X connect 28 0 25 0;
+#X connect 29 0 26 0;
