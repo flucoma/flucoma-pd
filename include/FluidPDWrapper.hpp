@@ -136,13 +136,8 @@ public:
       mControlClock = mControlClock ? mControlClock
                                     : clock_new((t_object*) wrapper,
                                                 (t_method) doControlOut);
-
-      //      mOutputs =
-      //      std::vector<ViewType>(asUnsigned(client.controlChannelsOut()),
-      //                                       ViewType(nullptr, 0, 0));
-
-      mControlOutputs.resize(asUnsigned(client.controlChannelsOut().size));
-      mControlAtoms.resize(asUnsigned(client.controlChannelsOut().size));
+      mControlOutputs.resize(asUnsigned(client.maxControlChannelsOut()));
+      mControlAtoms.resize(asUnsigned(client.maxControlChannelsOut()));
       mOutputs.emplace_back(mControlOutputs.data(), 0, mControlOutputs.size()); 
     }
 
@@ -168,11 +163,6 @@ public:
       for (size_t i = 0, numouts = asUnsigned(client.audioChannelsOut());
            i < numouts; ++i)
         mOutputs[i].reset(mSigOuts[i], 0, sampleframes);
-
-    //
-    // for (size_t i = 0, numouts = asUnsigned(client.controlChannelsOut());
-    //      i < numouts; ++i)
-    //   mOutputs[i].reset(&mControlOutputs[i], 0, 1);
 
     client.process(mInputs, mOutputs, mContext);
 
@@ -750,6 +740,28 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
         a[i] = ParamAtomConverter::fromAtom(x, av + i, T{});
     }
   };
+  
+  
+template <size_t N>
+struct Setter<LongRuntimeMaxT,N>
+{
+  static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+  {
+    if (!ac) return;    
+    x->messages().reset();
+    auto& a = x->params().template get<N>();
+    
+    if(!x->mInitialized)
+       a = LongRuntimeMaxParam(atom_getint(av), ac < 2 ? -1 : atom_getint(av + 1));
+    else
+      a.set(atom_getint(av));
+
+
+    x->params().template set<N>(std::move(a),
+                                x->verbose() ? &x->messages() : nullptr);
+    printResult(x, x->messages());
+  }
+};
 
   //////////////////////////////////////////////////////////////////////////////
   // Getter
@@ -842,6 +854,7 @@ public:
     
     this->makeLatencyOutlet(pdObject);
     if (m.size()) mMessageResultOutlet = outlet_new(pdObject, &s_anything);
+    mInitialized = true; 
   }
 
   void doneBang() { outlet_bang(mNRTDoneOutlet); }
@@ -926,7 +939,7 @@ public:
     new (x) FluidPDWrapper(sym, ac, av);
 
     if (static_cast<index>(paramArgOffset(ac, av)) >
-        ParamDescType::NumFixedParams)
+        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
                         ParamDescType::NumFixedParams);
@@ -1078,6 +1091,27 @@ private:
         numArgs -= 1;
         av += 1;
       }
+
+      auto r1 = mParams.setPrimaryParameterValues(
+          true,
+          [](auto idx, long ac, t_atom* av, long& currentCount) {
+            auto defaultValue = paramDescriptor<idx()>().defaultValue;
+
+            if constexpr (std::is_same<std::decay_t<decltype(defaultValue)>,
+                                       LongRuntimeMaxParam>())
+            {
+              index val = currentCount < ac ? atom_getint(av + currentCount++)
+                                            : defaultValue();
+              return LongRuntimeMaxParam{val, -1};
+            }
+            else
+            {
+              return currentCount < ac ? atom_getint(av + currentCount++)
+                                       : defaultValue;
+            }
+          },
+          numArgs, av, argCount);
+//      for (auto& r : r1) x->mMessages.push_back(r);
 
       mParams.template setFixedParameterValues<Fetcher>(
           true, numArgs, av, argCount);
@@ -1419,6 +1453,7 @@ private:
   std::vector<t_atom>                     mOutputListAtoms;
   std::vector<t_inlet*> mProxies;
   t_canvas*    mCanvas;
+  bool         mInitialized{false}; 
 };
 
 ////////////////////////////////////////////////////////////////////////////////
