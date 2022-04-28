@@ -8,6 +8,10 @@
 
 cmake_minimum_required(VERSION 3.11)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(PD_PATH "" CACHE PATH "The top level of a Pure Data installation")
 if(NOT PD_PATH)
   message(FATAL_ERROR "Pure Data source or application path is not set. Please pass with with -DPD_PATH=<path> or via ccmake / CMake gui. On Mac OS, you can use pd.app/Contents/Resources")
@@ -26,6 +30,7 @@ if (APPLE)
 endif()
 
 project (flucoma-pd LANGUAGES CXX)
+
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
 MACRO(SUBDIRLIST result curdir)

@@ -6,8 +6,6 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_14)
-
 target_link_libraries(${PROJECT_NAME}
     PRIVATE 
     FLUID_DECOMPOSITION FLUID_PD
@@ -19,11 +17,6 @@ target_include_directories(
   "${FLUID_VERSION_PATH}"
 )
 
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    CXX_STANDARD 14
-    CXX_STANDARD_REQUIRED ON
-    CXX_EXTENSIONS OFF
-)
 
 if ("${PROJECT_NAME}" MATCHES ".*_tilde")
 	string(REGEX REPLACE "_tilde" "~" EXTERN_OUTPUT_NAME "${PROJECT_NAME}")
@@ -78,7 +71,7 @@ if (APPLE)
 		XCODE_ATTRIBUTE_MACH_O_TYPE mh_dylib
 		XCODE_ATTRIBUTE_EXECUTABLE_PREFIX ""
 		XCODE_ATTRIBUTE_EXECUTABLE_EXTENSION "pd_darwin"
-    OSX_DEPLOYMENT_TARGET "10.7"
+    # OSX_DEPLOYMENT_TARGET "10.8"
 	) 
   #targeting <= 10.9, need to explicitly set libc++
   target_compile_options(${PROJECT_NAME} PRIVATE -stdlib=libc++)
