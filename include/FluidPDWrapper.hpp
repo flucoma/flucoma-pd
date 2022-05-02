@@ -779,7 +779,8 @@ public:
   using ParamSetType = typename Client::ParamSetType;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
+      : mListSize{32},
+        mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
         mNRTDoneOutlet(nullptr), mControlOutlet(nullptr),
         mParams(Client::getParameterDescriptors()),
         mParamSnapshot(Client::getParameterDescriptors()),
@@ -1074,9 +1075,9 @@ private:
       if(isControlIn<typename Client::Client>)
       {
         mListSize = atom_getint(av);
-//        if(numArgs == 1) return;
         numArgs -= 1;
         av += 1;
+        ac--;
       }
 
       mParams.template setFixedParameterValues<Fetcher>(
@@ -1398,6 +1399,8 @@ private:
       return typename std::tuple_element<N, Tuple>::type{};
   }
 
+
+  index        mListSize;
   Result       mResult;
   t_outlet*    mMessageResultOutlet;
   t_outlet*    mNRTProgressOutlet;
@@ -1410,7 +1413,7 @@ private:
 
   // std::deque<Result> mMessages;
   bool               mAutosize;
-  index                                   mListSize;
+  
   FluidTensor<double, 2>                  mInputListData;
   std::vector<FluidTensorView<double, 1>> mInputListViews;
   FluidTensor<double, 2>                  mOutputListData;
