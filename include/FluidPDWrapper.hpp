@@ -1126,7 +1126,7 @@ private:
         ac--;
       }
 
-      auto r1 = mParams.setPrimaryParameterValues(
+      mParams.setPrimaryParameterValues(
           true,
           [](auto idx, long ac, t_atom* av, long& currentCount) {
             auto defaultValue = paramDescriptor<idx()>().defaultValue;
