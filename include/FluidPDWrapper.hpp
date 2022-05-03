@@ -607,19 +607,19 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       return atom_getfloat(a);
     }
 
-    static auto fromAtom(FluidPDWrapper* x, t_atom* a, BufferT::type)
+    static auto fromAtom(FluidPDWrapper* x, t_atom* a, const BufferT::type& )
     {
       return BufferT::type(
           new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(FluidPDWrapper* x, t_atom* a, InputBufferT::type)
+    static auto fromAtom(FluidPDWrapper* x, t_atom* a, const InputBufferT::type&)
     {
       return InputBufferT::type(
           new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(FluidPDWrapper*, t_atom* a, StringT::type)
+    static auto fromAtom(FluidPDWrapper*, t_atom* a, const StringT::type&)
     {
       auto s = getString(a);
       return s;
@@ -632,6 +632,12 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       return {atom_getsymbol(a)->s_name};
     }
 
+    template<typename T> 
+    static Optional<T> fromAtom(FluidPDWrapper* x, t_atom* a, const Optional<T>) 
+    {
+      return {fromAtom(x,a,T{})}; 
+    }
+    
     template <typename T>
     static std::enable_if_t<std::is_integral<T>::value> toAtom(t_atom* a, T v)
     {
@@ -705,9 +711,9 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   {
     static constexpr index argSize = paramDescriptor<N>().fixedSize;
 
-    static void set(FluidPDWrapper<Client>* x, t_symbol* s, int ac, t_atom* av)
+    static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
     {
-      NOTUSED(s);
+//      NOTUSED(s);
 
       ParamLiteralConvertor<T, argSize> a;
       a.set(Client::getParameterDescriptors().template makeValue<N>());
@@ -741,7 +747,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     }
   };
   
-  
+
 template <size_t N>
 struct Setter<LongRuntimeMaxT,N>
 {
@@ -762,6 +768,34 @@ struct Setter<LongRuntimeMaxT,N>
     printResult(x, x->messages());
   }
 };
+
+  template <size_t N>
+  struct Setter<ChoicesT, N>
+  {
+
+    static void set(FluidPDWrapper<Client>* x,t_symbol*, int ac, t_atom* av)
+    {
+      x->messages().reset();
+      auto desc = x->params().template descriptorAt<N>();
+            
+      typename ChoicesT::type a{ac ? 0u : desc.defaultValue};
+      
+
+      for (index i = 0; i < static_cast<index>(ac); i++)
+      {
+          std::string s = ParamAtomConverter::fromAtom(x,av + i, std::string{});
+          index pos = desc.lookup(s);
+          if(pos == -1)
+          {
+            pd_error(x->getPDObject(),"%s: unrecognised choice",s.c_str());
+            continue;
+          }
+          a.set(asUnsigned(pos),1);
+      }
+      
+      x->params().template set<N>(std::move(a), x->verbose() ? &x->messages() : nullptr);
+    }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // Getter
@@ -785,13 +819,15 @@ struct Setter<LongRuntimeMaxT,N>
     }
   };
 
+
 public:
   using ClientType = Client;
   using ParamDescType = typename Client::ParamDescType;
   using ParamSetType = typename Client::ParamSetType;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
+      : mListSize{32},
+        mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
         mNRTDoneOutlet(nullptr), mControlOutlet(nullptr),
         mParams(Client::getParameterDescriptors()),
         mParamSnapshot(Client::getParameterDescriptors()),
@@ -885,11 +921,9 @@ public:
   template <size_t N, typename T>
   struct MatchName
   {
-    void operator()(const typename T::type& param, const char* name,
+    void operator()(const typename T::type&, const char* name,
                     bool& matched)
     {
-      NOTUSED(param);
-
       std::string paramName = lowerCase(paramDescriptor<N>().name);
 
       if (!strcmp(paramName.c_str(), name)) matched = true;
@@ -1087,9 +1121,9 @@ private:
       if(isControlIn<typename Client::Client>)
       {
         mListSize = atom_getint(av);
-//        if(numArgs == 1) return;
         numArgs -= 1;
         av += 1;
+        ac--;
       }
 
       auto r1 = mParams.setPrimaryParameterValues(
@@ -1432,6 +1466,8 @@ private:
       return typename std::tuple_element<N, Tuple>::type{};
   }
 
+
+  index        mListSize;
   Result       mResult;
   t_outlet*    mMessageResultOutlet;
   t_outlet*    mNRTProgressOutlet;
@@ -1444,7 +1480,7 @@ private:
 
   // std::deque<Result> mMessages;
   bool               mAutosize;
-  index                                   mListSize;
+  
   FluidTensor<double, 2>                  mInputListData;
   std::vector<FluidTensorView<double, 1>> mInputListViews;
   FluidTensor<double, 2>                  mOutputListData;
