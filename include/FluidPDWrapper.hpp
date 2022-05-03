@@ -721,9 +721,9 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   {
     static constexpr index argSize = paramDescriptor<N>().fixedSize;
 
-    static void set(FluidPDWrapper<Client>* x, t_symbol* s, int ac, t_atom* av)
+    static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
     {
-      NOTUSED(s);
+//      NOTUSED(s);
 
       ParamLiteralConvertor<T, argSize> a;
       a.set(Client::getParameterDescriptors().template makeValue<N>());
@@ -756,6 +756,35 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
         a[i] = ParamAtomConverter::fromAtom(x, av + i, T{});
     }
   };
+  
+  
+  template <size_t N>
+  struct Setter<ChoicesT, N>
+  {
+
+    static void set(FluidPDWrapper<Client>* x,t_symbol*, int ac, t_atom* av)
+    {
+      x->messages().reset();
+      auto desc = x->params().template descriptorAt<N>();
+            
+      typename ChoicesT::type a{ac ? 0u : desc.defaultValue};
+      
+
+      for (index i = 0; i < static_cast<index>(ac); i++)
+      {
+          std::string s = ParamAtomConverter::fromAtom(x,av + i, std::string{});
+          index pos = desc.lookup(s);
+          if(pos == -1)
+          {
+            pd_error(x->getPDObject(),"%s: unrecognised choice",s.c_str());
+            continue;
+          }
+          a.set(asUnsigned(pos),1);
+      }
+      
+      x->params().template set<N>(std::move(a), x->verbose() ? &x->messages() : nullptr);
+    }
+  };
 
   //////////////////////////////////////////////////////////////////////////////
   // Getter
@@ -778,6 +807,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       return result;
     }
   };
+
 
 public:
   using ClientType = Client;
@@ -879,11 +909,9 @@ public:
   template <size_t N, typename T>
   struct MatchName
   {
-    void operator()(const typename T::type& param, const char* name,
+    void operator()(const typename T::type&, const char* name,
                     bool& matched)
     {
-      NOTUSED(param);
-
       std::string paramName = lowerCase(paramDescriptor<N>().name);
 
       if (!strcmp(paramName.c_str(), name)) matched = true;
