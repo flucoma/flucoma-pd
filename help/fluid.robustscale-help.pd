@@ -1,2 +1,65 @@
-#N canvas 546 252 836 602 12;
-#X obj 149 192 fluid.robustscale;
+#N struct 1039-draw-item float x float y float c float a float b;
+#N struct 1040-draw-item float x float y float c float a float b;
+#N struct 1043-draw-item float x float y float c float a float b;
+#N canvas 546 252 1203 602 12;
+#X obj 52 61 fluid.dataset in;
+#X obj 342 230 fluid.plotter;
+#X obj 334 134 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 534 155 text define outtxt;
+#X obj 538 78 fluid.dataset out;
+#X msg 52 32 read data/gaussian4.json;
+#X obj 538 127 text define intxt;
+#X obj 697 225 fluid.plotter;
+#X obj 704 128 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 704 172 setpoints outtxt;
+#X obj 704 148 fluid.ds2text out outtxt;
+#X obj 334 154 fluid.ds2text in intxt;
+#X msg 334 178 setpoints intxt;
+#X msg 48 173 fittransform in out;
+#X obj 538 102 fluid.dataset rev;
+#X obj 535 184 text define revtxt;
+#X obj 1009 224 fluid.plotter;
+#X obj 1016 127 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 1016 147 fluid.ds2text rev revtxt;
+#X msg 1016 171 setpoints revtxt;
+#X msg 69 213 inversetransform out rev;
+#X obj 541 2 array define query 2;
+#X obj 541 26 array define reply 2;
+#X msg 47 405 0.5 0.5;
+#X obj 47 429 array set query;
+#X obj 48 492 array get reply;
+#X listbox 48 516 20 0 0 0 - - - 0;
+#X obj 47 471 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 73 273 transformpoint query reply;
+#X obj 46 332 fluid.robustscale;
+#X msg 858 192 range -1 1;
+#X msg 78 300 inversetransformpoint reply revreply;
+#X obj 539 50 array define revreply 2;
+#X listbox 204 555 20 0 0 0 - - - 0;
+#X obj 203 510 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 204 531 array get revreply;
+#X connect 2 0 11 0;
+#X connect 5 0 0 0;
+#X connect 8 0 10 0;
+#X connect 9 0 7 0;
+#X connect 10 0 9 0;
+#X connect 11 0 12 0;
+#X connect 12 0 1 0;
+#X connect 13 0 29 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 19 0 16 0;
+#X connect 20 0 29 0;
+#X connect 23 0 24 0;
+#X connect 25 0 26 0;
+#X connect 27 0 25 0;
+#X connect 28 0 29 0;
+#X connect 30 0 7 0;
+#X connect 31 0 29 0;
+#X connect 34 0 35 0;
+#X connect 35 0 33 0;
