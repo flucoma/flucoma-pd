@@ -758,13 +758,12 @@ struct Setter<LongRuntimeMaxT,N>
     auto& a = x->params().template get<N>();
     
     if(!x->mInitialized)
-       a = LongRuntimeMaxParam(atom_getint(av), ac < 2 ? -1 : atom_getint(av + 1));
+         a = LongRuntimeMaxParam(atom_getint(av), a.max());
     else
-      a.set(atom_getint(av));
+      x->params().template set<N>(
+            LongRuntimeMaxParam(atom_getint(av), a.max()),
+            x->verbose() ? &x->messages() : nullptr);
 
-
-    x->params().template set<N>(std::move(a),
-                                x->verbose() ? &x->messages() : nullptr);
     printResult(x, x->messages());
   }
 };
@@ -926,7 +925,22 @@ public:
     {
       std::string paramName = lowerCase(paramDescriptor<N>().name);
 
-      if (!strcmp(paramName.c_str(), name)) matched = true;
+      if (!strcmp(paramName.c_str(), name))
+      {
+        matched = true;
+        return;
+      }
+      
+      if constexpr (std::is_same<LongRuntimeMaxT,T>::value)
+      {
+        std::string maxParamName = "max" + paramName;
+
+        if (!strcmp(maxParamName.c_str(), name))
+        {
+          matched = true;
+          return;
+        }
+      }
     }
   };
 
@@ -1190,6 +1204,29 @@ private:
 
       class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME,
                       0);
+
+       if constexpr (std::is_same<T, LongRuntimeMaxT>::value)
+       {
+          std::string maxname = "max" + name;
+          
+          using SetterFn = void (*)(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av);
+          
+          SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+          {
+            static constexpr index Idx = N;
+            if(ac && !x->mInitialized)
+            {
+              auto current = x->mParams.template get<Idx>();
+              index newMax = atom_getint(av);
+              if(newMax > 0)
+              {
+                x->mParams.template set<Idx>(LongRuntimeMaxParam(current(),newMax),nullptr);
+              }
+            }
+          };
+          
+          class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
+       }
     }
   };
 
