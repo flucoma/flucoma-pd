@@ -746,25 +746,50 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   };
   
 
-template <size_t N>
-struct Setter<LongRuntimeMaxT,N>
-{
-  static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+  template <size_t N>
+  struct Setter<LongRuntimeMaxT,N>
   {
-    if (!ac) return;    
-    x->messages().reset();
-    auto& a = x->params().template get<N>();
-    
-    if(!x->mInitialized)
-         a = LongRuntimeMaxParam(atom_getint(av), a.max());
-    else
-      x->params().template set<N>(
-            LongRuntimeMaxParam(atom_getint(av), a.max()),
-            x->verbose() ? &x->messages() : nullptr);
-
-    printResult(x, x->messages());
-  }
-};
+    static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+    {
+      if (!ac) return;
+      x->messages().reset();
+      auto& a = x->params().template get<N>();
+      
+      if(!x->mInitialized)
+        a = LongRuntimeMaxParam(atom_getint(av), a.max());
+      else
+        x->params().template set<N>(
+                                    LongRuntimeMaxParam(atom_getint(av), a.max()),
+                                    x->verbose() ? &x->messages() : nullptr);
+      
+      printResult(x, x->messages());
+    }
+  };
+  
+  template <size_t N>
+  struct Setter<FFTParamsT,N>
+  {
+    static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+    {
+      if (!ac) return;
+      x->messages().reset();
+      auto& a = x->params().template get<N>();
+      
+      std::array<index,3> defaults{1024, -1, -1};
+      
+      for (index i = 0; i < 3 && i < static_cast<index>(ac); i++)
+            defaults[asUnsigned(i)] = atom_getint(av + i);
+      
+      if(!x->mInitialized)
+        a = FFTParams(defaults[0], defaults[1], defaults[2], a.max());
+      else
+        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.max()),
+                                    x->verbose() ? &x->messages() : nullptr);
+      
+      printResult(x, x->messages());
+    }
+  };
+  
 
   template <size_t N>
   struct Setter<ChoicesT, N>
@@ -932,6 +957,17 @@ public:
       if constexpr (std::is_same<LongRuntimeMaxT,T>::value)
       {
         std::string maxParamName = "max" + paramName;
+
+        if (!strcmp(maxParamName.c_str(), name))
+        {
+          matched = true;
+          return;
+        }
+      }
+      
+      if constexpr (std::is_same<FFTParamsT,T>::value)
+      {
+        std::string maxParamName = "maxfftsize";
 
         if (!strcmp(maxParamName.c_str(), name))
         {
@@ -1205,28 +1241,49 @@ private:
       class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME,
                       0);
 
-       if constexpr (std::is_same<T, LongRuntimeMaxT>::value)
-       {
-          std::string maxname = "max" + name;
-          
-          using SetterFn = void (*)(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av);
-          
-          SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+      using SetterFn = void (*)(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av);
+      
+      if constexpr (std::is_same<T, LongRuntimeMaxT>::value)
+      {
+        std::string maxname = "max" + name;
+                
+        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+        {
+          static constexpr index Idx = N;
+          if(ac && !x->mInitialized)
           {
-            static constexpr index Idx = N;
-            if(ac && !x->mInitialized)
+            auto current = x->mParams.template get<Idx>();
+            index newMax = atom_getint(av);
+            if(newMax > 0)
             {
-              auto current = x->mParams.template get<Idx>();
-              index newMax = atom_getint(av);
-              if(newMax > 0)
-              {
-                x->mParams.template set<Idx>(LongRuntimeMaxParam(current(),newMax),nullptr);
-              }
+              x->mParams.template set<Idx>(LongRuntimeMaxParam(current(),newMax),nullptr);
             }
-          };
-          
-          class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
-       }
+          }
+        };
+        
+        class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
+      }
+      
+      if constexpr (std::is_same<T,FFTParamsT>::value)
+      {
+        std::string maxname = "maxfftsize";
+        
+        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
+        {
+          static constexpr index Idx = N;
+          if(ac && !x->mInitialized)
+          {
+            auto current = x->mParams.template get<Idx>();
+            index newMax = atom_getint(av);
+            if(newMax > 0)
+            {
+              x->mParams.template set<Idx>(FFTParams(current.winSize(), current.hopRaw(), current.fftRaw(),newMax),nullptr);
+            }
+          }
+        };
+        
+        class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
+      }
     }
   };
 
