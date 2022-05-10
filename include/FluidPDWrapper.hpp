@@ -41,16 +41,14 @@ template <class T>
 void object_warn(T* x, const char* fmt, ...)
 {
   char postString[1024];
-  char finalString[1024];
 
   const char* objectName = class_getname(*((t_pd*) x));
   va_list     argp;
   va_start(argp, fmt);
   vsnprintf(postString, 1024, fmt, argp);
   va_end(argp);
-  snprintf(finalString, 1024, "%s: %s", objectName, finalString);
 
-  post(fmt, finalString);
+  post("%s: %s", objectName, postString);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -985,12 +983,14 @@ public:
   {
     void* x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
-
+    
+    static constexpr bool hasListInput = isControlIn<typename Client::Client>;
+    
     if (static_cast<index>(paramArgOffset(ac, av)) >
-        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
+        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
-                        ParamDescType::NumFixedParams);
+                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput);
     }
 
     return x;
