@@ -846,19 +846,20 @@ public:
   using ClientType = Client;
   using ParamDescType = typename Client::ParamDescType;
   using ParamSetType = typename Client::ParamSetType;
+  using ParamValues = typename ParamSetType::ValueTuple;
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
       : mListSize{32},
         mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
         mNRTDoneOutlet(nullptr), mControlOutlet(nullptr),
         mParams(Client::getParameterDescriptors()),
-        mParamSnapshot(Client::getParameterDescriptors()),
+        mParamSnapshot(mParams.toTuple()),
         mClient{initParamsFromArgs(ac, av)},mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
     auto results = mParams.keepConstrained(true);
-    mParamSnapshot = mParams;
+    mParamSnapshot = mParams.toTuple();
 
     for (auto& r : results) printResult(this, r);
 
@@ -1074,7 +1075,7 @@ public:
     post("Fluid Corpus Manipulation version %s", fluidVersion());
   }
 
-  static void doReset(FluidPDWrapper* x) { x->mParams = x->mParamSnapshot; }
+  static void doReset(FluidPDWrapper* x) { x->mParams.fromTuple(x->mParamSnapshot); }
 
   static void doWarnings(FluidPDWrapper* x, t_float warnings)
   {
@@ -1401,7 +1402,6 @@ private:
       }
       if (message.name == "read")
       {
-        using ParamValues = typename ParamSetType::ValueTuple;
         using ReturnType = typename T::ReturnType;
         constexpr bool isVoid = std::is_same<ReturnType, MessageResult<void>>::value;
         
@@ -1569,7 +1569,7 @@ private:
   t_outlet*    mControlOutlet;
   bool         mVerbose;
   ParamSetType mParams;
-  ParamSetType mParamSnapshot;
+  ParamValues mParamSnapshot;
   Client       mClient;
 
   // std::deque<Result> mMessages;
