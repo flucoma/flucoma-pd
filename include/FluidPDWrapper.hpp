@@ -781,9 +781,9 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
             defaults[asUnsigned(i)] = atom_getint(av + i);
       
       if(!x->mInitialized)
-        a = FFTParams(defaults[0], defaults[1], defaults[2], a.max());
+        a = FFTParams(defaults[0], defaults[1], defaults[2], a.maxRaw());
       else
-        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.max()),
+        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.maxRaw()),
                                     x->verbose() ? &x->messages() : nullptr);
       
       printResult(x, x->messages());
