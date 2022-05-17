@@ -754,14 +754,16 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       if (!ac) return;
       x->messages().reset();
       auto& a = x->params().template get<N>();
-      
-      if(!x->mInitialized)
-        a = LongRuntimeMaxParam(atom_getint(av), a.max());
+
+      if (!x->mInitialized)        
+        x->params().template set<N>(
+            LongRuntimeMaxParam(atom_getint(av), a.maxRaw()),
+            x->verbose() ? &x->messages() : nullptr);
       else
         x->params().template set<N>(
-                                    LongRuntimeMaxParam(atom_getint(av), a.max()),
-                                    x->verbose() ? &x->messages() : nullptr);
-      
+            LongRuntimeMaxParam(atom_getint(av), a.max()),
+            x->verbose() ? &x->messages() : nullptr);
+
       printResult(x, x->messages());
     }
   };
