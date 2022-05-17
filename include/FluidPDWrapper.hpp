@@ -457,10 +457,6 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     void operator()(FluidPDWrapper* x, long ac, t_atom* av)
     {
       FluidContext c;
-            
-//      atom_getdouble_array(std::min<index>(x->mListSize, ac), av,
-//                           std::min<index>(x->mListSize, ac),
-//                           x->mInputListData[0].data());
       
       //todo handle multiple list inlets?
       index count = std::min<index>(x->mListSize, ac);
@@ -469,17 +465,14 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
                            
       x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
       
-      for (index i = 0; i <  asSigned(x->mAllControlOuts.size()); ++i)
+      for (index i = 0; i <  asSigned(x->mDataOutlets.size()); ++i)
       {
-        // atom_setdouble_array(
-        //     std::min<index>(x->mListSize, ac), x->mOutputListAtoms.data(),
-        //     std::min<index>(x->mListSize, ac), x->mOutputListData[i].data());
         index count = std::min<index>(x->mListSize,ac); 
         for(index j = 0; j < count; ++j)
         {
           SETFLOAT(x->mOutputListAtoms.data() + j,static_cast<float>(x->mOutputListData[i][j]));
         }
-        outlet_list(x->mAllControlOuts[asUnsigned(i)],
+        outlet_list(x->mDataOutlets[asUnsigned(i)],
                     gensym("list"), static_cast<int>(x->mListSize), x->mOutputListAtoms.data());
       }
     }
