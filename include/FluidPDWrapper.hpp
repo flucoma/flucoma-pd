@@ -29,9 +29,28 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <chrono>
 #include <tuple>
 #include <utility>
+#include <map>
 
 namespace fluid {
 namespace client {
+
+
+namespace dataset {
+  class DataSetClient;
+}
+
+namespace labelset {
+  class LabelSetClient;
+}
+
+template<typename T>
+const char* SharedClientName="Unrecognised object";
+
+template<>
+const char* SharedClientName<dataset::DataSetClient> ="fluid.dataset";
+
+template<>
+const char* SharedClientName<labelset::LabelSetClient> ="fluid.labelset";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -219,6 +238,10 @@ struct NonRealTime
   static void setup(t_class* c)
   {
     class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL);
+    
+    if(Wrapper::NumInputBuffers)
+        class_addmethod(c, (t_method) callBuffer, gensym("buffer"), A_GIMME, 0);
+    
     class_addmethod(c, (t_method) callSR, gensym("sr"), A_FLOAT, 0);
 
     // concurrency messages
@@ -257,6 +280,22 @@ struct NonRealTime
   }
   static void callCancel(Wrapper* x) { x->cancel(); }
   static void callProcess(Wrapper* x) { x->process(); }
+
+  static void callBuffer(Wrapper* x,t_symbol*,int ac, t_atom* av)
+  {
+    //deliberate fall through
+    switch(ac)
+    {
+      case 5: pd_typedmess((t_pd*)x,gensym("numchans"), 1 , av + 4);
+      case 4: pd_typedmess((t_pd*)x,gensym("startchan"), 1 , av + 3);
+      case 3: pd_typedmess((t_pd*)x,gensym("numframes"), 1 , av + 2);
+      case 2: pd_typedmess((t_pd*)x,gensym("startframe"), 1 , av + 1);
+      case 1: x->doBufferInlet(0, 1, av);
+    }
+    
+     x->process();
+  }
+
 
   static void checkProcess(Wrapper* x)
   {
@@ -847,11 +886,45 @@ public:
   using ParamDescType = typename Client::ParamDescType;
   using ParamSetType = typename Client::ParamSetType;
   using ParamValues = typename ParamSetType::ValueTuple;
+  static constexpr index NumInputBuffers = ParamDescType::template NumOfType<InputBufferT>;
+  static constexpr index NumOutputBuffers = ParamDescType::template NumOfType<BufferT>;
+  
+  static t_class* getInletProxyClass(t_class* setClass = nullptr)
+  {
+    static t_class* c;
+    return (c = setClass ? setClass : c);
+  }
+  
+  struct InletProxy
+  {
+    t_pd obj;
+    FluidPDWrapper* mOwner;
+    index mIndex;
+  };
 
+  static void inletProxyInit(InletProxy* x, FluidPDWrapper* owner, index idx)
+  {
+    x->obj = getInletProxyClass();
+    x->mOwner = owner;
+    x->mIndex = idx;
+  }
+  
+  static void inletProxyBuffer(InletProxy* x, t_symbol*, int ac, t_atom* av)
+  {
+    x->mOwner->doBufferInlet(x->mIndex + 1, ac, av);
+  }
+  
+  static void inletProxySetup(const char* className)
+  {
+    std::string inletProxyClassName = std::string(className) + " inlet proxy";
+    getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), 0, A_NULL));
+    class_addmethod(getInletProxyClass(), (t_method) inletProxyBuffer, gensym("buffer"), A_GIMME, 0);
+  }
+  
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
       : mListSize{32},
-        mMessageResultOutlet{nullptr}, mNRTProgressOutlet{nullptr},
-        mNRTDoneOutlet(nullptr), mControlOutlet(nullptr),
+        mNRTProgressOutlet{nullptr},
+        mControlOutlet(nullptr),
         mParams(Client::getParameterDescriptors()),
         mParamSnapshot(mParams.toTuple()),
         mClient{initParamsFromArgs(ac, av)},mCanvas{canvas_getcurrent()}
@@ -878,14 +951,33 @@ public:
 
       mProxies.reserve(asUnsigned(new_ins));
       for (index i = 1; i < new_ins; ++i)
-        mProxies.push_back(
-            inlet_new(pdObject, &pdObject->ob_pd, gensym("list"), gensym("list")));
+      {
+        mProxies.push_back((InletProxy*)pd_new(getInletProxyClass()));
+        InletProxy* proxy = mProxies.back();
+        inletProxyInit(proxy,this, i);
+        inlet_new(pdObject, &pdObject->ob_pd, 0, 0);
+      }
     }
-
-    if (isNonRealTime<Client>::value)
+    
+    if(mProxies.size() < NumInputBuffers)
     {
-      mNRTDoneOutlet = outlet_new(pdObject, gensym("bang"));
+      for(index i = asSigned(mProxies.size()); i < NumInputBuffers - 1; i++)
+      {
+        mProxies.push_back((InletProxy*)pd_new(getInletProxyClass()));
+        InletProxy* proxy = mProxies.back();
+        inletProxyInit(proxy,this, i);
+        inlet_new(pdObject,&proxy->obj,0,0);
+      }
     }
+    
+    
+    //how many non-signal outlets do we need?
+    index numDataOutlets = std::max<index>({NumOutputBuffers,mClient.controlChannelsOut().count,
+      Client::getMessageDescriptors().size() > 0
+    });
+    
+    for(index i = 0; i < numDataOutlets; ++i)
+      mDataOutlets.push_back(outlet_new(pdObject,nullptr));
     
     if (isNonRealTime<Client>::value ||
         (IsModel_t<Client>::value && Client::isRealTime::value))
@@ -902,21 +994,73 @@ public:
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
           mOutputListViews.emplace_back(mOutputListData.row(i));
       }
-      mAllControlOuts.reserve(asUnsigned(mClient.controlChannelsOut().count));
-      for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
-        mAllControlOuts.push_back(
-            outlet_new(pdObject, gensym("list")));
-      mControlOutlet = mAllControlOuts[0];
+      mControlOutlet = mDataOutlets[0];
     }              
 
     const auto& m = Client::getMessageDescriptors();
     
     this->makeLatencyOutlet(pdObject);
-    if (m.size()) mMessageResultOutlet = outlet_new(pdObject, &s_anything);
+    
+    mParams.template forEachParamType<InputBufferT>([this](auto&, auto idx){
+      static constexpr index N = decltype(idx)::value;
+      mBufferDispatch.push_back([](FluidPDWrapper* x, int ac, t_atom* av)
+      {
+          Setter<InputBufferT, N>::set(x, nullptr, ac, av);
+      });
+    });
+    
+    
+    //setup an array of buffer~ object that we'll use if the respective params are unset when process is called
+    mParams.template forEachParamType<BufferT>([this](auto&, auto idx){
+        constexpr index N = idx();
+        std::string name = uniqueName();
+        mHostedOutputBufferObjects.push_back(impl::ArrayManager(gensym(name.c_str())));
+          
+        post(name.c_str()); 
+          
+        auto currentValue =
+            static_cast<PDBufferAdaptor*>(mParams.template get<N>().get());
+
+        if(!currentValue || currentValue->name() == gensym(""))
+          mParams.template set<N>(BufferT::type(new PDBufferAdaptor(gensym(name.c_str()),sys_getsr(),&mHostedOutputBufferObjects.back())),nullptr);
+    });
+    
     mInitialized = true; 
   }
+  
+  ~FluidPDWrapper()
+  {
+    for (auto&& s: mArgObjects){
+      t_symbol* name = s.second;
+      if(name)
+      {
+        if(name->s_thing)
+        {
+          t_pd* o = (t_pd*)name->s_thing;
+          pd_unbind(o, name);
+          pd_free(o);
+        }
+      }
+    }
+  }
 
-  void doneBang() { outlet_bang(mNRTDoneOutlet); }
+  void doneBang()
+  {
+    
+    static t_symbol* buffer_sym = gensym("buffer");
+     
+    mParams.template forEachParamType<BufferT>([this, n = 0u](auto&, auto idx) mutable
+    {
+        static constexpr index N = idx();
+        auto b = static_cast<PDBufferAdaptor*>(params().template get<N>().get());
+        
+        t_atom a;
+        a.a_type = A_SYMBOL;
+        a.a_w.w_symbol = b->name();
+        
+        outlet_anything(mNRTDoneOutlets[n++], buffer_sym, 1, &a);
+    });
+  }
 
   void controlOut(int ac, t_atom* av)
   {
@@ -1014,7 +1158,7 @@ public:
 
       tag = endTag;
     }
-  }
+  }  
 
   static void* create(t_symbol* sym, int ac, t_atom* av)
   {
@@ -1050,24 +1194,19 @@ public:
                     A_FLOAT, 0);
     class_addmethod(getClass(), (t_method) doVersion, gensym("version"),
                     A_NULL);
-
+    makeReferable(); 
+    
     if (isControlIn<typename Client::Client>)
     {
       class_addmethod(getClass(), (t_method) handleList, gensym("list"), A_GIMME, 0);
-      // t_object* a =
-      //     attr_offset_new("autosize", USESYM(long), 0, nullptr, nullptr,
-      //                     calcoffset(FluidMaxWrapper, mAutosize));
-      // class_addattr(getClass(), a);
-      // CLASS_ATTR_FILTER_CLIP(getClass(), "autosize", 0, 1);
-      // CLASS_ATTR_STYLE_LABEL(getClass(), "autosize", 0, "onoff",
-      //                        "Report Warnings");
     }
 
 
     m.template iterate<SetupMessage>();
 
     p.template iterateMutable<SetupParameter>();
-    class_sethelpsymbol(getClass(), gensym(className));
+    class_sethelpsymbol(getClass(), gensym(className));    
+    inletProxySetup(className);
   }
 
   static void doVersion(FluidPDWrapper*)
@@ -1075,12 +1214,26 @@ public:
     post("Fluid Corpus Manipulation version %s", fluidVersion());
   }
 
-  static void doReset(FluidPDWrapper* x) { x->mParams.fromTuple(x->mParamSnapshot); }
+  static void doReset(FluidPDWrapper* x)
+  {
+    x->mParams.fromTuple(x->mParamSnapshot);
+  }
 
   static void doWarnings(FluidPDWrapper* x, t_float warnings)
   {
     x->mVerbose = (bool) warnings;
   }
+
+  template<class T>
+  using HasProcess_t = decltype(std::declval<T&>().process());
+
+
+  
+  void doBufferInlet(index inlet, int ac, t_atom* av)
+  {
+    mBufferDispatch[inlet](this, ac, av);
+  }
+  
 
   Result&       messages() { return mResult; }
   bool          verbose() { return mVerbose; }
@@ -1161,6 +1314,15 @@ private:
                    [](unsigned char c) { return std::tolower(c); });
     return result;
   }
+  
+  static std::string uniqueName()
+  {
+    std::stringstream ss;
+    const auto p1 = std::chrono::steady_clock::now();
+    ss << 'u' << std::chrono::duration_cast<std::chrono::nanoseconds>(
+                   p1.time_since_epoch()).count();
+    return ss.str();
+  }
 
   ParamSetType& initParamsFromArgs(int ac, t_atom* av)
   {
@@ -1215,18 +1377,40 @@ private:
   {
     if(params.template get<0>().size() == 0)
     {
-      const auto p1 = std::chrono::steady_clock::now();
-      std::stringstream ss;
-      ss << 'u' << std::chrono::duration_cast<std::chrono::nanoseconds>(
-                   p1.time_since_epoch()).count();
-
-      params.template set<0>(ss.str(),nullptr);
+      params.template set<0>(uniqueName() ,nullptr);
     }
   }
 
   template<typename ClientType = Client>
   std::enable_if_t<!IsThreadedShared<ClientType>::value>
   checkName(ParamSetType&){}
+
+  template <typename CType = Client>
+  static std::enable_if_t<!IsThreadedShared<CType>::value> makeReferable()
+  {}
+
+  template <typename CType = Client>
+  static std::enable_if_t<IsThreadedShared<CType>::value> makeReferable()
+  {
+    class_addmethod(getClass(), (t_method) doSharedClientRefer, gensym("refer"), A_DEFSYM,
+                    0);
+  }
+
+  static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
+  {
+    std::string name(newName->s_name);
+    if (std::string(name) != x->mParams.template get<0>())
+    {
+      Result r = x->mParams.lookup(name);
+      if (r.ok())
+      {
+        x->mParams.refer(name);
+        x->mClient = Client(x->mParams);
+      }
+      else
+        printResult(x, r);
+    }
+  }
 
 
   // Sets up a single parameter
@@ -1324,17 +1508,21 @@ private:
 
   template <typename T>
   static std::enable_if_t<!isSpecialization<T, std::tuple>::value>
-  messageOutput(FluidPDWrapper* x, t_symbol* s, MessageResult<T> r)
+  messageOutput(FluidPDWrapper* x, t_symbol* s,std::vector<t_atom>& outputTokens, MessageResult<T> r)
   {
-    size_t              resultSize = ResultSize(static_cast<T>(r));
+    size_t  resultSize = ResultSize(static_cast<T>(r));
+    
+    resultSize += outputTokens.size();
     std::vector<t_atom> out(resultSize);
-    ParamAtomConverter::toAtom(out.data(), static_cast<T>(r));
-    outlet_anything(x->mMessageResultOutlet, s, static_cast<int>(resultSize),
+    std::copy_n(outputTokens.begin(), outputTokens.size(), out.begin());
+    ParamAtomConverter::toAtom(out.data() + outputTokens.size(), static_cast<T>(r));
+
+    outlet_anything(x->mDataOutlets[0], s, static_cast<int>(resultSize),
                     out.data());
   }
 
   template <typename... Ts>
-  static void messageOutput(FluidPDWrapper* x, t_symbol* s,
+  static void messageOutput(FluidPDWrapper* x, t_symbol* s,std::vector<t_atom>& outputTokens,
                             MessageResult<std::tuple<Ts...>> r)
   {
     auto   indices = std::index_sequence_for<Ts...>();
@@ -1342,16 +1530,20 @@ private:
     std::array<size_t, sizeof...(Ts)> offsets;
     std::tie(offsets, resultSize) =
         ResultSize(static_cast<std::tuple<Ts...>>(r), indices);
+    
+    resultSize += outputTokens.size();
     std::vector<t_atom> out(resultSize);
-    ParamAtomConverter::toAtom(out.data(), static_cast<std::tuple<Ts...>>(r),
+    std::copy_n(outputTokens.begin(), outputTokens.size(), out.begin());
+    ParamAtomConverter::toAtom(out.data() + outputTokens.size(), static_cast<std::tuple<Ts...>>(r),
                                indices, offsets);
-    outlet_anything(x->mMessageResultOutlet, s, static_cast<int>(resultSize),
+                               
+    outlet_anything(x->mDataOutlets[0], s, static_cast<int>(resultSize),
                     out.data());
   }
 
-  static void messageOutput(FluidPDWrapper* x, t_symbol* s, MessageResult<void>)
+  static void messageOutput(FluidPDWrapper* x, t_symbol* s, std::vector<t_atom>& outputTokens, MessageResult<void>)
   {
-    outlet_anything(x->mMessageResultOutlet, s, 0, nullptr);
+    outlet_anything(x->mDataOutlets[0], s, static_cast<int>(outputTokens.size()), outputTokens.data());
   }
 
   //////////////////////////////
@@ -1460,7 +1652,7 @@ private:
     {
       poststring(/*(t_object*) x, "%s",*/
                  static_cast<std::string>(result).c_str());
-      outlet_anything(x->mMessageResultOutlet, gensym("print"), 0, nullptr);
+      outlet_anything(x->mDataOutlets.back(), gensym("print"), 0, nullptr);
     }
   }
 
@@ -1490,7 +1682,7 @@ private:
 
     if (x->checkResult(messageResult))
     {
-      outlet_anything(x->mMessageResultOutlet, gensym("read"), 0, nullptr);
+      outlet_anything(x->mDataOutlets.back(), gensym("read"), 0, nullptr);
     }
   }
 
@@ -1516,10 +1708,9 @@ private:
 
     if (x->checkResult(messageResult))
     {
-      outlet_anything(x->mMessageResultOutlet, gensym("write"), 0, nullptr);
+      outlet_anything(x->mDataOutlets[0], gensym("write"), 0, nullptr);
     }
   }
-
 
   ///////////////////////////////
   /// message invocation
@@ -1542,48 +1733,145 @@ private:
             N>::ArgumentTypes;
 
     // Read in arguments
-    ArgTuple args{setArg<ArgTuple, Is>(x, ac, av)...};
+    ArgTuple args{setArg<ArgTuple, N, Is>(x, ac, av)...};
+    std::vector<t_atom> outputTokens;
+
+    ForEach(args,[&outputTokens](auto& a){
+        outputToken(outputTokens,a);
+    });
+
 
     auto result =
         x->mClient.template invoke<N>(x->mClient, std::get<Is>(args)...);
 
-    if (x->checkResult(result)) messageOutput(x, s, result);
+    if (x->checkResult(result)) messageOutput(x, s, outputTokens, result);
   }
 
-  template <typename Tuple, size_t N>
+  template <typename Tuple, size_t N, size_t I>
   static auto setArg(FluidPDWrapper* x, long ac, t_atom* av)
   {
-    if (N < asUnsigned(ac))
+    if (I < asUnsigned(ac))
       return ParamAtomConverter::fromAtom(
-          x, av + N, typename std::tuple_element<N, Tuple>::type{});
+          x, av + I, typename std::tuple_element<I, Tuple>::type{});
     else
-      return typename std::tuple_element<N, Tuple>::type{};
+      return x->argDefault<N, I>(typename std::tuple_element<I, Tuple>::type{});
+  }
+  
+  template<size_t N, size_t I, typename T>
+  auto argDefault(T obj){
+     return obj;
+  }
+  
+  template<size_t N, size_t I>
+  std::shared_ptr<BufferAdaptor> argDefault(std::shared_ptr<BufferAdaptor>&&){
+
+    t_symbol*& argName = mArgObjects[{N,I}];
+    
+    if(!argName)
+    {
+      argName = gensym(uniqueName().c_str());
+      t_atom oNameAtom;
+      SETSYMBOL(&oNameAtom, argName);
+      
+      mArgBuffers.emplace(std::make_pair(std::make_pair(N,I), impl::ArrayManager(argName)));
+    }
+     
+    
+    auto bufferManager  = mArgBuffers.find({N,I});
+    assert(bufferManager != mArgBuffers.end());
+    if(bufferManager != mArgBuffers.end())
+      return std::make_shared<PDBufferAdaptor>(argName,sys_getsr(), &(bufferManager->second));
+    else
+      return std::make_shared<PDBufferAdaptor>(argName,sys_getsr());
+  }
+  
+  template<size_t N, size_t I, typename T>
+  SharedClientRef<T> argDefault(SharedClientRef<T>)
+  {
+    t_symbol*& argName = mArgObjects[{N,I}];
+
+    if(!argName)
+    {
+      argName = gensym(uniqueName().c_str());
+      t_atom oNameAtom;
+      SETSYMBOL(&oNameAtom, argName);
+      t_symbol* pd_class = gensym(SharedClientName<T>);
+          
+      using t_newgimme = t_pd* (*) (t_symbol * s, int argc, t_atom* argv);
+      static t_newgimme fun = (t_newgimme) zgetfn(&pd_objectmaker, pd_class);
+      
+      if(fun)
+      {
+        t_atom name;
+        SETSYMBOL(&name,argName);
+        t_pd* newobj = fun(pd_class, 1, &name);
+        pd_bind(newobj, argName);
+      }
+    }
+
+    return {argName->s_name};
+  }
+  
+  template<size_t N,typename T>
+  SharedClientRef<const T> argDefault(SharedClientRef<const T> object)
+  {
+     return object;
   }
 
+  template<typename T>
+  static void outputToken(std::vector<t_atom>&,T) {}
+  
+  static void outputToken(std::vector<t_atom>& v,std::shared_ptr<BufferAdaptor> const& b) {
+    t_symbol* name = static_cast<PDBufferAdaptor*>(b.get())->name();
+    t_atom res;
+    SETSYMBOL(&res, name);
+    v.push_back(res);
+  }
+
+  template <typename T>
+  static void outputToken(std::vector<t_atom>& v, SharedClientRef<T> const& ds)
+  {
+    t_symbol* name = gensym(ds.name());
+    t_atom res;
+    SETSYMBOL(&res, name);
+    v.push_back(res);
+  }
+
+  template <typename T>
+  static void outputToken(std::vector<t_atom>&, SharedClientRef<const T>)
+  {}
 
   index        mListSize;
   Result       mResult;
-  t_outlet*    mMessageResultOutlet;
   t_outlet*    mNRTProgressOutlet;
-  t_outlet*    mNRTDoneOutlet;
+  std::vector<t_outlet*> mNRTDoneOutlets;
   t_outlet*    mControlOutlet;
   bool         mVerbose;
   ParamSetType mParams;
   ParamValues mParamSnapshot;
   Client       mClient;
 
-  // std::deque<Result> mMessages;
   bool               mAutosize;
   
   FluidTensor<double, 2>                  mInputListData;
   std::vector<FluidTensorView<double, 1>> mInputListViews;
   FluidTensor<double, 2>                  mOutputListData;
   std::vector<FluidTensorView<double, 1>> mOutputListViews;
-  std::vector<t_outlet*>                      mAllControlOuts;
+  std::vector<t_outlet*>                  mDataOutlets;
   std::vector<t_atom>                     mOutputListAtoms;
-  std::vector<t_inlet*> mProxies;
+  std::vector<InletProxy*>                mProxies;
+  std::vector<t_pd*>                      mManagedBuffers;
+  
+  std::vector<impl::ArrayManager>         mHostedOutputBufferObjects;
+  
+  std::vector<void(*)(FluidPDWrapper*,int,t_atom*)> mBufferDispatch;
+  
   t_canvas*    mCanvas;
-  bool         mInitialized{false}; 
+  bool         mInitialized{false};
+  
+  using ArgKey = std::pair<size_t,size_t>;
+  std::map<ArgKey,t_symbol*> mArgObjects;
+  std::map<ArgKey,impl::ArrayManager> mArgBuffers;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1600,15 +1888,12 @@ struct InputTypeWrapper<std::false_type>
   using type = float;
 };
 
-// template <template <typename T> class Client>
 template <class Client>
 void makePDWrapper(const char* classname)
 {
-  // using InputType = typename
-  // InputTypeWrapper<isRealTime<Client<double>>>::type;
-
   FluidPDWrapper<Client>::makeClass(classname);
 }
+
 
 } // namespace client
 } // namespace fluid

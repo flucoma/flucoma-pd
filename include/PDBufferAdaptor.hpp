@@ -14,23 +14,94 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <clients/common/Result.hpp>
 #include <data/FluidTensor.hpp>
 #include <atomic>
+#include <string_view> 
 
 #include "m_pd.h"
 
 namespace fluid {
 namespace client {
 
-template <typename T>
-void NOTUSED(T& a)
+// template <typename T>
+// void NOTUSED(T& a)
+// {
+//   (void) sizeof(a);
+// }
+
+namespace impl {
+class ArrayManager
 {
-  (void) sizeof(a);
-}
+public:
+  ArrayManager(t_symbol* baseName) : mBaseName(baseName) 
+  {
+    push(); 
+  }
+  
+  //Move only:
+  ArrayManager(const ArrayManager&) = delete;
+  ArrayManager(ArrayManager&&) noexcept = default;
+  ArrayManager& operator=(const ArrayManager&) = delete;
+  ArrayManager& operator=(ArrayManager&&) noexcept = default;
+  
+  ~ArrayManager()
+  {
+    for (auto&& a : mArrays)
+    {
+      if(a && *a)
+      {
+        pd_free(a);
+        a = nullptr;
+      }
+    }
+  }
+  
+  t_pd* push()
+  {
+    static t_symbol* array_sym = gensym("array");
+    
+    using t_newgimme = t_pd* (*) (t_symbol * s, int argc, t_atom* argv);
+    // typedef t_pd *(*t_newgimme)(t_symbol *s, int argc, t_atom *argv);
+    static t_newgimme fun = (t_newgimme) zgetfn(&pd_objectmaker, array_sym);
+
+    if (fun)
+    {    
+      char newName[MAXPDSTRING];
+      
+      snprintf(newName, MAXPDSTRING, "%s-%lu", mBaseName->s_name,
+                 mArrays.size());
+                 
+      t_atom args[2];
+      args[0].a_type = A_SYMBOL;
+      args[1].a_type = A_SYMBOL;
+      args[0].a_w.w_symbol = gensym("define");
+      args[1].a_w.w_symbol = gensym(newName);
+      
+      t_pd* newArray = fun(array_sym, 2, &args[0]);
+      mArrays.push_back(newArray);
+      return mArrays.back();
+    }
+
+    return nullptr;
+  }
+
+  void pop()
+  {
+    t_pd* a = mArrays.back();
+    mArrays.pop_back();
+    pd_free(a);
+  }
+ 
+private:
+  std::vector<t_pd*> mArrays;
+  t_symbol*          mBaseName;
+};
+} // namespace impl
+
 
 class PDBufferAdaptor : public BufferAdaptor
 {
 public:
-  PDBufferAdaptor(t_symbol* name, double sr)
-      : mName(name), mLock(false), mSampleRate(sr)
+  PDBufferAdaptor(t_symbol* name, double sr, impl::ArrayManager* manager = nullptr)
+      : mName(name), mArrayManager(manager), mLock(false), mSampleRate(sr)
   {}
 
   ~PDBufferAdaptor()
@@ -61,15 +132,28 @@ public:
   const Result resize(index frames, index channels,
                       double /*sampleRate*/) override
   {
-    //    NOTUSED(sampleRate);
+    //    sz(sampleRate);
 
     index  nChans = numChans();
     Result r;
     if (channels > numChans())
     {
-      r.set(Result::Status::kError);
-      r.addMessage("Not enough arrays to operate on ", mName->s_name,
+      if(!mArrayManager)
+      {
+        r.set(Result::Status::kError);
+        r.addMessage("Not enough arrays to operate on ", mName->s_name,
                    ". Found ", nChans, " array(s) but need ", channels, ".");
+        return r;           
+      }
+      
+      for(index i = nChans; i < channels; ++i) mArrayManager->push();
+      if(channels != numChans())
+      {
+        r.set(Result::Status::kError);
+        r.addMessage("Could not create new managed channels for ", mName->s_name);
+        return r;  
+      }
+      nChans = channels;
     }
 
     for (index i = 0; i < nChans; ++i)
@@ -292,6 +376,7 @@ private:
   }
 
   t_symbol* mName;
+  impl::ArrayManager* mArrayManager; 
 
   mutable FluidTensor<float, 2> mMirrorBuffer;
   bool                          mMirrorDirty;
