@@ -1053,7 +1053,7 @@ public:
         a.a_type = A_SYMBOL;
         a.a_w.w_symbol = b->name();
         
-        outlet_anything(mNRTDoneOutlets[n++], buffer_sym, 1, &a);
+        outlet_anything(mDataOutlets[n++], buffer_sym, 1, &a);
     });
   }
 
@@ -1839,7 +1839,6 @@ private:
   index        mListSize;
   Result       mResult;
   t_outlet*    mNRTProgressOutlet;
-  std::vector<t_outlet*> mNRTDoneOutlets;
   t_outlet*    mControlOutlet;
   bool         mVerbose;
   ParamSetType mParams;
