@@ -155,6 +155,19 @@ public:
       }
       nChans = channels;
     }
+    
+    if (channels < nChans && mArrayManager)
+    {
+      for(index i = nChans; i > channels; --i ) mArrayManager->pop();
+      if(channels != numChans())
+      {
+        r.set(Result::Status::kError);
+        r.addMessage("Could not erase surplus managed channels for ", mName->s_name);
+        return r;
+      }
+      nChans = channels;
+    }
+    
 
     for (index i = 0; i < nChans; ++i)
     {
