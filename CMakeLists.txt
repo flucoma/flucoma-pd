@@ -6,16 +6,23 @@
 # under the European Union’s Horizon 2020 research and innovation programme
 # (grant agreement No 725899).
 
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.18)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
+
 set(PD_PATH "" CACHE PATH "The top level of a Pure Data installation")
 if(NOT PD_PATH)
   message(FATAL_ERROR "Pure Data source or application path is not set. Please pass with with -DPD_PATH=<path> or via ccmake / CMake gui. On Mac OS, you can use pd.app/Contents/Resources")
 endif()
+
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/release-packaging")
+set(PD_INSTALL_PREFIX "." CACHE PATH "Prefix for assembling PD packages")
+set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published package")
+set(PD_PACKAGE_ROOT ${PD_INSTALL_PREFIX}/${FLUID_PACKAGE_NAME})
 
 set(FLUID_PATH "" CACHE PATH "Optional top level of the flucoma-core repo; will download if absent")
 
@@ -32,17 +39,6 @@ endif()
 project (flucoma-pd LANGUAGES CXX)
 
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
-
-MACRO(SUBDIRLIST result curdir)
-  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
-  SET(dirlist "")
-  FOREACH(child ${children})
-    IF(IS_DIRECTORY ${curdir}/${child})
-      LIST(APPEND dirlist ${child})
-    ENDIF()
-  ENDFOREACH()
-  SET(${result} ${dirlist})
-ENDMACRO()
 
 include(FetchContent)
 
@@ -129,25 +125,50 @@ if(MSVC)
   target_compile_options(FLUID_PD INTERFACE -D_USE_MATH_DEFINES)
 endif()
 
-SUBDIRLIST(PROJECT_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/src)
-foreach (project_dir ${PROJECT_DIRS})
-	if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/${project_dir}/CMakeLists.txt")
-		message("Generating: ${project_dir}")
-		add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/src/${project_dir}")
-    source_group("" FILES "${project_dir}.cpp")
-	endif ()
-endforeach ()
+include(MakePDSources)
 
-#install
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/release-packaging")
-set(PD_INSTALL_PREFIX "." CACHE PATH "Prefix for assembling PD packages")
-set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published package")
-set(PD_PACKAGE_ROOT ${PD_INSTALL_PREFIX}/${FLUID_PACKAGE_NAME})
+# generate targets for standalone clients
+get_client_group(NONE client_list)
+foreach(client ${client_list}) 
+  get_core_client_header(${client} header)   
+  get_core_client_class(${client} class)   
+  generate_pd_source(
+    CLIENTS ${client} 
+    HEADERS ${header} 
+    CLASSES ${class} 
+  )
+endforeach()
 
-#slashes at the end of the directories copy just the files, rather than the hierarchy; so don't remove them
-install(DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/ 
-        DESTINATION ${PD_PACKAGE_ROOT} 
-        FILES_MATCHING REGEX "\\.(pd_darwin|pd_linux|dll)")
+#generate target for MANIPULATION group 
+get_client_group(MANIPULATION client_list)
+foreach(client ${client_list})  
+  get_core_client_header(${client} header)  
+  get_core_client_class(${client} class)  
+  list(APPEND MANIPULATION_CLIENTS ${client})
+  list(APPEND MANIPULATION_HEADERS ${header})
+  list(APPEND MANIPULATION_CLASSES ${class})
+endforeach()
+
+generate_pd_source(
+  CLIENTS ${MANIPULATION_CLIENTS}
+  HEADERS ${MANIPULATION_HEADERS}
+  CLASSES ${MANIPULATION_CLASSES}
+  FILENAME fluid_libmanipulation 
+)
+
+# make a working tree for devs 
+
+
+
+add_custom_target(MAKE_DEV_FOlDER
+  COMMAND ${CMAKE_COMMAND} -DROOT="${CMAKE_CURRENT_SOURCE_DIR}" -DCORE_SRC="${flucoma-core_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/scripts/MakeWorkingFolder.cmake"
+  COMMENT "synthesising working copy at ${CMAKE_CURRENT_SOURCE_DIR}/dev"
+)
+
+
+
+
+#install steps (externals have their own install target)
 install(DIRECTORY help/ 
         DESTINATION ${PD_PACKAGE_ROOT} 
         FILES_MATCHING PATTERN "*.pd")
