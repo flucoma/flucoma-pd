@@ -158,15 +158,10 @@ generate_pd_source(
 
 # make a working tree for devs 
 
-
-
 add_custom_target(MAKE_DEV_FOlDER
   COMMAND ${CMAKE_COMMAND} -DROOT="${CMAKE_CURRENT_SOURCE_DIR}" -DCORE_SRC="${flucoma-core_SOURCE_DIR}" -P "${CMAKE_CURRENT_SOURCE_DIR}/scripts/MakeWorkingFolder.cmake"
   COMMENT "synthesising working copy at ${CMAKE_CURRENT_SOURCE_DIR}/dev"
 )
-
-
-
 
 #install steps (externals have their own install target)
 install(DIRECTORY help/ 
