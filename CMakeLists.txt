@@ -20,7 +20,7 @@ if(NOT PD_PATH)
   message(FATAL_ERROR "Pure Data source or application path is not set. Please pass with with -DPD_PATH=<path> or via ccmake / CMake gui. On Mac OS, you can use pd.app/Contents/Resources")
 endif()
 
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/release-packaging")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/release-packaging" CACHE PATH "")
 set(PD_INSTALL_PREFIX "." CACHE PATH "Prefix for assembling PD packages")
 set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published package")
 set(PD_PACKAGE_ROOT ${PD_INSTALL_PREFIX}/${FLUID_PACKAGE_NAME})
