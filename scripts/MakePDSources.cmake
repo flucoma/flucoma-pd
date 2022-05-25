@@ -72,7 +72,7 @@ function (add_pd_external external source)
   endif()
 
   if(MSVC)
-    target_compile_options(${safe_name} PRIVATE /W3)
+    target_compile_options(${safe_name} PRIVATE /W3 /bigobj)
   	target_link_libraries(${safe_name} PRIVATE ${PD_LIB})
   else()
     target_compile_options(${safe_name} PRIVATE -Wall -Wextra -Wpedantic -Wreturn-type -Wconversion -Wno-c++11-narrowing)
