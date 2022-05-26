@@ -8,7 +8,7 @@
 
 cmake_minimum_required(VERSION 3.18)
 
-include(FLuidClientStub)
+include(FluidClientStub)
 
 
 # MSVC_RUNTIME_LIBRARY
