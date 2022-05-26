@@ -43,8 +43,6 @@ set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
 include(FetchContent)
 
-set(FETCHCONTENT_QUIET FALSE)
-
 FetchContent_Declare(
   flucoma-core
   GIT_REPOSITORY https://github.com/flucoma/flucoma-core.git
@@ -65,14 +63,10 @@ if(FLUID_PATH)
   )
 endif()
 
-FetchContent_GetProperties(flucoma-core)
-if(NOT flucoma-core_POPULATED)
-  FetchContent_Populate(flucoma-core)
-  add_subdirectory(${flucoma-core_SOURCE_DIR} ${flucoma-core_BINARY_DIR})
-  include(flucoma_version)
-  include(flucoma-buildtools)
-  include(flucoma-buildtype)
-endif()
+FetchContent_MakeAvailable(flucoma-core)
+include(flucoma_version)
+include(flucoma-buildtools)
+include(flucoma-buildtype)
 
 set_if_toplevel(VAR CMAKE_LIBRARY_OUTPUT_DIRECTORY
                 TOPLEVEL "${CMAKE_CURRENT_SOURCE_DIR}/pd_objects"
@@ -87,17 +81,10 @@ if(DOCS)
     )
   endif()
 
-  FetchContent_GetProperties(flucoma-docs)
-  if(NOT flucoma-docs_POPULATED)
-    FetchContent_Populate(flucoma-docs)
-    file(GLOB_RECURSE DOC_SOURCE RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${flucoma-docs_SOURCE_DIR}/**/*.cpp" )
-    source_group("\\HTMLs Doc Gen" FILES ${DOC_SOURCE})
-    add_subdirectory(${flucoma-docs_SOURCE_DIR} ${flucoma-docs_BINARY_DIR})
-    include(FlucomaDocs)
-    set(PD_DOC_OUT "${CMAKE_BINARY_DIR}/pd_ref")
-    add_ref_target(pd "Making PD docs")
-  endif()
-
+  FetchContent_MakeAvailable(flucoma-docs)
+  include(FlucomaDocs)
+  set(PD_DOC_OUT "${CMAKE_BINARY_DIR}/pd_ref")
+  add_ref_target(pd "Making PD docs")
   add_custom_target(PD_MAKE_DOCS ALL DEPENDS MAKE_PD_REF)
 endif()
 
