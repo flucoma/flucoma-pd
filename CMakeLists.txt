@@ -15,6 +15,9 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
 
+set(FLUID_BRANCH "origin/main" CACHE STRING "Branch to pull flucoma dependencies from")
+
+
 set(PD_PATH "" CACHE PATH "The top level of a Pure Data installation")
 if(NOT PD_PATH)
   message(FATAL_ERROR "Pure Data source or application path is not set. Please pass with with -DPD_PATH=<path> or via ccmake / CMake gui. On Mac OS, you can use pd.app/Contents/Resources")
@@ -24,6 +27,8 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/release-packaging" CACHE P
 set(PD_INSTALL_PREFIX "." CACHE PATH "Prefix for assembling PD packages")
 set(FLUID_PACKAGE_NAME FluidCorpusManipulation CACHE STRING "Name for published package")
 set(PD_PACKAGE_ROOT ${PD_INSTALL_PREFIX}/${FLUID_PACKAGE_NAME})
+
+
 
 set(FLUID_PATH "" CACHE PATH "Optional top level of the flucoma-core repo; will download if absent")
 
@@ -47,14 +52,14 @@ FetchContent_Declare(
   flucoma-core
   GIT_REPOSITORY https://github.com/flucoma/flucoma-core.git
   GIT_PROGRESS TRUE
-  GIT_TAG origin/main
+  GIT_TAG ${FLUID_BRANCH}
 )
 
 FetchContent_Declare(
   flucoma-docs
   GIT_REPOSITORY https://github.com/flucoma/flucoma-docs.git
   GIT_PROGRESS TRUE
-  GIT_TAG origin/main
+  GIT_TAG ${FLUID_BRANCH}
 )
 
 if(FLUID_PATH)
