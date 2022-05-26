@@ -71,7 +71,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: linuxbuild 
-          path: release-packaging/FluCoMa-PD-Linux-nightly
+          path: release-packaging/FluCoMa-PD-Linux-nightly.tar.gz
   
   release:
     runs-on: ubuntu-latest
