@@ -1,0 +1,18 @@
+#N canvas 109 98 685 521 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.s2f 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Convert\\\ a\\\ symbol\\\ into\\\ a\\\ float
+4 8 0 13 #e0e0e0 #404040 0;
+#X floatatom 17 292 9 0 0 0 - - - 0;
+#X msg 17 228 symbol "3.14159";
+#X obj 17 267 fluid.s2f;
+#X text 18 114 Convert a floating point value expressed as a symbol
+("string") and output it as a float.;
+#X msg 147 228 symbol "1";
+#X msg 232 228 symbol "123456789.012345";
+#X text 213 270 Note that the symbol needs to be enclosed in double
+quotes for s2f to work., f 30;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
