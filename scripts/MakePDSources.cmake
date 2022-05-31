@@ -138,8 +138,8 @@ function (add_pd_external external source)
   if(NOT ARG_NOINSTALL)    
     install(
       TARGETS ${safe_name} 
-      LIBRARY DESTINATION ${PD_PACKAGE_ROOT}/externals
-      RUNTIME DESTINATION ${PD_PACKAGE_ROOT}/externals
+      LIBRARY DESTINATION ${PD_PACKAGE_ROOT}
+      RUNTIME DESTINATION ${PD_PACKAGE_ROOT}
     )
   endif() 
   
