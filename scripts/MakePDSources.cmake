@@ -30,7 +30,10 @@ function(make_external_name client header var)
   string(FIND ${client}  "Buf" is_bufclient)  
   string(TOLOWER ${client} lc_client) 
   string(PREPEND lc_client "fluid.")
-  if(${is_rtclient} GREATER -1 AND ${is_bufclient} EQUAL -1)
+  
+  get_property(NO_TILDE GLOBAL PROPERTY FLUID_CORE_CLIENTS_${client}_KR_IN SET)
+  
+  if(${is_rtclient} GREATER -1 AND ${is_bufclient} EQUAL -1 AND NOT ${NO_TILDE})
     string(APPEND lc_client "~")
   endif()
   set(${var} ${lc_client} PARENT_SCOPE)
