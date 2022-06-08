@@ -1005,6 +1005,10 @@ public:
     
     
     //setup an array of buffer~ object that we'll use if the respective params are unset when process is called
+    
+    //dirty: reserve in advance so that it doesn't need to reallocate and mess up pointers to contents. 
+    mHostedOutputBufferObjects.reserve(NumOutputBuffers);
+    
     mParams.template forEachParamType<BufferT>([this](auto&, auto idx){
         constexpr index N = idx();
         std::string name = uniqueName();
