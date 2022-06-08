@@ -1,6 +1,6 @@
 #N canvas 160 75 582 680 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufampslice 20 12 0 36
--262144 -66577 0;
+#fcfcfc #404040 0;
 #X text 37 50 Amplitude-based Detrending Slicer for Buffers;
 #X text 36 92 This class implements an amplitude-based slicer \, with
 various customisable options and conditions to detect relative amplitude
@@ -31,18 +31,18 @@ in this toy example \, since the envelope follower is 1 sample long
 #X obj 22 521 dac~;
 #X obj 47 459 -;
 #X obj 21 480 pack;
-#X floatatom 20 334 5 0 0 0 - - -;
+#X floatatom 20 334 5 0 0 0 - - - 0;
 #X obj 255 473 array define bufampslice_source;
 #X obj 20 421 t b f;
 #X obj 21 499 tabplay~ bufampslice_source;
 #X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufampslice_source
 ;
-#X floatatom 17 253 5 0 0 0 - - -;
+#X floatatom 17 274 5 0 0 0 - - - 0;
 #X obj 21 442 f;
 #X text 18 35 1) read a source \, and triggers the analysis;
-#X text 54 253 number of slices found;
-#X floatatom 209 136 8 0 0 0 - - -;
-#X floatatom 349 136 8 0 0 0 - - -;
+#X text 54 274 number of slices found;
+#X floatatom 209 136 8 0 0 0 - - - 0;
+#X floatatom 349 136 8 0 0 0 - - - 0;
 #X text 260 136 dB;
 #X text 401 137 dB;
 #X text 207 99 change the thresholds;
@@ -58,9 +58,11 @@ bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 #X obj 20 400 tabread bufampslice_indices;
 #X obj 204 399 tabread bufampslice_indices;
 #X obj 20 378 + 1;
-#X obj 17 232 array size bufampslice_indices;
+#X obj 17 253 array size bufampslice_indices;
 #X text 18 314 2) play a give slice \, by retrieving the onset indices
 , f 65;
+#X obj 17 234 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 0 0 1 0;
 #X connect 1 0 20 0;
 #X connect 2 0 28 0;
@@ -76,7 +78,7 @@ bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 #X connect 12 0 5 0;
 #X connect 15 0 23 0;
 #X connect 16 0 24 0;
-#X connect 20 0 29 0;
+#X connect 20 0 31 0;
 #X connect 21 0 15 0;
 #X connect 22 0 16 0;
 #X connect 23 0 20 0;
@@ -86,6 +88,7 @@ bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
 #X connect 27 0 12 1;
 #X connect 28 0 26 0;
 #X connect 29 0 11 0;
+#X connect 31 0 29 0;
 #X restore 435 238 pd musical_example;
 #N canvas 466 89 770 604 options_explained 0;
 #N canvas 86 337 450 300 wavemaker 0;
@@ -187,8 +190,8 @@ all;
 #X connect 3 0 1 0;
 #X restore 524 315 pd;
 #X text 393 296 launch the HTML doc->;
-#X obj 525 298 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 525 298 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 411 352 note_on_multithreading;
 #X obj 180 217 array define ampspikes 60000;
 #X obj 59 240 + 10;
@@ -199,6 +202,8 @@ all;
 8 -offthreshold 5, f 63;
 #X obj 180 237 array define ampslicepoints;
 #X obj 40 591 array get ampslicepoints;
+#X obj 40 565 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 3 0 30 0;
 #X connect 4 0 14 0;
 #X connect 5 0 22 0;
@@ -224,5 +229,6 @@ all;
 #X connect 28 0 29 0;
 #X connect 29 0 11 0;
 #X connect 30 0 28 0;
-#X connect 31 0 33 0;
+#X connect 31 0 34 0;
 #X connect 33 0 17 0;
+#X connect 34 0 33 0;

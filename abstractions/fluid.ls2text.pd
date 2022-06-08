@@ -1,17 +1,17 @@
-#N canvas 446 142 462 762 12;
+#N canvas 832 -1001 462 762 12;
 #X obj 185 267 until;
 #X obj 48 311 f;
 #X obj 91 356 + 1;
 #X msg 84 39 0;
 #X msg 120 400 getlabel \$1;
 #X obj 120 377 makefilename %s;
-#X obj 85 9 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 85 9 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 154 453 route getlabel;
 #X obj 154 477 list;
 #X obj 154 672 list;
 #X obj 90 332 t f f f, f 9;
-#X obj 150 207 int;
+#X obj 149 211 int;
 #X obj 154 706 text set \$2;
 #X obj 41 9 inlet;
 #X obj 41 39 t b b;
@@ -25,8 +25,10 @@
 #X msg 176 569 getlabel \$1;
 #X obj 176 592 fluid.labelset \$1;
 #X obj 291 618 route getlabel;
-#X obj 150 231 t b f;
+#X obj 149 235 t b f;
 #X obj 113 263 outlet;
+#X obj 149 191 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X connect 0 0 1 0;
 #X connect 1 0 10 0;
 #X connect 2 0 1 1;
@@ -48,13 +50,14 @@
 #X connect 16 0 9 0;
 #X connect 16 1 17 0;
 #X connect 17 0 22 0;
-#X connect 18 2 7 0;
-#X connect 19 2 21 0;
+#X connect 18 0 7 0;
+#X connect 19 0 21 0;
 #X connect 20 0 19 0;
-#X connect 21 0 11 0;
+#X connect 21 0 27 0;
 #X connect 21 1 11 1;
 #X connect 22 0 23 0;
-#X connect 23 2 24 0;
+#X connect 23 0 24 0;
 #X connect 24 0 9 1;
 #X connect 25 0 26 0;
 #X connect 25 1 0 0;
+#X connect 27 0 11 0;

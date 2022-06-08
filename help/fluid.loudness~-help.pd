@@ -77,8 +77,8 @@ f 56;
 value converted from dB to amplitude;
 #X text 148 433 loudness and peak as a list;
 #X text 234 306 open to see parameter messages;
-#X obj 531 725 cnv 15 150 50 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 531 725 cnv 15 150 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 416 56 689 1001 some_more_details 0;
 #X obj 20 759 unpack f f, f 17;
 #X floatatom 20 782 5 0 0 0 - - - 0;
@@ -154,16 +154,13 @@ f 62;
 #X obj 39 168 outlet;
 #X text 156 36 ITU BS 1770 stipulates a 400ms window with 100ms update
 for momentary loudness, f 25;
-#X obj 124 176 print;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
 #X connect 4 0 6 0;
-#X connect 4 0 8 0;
 #X connect 5 0 6 0;
-#X connect 5 0 8 0;
 #X restore 71 687 pd windowSize;
 #X text 174 686 calculate correct values for your sampling rate;
 #X obj 20 720 fluid.loudness~ 19200;

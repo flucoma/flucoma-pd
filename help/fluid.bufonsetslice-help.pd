@@ -1,6 +1,6 @@
 #N canvas 494 34 552 680 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufonsetslice 20 12 0
-36 -262144 -66577 0;
+36 #fcfcfc #404040 0;
 #X obj 59 197 until;
 #X msg 41 149 6;
 #X msg 59 338 1;
@@ -30,18 +30,18 @@ in this toy example \, since the envelope follower is 1 sample long
 #X obj 21 514 dac~;
 #X obj 46 452 -;
 #X obj 20 473 pack;
-#X floatatom 20 334 5 0 0 0 - - -;
-#X floatatom 17 231 5 0 0 0 - - -;
+#X floatatom 20 334 5 0 0 0 - - - 0;
+#X floatatom 17 250 5 0 0 0 - - - 0;
 #X obj 20 435 f;
 #X text 18 35 1) read a source \, and triggers the analysis;
-#X text 54 231 number of slices found;
-#X floatatom 209 136 8 0 0 0 - - -;
-#X floatatom 349 136 8 0 9 0 - - -;
+#X text 54 250 number of slices found;
+#X floatatom 209 136 8 0 0 0 - - - 0;
+#X floatatom 349 136 8 0 9 0 - - - 0;
 #X text 18 314 2) play a give slice \, by retrieving the onset and
 offset indices, f 65;
 #X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufonsetslice_source
 ;
-#X obj 17 210 array size bufonsetslice_indices;
+#X obj 17 229 array size bufonsetslice_indices;
 #X obj 17 177 fluid.bufonsetslice -source bufonsetslice_source -indices
 bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X obj 255 473 array define bufonsetslice_source;
@@ -56,6 +56,8 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X msg 349 117 6;
 #X msg 209 117 0.1;
 #X msg 209 155 threshold \$1 \, bang;
+#X obj 17 209 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 0 0 1 0;
 #X connect 1 0 16 0;
 #X connect 2 0 22 0;
@@ -68,7 +70,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 12 0 25 0;
 #X connect 14 0 0 0;
 #X connect 15 0 7 0;
-#X connect 16 0 15 0;
+#X connect 16 0 29 0;
 #X connect 19 0 4 1;
 #X connect 19 0 8 1;
 #X connect 20 0 21 0;
@@ -81,6 +83,7 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 26 0 12 0;
 #X connect 27 0 11 0;
 #X connect 28 0 16 0;
+#X connect 29 0 15 0;
 #X restore 398 297 pd musical_example;
 #X obj 180 218 array define onsetspikes 30000;
 #X obj 180 238 array define onsetslicepoints;
@@ -100,11 +103,13 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 3 0 1 0;
 #X restore 487 168 pd;
 #X text 356 149 launch the HTML doc->;
-#X obj 488 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 488 151 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 374 345 note_on_multithreading;
 #X obj 40 518 fluid.bufonsetslice -source onsetspikes -indices onsetslicepoints
 -minslicelength 2 -fftsettings 128 -threshold 1e-06, f 66;
+#X obj 40 550 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 24 0;
@@ -131,4 +136,5 @@ bufonsetslice_indices -metric 6 -threshold 0.1, f 80;
 #X connect 15 2 14 0;
 #X connect 25 0 18 0;
 #X connect 30 0 28 0;
-#X connect 32 0 25 0;
+#X connect 32 0 33 0;
+#X connect 33 0 25 0;

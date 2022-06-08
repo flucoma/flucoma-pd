@@ -23,7 +23,6 @@ in each pitch class across the analysis frequency range, f 56;
 #X obj 228 163 fluid.demoaudiofiles;
 #X msg 18 210 read -resize \$1 sourceA;
 #X msg 228 210 read -resize \$1 sourceB;
-#X text 35 504 bang when done;
 #X msg 28 644 set sourceA \, bang;
 #X msg 39 667 set sourceB \, bang;
 #X obj 18 820 fluid.out~ bufaudiotransporthelp;
@@ -32,8 +31,8 @@ in each pitch class across the analysis frequency range, f 56;
 #X obj 532 162 array define sourceA;
 #X obj 532 187 array define sourceB;
 #X obj 532 212 array define interp;
-#X obj 18 439 fluid.bufaudiotransport 8192 -sourcea sourceA -sourceb
-sourceB -destination interp -blocking 0 -interpolation 0.5, f 31;
+#X obj 18 439 fluid.bufaudiotransport -sourcea sourceA -sourceb sourceB
+-destination interp -blocking 0 -interpolation 0.5, f 31;
 #X msg 18 355 interpolation \$1;
 #X floatatom 18 334 5 0 1 0 - - - 0;
 #X obj 18 288 loadbang;
@@ -43,7 +42,7 @@ sourceB -destination interp -blocking 0 -interpolation 0.5, f 31;
 #X text 171 643 ... or sourceA;
 #X text 185 666 ... or sourceB;
 #X text 34 526 The output will be the same length as the shortest source
-, f 21;
+, f 29;
 #N canvas 151 83 830 873 parameters 0;
 #X obj 545 284 s \$0-params;
 #X obj 29 810 r \$0-params;
@@ -157,12 +156,12 @@ of 2, f 29;
 #X connect 5 0 4 1;
 #X connect 6 0 4 0;
 #X connect 7 0 3 0;
-#X restore 438 537 pd link;
-#X obj 421 537 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X restore 511 539 pd link;
+#X obj 494 539 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X text 295 422 The FFT settings have a drastic impact on the result
+#X text 368 424 The FFT settings have a drastic impact on the result
 of this algorithm., f 28;
-#X text 294 486 See the real-time version of the object for a more
+#X text 367 488 See the real-time version of the object for a more
 interactive demonstration of their effect., f 28;
 #X obj 519 828 note_on_multithreading;
 #X obj 18 143 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -178,8 +177,9 @@ sourceA and sourceB, f 24;
 #X obj 140 621 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 140 620 4) Listen to the result;
-#X connect 0 0 19 1;
-#X connect 0 0 19 0;
+#X text 36 504 'buffer <destination>' message when done;
+#X connect 0 0 18 1;
+#X connect 0 0 18 0;
 #X connect 1 0 0 0;
 #X connect 8 0 9 0;
 #X connect 10 0 14 0;
@@ -187,15 +187,15 @@ sourceA and sourceB, f 24;
 #X connect 13 0 15 0;
 #X connect 14 0 8 0;
 #X connect 15 0 11 0;
+#X connect 16 0 0 0;
 #X connect 17 0 0 0;
-#X connect 18 0 0 0;
-#X connect 20 0 21 0;
-#X connect 21 0 19 2;
-#X connect 25 0 2 0;
+#X connect 19 0 20 0;
+#X connect 20 0 18 2;
+#X connect 24 0 2 0;
+#X connect 25 0 24 0;
 #X connect 26 0 25 0;
-#X connect 27 0 26 0;
-#X connect 28 0 29 0;
-#X connect 29 0 27 0;
-#X connect 30 0 25 0;
-#X connect 34 0 25 0;
-#X connect 37 0 36 0;
+#X connect 27 0 28 0;
+#X connect 28 0 26 0;
+#X connect 29 0 24 0;
+#X connect 33 0 24 0;
+#X connect 36 0 35 0;

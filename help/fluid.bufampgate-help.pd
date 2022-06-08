@@ -1,6 +1,6 @@
 #N canvas 85 70 582 680 10;
 #X obj 12 19 cnv 15 100 10 empty empty fluid.bufampgate 20 12 0 36
--262144 -66577 0;
+#fcfcfc #404040 0;
 #X text 37 50 Amplitude-based Gating Slicer for Buffers;
 #X text 36 92 This class implements an amplitude-based slicer \, with
 various customisable options and conditions to detect absolute amplitude
@@ -31,22 +31,22 @@ in this toy example \, since the envelope follower is 1 sample long
 #X obj 22 498 dac~;
 #X obj 47 436 -;
 #X obj 21 457 pack;
-#X floatatom 20 334 5 0 0 0 - - -;
+#X floatatom 20 334 5 0 0 0 - - - 0;
 #X obj 255 473 array define bufampslice_source;
 #X obj 255 494 clone fluid.multiarray 2 bufampslice_indices;
-#X obj 17 219 array size bufampslice_indices-0;
+#X obj 17 236 array size bufampslice_indices-0;
 #X obj 20 377 tabread bufampslice_indices-1;
 #X obj 204 376 tabread bufampslice_indices-0;
 #X obj 20 398 t b f;
 #X obj 21 476 tabplay~ bufampslice_source;
 #X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufampslice_source
 ;
-#X floatatom 17 240 5 0 0 0 - - -;
+#X floatatom 17 257 5 0 0 0 - - - 0;
 #X obj 21 419 f;
 #X text 18 35 1) read a source \, and triggers the analysis;
-#X text 54 240 number of slices found;
-#X floatatom 209 136 8 0 0 0 - - -;
-#X floatatom 349 136 8 0 0 0 - - -;
+#X text 54 257 number of slices found;
+#X floatatom 209 136 8 0 0 0 - - - 0;
+#X floatatom 349 136 8 0 0 0 - - - 0;
 #X text 260 136 dB;
 #X text 401 137 dB;
 #X text 207 99 change the thresholds;
@@ -60,6 +60,8 @@ bufampslice_indices -onthreshold -27 -offthreshold -31 -rampup 110
 #X msg 349 117 -31;
 #X msg 209 155 onthreshold \$1 \, bang;
 #X msg 349 155 offthreshold \$1 \, bang;
+#X obj 17 218 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 0 0 1 0;
 #X connect 1 0 25 0;
 #X connect 2 0 10 0;
@@ -79,11 +81,12 @@ bufampslice_indices -onthreshold -27 -offthreshold -31 -rampup 110
 #X connect 16 0 5 0;
 #X connect 19 0 28 0;
 #X connect 20 0 29 0;
-#X connect 25 0 9 0;
+#X connect 25 0 30 0;
 #X connect 26 0 19 0;
 #X connect 27 0 20 0;
 #X connect 28 0 25 0;
 #X connect 29 0 25 0;
+#X connect 30 0 9 0;
 #X restore 435 238 pd musical_example;
 #N canvas 331 106 770 604 options_explained 0;
 #N canvas 86 337 450 300 wavemaker 0;
@@ -221,8 +224,8 @@ highpass]–[abs]–[atodb]-[slide]-[>], f 91;
 #X connect 3 0 1 0;
 #X restore 524 315 pd;
 #X text 393 296 launch the HTML doc->;
-#X obj 525 298 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 525 298 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 411 352 note_on_multithreading;
 #X obj 180 217 array define ampspikes 60000;
 #X obj 40 518 fluid.bufampgate -source ampspikes -indices ampslicepoints
@@ -230,6 +233,8 @@ highpass]–[abs]–[atodb]-[slide]-[>], f 91;
 #X obj 59 261 * 300;
 #X obj 59 218 random 41;
 #X obj 59 240 + 10;
+#X obj 40 560 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 3 0 32 0;
 #X connect 4 0 14 0;
 #X connect 5 0 24 0;
@@ -253,7 +258,8 @@ highpass]–[abs]–[atodb]-[slide]-[>], f 91;
 #X connect 14 2 13 0;
 #X connect 23 0 17 0;
 #X connect 27 0 25 0;
-#X connect 30 0 23 0;
+#X connect 30 0 34 0;
 #X connect 31 0 11 0;
 #X connect 32 0 33 0;
 #X connect 33 0 31 0;
+#X connect 34 0 23 0;

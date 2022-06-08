@@ -1,23 +1,27 @@
 #N canvas 706 170 598 532 12;
-#X obj 163 35 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 163 35 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X msg 181 124 3;
 #X obj 183 154 until;
 #X obj 186 186 random 23;
 #X msg 186 213 append \$1;
 #X obj 166 243 list store;
 #X obj 162 70 t b b b;
-#X obj 133 287 fluid.stats;
 #X obj 145 353 print mean;
-#X obj 233 352 print std.dev;
+#X obj 295 350 print std.dev;
+#X obj 200 286 print source;
+#X obj 166 271 t l l;
+#X obj 142 326 fluid.stats -history 2;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
-#X connect 5 0 7 0;
+#X connect 5 0 10 0;
 #X connect 6 0 5 0;
 #X connect 6 1 1 0;
 #X connect 6 2 5 1;
-#X connect 7 0 8 0;
-#X connect 7 1 9 0;
+#X connect 10 0 11 0;
+#X connect 10 1 9 0;
+#X connect 11 0 7 0;
+#X connect 11 1 8 0;

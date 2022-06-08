@@ -1,6 +1,7 @@
+#N struct bufstatsitemstobesorted float x float index;
 #N canvas 56 23 734 649 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.bufstats 20 12 0 36 -262144
--66577 0;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.bufstats 20 12 0 36 #fcfcfc
+#404040 0;
 #X text 36 57 Computing Statistics on Buffers as Series., f 66;
 #X text 37 116 Statistical analysis on buffer channels., f 62;
 #N canvas 110 274 748 613 generators 0;
@@ -108,7 +109,7 @@
 #X msg 114 260 random;
 #X obj 39 318 array get bufstats_stats;
 #X obj 39 339 unpack f f f f f f f f f f f f f f;
-#X obj 39 300 fluid\.bufstats -source bufstats_source -stats bufstats_stats
+#X obj 39 300 fluid.bufstats -source bufstats_source -stats bufstats_stats
 -numderivs 1, f 74;
 #X text 350 365 mean;
 #X text 349 382 stddev;
@@ -117,20 +118,20 @@
 #X text 349 435 low;
 #X text 350 451 mid;
 #X text 349 467 high;
-#X floatatom 287 365 10 0 0 0 - - -;
-#X floatatom 287 382 10 0 0 0 - - -;
-#X floatatom 287 399 10 0 0 0 - - -;
-#X floatatom 287 416 10 0 0 0 - - -;
-#X floatatom 287 433 10 0 0 0 - - -;
-#X floatatom 287 450 10 0 0 0 - - -;
-#X floatatom 287 467 10 0 0 0 - - -;
-#X floatatom 287 517 10 0 0 0 - - -;
-#X floatatom 287 534 10 0 0 0 - - -;
-#X floatatom 287 551 10 0 0 0 - - -;
-#X floatatom 287 568 10 0 0 0 - - -;
-#X floatatom 287 585 10 0 0 0 - - -;
-#X floatatom 287 602 10 0 0 0 - - -;
-#X floatatom 287 619 10 0 0 0 - - -;
+#X floatatom 287 365 10 0 0 0 - - - 0;
+#X floatatom 287 382 10 0 0 0 - - - 0;
+#X floatatom 287 399 10 0 0 0 - - - 0;
+#X floatatom 287 416 10 0 0 0 - - - 0;
+#X floatatom 287 433 10 0 0 0 - - - 0;
+#X floatatom 287 450 10 0 0 0 - - - 0;
+#X floatatom 287 467 10 0 0 0 - - - 0;
+#X floatatom 287 517 10 0 0 0 - - - 0;
+#X floatatom 287 534 10 0 0 0 - - - 0;
+#X floatatom 287 551 10 0 0 0 - - - 0;
+#X floatatom 287 568 10 0 0 0 - - - 0;
+#X floatatom 287 585 10 0 0 0 - - - 0;
+#X floatatom 287 602 10 0 0 0 - - - 0;
+#X floatatom 287 619 10 0 0 0 - - - 0;
 #X text 350 517 mean;
 #X text 349 534 stddev;
 #X text 349 551 skewness;
@@ -143,10 +144,10 @@
 #X text 36 165 1) choose a source \, visualise it below \, and try
 to imagine what would the values should be, f 91;
 #N canvas 774 23 701 805 multichannel 0;
-#X obj 50 61 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 44 281 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 50 61 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 44 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X text 46 11 "multichannel" arrays will process each channel in turn
 \, and output 'channels' will be consecutive \, i.e. all features of
 "channel" 1 \, then all features of "channel" 2 \, etc, f 87;
@@ -158,20 +159,20 @@ to imagine what would the values should be, f 91;
 #X text 298 528 low;
 #X text 299 544 mid;
 #X text 298 560 high;
-#X floatatom 236 458 10 0 0 0 - - -;
-#X floatatom 236 475 10 0 0 0 - - -;
-#X floatatom 236 492 10 0 0 0 - - -;
-#X floatatom 236 509 10 0 0 0 - - -;
-#X floatatom 236 526 10 0 0 0 - - -;
-#X floatatom 236 543 10 0 0 0 - - -;
-#X floatatom 236 560 10 0 0 0 - - -;
-#X floatatom 236 610 10 0 0 0 - - -;
-#X floatatom 236 627 10 0 0 0 - - -;
-#X floatatom 236 644 10 0 0 0 - - -;
-#X floatatom 236 661 10 0 0 0 - - -;
-#X floatatom 236 678 10 0 0 0 - - -;
-#X floatatom 236 695 10 0 0 0 - - -;
-#X floatatom 236 712 10 0 0 0 - - -;
+#X floatatom 236 458 10 0 0 0 - - - 0;
+#X floatatom 236 475 10 0 0 0 - - - 0;
+#X floatatom 236 492 10 0 0 0 - - - 0;
+#X floatatom 236 509 10 0 0 0 - - - 0;
+#X floatatom 236 526 10 0 0 0 - - - 0;
+#X floatatom 236 543 10 0 0 0 - - - 0;
+#X floatatom 236 560 10 0 0 0 - - - 0;
+#X floatatom 236 610 10 0 0 0 - - - 0;
+#X floatatom 236 627 10 0 0 0 - - - 0;
+#X floatatom 236 644 10 0 0 0 - - - 0;
+#X floatatom 236 661 10 0 0 0 - - - 0;
+#X floatatom 236 678 10 0 0 0 - - - 0;
+#X floatatom 236 695 10 0 0 0 - - - 0;
+#X floatatom 236 712 10 0 0 0 - - - 0;
 #X text 299 610 mean;
 #X text 298 627 stddev;
 #X text 298 644 skewness;
@@ -188,20 +189,20 @@ to imagine what would the values should be, f 91;
 #X text 560 525 low;
 #X text 561 541 mid;
 #X text 560 557 high;
-#X floatatom 498 455 10 0 0 0 - - -;
-#X floatatom 498 472 10 0 0 0 - - -;
-#X floatatom 498 489 10 0 0 0 - - -;
-#X floatatom 498 506 10 0 0 0 - - -;
-#X floatatom 498 523 10 0 0 0 - - -;
-#X floatatom 498 540 10 0 0 0 - - -;
-#X floatatom 498 557 10 0 0 0 - - -;
-#X floatatom 498 607 10 0 0 0 - - -;
-#X floatatom 498 624 10 0 0 0 - - -;
-#X floatatom 498 641 10 0 0 0 - - -;
-#X floatatom 498 658 10 0 0 0 - - -;
-#X floatatom 498 675 10 0 0 0 - - -;
-#X floatatom 498 692 10 0 0 0 - - -;
-#X floatatom 498 709 10 0 0 0 - - -;
+#X floatatom 498 455 10 0 0 0 - - - 0;
+#X floatatom 498 472 10 0 0 0 - - - 0;
+#X floatatom 498 489 10 0 0 0 - - - 0;
+#X floatatom 498 506 10 0 0 0 - - - 0;
+#X floatatom 498 523 10 0 0 0 - - - 0;
+#X floatatom 498 540 10 0 0 0 - - - 0;
+#X floatatom 498 557 10 0 0 0 - - - 0;
+#X floatatom 498 607 10 0 0 0 - - - 0;
+#X floatatom 498 624 10 0 0 0 - - - 0;
+#X floatatom 498 641 10 0 0 0 - - - 0;
+#X floatatom 498 658 10 0 0 0 - - - 0;
+#X floatatom 498 675 10 0 0 0 - - - 0;
+#X floatatom 498 692 10 0 0 0 - - - 0;
+#X floatatom 498 709 10 0 0 0 - - - 0;
 #X text 561 607 mean;
 #X text 560 624 stddev;
 #X text 560 641 skewness;
@@ -258,9 +259,11 @@ on the left channel \, and noise on the right channel, f 76;
 #X array bufstats_src-1 101 float 2;
 #X coords 0 1 101 0 202 140 1 0 0;
 #X restore 400 131 graph;
-#X obj 44 298 fluid\.bufstats -source bufstats_src -stats bufstats_feats
+#X obj 44 287 fluid.bufstats -source bufstats_src -stats bufstats_feats
 -numderivs 1, f 88;
-#X text 63 280 2) process;
+#X text 63 269 2) process;
+#X obj 44 308 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 0 0 68 0;
 #X connect 1 0 72 0;
 #X connect 3 0 11 0;
@@ -294,32 +297,32 @@ on the left channel \, and noise on the right channel, f 76;
 #X connect 64 0 3 0;
 #X connect 65 0 33 0;
 #X connect 68 0 1 0;
-#X connect 72 0 64 0;
-#X connect 72 0 65 0;
+#X connect 72 0 74 0;
+#X connect 74 0 64 0;
+#X connect 74 0 65 0;
 #X restore 611 506 pd multichannel;
 #N canvas 791 26 757 646 musical_example 0;
 #X obj 16 57 soundfiler;
-#X obj 16 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 16 75 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 448 532 array define bufstats_synth;
 #X obj 449 553 array define bufstats_synth_slices;
-#X obj 449 572 clone fluid.multiarray 2 bufstats_synth_slices_pitches;
-#X obj 18 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 18 128 fluid\.bufonsetslice -minslicelength 10 -metric 9 -threshold
+#X obj 449 572 clone fluid.multiarray 2 bufstats_synth_slices_pitches
+;
+#X obj 18 110 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 18 128 fluid.bufonsetslice -minslicelength 10 -metric 9 -threshold
 0.4 -filtersize 7 -source bufstats_synth -indices bufstats_synth_slices
 , f 78;
-#X obj 18 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X msg 16 28 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufstats_synth;
-#X floatatom 20 231 5 0 1 0 - - -;
-#X obj 20 266 fluid\.bufcompose -source bufstats_synth_slices_pitches
+#X obj 18 198 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 16 28 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav bufstats_synth
+;
+#X floatatom 20 231 5 0 1 0 - - - 0;
+#X obj 20 266 fluid.bufcompose -source bufstats_synth_slices_pitches
 -destination bufstats_synth_slices_selected -numchans 1;
 #X msg 20 248 startchan \$1 \, bang;
 #X obj 449 591 array define bufstats_synth_slices_selected;
-#X obj 18 157 fluid\.bufpitch -source bufstats_synth -features bufstats_synth_slices_pitches
-, f 78;
 #X obj 448 610 array define bufstats_synth_slices_stats;
 #N canvas 692 137 563 541 iterate_and_rank_slices 0;
 #X obj 24 28 inlet;
@@ -336,10 +339,10 @@ bufstats_synth;
 512)) - $f2), f 64;
 #X msg 141 285 startframe \$1;
 #X msg 141 336 numframes \$1;
-#X obj 109 361 fluid\.bufstats -source bufstats_synth_slices_selected
+#X obj 109 361 fluid.bufstats -source bufstats_synth_slices_selected
 -stats bufstats_synth_slices_stats -numderivs 1;
-#X obj 109 393 int;
-#X obj 109 411 tabread bufstats_synth_slices_stats;
+#X obj 109 415 int;
+#X obj 109 433 tabread bufstats_synth_slices_stats;
 #N canvas 313 48 1061 835 sorting_indices_per_values 0;
 #X obj 532 180 inlet;
 #X obj 622 491 pointer;
@@ -363,6 +366,34 @@ bufstats_synth;
 #X obj 103 759 outlet;
 #X obj 338 97 struct bufstatsitemstobesorted float x float index;
 #N canvas 0 23 450 300 bufstatstobesorted 0;
+#X scalar bufstatsitemstobesorted 0.00399735 1 \;;
+#X scalar bufstatsitemstobesorted 0.0141614 8 \;;
+#X scalar bufstatsitemstobesorted 0.026675 25 \;;
+#X scalar bufstatsitemstobesorted 0.031072 22 \;;
+#X scalar bufstatsitemstobesorted 0.0320088 23 \;;
+#X scalar bufstatsitemstobesorted 0.0355366 27 \;;
+#X scalar bufstatsitemstobesorted 0.0357191 26 \;;
+#X scalar bufstatsitemstobesorted 0.0358917 9 \;;
+#X scalar bufstatsitemstobesorted 0.0390663 2 \;;
+#X scalar bufstatsitemstobesorted 0.0503494 6 \;;
+#X scalar bufstatsitemstobesorted 0.0578436 10 \;;
+#X scalar bufstatsitemstobesorted 0.063755 20 \;;
+#X scalar bufstatsitemstobesorted 0.0667298 17 \;;
+#X scalar bufstatsitemstobesorted 0.0681961 14 \;;
+#X scalar bufstatsitemstobesorted 0.0688973 19 \;;
+#X scalar bufstatsitemstobesorted 0.0717841 5 \;;
+#X scalar bufstatsitemstobesorted 0.0807952 24 \;;
+#X scalar bufstatsitemstobesorted 0.0921044 11 \;;
+#X scalar bufstatsitemstobesorted 0.098577 7 \;;
+#X scalar bufstatsitemstobesorted 0.100636 3 \;;
+#X scalar bufstatsitemstobesorted 0.10725 4 \;;
+#X scalar bufstatsitemstobesorted 0.110378 18 \;;
+#X scalar bufstatsitemstobesorted 0.112057 15 \;;
+#X scalar bufstatsitemstobesorted 0.127506 13 \;;
+#X scalar bufstatsitemstobesorted 0.127808 12 \;;
+#X scalar bufstatsitemstobesorted 0.13166 16 \;;
+#X scalar bufstatsitemstobesorted 0.146886 0 \;;
+#X scalar bufstatsitemstobesorted 0.161208 21 \;;
 #X restore 692 100 pd bufstatstobesorted;
 #X msg 830 319 \; pd-bufstatstobesorted clear;
 #X msg 622 469 traverse pd-bufstatstobesorted \, bang;
@@ -405,6 +436,8 @@ bufstats_synth;
 #X restore 23 469 pd sorting_indices_per_values;
 #X obj 24 112 t b f b b, f 29;
 #X obj 23 490 outlet;
+#X obj 109 393 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 1 14 1;
@@ -423,7 +456,7 @@ bufstats_synth;
 #X connect 10 0 12 0;
 #X connect 11 0 13 0;
 #X connect 12 0 13 0;
-#X connect 13 0 14 0;
+#X connect 13 0 19 0;
 #X connect 14 0 15 0;
 #X connect 15 0 16 1;
 #X connect 16 0 18 0;
@@ -431,15 +464,16 @@ bufstats_synth;
 #X connect 17 1 5 0;
 #X connect 17 2 8 0;
 #X connect 17 3 16 2;
+#X connect 19 0 14 0;
 #X restore 189 373 pd iterate_and_rank_slices;
 #X obj 24 452 list store, f 28;
-#X floatatom 24 417 5 0 0 0 - - -;
+#X floatatom 24 417 5 0 0 0 - - - 0;
 #X msg 24 434 get \$1 1;
 #X obj 24 487 t f f;
 #X obj 24 627 dac~;
 #X obj 50 566 -;
 #X obj 24 587 pack;
-#X floatatom 24 470 5 0 0 0 - - -;
+#X floatatom 24 470 5 0 0 0 - - - 0;
 #X obj 24 564 f;
 #X obj 24 543 t f f;
 #X obj 24 506 + 1;
@@ -458,39 +492,44 @@ which one is used to sort too by changing which channel is selected.
 Changing to channel 1 would sort by pitch confidence., f 100;
 #X text 41 108 2) trigger the slicing;
 #X text 15 10 1) load a soundfile;
+#X obj 18 160 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 18 180 fluid.bufpitch -source bufstats_synth -features bufstats_synth_slices_pitches
+, f 78;
 #X connect 0 0 1 0;
 #X connect 5 0 6 0;
-#X connect 6 0 13 0;
+#X connect 6 0 39 0;
 #X connect 8 0 0 0;
 #X connect 9 0 11 0;
 #X connect 11 0 10 0;
-#X connect 13 0 7 0;
-#X connect 15 0 16 1;
-#X connect 16 0 23 0;
-#X connect 17 0 18 0;
-#X connect 18 0 16 0;
-#X connect 19 0 26 0;
-#X connect 19 1 28 0;
-#X connect 21 0 22 1;
-#X connect 22 0 29 0;
-#X connect 23 0 19 0;
-#X connect 24 0 22 0;
-#X connect 25 0 24 0;
-#X connect 25 1 21 0;
-#X connect 26 0 27 0;
-#X connect 27 0 25 0;
-#X connect 28 0 21 1;
-#X connect 28 0 24 1;
-#X connect 29 0 20 0;
-#X connect 29 0 20 1;
-#X connect 30 0 15 0;
-#X connect 33 0 15 0;
+#X connect 14 0 15 1;
+#X connect 15 0 22 0;
+#X connect 16 0 17 0;
+#X connect 17 0 15 0;
+#X connect 18 0 25 0;
+#X connect 18 1 27 0;
+#X connect 20 0 21 1;
+#X connect 21 0 28 0;
+#X connect 22 0 18 0;
+#X connect 23 0 21 0;
+#X connect 24 0 23 0;
+#X connect 24 1 20 0;
+#X connect 25 0 26 0;
+#X connect 26 0 24 0;
+#X connect 27 0 20 1;
+#X connect 27 0 23 1;
+#X connect 28 0 19 0;
+#X connect 28 0 19 1;
+#X connect 29 0 14 0;
+#X connect 32 0 14 0;
+#X connect 39 0 40 0;
+#X connect 40 0 7 0;
 #X restore 611 486 pd musical_example;
 #X obj 512 385 array define bufstats_stats 14;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.bufstats.html;
+#X msg 83 71 dir 0 docs/fluid.bufstats.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -498,8 +537,8 @@ Changing to channel 1 would sort by pitch confidence., f 100;
 #X connect 3 0 1 0;
 #X restore 684 96 pd;
 #X text 553 77 launch the HTML doc->;
-#X obj 685 79 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 685 79 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 571 120 note_on_multithreading;
 #X connect 3 0 12 0;
 #X connect 5 0 3 1;

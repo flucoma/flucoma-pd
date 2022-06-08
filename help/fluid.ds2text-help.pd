@@ -77,4 +77,4 @@ text object myText, f 36;
 #X connect 7 1 6 0;
 #X connect 8 0 11 0;
 #X connect 10 0 12 0;
-#X connect 11 2 13 0;
+#X connect 11 0 13 0;
