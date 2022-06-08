@@ -101,7 +101,8 @@ class PDBufferAdaptor : public BufferAdaptor
 {
 public:
   PDBufferAdaptor(t_symbol* name, double sr, impl::ArrayManager* manager = nullptr)
-      : mName(name), mArrayManager(manager), mLock(false), mSampleRate(sr)
+      : mName(name), mArrayManager(manager), mMirrorDirty{false},
+      mLock(false),  mSampleRate(sr)
   {}
 
   ~PDBufferAdaptor()
