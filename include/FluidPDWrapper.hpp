@@ -1010,7 +1010,6 @@ public:
         std::string name = uniqueName();
         mHostedOutputBufferObjects.push_back(impl::ArrayManager(gensym(name.c_str())));
           
-        post(name.c_str()); 
           
         auto currentValue =
             static_cast<PDBufferAdaptor*>(mParams.template get<N>().get());
