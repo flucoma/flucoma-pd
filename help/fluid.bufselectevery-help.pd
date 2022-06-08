@@ -1,14 +1,18 @@
-#N canvas 62 74 811 824 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufselectevery 20 12 0
-36 -262144 -66577 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 65 410 array get output;
-#X obj 170 438 print;
-#X obj 365 428 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X text 110 290 2 process - oops not working beyond mono yet;
-#X text 382 425 1 fill the input arrays;
-#N canvas 0 23 786 634 array-filler 0;
+#N canvas 147 38 689 1001 12;
+#X obj 275 681 fluid.bufselectevery -source input -destination output
+;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufselectevery 1 22 0
+36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufselectevery.html reference/bufselectevery/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Extract\\\ every\\\ N\\\ samples\\\ /\\\ channels\\\ from\\\ a\\\ buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Pick every N frames and/or channels from a buffer \,
+described in terms of independent hop sizes for frames and channels
+;
+#X obj 17 177 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 0 38 786 634 array-filler 0;
 #X obj 37 37 inlet;
 #X obj 135 459 array set;
 #X obj 44 129 until;
@@ -57,25 +61,322 @@
 #X connect 17 0 1 2;
 #X connect 18 0 3 0;
 #X connect 19 0 7 0;
-#X restore 363 450 pd array-filler;
-#X obj 472 315 clone fluid.multiarray 6 input 6;
-#X obj 64 367 t b f;
-#X msg 170 385 symbol output-\$1;
-#X obj 65 325 fluid.bufselectevery -source input -destination output
-;
-#X obj 473 337 clone fluid.multiarray 6 output 6;
-#X msg 64 346 0 \, 1 \, 2 \, 3 \, 4 \, 5;
-#X msg 64 246 startframe 0 \, numframes -1 \, framehop 2 \, startchan
-0 \, numchans -1 \, chanhop 2 \, bang;
-#X msg 43 211 startframe 1 \, numframes 2 \, framehop 3 \, startchan
-2 \, numchans 2 \, chanhop 3 \, bang;
-#X connect 2 0 3 0;
-#X connect 4 0 7 0;
-#X connect 9 0 2 0;
-#X connect 9 1 10 0;
-#X connect 10 0 2 2;
+#X restore 17 197 pd array-filler;
+#X text 16 160 1) fill the input arrays;
+#X obj 17 272 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 59 297 array get input-0;
+#X listbox 17 428 25 0 0 0 - - - 0;
+#X listbox 17 448 25 0 0 0 - - - 0;
+#X obj 66 318 array get input-1;
+#X listbox 17 468 25 0 0 0 - - - 0;
+#X listbox 17 488 25 0 0 0 - - - 0;
+#X obj 73 339 array get input-2;
+#X obj 82 360 array get input-3;
+#X listbox 17 508 25 0 0 0 - - - 0;
+#X obj 90 381 array get input-4;
+#X listbox 17 528 25 0 0 0 - - - 0;
+#X obj 100 402 array get input-5;
+#X text 16 255 2) show values in input channels 0-4;
+#X obj 539 200 note_on_multiarrays;
+#X obj 448 228 clone fluid.multiarray 6 input 6;
+#X obj 17 694 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X listbox 17 858 25 0 0 0 - - - 0;
+#X listbox 17 878 25 0 0 0 - - - 0;
+#X obj 58 720 array get output-0;
+#X obj 65 741 array get output-1;
+#X listbox 17 898 25 0 0 0 - - - 0;
+#X obj 72 762 array get output-2;
+#X text 18 675 4) get values of output channels;
+#X msg 277 382 startframe 0 \, numframes -1 \, framehop 2 \, startchan
+0 \, numchans -1 \, chanhop 1 \, bang;
+#X obj 441 250 clone fluid.multiarray 6 output 6;
+#X listbox 17 918 25 0 0 0 - - - 0;
+#X listbox 17 938 25 0 0 0 - - - 0;
+#X listbox 17 958 25 0 0 0 - - - 0;
+#X obj 80 783 array get output-3;
+#X obj 87 804 array get output-4;
+#X obj 94 825 array get output-5;
+#X text 251 356 3) select every other frame in all channels;
+#N canvas 1701 -604 740 385 clear 0;
+#X obj 59 9 inlet;
+#X msg 59 76 0;
+#X obj 36 114 array size output-0;
+#X obj 59 41 t b b;
+#X msg 253 72 \; output-0 const 0;
+#X msg 263 112 \; output-1 const 0;
+#X msg 283 152 \; output-2 const 0;
+#X msg 303 192 \; output-3 const 0;
+#X msg 323 232 \; output-4 const 0;
+#X msg 343 272 \; output-5 const 0;
+#X obj 134 14 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 52 136 array size output-1;
+#X obj 66 158 array size output-2;
+#X obj 82 180 array size output-3;
+#X obj 97 202 array size output-4;
+#X obj 113 224 array size output-5;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 1 0 11 0;
+#X connect 1 0 12 0;
+#X connect 1 0 13 0;
+#X connect 1 0 14 0;
+#X connect 1 0 15 0;
+#X connect 3 0 1 0;
+#X connect 3 1 4 0;
+#X connect 3 1 5 0;
+#X connect 3 1 6 0;
+#X connect 3 1 7 0;
+#X connect 3 1 8 0;
+#X connect 3 1 9 0;
 #X connect 10 0 3 0;
-#X connect 11 0 13 0;
-#X connect 13 0 9 0;
-#X connect 14 0 11 0;
-#X connect 15 0 11 0;
+#X restore 307 659 pd clear;
+#X obj 275 627 t a a;
+#X text 307 453 ... or select every other channel, f 46;
+#X msg 291 472 startframe 0 \, numframes -1 \, framehop 1 \, startchan
+0 \, numchans -1 \, chanhop 2 \, bang;
+#X msg 298 562 startframe 0 \, numframes -1 \, framehop 3 \, startchan
+0 \, numchans -1 \, chanhop 1 \, bang;
+#X text 296 543 ... or every third frame, f 46;
+#X obj 477 808 cnv 15 199 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 209 78 703 901 curating_descriptor_data 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufselectevery 1 22 0
+36 #4ba3fb #ffffff 0;
+#X obj 16 472 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X listbox 16 526 185 0 0 0 - - - 0;
+#X text 35 470 3) Display the dataset;
+#X obj 17 60 cnv 15 488 17 empty empty Extract\\\ every\\\ N\\\ samples\\\ /\\\ channels\\\ from\\\ a\\\ buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#N canvas 257 92 648 610 buffers 0;
+#X obj 18 226 soundfiler;
+#X obj 18 248 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 218 145 fluid.demoaudiofiles;
+#X msg 218 192 read -resize \$1 bufselect.help.audiosrc;
+#N canvas 208 226 450 278 (subpatch) 0;
+#X array bufselect.help.audiosrc 533755 float 2;
+#X coords 0 0.75 533755 -0.75 600 53 1 0 0;
+#X restore 17 292 graph;
+#X obj 17 372 clone fluid.multiarray 7 bufselect.help.features 7;
+#X obj 17 416 clone fluid.multiarray 7 bufselect.help.isolated-stat
+7;
+#X obj 17 394 clone fluid.multiarray 7 bufselect.help.stats 7;
+#X msg 18 45 read -resize ./media/Tremblay-Iterative-M.wav bufselect.help.audiosrc
+;
+#X obj 18 22 loadbang;
+#X text 71 122 You can choose a different sound to analyse here:;
+#X text 93 27 sound to analyse;
+#X obj 17 448 clone fluid.multiarray 7 descriptordata1 7;
+#X obj 17 471 clone fluid.multiarray 7 descriptordata2 7;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 8 0;
+#X restore 598 210 pd buffers;
+#X obj 16 330 fluid.bufselectevery -source bufselect.help.stats -destination
+bufselect.help.isolated-stat -framehop 7;
+#X obj 16 280 fluid.bufstats -source bufselect.help.features -stats
+bufselect.help.stats -numderivs 3 -numchans 1;
+#X obj 16 231 fluid.bufloudness -source bufselect.help.audiosrc -features
+bufselect.help.features;
+#X obj 16 206 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 16 392 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 268 477 You can think of this as a single channel in a buffer
+with 21 frames. Each consecutive group of 7 statistics belong to a
+single derivative.;
+#X obj 16 742 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X listbox 16 796 58 0 0 0 - - - 0;
+#X obj 16 496 array get descriptordata1-0;
+#X text 43 204 1) Trigger some descriptor analysis;
+#X obj 16 626 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 2185 -531 448 387 analysis_to_dataset1 0;
+#X obj 26 13 inlet;
+#X obj 26 286 fluid.dataset bufselect.help.dataset;
+#N canvas 1666 -825 450 300 int2s 0;
+#X obj 168 174 list;
+#X obj 51 116 t f f;
+#X obj 51 208 sel 0;
+#X obj 83 137 t f f;
+#X obj 83 159 spigot;
+#X obj 193 151 t l l;
+#X obj 51 230 t b b;
+#X obj 51 48 t f f;
+#X obj 193 65 % 10;
+#X obj 51 93 i;
+#X obj 51 70 / 10;
+#X obj 193 129 list append;
+#X obj 193 87 + 48;
+#X obj 168 196 list tosymbol;
+#X obj 51 23 inlet;
+#X obj 168 218 outlet;
+#X connect 0 0 13 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 7 0;
+#X connect 5 0 0 1;
+#X connect 5 1 11 1;
+#X connect 6 0 0 0;
+#X connect 6 1 11 1;
+#X connect 7 0 10 0;
+#X connect 7 1 8 0;
+#X connect 8 0 12 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X connect 11 0 5 0;
+#X connect 12 0 11 0;
+#X connect 13 0 15 0;
+#X connect 14 0 7 0;
+#X restore 26 215 pd int2s;
+#X obj 26 136 until;
+#X obj 26 160 f;
+#X floatatom 26 186 5 0 0 0 - - - 0;
+#X obj 76 160 + 1;
+#X obj 76 186 mod, f 7;
+#X obj 26 114 t f f, f 14;
+#X msg 26 93 7;
+#X msg 155 111 frombuffer bufselect.help.stats 1;
+#X msg 26 260 getpoint \$1 descriptordata1-\$1;
+#X connect 0 0 10 0;
+#X connect 0 0 9 0;
+#X connect 2 0 11 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 6 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 1;
+#X connect 8 0 3 0;
+#X connect 8 1 7 1;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 11 0 1 0;
+#X restore 16 423 pd analysis_to_dataset1;
+#N canvas 1789 -934 527 388 analysis_to_dataset2 0;
+#X obj 26 13 inlet;
+#X obj 26 286 fluid.dataset bufselect.help.dataset;
+#N canvas 1666 -825 450 300 int2s 0;
+#X obj 168 174 list;
+#X obj 51 116 t f f;
+#X obj 51 208 sel 0;
+#X obj 83 137 t f f;
+#X obj 83 159 spigot;
+#X obj 193 151 t l l;
+#X obj 51 230 t b b;
+#X obj 51 48 t f f;
+#X obj 193 65 % 10;
+#X obj 51 93 i;
+#X obj 51 70 / 10;
+#X obj 193 129 list append;
+#X obj 193 87 + 48;
+#X obj 168 196 list tosymbol;
+#X obj 51 23 inlet;
+#X obj 168 218 outlet;
+#X connect 0 0 13 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 7 0;
+#X connect 5 0 0 1;
+#X connect 5 1 11 1;
+#X connect 6 0 0 0;
+#X connect 6 1 11 1;
+#X connect 7 0 10 0;
+#X connect 7 1 8 0;
+#X connect 8 0 12 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X connect 11 0 5 0;
+#X connect 12 0 11 0;
+#X connect 13 0 15 0;
+#X connect 14 0 7 0;
+#X restore 26 215 pd int2s;
+#X obj 26 136 until;
+#X obj 26 160 f;
+#X floatatom 26 186 5 0 0 0 - - - 0;
+#X obj 76 160 + 1;
+#X obj 76 186 mod, f 7;
+#X obj 26 114 t f f, f 14;
+#X msg 26 93 7;
+#X msg 155 111 frombuffer bufselect.help.isolated-stat 1;
+#X msg 26 260 getpoint \$1 descriptordata2-\$1;
+#X connect 0 0 10 0;
+#X connect 0 0 9 0;
+#X connect 2 0 11 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 6 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 1;
+#X connect 8 0 3 0;
+#X connect 8 1 7 1;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 11 0 1 0;
+#X restore 16 657 pd analysis_to_dataset2;
+#X obj 16 766 array get descriptordata2-0;
+#X text 39 739 5) Display the dataset;
+#X text 39 390 2) Copy the bufselect.help.stats buffer to a fluid.dataset~
+;
+#X text 39 624 4) Copy the output of bufselectevery~ to a fluid.dataset~
+;
+#X obj 387 98 clone fluid.multiarray 7 descriptordata 7;
+#X text 269 732 bufselectevery~ extracts every seventh value. Because
+bufstats~ returns 7 statistics for each derivative (21 values) using
+bufselect~ in this way extracts the mean (the first item in every group
+of 7) of each derivative.;
+#X connect 1 0 14 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 17 0;
+#X connect 12 0 19 0;
+#X connect 14 0 2 0;
+#X connect 16 0 18 0;
+#X connect 19 0 13 0;
+#X restore 481 831 pd curating_descriptor_data;
+#X obj 481 853 note_on_multithreading;
+#X connect 5 0 6 0;
+#X connect 8 0 9 0;
+#X connect 8 0 12 0;
+#X connect 8 0 15 0;
+#X connect 8 0 16 0;
+#X connect 8 0 18 0;
+#X connect 8 0 20 0;
+#X connect 9 0 10 0;
+#X connect 12 0 11 0;
+#X connect 15 0 13 0;
+#X connect 16 0 14 0;
+#X connect 18 0 17 0;
+#X connect 20 0 19 0;
+#X connect 24 0 27 0;
+#X connect 24 0 28 0;
+#X connect 24 0 30 0;
+#X connect 24 0 37 0;
+#X connect 24 0 38 0;
+#X connect 24 0 39 0;
+#X connect 27 0 25 0;
+#X connect 28 0 26 0;
+#X connect 30 0 29 0;
+#X connect 32 0 42 0;
+#X connect 37 0 34 0;
+#X connect 38 0 35 0;
+#X connect 39 0 36 0;
+#X connect 42 0 0 0;
+#X connect 42 1 41 0;
+#X connect 44 0 42 0;
+#X connect 45 0 42 0;

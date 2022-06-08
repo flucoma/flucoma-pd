@@ -817,8 +817,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       if(!x->mInitialized)
         a = FFTParams(defaults[0], defaults[1], defaults[2], a.maxRaw());
       else
-        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.maxRaw()),
-                                    x->verbose() ? &x->messages() : nullptr);
+        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.max()), x->verbose() ? &x->messages() : nullptr);
       
       printResult(x, x->messages());
     }

@@ -1,9 +1,23 @@
-#N canvas 0 23 536 178 12;
-#X text 24 29 Most objects working on arrays/buffers are multichannel.
+#N canvas 540 242 554 245 12;
+#X text 14 19 Most objects working on arrays/buffers are multichannel.
 The toolbox uses the following convention: a named array is expected
 to have a name \, followed by -x where x is the 'channel' number \,
 0-indexed. For instance \, a stereo source buffer defined as 'mybuf'
 will expect an array named 'mybuf-0' for the left channel \, and an
 array named 'mybuf-1' for the right channel. A utility [multiarray.pd]
 is used throughout the helpfiles in conjonction with the [clone] to
-programmatically generate such 'multichannel' buffers., f 69;
+programmatically generate such 'multichannel' buffers., f 75;
+#N canvas 82 492 450 300 (subpatch) 0;
+#X obj 83 48 inlet;
+#X obj 83 93 pdcontrol;
+#X msg 153 93 browse \$1;
+#X msg 83 71 dir 0 fluid.multiarray-help.pd;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 336 175 pd;
+#X obj 336 158 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 15 155 Click here to see more on multiarrays ->;
+#X connect 2 0 1 0;

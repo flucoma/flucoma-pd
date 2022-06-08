@@ -1,15 +1,14 @@
-#N canvas 76 70 695 463 12;
+#N canvas 52 80 707 781 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.concataudiofiles 1 22
 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ utility\\\ to\\\ concatenate\\\ audio\\\ files.
 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 21 241 fluid.concataudiofiles help-audio help-text;
-#X obj 24 418 text define help-text;
+#X obj 24 358 text define help-text;
 #X text 17 79 This object takes a list of paths to audio files \, loads
 them one after the other into a [multi-array] \, and fills a [text]
 with the filenames \, start amd end frames \, sampling rate and channel
 count., f 65;
-#X msg 21 190 symbol fluid.dataset-help.pd;
 #N canvas 152 189 998 764 get_flucoma_demo_files_as_a_list 0;
 #X obj 102 60 inlet;
 #X obj 102 317 file glob;
@@ -50,21 +49,96 @@ count., f 65;
 #X connect 15 2 13 1;
 #X connect 15 2 11 1;
 #X restore 21 214 pd get_flucoma_demo_files_as_a_list;
-#X obj 25 358 clone fluid.multiarray 2 help-audio;
-#X floatatom 25 312 5 0 0 0 - - - 0;
-#X msg 25 335 vis \$1 1;
-#X text 18 166 1) Click here to load all the FluCoMa demo audio files
-in one 'multiarray', f 74;
-#X text 73 310 2) open a 'channel' of a multiarray to see the concatenated
-files, f 65;
-#X text 183 410 3) open the text to see the items in order. Each line
-is a file with its path / sampling_rate / nbChans / startFrame / endframe
-, f 63;
 #X obj 21 265 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X text 41 264 bang when finished;
-#X connect 2 0 13 0;
-#X connect 5 0 6 0;
-#X connect 6 0 2 0;
-#X connect 8 0 9 0;
-#X connect 9 0 7 0;
+#X obj 509 60 fluid.referencelauncher fluid.concataudiofiles.html reference/concataudiofiles/
+;
+#N canvas 101 806 450 278 (subpatch) 0;
+#X array left-\$0 1 float 0;
+#X coords 0 1 1 -1 568 66 1 0 0;
+#X restore 68 467 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array right-\$0 1 float 0;
+#X coords 0 1 1 -1 568 66 1 0 0;
+#X restore 68 554 graph;
+#X msg 21 190 symbol fluid.concataudiofiles-help.pd;
+#X obj 427 244 clone fluid.multiarray 2 help-audio;
+#N canvas 899 -920 1149 608 drawdisplay 0;
+#X obj 40 48 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X floatatom 39 126 5 0 0 0 - - - 0;
+#X obj 197 195 array size left-\$0;
+#X obj 39 256 until;
+#X obj 39 284 f;
+#X obj 77 284 + 1;
+#X obj 135 280 sel 0;
+#X obj 78 326 mod 10;
+#X obj 39 156 t f f f, f 23;
+#X obj 77 379 t f f, f 27;
+#X obj 77 444 tabwrite left-\$0, f 27;
+#X obj 40 18 inlet;
+#X floatatom 379 126 5 0 0 0 - - - 0;
+#X obj 379 256 until;
+#X obj 379 284 f;
+#X obj 417 284 + 1;
+#X obj 475 280 sel 0;
+#X obj 418 326 mod 10;
+#X obj 379 156 t f f f, f 23;
+#X obj 417 379 t f f, f 27;
+#X obj 39 91 array size help-audio-0;
+#X obj 379 91 array size help-audio-1;
+#X obj 537 195 array size right-\$0;
+#X obj 417 444 tabwrite right-\$0, f 27;
+#X obj 639 128 loadbang;
+#X msg 639 156 0;
+#X obj 77 419 tabread help-audio-0;
+#X obj 417 419 tabread help-audio-1;
+#X connect 0 0 20 0;
+#X connect 0 0 21 0;
+#X connect 1 0 8 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 1;
+#X connect 7 0 4 1;
+#X connect 7 0 6 0;
+#X connect 7 0 9 0;
+#X connect 8 0 3 0;
+#X connect 8 1 7 1;
+#X connect 8 2 2 0;
+#X connect 9 0 26 0;
+#X connect 9 1 10 1;
+#X connect 11 0 0 0;
+#X connect 12 0 18 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
+#X connect 15 0 17 0;
+#X connect 16 0 13 1;
+#X connect 17 0 14 1;
+#X connect 17 0 16 0;
+#X connect 17 0 19 0;
+#X connect 18 0 13 0;
+#X connect 18 1 17 1;
+#X connect 18 2 22 0;
+#X connect 19 0 27 0;
+#X connect 19 1 23 1;
+#X connect 20 0 1 0;
+#X connect 21 0 12 0;
+#X connect 24 0 25 0;
+#X connect 25 0 22 0;
+#X connect 25 0 2 0;
+#X connect 26 0 10 0;
+#X connect 27 0 23 0;
+#X restore 43 288 pd drawdisplay;
+#X text 18 166 1) Click here to load all the FluCoMa demo audio files
+in one 'multiarray', f 74;
+#X text 183 350 2) open the text to see the items in order. Each line
+is a file with its path / sampling_rate / nbChans / startFrame / endframe
+, f 63;
+#X text 22 429 See the concatenated files:;
+#X obj 539 221 note_on_multiarrays;
+#X connect 2 0 6 0;
+#X connect 5 0 2 0;
+#X connect 6 0 13 0;
+#X connect 11 0 5 0;
