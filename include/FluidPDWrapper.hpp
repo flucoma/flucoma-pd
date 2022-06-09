@@ -1039,6 +1039,8 @@ public:
         }
       }
     }
+    mArgObjects.clear();
+    mProxies.clear();
   }
 
   void doneBang()
