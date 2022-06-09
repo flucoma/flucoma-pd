@@ -116,9 +116,9 @@ public:
   PDBufferAdaptor(const PDBufferAdaptor&) = delete;
   PDBufferAdaptor& operator=(const PDBufferAdaptor& other) = delete;
 
-  PDBufferAdaptor(PDBufferAdaptor&& other) { swap(std::move(other)); }
+  PDBufferAdaptor(PDBufferAdaptor&& other) noexcept { swap(std::move(other)); }
 
-  PDBufferAdaptor& operator=(PDBufferAdaptor&& other)
+  PDBufferAdaptor& operator=(PDBufferAdaptor&& other) noexcept
   {
     swap(std::move(other));
     return *this;

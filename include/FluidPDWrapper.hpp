@@ -998,8 +998,13 @@ public:
     mParams.template forEachParamType<InputBufferT>([this](auto&, auto idx){
       static constexpr index N = decltype(idx)::value;
       mBufferDispatch.push_back([](FluidPDWrapper* x, int ac, t_atom* av)
-      {
-          Setter<InputBufferT, N>::set(x, nullptr, ac, av);
+      {          
+           static const std::string param_name = lowerCase(x->params().template descriptorAt<N>().name);
+           t_symbol* attrval = atom_getsymbol(av);
+           t_atom a; 
+           SETSYMBOL(&a, attrval);
+           t_symbol* attrname = gensym(param_name.c_str());
+           pd_typedmess((t_pd*)x, attrname, 1, &a);
       });
     });
     
