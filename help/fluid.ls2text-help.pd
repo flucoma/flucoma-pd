@@ -5,7 +5,6 @@
 #X obj 22 614 text define myText;
 #X obj 23 395 fluid.labelset myLS;
 #X msg 22 287 setlabel entry-\$1 input-\$1;
-#X obj 153 420 print;
 #X msg 95 249 2;
 #X obj 22 514 fluid.ls2text myLS myText;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.ls2text 1 22 0 36 #4ba3fb
@@ -33,7 +32,6 @@ text object myText, f 36;
 #X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 2 0 5 0;
-#X connect 4 2 6 0;
 #X connect 5 0 4 0;
-#X connect 7 0 5 0;
-#X connect 18 0 8 0;
+#X connect 6 0 5 0;
+#X connect 17 0 7 0;

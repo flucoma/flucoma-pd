@@ -1,6 +1,6 @@
-#N struct 1008-draw-item float x float y float c float a float b;
-#N struct 1009-rectangle float x float c;
-#N struct 1009-pixel float x0 float y0 float x1 float y1;
+#N struct 1079-draw-item float x float y float c float a float b;
+#N struct 1080-rectangle float x float c;
+#N struct 1080-pixel float x0 float y0 float x1 float y1;
 #N canvas 634 126 1065 914 12;
 #N canvas 536 104 617 462 makepoints 0;
 #X obj 23 141 until;
@@ -31,26 +31,25 @@
 #X connect 11 1 9 0;
 #X connect 11 2 5 0;
 #X restore 46 82 pd makepoints;
-#X obj 44 56 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 44 56 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X msg 77 121 print;
 #X obj 47 152 fluid.dataset plotter-help-DS;
-#X obj 46 232 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 48 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 46 232 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 48 282 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 50 338 text define plotter-help-DS-text;
 #X obj 46 252 fluid.ds2text plotter-help-DS plotter-help-DS-text;
 #X obj 66 772 text define plotter-help-LS-text;
 #X msg 69 556 print;
 #X obj 54 474 fluid.kmeans -numclusters 4;
 #X msg 55 449 clear \, fitpredict plotter-help-DS plotter-help-LS;
-#X obj 238 497 print;
 #X obj 60 586 fluid.labelset plotter-help-LS;
-#X obj 63 675 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 64 726 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 63 675 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 64 726 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 63 695 fluid.ls2text plotter-help-LS plotter-help-LS-text;
 #X text 68 228 2 transfer the dataset to text for Pd manipulations
 ;
@@ -60,8 +59,8 @@ classes;
 ;
 #X obj 571 315 fluid.plotter;
 #X msg 342 170 setpoints plotter-help-DS-text;
-#X floatatom 588 116 5 0 0 0 - - -;
-#X floatatom 646 105 5 0 0 0 - - -;
+#X floatatom 588 116 5 0 0 0 - - - 0;
+#X floatatom 646 105 5 0 0 0 - - - 0;
 #X obj 592 155 pack f f;
 #X obj 646 128 t b f;
 #X msg 592 176 range \$1 \$2;
@@ -76,19 +75,18 @@ classes;
 #X connect 2 0 3 0;
 #X connect 4 0 7 0;
 #X connect 7 0 5 0;
-#X connect 9 0 13 0;
-#X connect 10 2 12 0;
+#X connect 9 0 12 0;
 #X connect 11 0 10 0;
-#X connect 14 0 16 0;
-#X connect 16 0 15 0;
-#X connect 21 0 20 0;
+#X connect 13 0 15 0;
+#X connect 15 0 14 0;
+#X connect 20 0 19 0;
+#X connect 21 0 23 0;
 #X connect 22 0 24 0;
 #X connect 23 0 25 0;
-#X connect 24 0 26 0;
-#X connect 25 0 24 0;
-#X connect 25 1 24 1;
-#X connect 26 0 20 0;
-#X connect 27 0 20 0;
-#X connect 28 0 20 0;
-#X connect 29 0 20 0;
-#X connect 30 0 20 1;
+#X connect 24 0 23 0;
+#X connect 24 1 23 1;
+#X connect 25 0 19 0;
+#X connect 26 0 19 0;
+#X connect 27 0 19 0;
+#X connect 28 0 19 0;
+#X connect 29 0 19 1;

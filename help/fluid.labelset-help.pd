@@ -1,12 +1,14 @@
 #N canvas 895 49 450 300 12;
 #X obj 81 184 fluid.labelset bar;
 #X msg 88 126 print;
-#X obj 210 215 print;
 #X msg 146 134 getlabel bar0;
 #X msg 265 109 clear;
 #X msg 63 94 addlabel bar0 hooha;
-#X connect 0 2 2 0;
+#X obj 84 235 print leftout;
+#X obj 191 233 print rightout;
+#X connect 0 0 5 0;
+#X connect 0 1 6 0;
 #X connect 1 0 0 0;
+#X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
-#X connect 5 0 0 0;

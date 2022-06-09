@@ -1,6 +1,6 @@
 #N canvas 543 23 584 889 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.nmfmatch~ 20 12 0 36 -262144
--66577 0;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.nmfmatch~ 20 12 0 36 #fcfcfc
+#404040 0;
 #X text 457 719 more info:;
 #X text 36 57 Real-Time Non-Negative Matrix Factorisation with Fixed
 Bases, f 61;
@@ -55,8 +55,8 @@ bang;
 #X array nmfmatch_basis-1 513 float 0;
 #X coords 0 1 512 0 513 70 1 0 0;
 #X restore 37 611 graph;
-#X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X text 65 379 1) decompose the 2 consecutive sines above in 2 components
 with bufnmf~, f 74;
 #X text 35 494 2) watch for clearly different bases - ideally a spike
@@ -64,11 +64,11 @@ each.;
 #X obj 36 727 osc~ 500;
 #X obj 157 726 osc~ 5000;
 #X obj 36 765 *~;
-#X obj 64 749 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 64 749 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 157 765 *~;
-#X obj 185 749 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 185 749 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 36 801 *~ 0.1;
 #X obj 36 822 dac~;
 #N canvas 280 113 666 815 example_1 0;
@@ -176,13 +176,13 @@ index;
 #X connect 14 1 3 1;
 #X connect 14 2 16 0;
 #X restore 20 276 pd makenewbases;
-#X obj 20 295 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 20 295 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X text 17 82 1) press to start the process of finding the pick component
 like in the fluid.bufnmf help file, f 95;
 #X obj 22 548 dac~;
-#X obj 23 340 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 23 340 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X msg 46 340 stop;
 #N canvas 512 268 1103 698 cool_delays 0;
 #X obj 15 381 inlet~;
@@ -260,9 +260,6 @@ like in the fluid.bufnmf help file, f 95;
 #X obj 302 778 clone fluid.multiarray 10 nmfmatch_guit-resynth;
 #X msg 20 102 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar;
-#X obj 20 173 fluid.bufnmf -source nmfmatch_guitar -numframes 88200
--components 10 -bases nmfmatch_guit-bases -resynth nmfmatch_guit-resynth
--fftsettings 1024 256 2048, f 96;
 #X obj 20 204 fluid.bufspectralshape -source nmfmatch_guit-resynth
 -features nmfmatch_guit-features -fftsettings 1024 256 2048, f 86
 ;
@@ -335,10 +332,10 @@ nmfmatch_guit-stats, f 73;
 #X text 42 295 2) wait for finishing. The basis with the highest centroid
 is copied to the first channel, f 90;
 #X text 16 13 control a compressor based on learned components;
-#X obj 193 470 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 210 470 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 1378 1;
+#X obj 193 470 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 210 470 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
 #X text 172 604 pick / sustain;
 #X text 387 464 1: the dry guitar only;
 #X text 387 487 2: the guitar going 100% in the delay;
@@ -350,32 +347,35 @@ in the long delay., f 40;
 1000 \; coolcomp-ratio 8 \; coolcomp-thresh \$1 \; coolcomp-gain \$2
 ;
 #X msg 341 512 2 -5;
+#X obj 20 173 fluid.bufnmf -source nmfmatch_guitar -numframes 88200
+-components 10 -bases nmfmatch_guit-bases -resynth nmfmatch_guit-resynth
+-resynthmode 1 -fftsettings 1024 256 2048, f 96;
 #X connect 0 0 1 0;
-#X connect 1 0 17 0;
+#X connect 1 0 40 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
-#X connect 7 0 20 0;
-#X connect 8 0 20 0;
+#X connect 7 0 19 0;
+#X connect 8 0 19 0;
 #X connect 9 0 6 0;
 #X connect 9 1 6 1;
 #X connect 16 0 0 0;
 #X connect 17 0 18 0;
-#X connect 18 0 19 0;
-#X connect 19 0 2 0;
-#X connect 20 0 6 0;
-#X connect 20 0 6 1;
+#X connect 18 0 2 0;
+#X connect 19 0 6 0;
+#X connect 19 0 6 1;
+#X connect 19 0 20 0;
+#X connect 19 0 26 0;
 #X connect 20 0 21 0;
-#X connect 20 0 27 0;
 #X connect 21 0 22 0;
+#X connect 21 0 31 0;
+#X connect 21 1 32 0;
 #X connect 22 0 23 0;
-#X connect 22 0 32 0;
-#X connect 22 1 33 0;
-#X connect 23 0 24 0;
-#X connect 24 0 9 0;
-#X connect 25 0 39 0;
-#X connect 26 0 39 0;
-#X connect 38 0 25 0;
-#X connect 40 0 39 0;
+#X connect 23 0 9 0;
+#X connect 24 0 38 0;
+#X connect 25 0 38 0;
+#X connect 37 0 24 0;
+#X connect 39 0 38 0;
+#X connect 40 0 17 0;
 #X restore 459 756 pd example_1;
 #N canvas 185 66 727 727 example_2 0;
 #X text 21 16 make a filter bank from learned components;
@@ -437,8 +437,8 @@ spectra, f 72;
 #X connect 22 1 23 0;
 #X restore 24 261 pd statsquery;
 #X obj 93 570 dac~;
-#X obj 39 364 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 39 364 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X msg 62 364 stop;
 #X msg 24 107 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 nmfmatch_guitar2;
@@ -451,15 +451,12 @@ nmfmatch_guitar2;
 ;
 #X obj 24 241 fluid.bufstats -source nmfmatch_guit-features2 -stats
 nmfmatch_guit-stats2, f 83;
-#X obj 24 178 fluid.bufnmf -source nmfmatch_guitar2 -numframes 88200
--components 8 -bases nmfmatch_guit-bases2 -iterations 50 -resynth nmfmatch_guit-resynth2
--fftsettings 1024 256 2048, f 96;
 #X obj 38 683 clone fluid.multiarray 8 nmfmatch_guit-resynth2;
 #X obj 38 386 tabplay~ nmfmatch_guitar2;
 #X obj 38 432 fluid.hpss~ -fftsettings 1024 256 -1 -maskingmode 1 -harmthresh
 0.005869 -9.6875 0.006609 -4.375;
-#X obj 24 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 24 282 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X text 46 283 2) wait for finishing. Each component's centroid is
 used to tune a filter, f 73;
 #X obj 355 431 fluid.nmfmatch~ 8 -bases nmfmatch_guit-bases2 -fftsettings
@@ -472,49 +469,52 @@ used to tune a filter, f 73;
 #X obj 48 409 delwrite~ #0-nmfmatch2 100;
 #X msg 645 393 getlatency;
 #X obj 354 530 -;
-#X floatatom 354 557 5 0 0 0 - - -;
+#X floatatom 354 557 5 0 0 0 - - - 0;
 #X obj 390 557 * 1000;
 #X obj 390 578 /;
-#X floatatom 390 599 5 0 0 0 - - -;
+#X floatatom 390 599 5 0 0 0 - - - 0;
 #X obj 434 557 samplerate~;
-#X floatatom 355 392 5 0 0 0 - - -;
+#X floatatom 355 392 5 0 0 0 - - - 0;
 #X text 394 392 you can adjust the latency between the 2;
 #X obj 645 411 t a a b;
 #X obj 355 410 delread~ #0-nmfmatch2 92.87;
+#X obj 24 178 fluid.bufnmf -source nmfmatch_guitar2 -numframes 88200
+-components 8 -bases nmfmatch_guit-bases2 -iterations 50 -resynth nmfmatch_guit-resynth2
+-resynthmode 1 -fftsettings 1024 256 2048, f 96;
 #X connect 2 0 3 0;
-#X connect 3 0 15 0;
-#X connect 4 0 19 0;
-#X connect 6 0 17 0;
-#X connect 7 0 17 0;
+#X connect 3 0 38 0;
+#X connect 4 0 18 0;
+#X connect 6 0 16 0;
+#X connect 7 0 16 0;
 #X connect 8 0 2 0;
 #X connect 13 0 14 0;
 #X connect 14 0 4 0;
-#X connect 15 0 13 0;
-#X connect 17 0 18 0;
-#X connect 17 0 27 0;
-#X connect 18 0 26 0;
-#X connect 18 1 24 0;
-#X connect 18 1 5 0;
-#X connect 18 1 5 1;
-#X connect 18 3 29 0;
+#X connect 16 0 17 0;
+#X connect 16 0 26 0;
+#X connect 17 0 25 0;
+#X connect 17 1 23 0;
+#X connect 17 1 5 0;
+#X connect 17 1 5 1;
+#X connect 17 3 28 0;
+#X connect 20 0 21 0;
+#X connect 20 1 28 1;
 #X connect 21 0 22 0;
-#X connect 21 1 29 1;
-#X connect 22 0 23 0;
-#X connect 23 0 24 1;
-#X connect 24 0 5 0;
-#X connect 24 1 5 1;
-#X connect 26 0 24 0;
-#X connect 28 0 37 0;
-#X connect 29 0 31 0;
-#X connect 29 0 30 0;
+#X connect 22 0 23 1;
+#X connect 23 0 5 0;
+#X connect 23 1 5 1;
+#X connect 25 0 23 0;
+#X connect 27 0 36 0;
+#X connect 28 0 30 0;
+#X connect 28 0 29 0;
+#X connect 30 0 31 0;
 #X connect 31 0 32 0;
-#X connect 32 0 33 0;
-#X connect 34 0 32 1;
-#X connect 35 0 38 0;
-#X connect 37 0 18 0;
-#X connect 37 1 21 0;
-#X connect 37 2 34 0;
-#X connect 38 0 21 0;
+#X connect 33 0 31 1;
+#X connect 34 0 37 0;
+#X connect 36 0 17 0;
+#X connect 36 1 20 0;
+#X connect 36 2 33 0;
+#X connect 37 0 20 0;
+#X connect 38 0 13 0;
 #X restore 459 784 pd example_2;
 #X text 34 100 Matches an incoming audio signal against a set of spectral
 templates, f 40;
@@ -524,8 +524,8 @@ templates, f 40;
 xticks 0 0 0;
 #X obj 104 800 fluid.nmfmatch~ 2 -bases nmfmatch_basis;
 #X obj 104 821 unpack f f;
-#X floatatom 104 844 8 0 0 0 - - -;
-#X floatatom 161 844 8 0 0 0 - - -;
+#X floatatom 104 844 8 0 0 0 - - - 0;
+#X floatatom 161 844 8 0 0 0 - - - 0;
 #X text 174 822 output is a list of activation levels;
 #X text 35 703 3) try matching one \, the other \, and both;
 #X text 215 843 the activation levels grow in the presence of a learned
@@ -541,8 +541,8 @@ component, f 33;
 #X connect 3 0 1 0;
 #X restore 524 121 pd;
 #X text 393 102 launch the HTML doc->;
-#X obj 525 104 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 525 104 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X connect 7 0 21 0;
 #X connect 10 0 12 0;
 #X connect 11 0 14 0;

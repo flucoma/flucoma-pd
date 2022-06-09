@@ -6,7 +6,7 @@
 #X text 31 100 Harmonic-Percussive Source Separation (HPSS) on the
 an audio input., f 69;
 #X obj 33 722 dac~;
-#X obj 33 571 fluid.hpss~ 4096 41 41 -fftsettings 1024 -1 2048;
+#X obj 33 571 fluid.hpss~ 41 41 -fftsettings 1024 -1 2048;
 #X obj 33 635 *~;
 #X obj 47 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
@@ -156,8 +156,8 @@ filter output exceeds some threshold. This yields greater separation
 \, but can have more audible artefacts., f 93;
 #X text 21 98 fluid.hpss~ lets you adjust this threshold with respect
 to frequency \, to enable fine-tuning. In mode 1 \, just use the harmthresh
-attribute \, which will internally make a comlpemntary threshold for
-the percussive part – gurranteeing that the two components still
+attribute \, which will internally make a complementary threshold for
+the percussive part – guaranteeing that the two components still
 sum to the source., f 93;
 #X text 22 172 1) change the mode;
 #X text 50 225 2) change the threshold according to the frequency;

@@ -1,7 +1,13 @@
-#N struct 1039-draw-item float x float y float c float a float b;
-#N struct 1040-draw-item float x float y float c float a float b;
-#N struct 1043-draw-item float x float y float c float a float b;
-#N canvas 546 252 1203 602 12;
+#N struct 2183-draw-item float x float y float c float a float b;
+#N struct 2184-rectangle float x float c;
+#N struct 2184-pixel float x0 float y0 float x1 float y1;
+#N struct 2185-draw-item float x float y float c float a float b;
+#N struct 2186-rectangle float x float c;
+#N struct 2186-pixel float x0 float y0 float x1 float y1;
+#N struct 2189-draw-item float x float y float c float a float b;
+#N struct 2190-rectangle float x float c;
+#N struct 2190-pixel float x0 float y0 float x1 float y1;
+#N canvas 546 252 1342 602 12;
 #X obj 52 61 fluid.dataset in;
 #X obj 342 230 fluid.plotter;
 #X obj 334 134 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
