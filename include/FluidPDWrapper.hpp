@@ -917,7 +917,7 @@ public:
   
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
       : mListSize{32},
-        mNRTProgressOutlet{nullptr},
+        mDumpOutlet{nullptr},
         mControlOutlet(nullptr),
         mParams(Client::getParameterDescriptors()),
         mParamSnapshot(mParams.toTuple()),
@@ -976,7 +976,7 @@ public:
     if (isNonRealTime<Client>::value ||
         (IsModel_t<Client>::value && Client::isRealTime::value))
     {
-      mNRTProgressOutlet = outlet_new(pdObject, gensym("float"));
+      mDumpOutlet = outlet_new(pdObject, nullptr);
     }
 
     if (mClient.controlChannelsOut().count) 
@@ -1242,7 +1242,7 @@ public:
 
   void progress(double progress)
   {
-    outlet_float(mNRTProgressOutlet, static_cast<float>(progress));
+    outlet_float(mDumpOutlet, static_cast<float>(progress));
   }
 
 
@@ -1651,7 +1651,7 @@ private:
     {
       poststring(/*(t_object*) x, "%s",*/
                  static_cast<std::string>(result).c_str());
-      outlet_anything(x->mDataOutlets.back(), gensym("print"), 0, nullptr);
+      outlet_anything(x->mDumpOutlet, gensym("print"), 0, nullptr);
     }
   }
 
@@ -1681,7 +1681,7 @@ private:
 
     if (x->checkResult(messageResult))
     {
-      outlet_anything(x->mDataOutlets.back(), gensym("read"), 0, nullptr);
+      outlet_anything(x->mDumpOutlet, gensym("read"), 0, nullptr);
     }
   }
 
@@ -1707,7 +1707,7 @@ private:
 
     if (x->checkResult(messageResult))
     {
-      outlet_anything(x->mDataOutlets[0], gensym("write"), 0, nullptr);
+      outlet_anything(x->mDumpOutlet, gensym("write"), 0, nullptr);
     }
   }
 
@@ -1842,7 +1842,7 @@ private:
 
   index        mListSize;
   Result       mResult;
-  t_outlet*    mNRTProgressOutlet;
+  t_outlet*    mDumpOutlet;
   t_outlet*    mControlOutlet;
   bool         mVerbose;
   ParamSetType mParams;
