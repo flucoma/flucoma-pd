@@ -743,8 +743,6 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
 
     static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
     {
-//      NOTUSED(s);
-
       ParamLiteralConvertor<T, argSize> a;
       a.set(Client::getParameterDescriptors().template makeValue<N>());
 
@@ -762,7 +760,6 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   template <size_t N>
   struct Setter<LongArrayT, N>
   {
-
     static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
     {
       x->messages().reset();
@@ -827,7 +824,6 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   template <size_t N>
   struct Setter<ChoicesT, N>
   {
-
     static void set(FluidPDWrapper<Client>* x,t_symbol*, int ac, t_atom* av)
     {
       x->messages().reset();
@@ -835,7 +831,6 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
             
       typename ChoicesT::type a{ac ? 0u : desc.defaultValue};
       
-
       for (index i = 0; i < static_cast<index>(ac); i++)
       {
           std::string s = ParamAtomConverter::fromAtom(x,av + i, std::string{});
@@ -1049,12 +1044,10 @@ public:
   }
 
   void doneBang()
-  {
-    
-    static t_symbol* buffer_sym = gensym("buffer");
-     
+  { 
     mParams.template forEachParamType<BufferT>([this, n = 0u](auto&, auto idx) mutable
     {
+        static t_symbol* buffer_sym = gensym("buffer");
         static constexpr index N = idx();
         auto b = static_cast<PDBufferAdaptor*>(params().template get<N>().get());
         
