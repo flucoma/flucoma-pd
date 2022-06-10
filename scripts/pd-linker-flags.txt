@@ -16,6 +16,7 @@
 -Wl,-U,_dsp_add
 -Wl,-U,_pd_error
 -Wl,-U,_inlet_new
+-Wl,-U,_inlet_free
 -Wl,-U,_outlet_new
 -Wl,-U,_outlet_list
 -Wl,-U,_outlet_bang

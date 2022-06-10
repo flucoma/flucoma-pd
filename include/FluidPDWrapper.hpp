@@ -893,7 +893,6 @@ public:
 
   static void inletProxyInit(InletProxy* x, FluidPDWrapper* owner, index idx)
   {
-    x->obj = getInletProxyClass();
     x->mOwner = owner;
     x->mIndex = idx;
   }
@@ -906,7 +905,7 @@ public:
   static void inletProxySetup(const char* className)
   {
     std::string inletProxyClassName = std::string(className) + " inlet proxy";
-    getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), 0, A_NULL));
+    getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), CLASS_PD | CLASS_NOINLET, A_GIMME,0));
     class_addmethod(getInletProxyClass(), (t_method) inletProxyBuffer, gensym("buffer"), A_GIMME, 0);
   }
   
@@ -928,34 +927,32 @@ public:
     this->setupAudio(pdObject, mClient.audioChannelsIn(),
                      mClient.audioChannelsOut());
 
-    if (index new_ins = mClient.controlChannelsIn())
+    
+    index inCount = std::max(mClient.controlChannelsIn(),NumInputBuffers);
+    
+    if (index controlIns = mClient.controlChannelsIn())
     {
       mAutosize = true;
       if (mListSize)
       {
-        mInputListData.resize(new_ins, mListSize);
-        for (index i = 1; i <= new_ins; ++i)
+        mInputListData.resize(controlIns, mListSize);
+        for (index i = 1; i <= controlIns; ++i)
           mInputListViews.emplace_back(mInputListData.row(i - 1));
-      }
-
-      mProxies.reserve(asUnsigned(new_ins));
-      for (index i = 1; i < new_ins; ++i)
-      {
-        mProxies.push_back((InletProxy*)pd_new(getInletProxyClass()));
-        InletProxy* proxy = mProxies.back();
-        inletProxyInit(proxy,this, i);
-        inlet_new(pdObject, &pdObject->ob_pd, 0, 0);
       }
     }
     
-    if(mProxies.size() < NumInputBuffers)
-    {
-      for(index i = asSigned(mProxies.size()); i < NumInputBuffers - 1; i++)
+   if(inCount)
+   {
+      mProxies.resize(asUnsigned(inCount));
+      mInlets.resize(asUnsigned(inCount));
+
+      mProxies[0] = nullptr;
+      mInlets[0] = nullptr;
+      for(size_t i = 1; i < asUnsigned(inCount); ++i)
       {
-        mProxies.push_back((InletProxy*)pd_new(getInletProxyClass()));
-        InletProxy* proxy = mProxies.back();
-        inletProxyInit(proxy,this, i);
-        inlet_new(pdObject,&proxy->obj,0,0);
+        mProxies[i] = (InletProxy*)pd_new(getInletProxyClass());
+        inletProxyInit((InletProxy*) mProxies[i],this, asSigned(i));
+        mInlets[i] = inlet_new(pdObject,(t_pd*)mProxies[i],0,0);
       }
     }
     
@@ -986,13 +983,12 @@ public:
       mControlOutlet = mDataOutlets[0];
     }              
 
-    const auto& m = Client::getMessageDescriptors();
-    
+      
     this->makeLatencyOutlet(pdObject);
     
     mParams.template forEachParamType<InputBufferT>([this](auto&, auto idx){
       static constexpr index N = decltype(idx)::value;
-      mBufferDispatch.push_back([](FluidPDWrapper* x, int ac, t_atom* av)
+      mBufferDispatch.push_back([](FluidPDWrapper* x, int, t_atom* av)
       {          
            static const std::string param_name = lowerCase(x->params().template descriptorAt<N>().name);
            t_symbol* attrval = atom_getsymbol(av);
@@ -1040,6 +1036,19 @@ public:
       }
     }
     mArgObjects.clear();
+    
+    for(size_t i = 0; i < mInlets.size(); ++i)
+    {
+      if(mInlets[i]) inlet_free(mInlets[i]);
+      mInlets[i] = nullptr;
+      if(mProxies[i])
+      {
+        mProxies[i]->mOwner = nullptr;
+        mProxies[i]->mIndex = 0;
+        pd_free(&mProxies[i]->obj);
+      }
+      mProxies[i] = nullptr;
+    }
     mProxies.clear();
   }
 
@@ -1228,7 +1237,7 @@ public:
   
   void doBufferInlet(index inlet, int ac, t_atom* av)
   {
-    mBufferDispatch[inlet](this, ac, av);
+    mBufferDispatch[asUnsigned(inlet)](this, ac, av);
   }
   
 
@@ -1856,6 +1865,7 @@ private:
   std::vector<t_outlet*>                  mDataOutlets;
   std::vector<t_atom>                     mOutputListAtoms;
   std::vector<InletProxy*>                mProxies;
+  std::vector<t_inlet*>                   mInlets;
   std::vector<t_pd*>                      mManagedBuffers;
   
   std::vector<impl::ArrayManager>         mHostedOutputBufferObjects;
