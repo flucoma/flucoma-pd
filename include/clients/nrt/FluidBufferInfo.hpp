@@ -11,6 +11,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 #pragma once
 
 #include "PDBufferAdaptor.hpp"
+#include <memory> 
 
 namespace fluid {
 namespace client {
