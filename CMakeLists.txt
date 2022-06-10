@@ -152,6 +152,13 @@ generate_pd_source(
   FILENAME fluid_libmanipulation 
 )
 
+add_pd_external(fluid.bufinfo "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.bufinfo/fluid.bufinfo.cpp")
+
+target_include_directories(fluid.bufinfo PRIVATE 
+  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+
+
 # make a working tree for devs 
 
 add_custom_target(MAKE_DEV_FOlDER
