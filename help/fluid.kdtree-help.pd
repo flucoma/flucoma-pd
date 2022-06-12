@@ -1,7 +1,9 @@
-#N struct 1017-draw-item float x float y float c float a float b;
-#N struct 1018-rectangle float x float c;
-#N struct 1018-pixel float x0 float y0 float x1 float y1;
-#N canvas 115 30 698 714 12;
+#N struct 1040-rectangle float x float c;
+#N struct 1040-pixel float x0 float y0 float x1 float y1;
+#N struct 1055-draw-item float x float y float c float a float b;
+#N struct 1035-rectangle float x float c;
+#N struct 1035-pixel float x0 float y0 float x1 float y1;
+#N canvas 399 204 698 714 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
@@ -16,11 +18,113 @@
 #X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
 #404040 0;
 #X restore 511 628 pd radius_&_neighbours;
-#N canvas 569 252 696 686 stripping_it_back 0;
+#N canvas 112 98 698 764 stripping_it_back 0;
 #X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
 #404040 0;
+#X text 20 96 A stripped back example for how to fluid.kdtree works
+;
+#X text 317 213 2) Fit a kdtree to the dataset that was just made;
+#X text 67 135 1) Create a dataset with four \, two-dimensional points
+;
+#X text 234 342 3) Move the knob around to create a "query" for the
+kdtree, f 34;
+#X obj 46 137 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 46 157 t b b b b b, f 23;
+#N canvas 804 -701 373 208 create_a_toy_dataset 0;
+#X obj 37 37 inlet;
+#X obj 107 25 inlet;
+#X obj 37 60 t b l, f 9;
+#X obj 37 83 f;
+#X obj 68 83 + 1;
+#X msg 37 139 setpoint point-\$1 kd_tree_h2_plotter;
+#X obj 37 162 fluid.dataset kd_tree_h2_ds;
+#X msg 107 48 0;
+#X obj 113 85 array define kd_tree_h2_query 2;
+#X obj 97 110 array set kd_tree_h2_query;
+#X connect 0 0 2 0;
+#X connect 1 0 7 0;
+#X connect 2 0 3 0;
+#X connect 2 1 9 0;
+#X connect 3 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 1;
+#X connect 5 0 6 0;
+#X connect 7 0 3 1;
+#X restore 46 269 pd create_a_toy_dataset;
+#X msg 46 180 0 0;
+#X msg 85 200 0 0.5;
+#X msg 131 222 1 1;
+#X msg 161 243 1 0.2;
+#X text 23 180 "3";
+#X text 62 201 "2";
+#X text 107 223 "1";
+#X text 138 244 "0";
+#X msg 317 233 fit kd_tree_h2_ds;
+#X obj 317 256 fluid.kdtree kd_tree_h2_tree;
+#X obj 128 340 xy 101 101;
+#X obj 128 477 expr kd_tree_h2_query[0] = $f1 / 100 \; kd_tree_h2_query[1]
+= $f2 / 100 \;, f 38;
+#X obj 128 446 route click motion;
+#X obj 128 513 t b;
+#X msg 128 536 knearest kd_tree_h2_query;
+#X obj 128 560 fluid.kdtree kd_tree_h2_tree;
+#X obj 128 583 route knearest;
+#X listbox 279 653 8 0 0 0 - - - 0;
+#X obj 28 631 symbol;
+#X symbolatom 28 654 10 0 0 0 - - - 0;
+#N canvas 89 120 366 237 retrieve_the_value 0;
+#X obj 37 21 inlet;
+#X obj 37 83 fluid.dataset kd_tree_h2_ds;
+#X obj 37 106 route getpoint;
+#X obj 37 150 array get kd_tree_h2_point;
+#X obj 37 173 outlet;
+#X obj 93 174 array define kd_tree_h2_point;
+#X obj 37 41 symbol;
+#X msg 37 62 getpoint \$1 kd_tree_h2_point;
+#X obj 37 128 t b;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 2 0 8 0;
+#X connect 3 0 4 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 3 0;
+#X restore 279 630 pd retrieve_the_value;
+#X obj 370 534 array get kd_tree_h2_query;
+#X listbox 370 557 11 0 0 0 - - - 0;
+#X text 450 557 This is our input or "query". We want to find which
+stored point in the dataset is closest to this., f 31;
+#X text 279 672 This is the value of the closest points. Compare them
+to the input to see how "close" they are., f 40;
+#X text 24 677 This is the identifier of the point as it was entered
+in the dataset., f 27;
+#X connect 6 0 7 0;
+#X connect 7 0 9 0;
+#X connect 7 1 10 0;
+#X connect 7 2 11 0;
+#X connect 7 3 12 0;
+#X connect 7 4 8 1;
+#X connect 9 0 8 0;
+#X connect 10 0 8 0;
+#X connect 11 0 8 0;
+#X connect 12 0 8 0;
+#X connect 17 0 18 0;
+#X connect 19 0 21 0;
+#X connect 20 0 22 0;
+#X connect 21 0 20 0;
+#X connect 21 1 20 0;
+#X connect 22 0 23 0;
+#X connect 22 0 30 0;
+#X connect 23 0 24 0;
+#X connect 24 0 25 0;
+#X connect 25 0 29 0;
+#X connect 25 0 27 0;
+#X connect 27 0 28 0;
+#X connect 29 0 26 0;
+#X connect 30 0 31 0;
 #X restore 511 606 pd stripping_it_back;
 #X text 18 85 A K-dimensional tree for efficient neighbourhood searches
 of multi-dimensional data.;
