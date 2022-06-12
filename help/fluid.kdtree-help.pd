@@ -1,11 +1,11 @@
-#N struct 1042-draw-item float x float y float c float a float b;
-#N struct 1043-rectangle float x float c;
-#N struct 1043-pixel float x0 float y0 float x1 float y1;
-#N struct 1040-rectangle float x float c;
-#N struct 1040-pixel float x0 float y0 float x1 float y1;
-#N struct 1055-draw-item float x float y float c float a float b;
-#N struct 1035-rectangle float x float c;
-#N struct 1035-pixel float x0 float y0 float x1 float y1;
+#N struct 1052-draw-item float x float y float c float a float b;
+#N struct 1053-rectangle float x float c;
+#N struct 1053-pixel float x0 float y0 float x1 float y1;
+#N struct 1054-rectangle float x float c;
+#N struct 1054-pixel float x0 float y0 float x1 float y1;
+#N struct 1067-draw-item float x float y float c float a float b;
+#N struct 1068-rectangle float x float c;
+#N struct 1068-pixel float x0 float y0 float x1 float y1;
 #N canvas 110 80 698 714 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -79,7 +79,7 @@ kd_tree_h3_query[1] = random(0 \, 101) * 0.01;
 , f 30;
 #X text 237 186 2) Click and drag around this space, f 17;
 #X obj 34 611 r kd_tree_h3_tree;
-#X obj 356 235 cnv 15 330 135 empty empty Radius\ vs\ Number\ of\ Neighbours
+#X obj 356 235 cnv 15 330 135 empty empty Radius\\\ vs\\\ Number\\\ of\\\ Neighbours
 4 8 0 13 #dfdfdf #404040 0;
 #X text 363 260 We can query the tree in terms of either a (maximum)
 number of neighbouring points to return \, or a radius around the query
@@ -142,20 +142,20 @@ kdtree, f 34;
 #X obj 37 60 t b l, f 9;
 #X obj 37 83 f;
 #X obj 68 83 + 1;
-#X msg 37 139 setpoint point-\$1 kd_tree_h2_plotter;
 #X obj 37 162 fluid.dataset kd_tree_h2_ds;
 #X msg 107 48 0;
 #X obj 113 85 array define kd_tree_h2_query 2;
 #X obj 97 110 array set kd_tree_h2_query;
+#X msg 37 139 setpoint point-\$1 kd_tree_h2_query;
 #X connect 0 0 2 0;
-#X connect 1 0 7 0;
+#X connect 1 0 6 0;
 #X connect 2 0 3 0;
-#X connect 2 1 9 0;
+#X connect 2 1 8 0;
 #X connect 3 0 4 0;
-#X connect 3 0 5 0;
+#X connect 3 0 9 0;
 #X connect 4 0 3 1;
-#X connect 5 0 6 0;
-#X connect 7 0 3 1;
+#X connect 6 0 3 1;
+#X connect 9 0 5 0;
 #X restore 46 269 pd create_a_toy_dataset;
 #X msg 46 180 0 0;
 #X msg 85 200 0 0.5;
