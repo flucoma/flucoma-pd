@@ -1,9 +1,12 @@
+#N struct 1042-draw-item float x float y float c float a float b;
+#N struct 1043-rectangle float x float c;
+#N struct 1043-pixel float x0 float y0 float x1 float y1;
 #N struct 1040-rectangle float x float c;
 #N struct 1040-pixel float x0 float y0 float x1 float y1;
 #N struct 1055-draw-item float x float y float c float a float b;
 #N struct 1035-rectangle float x float c;
 #N struct 1035-pixel float x0 float y0 float x1 float y1;
-#N canvas 399 204 698 714 12;
+#N canvas 110 80 698 714 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
@@ -12,11 +15,111 @@
 13 #e0e0e0 #404040 0;
 #X obj 18 66 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
 #404040 0;
-#N canvas 30 128 692 686 radius_&_neighbours 0;
+#N canvas 191 170 698 804 radius_&_neighbours 0;
 #X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
 #404040 0;
+#X text 16 92 Change the specificity of searches by constraining the
+distance and number of nearest neighbours, f 67;
+#X obj 21 160 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 308 -994 640 382 generate_random_points 0;
+#X obj 37 37 inlet;
+#X obj 37 317 outlet;
+#X obj 37 60 t b b b;
+#X msg 430 89 clear;
+#X obj 431 251 fluid.dataset kd_tree_h3_ds;
+#X msg 52 96 200;
+#X msg 106 98 0;
+#X obj 52 119 until;
+#X obj 52 142 f;
+#X obj 84 142 + 1;
+#X obj 52 165 t f b;
+#X msg 52 221 addpoint point-\$1 kd_tree_h3_query;
+#X obj 84 186 expr kd_tree_h3_query[0] = random(0 \, 101) * 0.01 \;
+kd_tree_h3_query[1] = random(0 \, 101) * 0.01;
+#X obj 37 273 fluid.ds2text kd_tree_h3_ds kd_tree_h3_txt;
+#X obj 247 314 text define kd_tree_h3_txt;
+#X msg 37 296 setpoints kd_tree_h3_txt;
+#X obj 14 361 fluid.kdtree kd_tree_h3_tree;
+#X msg 14 341 fit kd_tree_h3_ds;
+#X connect 0 0 2 0;
+#X connect 2 0 13 0;
+#X connect 2 1 5 0;
+#X connect 2 2 3 0;
+#X connect 2 2 6 0;
+#X connect 3 0 4 0;
+#X connect 5 0 7 0;
+#X connect 6 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 8 0 10 0;
+#X connect 9 0 8 1;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 11 0 4 0;
+#X connect 13 0 15 0;
+#X connect 13 0 17 0;
+#X connect 15 0 1 0;
+#X connect 17 0 16 0;
+#X restore 21 180 pd generate_random_points;
+#X obj 21 234 fluid.plotter;
+#X obj 21 539 t b l;
+#X obj 52 561 array set kd_tree_h3_query;
+#X msg 21 583 knearest kd_tree_h3_query;
+#X obj 100 539 array define kd_tree_h3_query 2;
+#X obj 21 635 fluid.kdtree kd_tree_h3_tree -numneighbours 5;
+#X obj 21 659 route knearest;
+#X obj 21 683 list prepend highlight;
+#X obj 21 707 list trim;
+#X obj 21 731 s kd_tree_h3_plotter;
+#X obj 31 206 r kd_tree_h3_plotter;
+#X text 40 141 1) Generate random data to be stored in the fluid.dataset
+, f 30;
+#X text 237 186 2) Click and drag around this space, f 17;
+#X obj 34 611 r kd_tree_h3_tree;
+#X obj 356 235 cnv 15 330 135 empty empty Radius\ vs\ Number\ of\ Neighbours
+4 8 0 13 #dfdfdf #404040 0;
+#X text 363 260 We can query the tree in terms of either a (maximum)
+number of neighbouring points to return \, or a radius around the query
+point., f 43;
+#X text 363 310 Because the range of distances is hard to predict a
+priori \, you can use the knearestdist message to get an idea of useful
+values for radius., f 42;
+#X obj 356 381 cnv 15 330 90 empty empty empty 0 0 0 13 #dfdfdf #404040
+0;
+#X text 363 386 numneighbours > 0 \, radius = 0 : radius is ignored:
+the whole extent of the tree is searched, f 42;
+#X msg 363 436 \; kd_tree_h3_tree numneighbours 10 \, radius 0;
+#X obj 356 481 cnv 15 330 140 empty empty empty 0 0 0 13 #dfdfdf #404040
+0;
+#X text 363 486 numneighbours > 0 \, radius > 0 : only the extent within
+radius is searched \; number of returned points is capped at numneighbours
+, f 41;
+#X msg 357 549 \; kd_tree_h3_tree numneighbours 30 \, radius 0.3;
+#X msg 357 584 \; kd_tree_h3_tree numneighbours 10 \, radius 0.09;
+#X obj 356 631 cnv 15 330 130 empty empty empty 0 0 0 13 #dfdfdf #404040
+0;
+#X text 363 636 numneighbours = 0 \, radius > 0 : only the extent within
+radius is searched \; number of returned points is uncapped, f 45
+;
+#X msg 362 687 \; kd_tree_h3_tree numneighbours 0 \, radius 0.3;
+#X msg 362 722 \; kd_tree_h3_tree numneighbours 0 \, radius 0.09;
+#X text 395 197 3) Experiment with the numneighbours and radius constraints.
+, f 37;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 6 1 7 0;
+#X connect 8 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 15 0 5 0;
+#X connect 18 0 10 0;
 #X restore 511 628 pd radius_&_neighbours;
 #N canvas 112 98 698 764 stripping_it_back 0;
 #X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
@@ -79,19 +182,19 @@ kdtree, f 34;
 #X obj 37 21 inlet;
 #X obj 37 83 fluid.dataset kd_tree_h2_ds;
 #X obj 37 106 route getpoint;
-#X obj 37 150 array get kd_tree_h2_point;
 #X obj 37 173 outlet;
-#X obj 93 174 array define kd_tree_h2_point;
 #X obj 37 41 symbol;
 #X msg 37 62 getpoint \$1 kd_tree_h2_point;
 #X obj 37 128 t b;
-#X connect 0 0 6 0;
+#X obj 37 150 array get kd_tree_h2_point;
+#X obj 93 174 array define kd_tree_h2_point 2;
+#X connect 0 0 4 0;
 #X connect 1 0 2 0;
-#X connect 2 0 8 0;
-#X connect 3 0 4 0;
+#X connect 2 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
 #X connect 6 0 7 0;
-#X connect 7 0 1 0;
-#X connect 8 0 3 0;
+#X connect 7 0 3 0;
 #X restore 279 630 pd retrieve_the_value;
 #X obj 370 534 array get kd_tree_h2_query;
 #X listbox 370 557 11 0 0 0 - - - 0;
