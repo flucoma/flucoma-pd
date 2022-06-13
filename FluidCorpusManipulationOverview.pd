@@ -57,7 +57,7 @@
 #X obj 494 529 fluid.bufchroma;
 #X obj 284 651 fluid.nmfmatch~;
 #X obj 494 711 fluid.bufstft;
-#X obj 494 681 fluid.bufnndsvd;
+#X obj 494 681 fluid.bufnmfseed;
 #X text 145 376 Pitch Descriptor;
 #X text 26 406 Loudness and True-Peak Descriptor;
 #X text 68 438 Spectral Contour Descriptor;
