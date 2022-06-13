@@ -180,7 +180,7 @@ public:
     if (frames != numFrames())
     {
       r.set(Result::Status::kError);
-      r.addMessage("Reszie failed on ", mName->s_name, ".");
+      r.addMessage("Resize failed on ", mName->s_name, ".");
     }
     return r;
   }
