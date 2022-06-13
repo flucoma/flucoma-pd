@@ -1,6 +1,6 @@
 #N struct 1055-draw-item float x float y float c float a float b;
-#N struct 1203-rectangle float x float c;
-#N struct 1203-pixel float x0 float y0 float x1 float y1;
+#N struct 1028-rectangle float x float c;
+#N struct 1028-pixel float x0 float y0 float x1 float y1;
 #N canvas 0 23 705 747 12;
 #X obj 285 237 fluid.ampslice~;
 #X obj 285 147 fluid.onsetslice~;
@@ -117,7 +117,6 @@
 #X obj 284 1464 fluid.mds;
 #X obj 284 1494 fluid.umap;
 #X obj 494 1432 fluid.kmeans;
-#X obj 494 1464 fluid.grid;
 #X text 69 1608 Corpus-Building Abstraction;
 #X obj 286 1609 fluid.concataudiofiles;
 #X text 153 1638 Array Utilities;
@@ -129,3 +128,5 @@
 #X obj 496 1701 fluid.bufselectevery;
 #X text 146 1730 Data-Viewing GUI;
 #X obj 286 1731 fluid.plotter;
+#X obj 494 1494 fluid.grid;
+#X obj 494 1464 fluid.skmeans;
