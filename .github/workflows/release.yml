@@ -61,11 +61,11 @@ jobs:
           
       - id: get-version
         run: echo "::set-output name=version::$(cat flucoma.version.rc)"
-        working-directory: core
+        working-directory: builds/_deps/flucoma-core-src
   
   release:
     runs-on: ubuntu-latest
-    needs: [macbuild, winbuild, linuxbuild, docs]
+    needs: [macbuild, winbuild, linuxbuild]
 
     steps:
       - uses: actions/download-artifact@v2
