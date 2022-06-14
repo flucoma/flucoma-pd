@@ -68,11 +68,6 @@ jobs:
     needs: [macbuild, winbuild, linuxbuild]
 
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: docs
-          path: docs
-
       #### LINUX ####
       - uses: actions/download-artifact@v2
         with:
