@@ -1,56 +1,43 @@
 name: Release
 on:
   workflow_dispatch:
-    inputs:
-      base:
-        description: 'Base branch to deploy core from'
-        required: false
-        default: 'main'
 
 jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: flucoma/actions/env@v4
-        with:
-          branch: ${{ github.event.inputs.base }} 
-      - uses: flucoma/actions/docs@v4
-        with:
-          target: MAKE_PD_REF
-          branch: ${{ github.event.inputs.base }}
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: docs
-          path: build/pd_ref
-
   macbuild:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
-      - uses: flucoma/actions/env@v4
+      - uses: flucoma/actions/env@v5 
+      - uses: flucoma/actions/pd@v5
         with:
-          branch: ${{ github.event.inputs.base }} 
-      - uses: flucoma/actions/pd@v4
+          branch: origin/dev
 
-      - uses: actions/upload-artifact@v2                                                                                                                                                 
-        with:                                                                                                                                                                            
-          name: macbuild                                                                                                                                                                 
-          path: release-packaging
+      - name: compress archive
+        run: zip -r FluCoMa-PD-Mac-nightly.zip FluidCorpusManipulation
+        working-directory: release-packaging
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macbuild
+          path: release-packaging/FluCoMa-PD-Mac-nightly.zip
 
   winbuild:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: flucoma/actions/env@v4
+      - uses: flucoma/actions/env@v5         
+      - uses: flucoma/actions/pd@v5
         with:
-          branch: ${{ github.event.inputs.base }} 
-      - uses: flucoma/actions/pd@v4
+          branch: origin/dev
 
-      - uses: actions/upload-artifact@v2                                                                                                                                                 
-        with:                                                                                                                                                                            
-          name: winbuild                                                                                                                                                                
-          path: "release-packaging"
+      - name: compress archive
+        run: 7z a FluCoMa-PD-Windows-nightly.zip FluidCorpusManipulation
+        working-directory: release-packaging
+
+      - uses: actions/upload-artifact@v2 
+        with:
+          name: winbuild
+          path: release-packaging/FluCoMa-PD-Windows-nightly.zip
 
   linuxbuild:
     runs-on: ubuntu-18.04
@@ -58,15 +45,19 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
-      - uses: flucoma/actions/env@v4
+      - uses: flucoma/actions/env@v5
+      - uses: flucoma/actions/pd@v5
         with:
-          branch: ${{ github.event.inputs.base }} 
-      - uses: flucoma/actions/pd@v4
+          branch: origin/main 
 
-      - uses: actions/upload-artifact@v2                                                                                                                                                 
-        with:                                                                                                                                                                            
-          name: linuxbuild                                                                                                                                                                
-          path: release-packaging
+      - name: compress archive
+        run: tar -zcvf FluCoMa-PD-Linux-nightly.tar.gz FluidCorpusManipulation
+        working-directory: release-packaging
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: linuxbuild 
+          path: release-packaging/FluCoMa-PD-Linux-nightly.tar.gz
           
       - id: get-version
         run: echo "::set-output name=version::$(cat flucoma.version.rc)"
