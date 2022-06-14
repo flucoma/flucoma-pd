@@ -6,19 +6,6 @@ on:
     branches: [ dev, ci/** ]
 
 jobs:
-  # docs:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: flucoma/actions/env@v5
-  #     - uses: flucoma/actions/docs@v5
-  #       with:
-  #         target: MAKE_PD_REF
-  # 
-  #     - uses: actions/upload-artifact@v2
-  #       with:
-  #         name: docs
-  #         path: build/pd_ref
-
   macbuild:
     runs-on: macos-11
     steps:
@@ -78,50 +65,22 @@ jobs:
     needs: [macbuild, winbuild, linuxbuild]
 
     steps:
-      # - uses: actions/download-artifact@v2
-      #   with:
-      #     name: docs
-      #     path: docs
 
       #### LINUX ####
       - uses: actions/download-artifact@v2
         with:
           name: linuxbuild
-          # path: linux
-      
-      # - name: copy docs to linux
-      #   run: cp -r docs linux/FluidCorpusManipulation
-      # 
-      # - name: compress linux
-      #   run: zip -r ../FluCoMa-PD-Linux-nightly.zip .
-      #   working-directory: linux
 
       #### MAC ####
       - uses: actions/download-artifact@v2
         with:
           name: macbuild
-          # path: mac
-      # 
-      # - name: copy docs to mac
-      #   run: cp -r docs mac/FluidCorpusManipulation
-      # 
-      # - name: compress mac
-      #   run: zip -r ../FluCoMa-PD-Mac-nightly.zip .
-      #   working-directory: mac
 
       #### WINDOWS ####
       - uses: actions/download-artifact@v2
         with:
           name: winbuild
-          # path: win
 
-      # - name: copy docs to windows
-      #   run: cp -r docs win/FluidCorpusManipulation
-      # 
-      # - name: compress windows
-      #   run: zip -r ../FluCoMa-PD-Windows-nightly.zip .
-      #   working-directory: win
-      # 
       #### UPLOAD RELEASE ####
       - uses: dev-drprasad/delete-tag-and-release@v0.2.0
         with:
