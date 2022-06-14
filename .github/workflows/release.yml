@@ -93,7 +93,7 @@ jobs:
         with:
           name: ${{ needs.linuxbuild.outputs.version }}
           body: "This is a release build of the FluCoMa PureData package. The build hash is ${{ github.sha }}"
-          files: FluCoMa*.zip
+          files: FluCoMa*
           prerelease: true
           tag_name: ${{ needs.linuxbuild.outputs.version }}
           draft: false
