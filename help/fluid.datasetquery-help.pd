@@ -5,13 +5,13 @@
 #X obj 99 82 + 1;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array dsq1 1 float 3;
-#A 0 0.9;
+#A 0 2.9;
 #X coords 0 1 1 -1 200 140 1;
 #X restore 301 30 graph;
 #X obj 67 126 trigger float float;
 #X obj 195 154 * 0.1;
 #X obj 197 180 tabwrite dsq1;
-#X msg 70 166 setpoint \$1 dsq1;
+#X msg 66 166 setpoint \$1 dsq1;
 #X msg 55 11 10;
 #X obj 190 389 fluid.dataset filtered;
 #X msg 57 253 clear \, filter 0 < 0.5 \, addcolumn 0 \, transform source
@@ -31,4 +31,4 @@ filtered;
 #X connect 11 0 14 0;
 #X connect 12 0 13 0;
 #X connect 13 0 10 0;
-#X connect 14 2 12 0;
+#X connect 14 0 12 0;

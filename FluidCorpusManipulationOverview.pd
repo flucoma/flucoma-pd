@@ -1,76 +1,132 @@
-#N canvas 371 59 957 701 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid_decomposition 20 12 0
-36 -262144 -66577 0;
-#X text 34 93 The Fluid Decomposition toolbox provides an open-ended
-\, loosely coupled set of objects to break up and analyse sound in
-terms of slices (segments in time) \, layers (superositions in time
-and frequency) and objects (configurable or discoverable patterns in
-sound). Almost all objects have audio-rate and buffer-based versions.
-, f 96;
-#X obj 626 359 cnv 15 310 150 empty empty Objects 20 12 0 20 -228856
--66577 0;
-#X obj 643 433 fluid.nmfmatch~;
-#X obj 643 457 fluid.nmffilter~ 2;
-#X text 762 414 Use Nonnegative Matrix Factorisation to explore and
-decompose sounds, f 24;
-#X text 36 58 play with sonic slices \, layers and objects;
-#X obj 12 195 cnv 15 925 150 empty empty Slices 20 12 0 20 -228856
--66577 0;
-#X text 162 301 Slice by onsets in the spectral domain, f 19;
-#X obj 36 234 fluid.ampslice~;
-#X obj 36 296 fluid.onsetslice~;
-#X obj 642 291 fluid.noveltyslice~;
-#X text 785 290 Slice by estimated novelty on a choice of features
-, f 18;
-#X obj 343 295 fluid.transientslice~;
-#X text 505 297 Slice by transient modelling, f 10;
-#X obj 14 360 cnv 15 600 150 empty empty Layers 20 12 0 20 -228856
--66577 0;
-#X obj 36 401 fluid.sines~;
-#X obj 36 463 fluid.transients~;
-#X obj 370 424 fluid.hpss~;
-#X text 471 421 Decompose into 'harmonic' and 'percussive' layers,
-f 19;
-#X text 160 402 Decompose into sines + residual, f 16;
-#X text 161 469 Decompose into transients + residual, f 22;
-#X obj 15 527 cnv 15 925 150 empty empty Descriptors 20 12 0 20 -228856
--66577 0;
-#X obj 36 568 fluid.loudness~;
-#X obj 37 630 fluid.pitch~;
-#X text 741 640 Statistics of buffers (arrays);
-#X text 782 566 Summary measures of spectral shape, f 17;
-#X text 481 567 Energy across Mel bands, f 13;
-#X text 480 635 Mel Frequency Ceptstral Coefficients, f 13;
-#X text 153 567 Report amplitude and peak \, or r128 loudness and true
-peak, f 22;
-#X text 156 638 A suite of pitch estimators, f 16;
-#X obj 36 258 fluid.bufampslice;
-#X obj 36 320 fluid.bufonsetslice;
-#X obj 642 315 fluid.bufnoveltyslice;
-#X obj 343 319 fluid.buftransientslice;
-#X obj 643 409 fluid.bufnmf;
-#X obj 36 425 fluid.bufsines;
-#X obj 36 487 fluid.buftransients;
-#X obj 370 447 fluid.bufhpss;
-#X obj 36 592 fluid.bufloudness;
-#X obj 37 654 fluid.bufpitch;
-#X obj 643 640 fluid.bufstats;
-#X obj 644 195 cnv 15 310 75 empty empty empty 20 12 0 20 -262144 -66577
-0;
-#X obj 647 196 cnv 15 290 70 empty empty Utility 20 12 0 20 -228856
--66577 0;
-#X text 779 207 Copy \, slice \, stack \, mix concatenate. All the
-things you've wanted to do with arrays..., f 24;
-#X obj 667 229 fluid.bufcompose;
-#X obj 342 232 fluid.ampgate~;
-#X obj 342 256 fluid.bufampgate;
-#X text 457 227 Slice by amplitude envelope threshold with lookahead
-/ lookback, f 18;
-#X text 158 239 Slice by amplitude envelope onsets with detrending
-, f 18;
-#X obj 366 565 fluid.melbands~;
-#X obj 366 589 fluid.bufmelbands;
-#X obj 642 563 fluid.spectralshape~;
-#X obj 642 587 fluid.bufspectralshape;
-#X obj 366 631 fluid.mfcc~;
-#X obj 366 655 fluid.bufmfcc;
+#N struct 1055-draw-item float x float y float c float a float b;
+#N struct 1028-rectangle float x float c;
+#N struct 1028-pixel float x0 float y0 float x1 float y1;
+#N canvas 0 23 705 747 12;
+#X obj 285 237 fluid.ampslice~;
+#X obj 285 147 fluid.onsetslice~;
+#X obj 285 207 fluid.noveltyslice~;
+#X obj 285 177 fluid.transientslice~;
+#X obj 494 237 fluid.bufampslice;
+#X obj 494 147 fluid.bufonsetslice;
+#X obj 494 207 fluid.bufnoveltyslice;
+#X obj 494 177 fluid.buftransientslice;
+#X obj 285 267 fluid.ampgate~;
+#X obj 494 267 fluid.bufampgate;
+#X obj 17 13 cnv 15 660 42 empty empty Fluid\\\ Corpus\\\ Manipulation
+1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Analyse\\\ Transform\\\ and\\\ Learn\\\ from\\\ Sounds
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 111 cnv 15 240 20 empty empty Slice\\\ Audio 4 10 0 16 #e0e0e0
+#404040 0;
+#X obj 17 341 cnv 15 240 20 empty empty Analyse\\\ Audio 4 10 0 16
+#e0e0e0 #404040 0;
+#X obj 16 785 cnv 15 240 20 empty empty Decompose\\\ Audio 4 10 0 16
+#e0e0e0 #404040 0;
+#X obj 16 985 cnv 15 240 20 empty empty Transform\\\ Audio 4 10 0 16
+#e0e0e0 #404040 0;
+#X obj 16 1185 cnv 15 240 20 empty empty Analyse\\\ Data 4 10 0 16
+#e0e0e0 #404040 0;
+#X obj 19 1572 cnv 15 240 20 empty empty Helpers 4 10 0 16 #e0e0e0
+#404040 0;
+#X text 282 117 Signal In \, Signal Out;
+#X text 491 117 Array In \, Array Out;
+#X text 34 146 Spectral Difference-Based Slicer;
+#X text 104 176 Transient-Based Slicer;
+#X text 118 206 Novelty-Based Slicer;
+#X text 27 236 Amplitude-Based Detrending Slicer;
+#X text 55 266 Amplitude-Based Gating Slicer;
+#X text 491 347 Array In \, Array Out;
+#X text 281 347 Signal In \, List Out;
+#X obj 284 377 fluid.pitch~;
+#X obj 494 377 fluid.bufpitch;
+#X obj 284 407 fluid.loudness~;
+#X obj 494 407 fluid.bufloudness;
+#X obj 284 439 fluid.melbands~;
+#X obj 494 439 fluid.bufmelbands;
+#X obj 284 469 fluid.mfcc~;
+#X obj 494 469 fluid.bufmfcc;
+#X obj 284 499 fluid.spectralshape~;
+#X obj 494 499 fluid.bufspectralshape;
+#X obj 284 621 fluid.noveltyfeature~;
+#X obj 284 591 fluid.onsetfeature~;
+#X obj 284 559 fluid.ampfeature~;
+#X obj 284 529 fluid.chroma~;
+#X obj 494 621 fluid.bufnoveltyfeature;
+#X obj 494 591 fluid.bufonsetfeature;
+#X obj 494 559 fluid.bufampfeature;
+#X obj 494 529 fluid.bufchroma;
+#X obj 284 651 fluid.nmfmatch~;
+#X obj 494 711 fluid.bufstft;
+#X obj 494 681 fluid.bufnmfseed;
+#X text 145 376 Pitch Descriptor;
+#X text 26 406 Loudness and True-Peak Descriptor;
+#X text 68 438 Spectral Contour Descriptor;
+#X text 12 468 Mel-Frequency Cepstral Coefficients;
+#X text 33 498 Seven Spectral Shape Descriptors;
+#X text 89 528 Histogram of Pitch Class;
+#X text 40 558 Amplitude Detrending Descriptor;
+#X text 47 590 Spectral Difference Descriptor;
+#X text 131 620 Novelty Descriptor;
+#X text 12 650 Non-Negative Factorisation on Bases;
+#X text 61 710 Short-Time Fourier Transform;
+#X text 75 680 Non-Negative Decomposition;
+#X text 281 791 Signal In \, Signal Out;
+#X text 491 791 Array(s) In \, Array Out;
+#X obj 284 821 fluid.sines~;
+#X obj 494 821 fluid.bufsines;
+#X obj 284 851 fluid.transients~;
+#X obj 494 851 fluid.buftransients;
+#X obj 284 883 fluid.hpss~;
+#X obj 494 883 fluid.bufhpss;
+#X obj 494 913 fluid.bufnmf;
+#X text 23 910 Non-Negative Matrix Factorisation;
+#X text 121 848 Transient Extractor;
+#X text 2 817 Sinusoidal Modelling and Resynthesis;
+#X text 44 880 Harmonic-Percussive Separation;
+#X text 281 991 Signal In \, Signal Out;
+#X text 2 1017 Interpolate Between Sinusoidal Peaks;
+#X obj 284 1021 fluid.audiotransport~;
+#X obj 494 1021 fluid.bufaudiotransport;
+#X text 491 991 Array In \, Array Out;
+#X obj 284 1083 fluid.nmfmorph~;
+#X obj 284 1051 fluid.nmffilter~ 2;
+#X text 9 1048 Non-Negative Factorisation on Bases;
+#X text 93 1080 Morph Between NMF Bases;
+#X obj 494 1113 fluid.bufnmfcross;
+#X text 51 1110 Resynthesise a Target via NMF;
+#X text 5 1219 Containers: ID-associated Data/Label;
+#X text 5 1249 Statistical Analysis on Lists/Arrays;
+#X text 103 1281 Searching and Querying;
+#X text 166 1311 Preprocessing;
+#X text 68 1371 Supervised Machine Learning;
+#X text 53 1431 Unsupervised Machine Learning;
+#X obj 284 1220 fluid.dataset;
+#X obj 494 1220 fluid.labelset;
+#X obj 284 1250 fluid.stats;
+#X obj 494 1250 fluid.bufstats;
+#X obj 284 1282 fluid.kdtree;
+#X obj 494 1282 fluid.datasetquery;
+#X obj 284 1312 fluid.normalize;
+#X obj 284 1342 fluid.standardize;
+#X obj 493 1312 fluid.robustscale;
+#X obj 284 1372 fluid.knnregressor;
+#X obj 284 1402 fluid.mlpregressor;
+#X obj 494 1372 fluid.knnclassifier;
+#X obj 494 1402 fluid.mlpclassifier;
+#X obj 284 1432 fluid.pca;
+#X obj 284 1464 fluid.mds;
+#X obj 284 1494 fluid.umap;
+#X obj 494 1432 fluid.kmeans;
+#X text 69 1608 Corpus-Building Abstraction;
+#X obj 286 1609 fluid.concataudiofiles;
+#X text 153 1638 Array Utilities;
+#X obj 286 1639 fluid.bufcompose;
+#X obj 496 1639 fluid.bufscale;
+#X obj 286 1671 fluid.bufthresh;
+#X obj 496 1671 fluid.bufflatten;
+#X obj 286 1701 fluid.bufselect;
+#X obj 496 1701 fluid.bufselectevery;
+#X text 146 1730 Data-Viewing GUI;
+#X obj 286 1731 fluid.plotter;
+#X obj 494 1494 fluid.grid;
+#X obj 494 1464 fluid.skmeans;

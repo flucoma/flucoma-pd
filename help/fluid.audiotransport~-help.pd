@@ -1,12 +1,77 @@
-#N canvas 285 369 450 300 12;
-#X obj 176 118 osc~ 110;
-#X obj 356 118 osc~ 220;
-#X obj 176 173 fluid.audiotransport~ 8192;
-#X floatatom 37 102 5 0 0 0 - - -;
-#X msg 37 125 interpolation \$1;
-#X obj 176 197 dac~;
-#X connect 0 0 2 0;
-#X connect 1 0 2 1;
-#X connect 2 0 5 0;
-#X connect 3 0 4 0;
-#X connect 4 0 2 0;
+#N canvas 282 252 695 776 12;
+#X msg 268 516 interpolation \$1;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.audiotransport~ 1 22 0
+36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.audiotransport~.html reference/audiotransport/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Interpolate\\\ between\\\ sounds
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Interpolates between the spectra of two sounds using
+optimal transport.;
+#X obj 21 175 fluid.demosound~;
+#X obj 268 395 loadbang;
+#X msg 268 421 0.5;
+#X obj 237 275 fluid.demosound~;
+#X obj 21 635 fluid.audiotransport~ -interpolation 0.5 -fftsettings
+1024 64 8192, f 31;
+#X obj 271 471 hsl 200 35 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X text 20 147 1) load sounds in both players;
+#X text 304 446 interpolate between the two different sounds;
+#X obj 532 690 cnv 15 145 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 693 102 692 820 more_info 0;
+#X msg 29 550 interpolation \$1;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.audiotransport~ 1 22 0
+36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Interpolate\\\ between\\\ sounds
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 21 175 fluid.demosound~;
+#X obj 29 429 loadbang;
+#X msg 29 455 0.5;
+#X obj 242 285 fluid.demosound~;
+#X obj 21 685 fluid.audiotransport~ -interpolation 0.5 -fftsettings
+1024 64 8192, f 32;
+#X obj 32 505 hsl 200 35 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X text 20 147 1) load sounds in both players;
+#X msg 260 477 fftsettings 256 16 256;
+#X msg 260 499 fftsettings 1024 16 1024;
+#X msg 260 521 fftsettings 1024 -1 -1;
+#X msg 260 543 fftsettings 2048 -1 -1;
+#X msg 260 565 fftsettings 4096 -1 -1;
+#X msg 260 587 fftsettings 16384 -1 -1;
+#X text 256 430 Try these different fftsettings to see how they affect
+the results of the audiotransport~ algorithm.;
+#X text 256 622 The larger the fft size the better it blends the spectral
+qualities at the expense of smearing attacks. This will have a drastic
+impact on the characteristic of the interpolation.;
+#X obj 21 741 fluid.out~ audiotransporthelp;
+#X connect 0 0 7 0;
+#X connect 3 0 7 0;
+#X connect 4 0 5 0;
+#X connect 5 0 8 0;
+#X connect 6 0 7 1;
+#X connect 7 0 18 0;
+#X connect 7 0 18 1;
+#X connect 8 0 0 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 7 0;
+#X connect 13 0 7 0;
+#X connect 14 0 7 0;
+#X connect 15 0 7 0;
+#X restore 574 713 pd more_info;
+#X obj 21 739 fluid.out~ audiotransporthelp;
+#X obj 79 693 loadbang;
+#X msg 79 715 1;
+#X connect 0 0 9 0;
+#X connect 5 0 9 0;
+#X connect 6 0 7 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 1;
+#X connect 9 0 15 1;
+#X connect 9 0 15 0;
+#X connect 10 0 0 0;
+#X connect 16 0 17 0;
+#X connect 17 0 15 2;

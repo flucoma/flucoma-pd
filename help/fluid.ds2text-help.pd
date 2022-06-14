@@ -1,10 +1,10 @@
-#N canvas 446 142 735 762 12;
-#X obj 54 375 array define input 10;
-#X obj 339 289 array set input;
-#X msg 49 122 print;
-#X msg 327 114 -1;
-#X msg 361 113 0;
-#X msg 397 113 1;
+#N canvas 205 135 693 724 12;
+#X obj 309 289 array define input 10;
+#X obj 53 313 array set input;
+#X msg 40 389 print;
+#X msg 21 229 -1;
+#X msg 55 229 0;
+#X msg 91 229 1;
 #N canvas 535 225 1107 619 newarray 0;
 #X obj 309 286 until;
 #X msg 377 307 -1;
@@ -37,15 +37,36 @@
 #X connect 12 2 1 0;
 #X connect 12 3 8 1;
 #X connect 12 4 9 1;
-#X restore 344 217 pd newarray;
-#X obj 336 174 t f f;
-#X msg 107 211 setpoint entry-\$1 input;
-#X obj 52 410 text define myText;
-#X obj 54 466 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 48 267 fluid.dataset myDS;
-#X obj 53 493 fluid.ds2text myDS myText;
-#X obj 169 323 print;
+#X restore 53 289 pd newarray;
+#X obj 21 263 t f f;
+#X msg 21 346 setpoint entry-\$1 input;
+#X obj 21 681 text define myText;
+#X obj 21 537 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 21 436 fluid.dataset myDS;
+#X obj 21 579 fluid.ds2text myDS myText;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ds2text 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.ds2text.html reference/ds2text/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Convert\\\ FluCoMa\\\ DataSet\\\ into\\\ text
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 A utility object to convert a dataset into text.;
+#X text 18 134 1) Click these to populate an array with values and
+save those in dataset myDS.;
+#X text 19 194 Message '-1' will store a dataset point with an identifier
+'entry--1' and data which is the list of values in the array., f 61
+;
+#X text 169 285 create values in array 'input', f 16;
+#X text 87 388 2) Click to see the DataSet printed in the console,
+f 28;
+#X text 42 535 3) Click to convert the myDS dataset and save it in
+text object myText, f 36;
+#X text 19 651 Click on Text object to see its content;
+#X obj 571 679 fluid.ls2text;
+#X text 495 679 see also:;
+#X obj 449 63 cnv 15 200 30 empty empty 1\\\ and\\\ 2\\\ not\\\ working\\\ because\\\ missing
+20 12 0 9 #faff00 #404040 0;
 #X connect 2 0 11 0;
 #X connect 3 0 7 0;
 #X connect 4 0 7 0;
@@ -55,4 +76,3 @@
 #X connect 7 1 6 0;
 #X connect 8 0 11 0;
 #X connect 10 0 12 0;
-#X connect 11 2 13 0;

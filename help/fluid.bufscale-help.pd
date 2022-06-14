@@ -1,33 +1,114 @@
-#N canvas 776 112 811 824 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufscale 20 12 0 36 -262144
--66577 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 429 496 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 427 662 array set;
-#X msg 476 629 symbol stereoinput-0;
-#X msg 463 607 0 0.1 0.2 0.3 0.4;
-#X obj 426 544 t b b b b;
-#X msg 444 585 symbol stereoinput-1;
-#X msg 426 565 1 1.1 1.2 1.3 1.4;
-#X text 446 493 1 make the arrays;
-#X obj 452 298 clone fluid.multiarray 2 stereoinput 5;
-#X obj 50 270 print;
-#X obj 51 203 fluid.bufscale -source stereoinput -destination stereo_output
+#N canvas 33 68 697 699 12;
+#X obj 17 135 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 17 267 array set;
+#X obj 383 277 clone fluid.multiarray 2 stereoinput 5;
+#X obj 20 563 fluid.bufscale -source stereoinput -destination stereo_output
 ;
-#X obj 461 333 clone fluid.multiarray 2 stereo_output 5;
-#X msg 50 174 inputlow 0 \, inputhigh 1 \, outputlow 0 \, outputhigh
-2 \, bang;
-#X obj 50 250 array get stereo_output-0;
-#X connect 2 0 6 0;
-#X connect 4 0 3 2;
-#X connect 5 0 3 0;
-#X connect 6 0 8 0;
-#X connect 6 1 7 0;
-#X connect 6 2 5 0;
-#X connect 6 3 4 0;
-#X connect 7 0 3 2;
-#X connect 8 0 3 0;
-#X connect 12 0 15 0;
-#X connect 14 0 12 0;
-#X connect 15 0 11 0;
+#X obj 389 297 clone fluid.multiarray 2 stereo_output 5;
+#X obj 20 637 array get stereo_output-0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufscale~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufscale.html reference/bufscale/
+;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ Scaling\\\ Processor\\\ for\\\ Buffers
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Scale buffer values from an input range to an output
+range;
+#X listbox 20 664 24 0 0 0 - - - 0;
+#X listbox 15 405 20 0 0 0 - - - 0;
+#X obj 15 353 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 15 383 array get stereoinput-0;
+#X listbox 290 406 20 0 0 0 - - - 0;
+#X obj 290 354 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 290 384 array get stereoinput-1;
+#X text 36 135 put values in left channel;
+#X obj 17 161 t b b, f 9;
+#X msg 77 243 symbol stereoinput-0;
+#X obj 244 136 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 244 268 array set;
+#X msg 244 205 1 1.1 1.2 1.3 1.4;
+#X obj 244 162 t b b, f 9;
+#X msg 303 244 symbol stereoinput-1;
+#X text 25 186 list of values to store;
+#X text 251 186 list of values to store;
+#X msg 17 204 0 0.1 0.2 0.3 0.4;
+#X obj 20 611 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 34 352 see stored values in left input;
+#X text 308 352 see stored values in right input;
+#X listbox 205 664 20 0 0 0 - - - 0;
+#X obj 205 636 array get stereo_output-1;
+#N canvas 733 69 533 453 parameters 0;
+#X floatatom 30 112 5 0 0 0 - - - 0;
+#X obj 30 282 outlet;
+#X obj 30 28 loadbang;
+#X msg 118 88 1;
+#X msg 30 88 0;
+#X msg 30 135 inputlow \$1;
+#X msg 118 135 inputhigh \$1;
+#X floatatom 118 112 5 0 0 0 - - - 0;
+#X floatatom 214 112 5 0 0 0 - - - 0;
+#X msg 214 88 0;
+#X floatatom 311 112 5 0 0 0 - - - 0;
+#X msg 214 135 outputlow \$1;
+#X msg 311 135 outputhigh \$1;
+#X msg 311 88 2;
+#X msg 414 88 0;
+#X obj 414 112 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X msg 414 135 clipping \$1;
+#X connect 0 0 5 0;
+#X connect 2 0 4 0;
+#X connect 2 0 3 0;
+#X connect 2 0 9 0;
+#X connect 2 0 13 0;
+#X connect 2 0 14 0;
+#X connect 3 0 7 0;
+#X connect 4 0 0 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 6 0;
+#X connect 8 0 11 0;
+#X connect 9 0 8 0;
+#X connect 10 0 12 0;
+#X connect 11 0 1 0;
+#X connect 12 0 1 0;
+#X connect 13 0 10 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;
+#X connect 16 0 1 0;
+#X restore 225 525 pd parameters;
+#X text 329 524 open to see parameter messages;
+#X obj 20 479 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 38 478 calculate and store scaled values in destination buffer
+;
+#X text 263 136 put values in right channel;
+#X obj 533 616 cnv 15 145 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 536 643 note_on_multiarrays;
+#X connect 0 0 18 0;
+#X connect 3 0 28 0;
+#X connect 5 0 10 0;
+#X connect 12 0 13 0;
+#X connect 13 0 11 0;
+#X connect 15 0 16 0;
+#X connect 16 0 14 0;
+#X connect 18 0 27 0;
+#X connect 18 1 19 0;
+#X connect 19 0 1 2;
+#X connect 20 0 23 0;
+#X connect 22 0 21 0;
+#X connect 23 0 22 0;
+#X connect 23 1 24 0;
+#X connect 24 0 21 2;
+#X connect 27 0 1 0;
+#X connect 28 0 5 0;
+#X connect 28 0 32 0;
+#X connect 32 0 31 0;
+#X connect 33 0 3 0;
+#X connect 35 0 3 0;

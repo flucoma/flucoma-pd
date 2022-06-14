@@ -1,19 +1,37 @@
-#N canvas 397 132 735 762 12;
-#X msg 49 122 print;
-#X msg 109 173 0;
-#X msg 145 173 1;
-#X obj 52 410 text define myText;
-#X obj 54 466 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 48 267 fluid.labelset myLS;
-#X msg 107 211 setlabel entry-\$1 input-\$1;
-#X obj 161 329 print;
-#X msg 182 174 2;
-#X obj 53 493 fluid.ls2text myLS myText;
-#X connect 0 0 5 0;
-#X connect 1 0 6 0;
-#X connect 2 0 6 0;
-#X connect 4 0 9 0;
-#X connect 5 2 7 0;
+#N canvas 22 53 694 668 12;
+#X msg 39 343 print;
+#X msg 22 249 0;
+#X msg 58 249 1;
+#X obj 22 614 text define myText;
+#X obj 23 395 fluid.labelset myLS;
+#X msg 22 287 setlabel entry-\$1 input-\$1;
+#X msg 95 249 2;
+#X obj 22 514 fluid.ls2text myLS myText;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ls2text 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.ls2text.html reference/ls2text/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Convert\\\ FluCoMa\\\ LabelSet\\\ into\\\ text
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 A utility object to convert a labelset into text.;
+#X text 490 614 see also:;
+#X obj 566 614 fluid.ds2text;
+#X text 19 157 1) Click these to populate an array with values and
+save those in dataset myDS.;
+#X text 22 211 Message '-1' will store a label entry--1 and a corresponding
+identifier 'input-1', f 56;
+#X text 94 342 2) Click to see the DataSet printed in the console,
+f 28;
+#X obj 22 471 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 43 469 3) Click to convert the myDS dataset and save it in
+text object myText, f 36;
+#X text 25 585 Click on Text object to see its content;
+#X obj 418 64 cnv 15 200 30 empty empty 1\\\ and\\\ 2\\\ not\\\ working\\\ because\\\ missing
+20 12 0 9 #faff00 #404040 0;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 2 0 5 0;
+#X connect 5 0 4 0;
 #X connect 6 0 5 0;
-#X connect 8 0 6 0;
+#X connect 17 0 7 0;

@@ -1,170 +1,162 @@
-#N canvas 119 66 578 781 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.sines~ 20 12 0 36 -262144
--66577 0;
-#X obj 36 722 dac~;
-#X obj 36 635 *~;
-#X obj 50 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 130 635 *~;
-#X obj 144 617 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 199 182 r pd-dsp-started;
-#X obj 374 629 / 1;
-#X obj 374 611 * 1000;
-#X obj 374 705 *~;
-#X obj 382 670 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 382 687 * -1;
-#X obj 36 133 loadbang;
-#X obj 36 182 soundfiler;
-#X obj 37 303 *~, f 10;
-#X obj 37 263 /~;
-#X msg 37 244 1;
-#X obj 37 284 phasor~;
-#X obj 239 229 samplerate~;
-#X obj 86 244 / 1;
-#X obj 36 200 t b f b;
-#X obj 200 200 t b b b;
-#X obj 56 345 delwrite~ \$0-latencycomp 1000;
-#X obj 374 648 delread~ \$0-latencycomp 1;
-#X obj 43 367 loadbang;
-#X text 36 57 Sinusoidal Modelling and Resynthesis, f 61;
-#X text 36 86 Sinusoidal Modelling process on its audio input., f
-69;
-#X text 419 665 by inverting here \, we should hear nothing when all
+#N canvas 565 121 697 935 12;
+#X obj 17 658 *~;
+#X obj 31 640 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 186 658 *~;
+#X obj 200 640 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 407 665 r pd-dsp-started;
+#X obj 356 708 / 1, f 9;
+#X obj 356 686 * 1000;
+#X obj 356 797 *~;
+#X obj 371 758 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 371 775 * -1;
+#X obj 407 686 samplerate~;
+#X obj 29 264 delwrite~ \$0-latencycomp 1000;
+#X obj 356 736 delread~ \$0-latencycomp 1;
+#X obj 28 456 loadbang;
+#X text 201 755 by inverting here \, we should hear nothing when all
 sources are enabled, f 21;
-#X msg 43 385 getlatency;
-#X floatatom 58 461 8 0 0 0 - - -;
-#X floatatom 205 525 8 0 0 0 - - -;
-#X floatatom 206 461 8 0 0 0 - - -;
-#X msg 206 441 76;
-#X msg 206 479 bandwidth \$1;
-#X msg 205 544 mintracklen \$1 \, getlatency;
-#X text 57 420 experiment with parameters;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.sines~.html;
-#X msg 143 89 browse \$1;
+#X msg 28 477 getlatency;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.sines~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.sines~.html reference/sines/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Sinusoidal\\\ Modelling\\\ and\\\ Resynthesis
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Sinusoidal Modelling process on its audio input, f 56
+;
+#X obj 17 160 fluid.demosound~;
+#X text 29 608 resynthesised sinusoids, f 13;
+#X text 201 617 residual;
+#X text 388 634 latency;
+#X msg 360 305 detectionthreshold -40 \, mintracklen 1;
+#X msg 360 335 detectionthreshold -40 \, mintracklen 15;
+#X msg 360 365 detectionthreshold -80 \, mintracklen 50;
+#X msg 360 395 detectionthreshold -24 \, mintracklen 1;
+#X obj 473 874 cnv 15 210 42 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 1054 278 690 714 a_little_more_explanation 0;
+#X obj 171 533 *~;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.sines~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Sinusoidal\\\ Modelling\\\ and\\\ Resynthesis
+4 8 0 13 #e0e0e0 #404040 0;
+#N canvas 1429 -948 341 626 switch 0;
+#X obj 207 236 osc~ 0.1;
+#X obj 207 260 *~ 12;
+#X obj 207 284 +~ 57;
+#X obj 116 404 mtof~;
+#X obj 115 459 osc~ 440;
+#X obj 6 284 sig~ 69;
+#X obj 6 344 *~ 1;
+#X obj 207 344 *~ 0;
+#X obj 35 63 loadbang;
+#X obj 31 316 == 0;
+#X msg 35 86 0;
+#X obj 113 122 vradio 30 1 0 2 empty empty Source 0 -8 0 12 #fcfcfc
+#000000 #000000 0;
+#X text 150 127 stable pitch;
+#X text 151 156 oscillating;
+#X obj 116 522 outlet~;
+#X obj 255 522 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 4 0;
+#X connect 4 0 14 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 7 0 3 0;
+#X connect 8 0 10 0;
+#X connect 9 0 6 1;
+#X connect 10 0 11 0;
+#X connect 11 0 7 1;
+#X connect 11 0 9 0;
+#X connect 11 0 15 0;
+#X coords 0 -1 1 1 200 98 2 100 100;
+#X restore 17 178 pd switch;
+#X floatatom 211 451 5 0 0 0 - - - 0;
+#N canvas 1075 -678 740 379 fade 0;
+#X obj 37 37 inlet;
+#X obj 37 102 dbtorms;
+#X floatatom 37 59 5 0 0 0 - - - 0;
+#X floatatom 37 124 5 0 0 0 - - - 0;
+#X obj 37 80 + 100;
+#X obj 28 248 line~;
+#X obj 28 270 outlet~;
+#X obj 37 147 t f f f;
+#X obj 28 225 pack f 10;
+#X obj 84 200 expr ($f1 > $f2) * 1000 + 10;
+#X text 302 202 go down fast and up slowly;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 445 144 pd;
-#X text 314 125 launch the HTML doc->;
-#X obj 446 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X msg 36 152 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-sines_source;
-#X obj 37 323 tabread4~ sines_source;
-#X obj 34 749 array define sines_source;
-#X obj 36 571 fluid.sines~ 8192 -bandwidth 76 -fftsettings 2048 -1
-8192 -mintracklen 2 -detectionthreshold -40;
-#X msg 58 442 -40;
-#X msg 58 480 detectionthreshold \$1;
-#X msg 205 506 2;
-#N canvas 336 187 833 471 a little more explanation 1;
-#X text 10 23 1) as the algorithm resynthesize the sinusoidal peaks
-\, we would expect to get it to work almost perfectly on a sine wave
-;
-#X text 39 223 2) with these settings that tell the process to tolerate
-everything as a sinusoid \, even short and quiet peaks;
-#X text 427 280 3) as this is a windowed process \, the frequency of
-the peak is good for that full window \, and therefore interesting
-artefacts appear when the pitch is changing.;
-#X obj 21 446 dac~;
-#X obj 21 359 *~;
-#X obj 35 341 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 181 398 *~;
-#X obj 21 282 fluid.sines~ 8192 -detectionthreshold -144 -birthhighthreshold
--144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange 200 -trackfreqrange
-1000 -trackprob 0;
-#X obj 21 131 *~;
-#X obj 35 113 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 21 68 osc~ 440;
-#X obj 21 89 *~ 0.1;
-#X obj 428 254 *~;
-#X obj 442 236 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 428 191 osc~ 440;
-#X obj 428 212 *~ 0.1;
-#X obj 428 114 osc~ 0.1;
-#X obj 428 132 *~ 12;
-#X obj 428 153 +~ 57;
-#X obj 428 172 mtof~;
-#X floatatom 196 358 5 0 0 0 - - -;
-#X obj 196 378 dbtorms;
-#X text 246 371 the artefact are much lower on a static signal \, but
-much more apparent (and interesting) on a moving one;
-#X connect 4 0 3 0;
-#X connect 4 0 3 1;
-#X connect 5 0 4 1;
-#X connect 6 0 3 1;
-#X connect 6 0 3 0;
-#X connect 7 0 4 0;
-#X connect 7 1 6 0;
-#X connect 8 0 7 0;
-#X connect 9 0 8 1;
-#X connect 10 0 11 0;
-#X connect 11 0 8 0;
-#X connect 12 0 7 0;
-#X connect 13 0 12 1;
-#X connect 14 0 15 0;
-#X connect 15 0 12 0;
-#X connect 16 0 17 0;
-#X connect 17 0 18 0;
-#X connect 18 0 19 0;
-#X connect 19 0 14 0;
-#X connect 20 0 21 0;
-#X connect 21 0 6 1;
-#X restore 314 323 pd a little more explanation;
-#X connect 2 0 1 0;
-#X connect 2 0 1 1;
-#X connect 3 0 2 1;
+#X connect 2 0 4 0;
+#X connect 3 0 7 0;
 #X connect 4 0 1 0;
-#X connect 4 0 1 1;
-#X connect 5 0 4 1;
-#X connect 6 0 21 0;
-#X connect 7 0 23 0;
-#X connect 8 0 7 0;
-#X connect 9 0 1 1;
-#X connect 9 0 1 0;
-#X connect 10 0 11 0;
-#X connect 11 0 9 1;
-#X connect 12 0 39 0;
-#X connect 13 0 20 0;
-#X connect 14 0 40 0;
-#X connect 15 0 17 0;
-#X connect 16 0 15 0;
-#X connect 17 0 14 0;
-#X connect 18 0 19 1;
-#X connect 18 0 7 1;
-#X connect 19 0 15 1;
-#X connect 20 0 16 0;
-#X connect 20 1 14 1;
-#X connect 20 1 19 0;
-#X connect 20 2 18 0;
-#X connect 21 0 16 0;
-#X connect 21 1 19 0;
-#X connect 21 2 18 0;
-#X connect 23 0 9 0;
-#X connect 24 0 28 0;
-#X connect 28 0 42 0;
-#X connect 29 0 44 0;
-#X connect 30 0 34 0;
-#X connect 31 0 33 0;
-#X connect 32 0 31 0;
-#X connect 33 0 42 0;
-#X connect 34 0 42 0;
-#X connect 38 0 36 0;
-#X connect 39 0 13 0;
-#X connect 40 0 22 0;
-#X connect 40 0 42 0;
-#X connect 42 0 2 0;
-#X connect 42 1 4 0;
-#X connect 42 2 8 0;
-#X connect 43 0 29 0;
-#X connect 44 0 42 0;
-#X connect 45 0 30 0;
+#X connect 5 0 6 0;
+#X connect 7 0 9 1;
+#X connect 7 1 8 0;
+#X connect 7 2 9 0;
+#X connect 8 0 5 0;
+#X connect 9 0 8 1;
+#X restore 211 471 pd fade;
+#X text 126 461 residual;
+#X text 20 490 resynthesised sinusoids, f 13;
+#X text 231 247 The fluid.sines~ object attempts to reconstruct the
+input signal as a bank of sinusoids. We might expect that for a pure
+sine tone \, the algorithm has no problems. With these settings everything
+in the sound is considered a sinusoid \, even short and quiet peaks.
+Because the decomposition is a windowed process \, the detected sinusoidal
+peaks are located in time based on the window of analysis. When the
+oscillator changes even slowly over time we hear the artefact and failure
+of the algorithm emerging in the residual output.;
+#X obj 17 340 fluid.sines~ -detectionthreshold -144 -birthhighthreshold
+-144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange 200 -trackfreqrange
+1000 -trackprob 0, f 25;
+#X obj 16 598 fluid.out~ sineshelp;
+#X obj 211 403 * 20;
+#X connect 0 0 10 1;
+#X connect 3 0 9 0;
+#X connect 3 1 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 1;
+#X connect 9 0 10 0;
+#X connect 9 1 0 0;
+#X connect 11 0 4 0;
+#X restore 476 894 pd a_little_more_explanation;
+#X obj 103 887 fluid.out~ sineshelp;
+#X obj 161 845 loadbang;
+#X msg 161 866 1;
+#X obj 103 765 +~;
+#X obj 103 830 +~;
+#X obj 17 556 fluid.sines~ -fftsettings 2048 -1 8192, f 49;
+#X connect 0 0 33 0;
+#X connect 1 0 0 1;
+#X connect 2 0 33 1;
+#X connect 3 0 2 1;
+#X connect 4 0 10 0;
+#X connect 5 0 12 0;
+#X connect 6 0 5 0;
+#X connect 7 0 34 1;
+#X connect 8 0 9 0;
+#X connect 9 0 7 1;
+#X connect 10 0 5 1;
+#X connect 12 0 7 0;
+#X connect 13 0 15 0;
+#X connect 15 0 35 0;
+#X connect 20 0 11 0;
+#X connect 20 0 35 0;
+#X connect 24 0 35 0;
+#X connect 25 0 35 0;
+#X connect 26 0 35 0;
+#X connect 27 0 35 0;
+#X connect 31 0 32 0;
+#X connect 32 0 30 2;
+#X connect 33 0 34 0;
+#X connect 34 0 30 1;
+#X connect 34 0 30 0;
+#X connect 35 0 0 0;
+#X connect 35 1 2 0;
+#X connect 35 2 6 0;

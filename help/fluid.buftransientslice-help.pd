@@ -1,6 +1,6 @@
 #N canvas 96 30 582 680 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid\.buftransientslice 20
-12 0 36 -262144 -66577 0;
+#X obj 12 19 cnv 15 100 10 empty empty fluid.buftransientslice 20 12
+0 36 #fcfcfc #404040 0;
 #X obj 59 197 until;
 #X msg 41 149 6;
 #X msg 59 338 1;
@@ -30,13 +30,13 @@ in this toy example \, since the envelope follower is 1 sample long
 #X obj 21 514 dac~;
 #X obj 46 452 -;
 #X obj 20 473 pack;
-#X floatatom 20 334 5 0 0 0 - - -;
-#X floatatom 17 231 5 0 0 0 - - -;
+#X floatatom 20 334 5 0 0 0 - - - 0;
+#X floatatom 17 249 5 0 0 0 - - - 0;
 #X obj 20 435 f;
 #X text 18 35 1) read a source \, and triggers the analysis;
-#X text 54 231 number of slices found;
-#X floatatom 209 136 8 0 0 0 - - -;
-#X floatatom 349 136 8 0 0 0 - - -;
+#X text 54 249 number of slices found;
+#X floatatom 209 136 8 0 0 0 - - - 0;
+#X floatatom 349 136 8 0 0 0 - - - 0;
 #X text 18 314 2) play a give slice \, by retrieving the onset and
 offset indices, f 65;
 #X obj 19 414 t f f;
@@ -45,17 +45,19 @@ offset indices, f 65;
 , f 65;
 #X obj 255 473 array define buftransientslice_source;
 #X obj 255 494 array define buftransientslice_indices;
-#X obj 17 210 array size buftransientslice_indices;
+#X obj 17 228 array size buftransientslice_indices;
 #X obj 19 393 tabread buftransientslice_indices;
 #X obj 226 393 tabread buftransientslice_indices;
 #X obj 20 492 tabplay~ buftransientslice_source;
-#X obj 17 177 fluid\.buftransientslice -source buftransientslice_source
+#X obj 17 177 fluid.buftransientslice -source buftransientslice_source
 -indices buftransientslice_indices -minslicelength 441, f 80;
 #X text 207 99 change the thresholds;
 #X msg 349 117 1.1;
 #X msg 209 117 2;
 #X msg 209 155 threshfwd \$1 \, bang;
 #X msg 349 155 threshback \$1 \, bang;
+#X obj 17 209 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 0 0 1 0;
 #X connect 1 0 23 0;
 #X connect 2 0 15 0;
@@ -76,11 +78,12 @@ offset indices, f 65;
 #X connect 21 0 8 1;
 #X connect 22 0 3 0;
 #X connect 22 0 3 1;
-#X connect 23 0 19 0;
+#X connect 23 0 29 0;
 #X connect 25 0 12 0;
 #X connect 26 0 11 0;
 #X connect 27 0 23 0;
 #X connect 28 0 23 0;
+#X connect 29 0 19 0;
 #X restore 439 171 pd musical_example;
 #X text 37 50 Buffer-Based Transient-Based Slicer;
 #X text 36 92 Transient-based slice extractor on buffers, f 43;
@@ -88,12 +91,12 @@ offset indices, f 65;
 #X obj 217 238 array define transientslicepoints;
 #X obj 59 358 tabwrite transientspikes;
 #X obj 40 591 array get transientslicepoints;
-#X obj 40 518 fluid\.buftransientslice -source transientspikes -indices
+#X obj 40 518 fluid.buftransientslice -source transientspikes -indices
 transientslicepoints -minslicelength 45, f 66;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid\.buftransientslice.html;
+#X msg 83 71 dir 0 docs/fluid.buftransientslice.html;
 #X msg 143 89 browse \$1;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -101,9 +104,11 @@ transientslicepoints -minslicelength 45, f 66;
 #X connect 3 0 1 0;
 #X restore 528 111 pd;
 #X text 397 92 launch the HTML doc->;
-#X obj 529 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 529 94 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 416 141 note_on_multithreading;
+#X obj 40 550 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X connect 1 0 13 0;
 #X connect 2 0 15 0;
 #X connect 3 0 26 0;
@@ -129,5 +134,6 @@ transientslicepoints -minslicelength 45, f 66;
 #X connect 15 2 12 1;
 #X connect 15 2 14 0;
 #X connect 27 0 18 0;
-#X connect 28 0 27 0;
+#X connect 28 0 33 0;
 #X connect 31 0 29 0;
+#X connect 33 0 27 0;

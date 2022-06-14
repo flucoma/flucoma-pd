@@ -1,14 +1,8 @@
-#N canvas 92 103 811 899 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufselect 20 12 0 36 -262144
--66577 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 65 410 array get output;
-#X obj 170 438 print;
-#X obj 365 428 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X text 110 290 2 process - oops not working beyond mono yet;
-#X text 382 425 1 fill the input arrays;
-#N canvas 0 23 786 634 array-filler 0;
+#N canvas 9 46 700 929 12;
+#X obj 539 200 note_on_multiarrays;
+#X obj 17 177 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 0 38 786 634 array-filler 0;
 #X obj 37 37 inlet;
 #X obj 135 459 array set;
 #X obj 44 129 until;
@@ -57,22 +51,780 @@
 #X connect 17 0 1 2;
 #X connect 18 0 3 0;
 #X connect 19 0 7 0;
-#X restore 363 450 pd array-filler;
-#X obj 65 325 fluid.bufselect -source input -destination output;
-#X msg 64 246 indices 0 2 4 \, channels 0 2 4 \, bang;
-#X obj 472 315 clone fluid.multiarray 6 input 6;
-#X obj 473 337 clone fluid.multiarray 3 output 3;
-#X msg 64 346 0 \, 1 \, 2;
-#X obj 64 367 t b f;
-#X msg 170 385 symbol output-\$1;
-#X msg 96 215 indices 3 2 \, channels 4 1 \, bang;
-#X connect 2 0 3 0;
-#X connect 4 0 7 0;
-#X connect 8 0 12 0;
+#X restore 17 197 pd array-filler;
+#X obj 253 615 fluid.bufselect -source input -destination output;
+#X msg 330 511 indices 0 2 4 \, channels 0 2 4 \, bang;
+#X obj 448 228 clone fluid.multiarray 6 input 6;
+#X obj 441 250 clone fluid.multiarray 3 output 3;
+#X msg 254 447 indices 3 2 \, channels 4 1 \, bang;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufselect 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufselect.html reference/bufselect/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Select\\\ and\\\ copy\\\ specific\\\ values\\\ from\\\ a\\\ buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Copies sets of values from a buffer \, described in terms
+of a list of frame indices and channel numbers.;
+#X obj 17 272 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 59 297 array get input-0;
+#X listbox 17 428 25 0 0 0 - - - 0;
+#X listbox 17 448 25 0 0 0 - - - 0;
+#X obj 66 318 array get input-1;
+#X listbox 17 468 25 0 0 0 - - - 0;
+#X listbox 17 488 25 0 0 0 - - - 0;
+#X obj 73 339 array get input-2;
+#X obj 82 360 array get input-3;
+#X listbox 17 508 25 0 0 0 - - - 0;
+#X obj 90 381 array get input-4;
+#X obj 17 694 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X listbox 17 818 25 0 0 0 - - - 0;
+#X listbox 17 838 25 0 0 0 - - - 0;
+#X obj 58 719 array get output-0;
+#X obj 65 741 array get output-1;
+#X listbox 17 528 25 0 0 0 - - - 0;
+#X obj 100 402 array get input-5;
+#X text 330 475 ... or select indices 0 \, 2 and 4 from channels 0
+\, 2 and 4, f 49;
+#X text 351 539 ... or select indices 1 \, 3 \, and 1 from channels
+1 \, 2 and 2, f 46;
+#X msg 351 575 indices 0 3 1 \, channels 1 2 2 \, bang;
+#X listbox 17 858 25 0 0 0 - - - 0;
+#X obj 72 763 array get output-2;
+#X text 16 160 1) fill the input arrays;
+#X text 251 416 3) send message to select only indices 3 and 2 from
+channels 4 and 1;
+#X text 18 675 4) get values of output channels;
+#X obj 477 808 cnv 15 199 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 582 78 690 988 curating_descriptor_data 0;
+#X text 19 64 comment;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufselect 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Select\\\ and\\\ copy\\\ specific\\\ values\\\ from\\\ a\\\ buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Copies sets of values from a buffer \, described in terms
+of a list of frame indices and channel numbers.;
+#N canvas 1605 -871 1147 733 analysis 0;
+#X text 15 24 channels;
+#X text 227 24 indices;
+#X obj 496 331 soundfiler;
+#X obj 496 353 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 696 250 fluid.demoaudiofiles;
+#X msg 696 297 read -resize \$1 bufselect.help.audiosrc;
+#X text 609 462 nochan name size;
+#X obj 47 318 fluid.bufspectralshape -source bufselect.help.audiosrc
+-features bufselect.help.features;
+#X obj 48 458 fluid.bufstats -source bufselect.help.isolated-feature
+-stats bufselect.help.stats;
+#N canvas 208 226 450 278 (subpatch) 0;
+#X array bufselect.help.audiosrc 533755 float 2;
+#X coords 0 0.75 533755 -0.75 600 53 1 0 0;
+#X restore 495 397 graph;
+#X obj 495 477 clone fluid.multiarray 7 bufselect.help.features 7;
+#X obj 48 588 outlet;
+#X obj 495 499 clone fluid.multiarray 7 bufselect.help.isolated-feature
+7;
+#X obj 495 543 clone fluid.multiarray 7 bufselect.help.isolated-stat
+7;
+#X obj 47 388 fluid.bufselect -source bufselect.help.features -destination
+bufselect.help.isolated-feature -channels 0;
+#X obj 48 528 fluid.bufselect -source bufselect.help.stats -destination
+bufselect.help.isolated-stat;
+#X obj 495 521 clone fluid.multiarray 7 bufselect.help.stats 7;
+#X obj 18 44 inlet;
+#X obj 230 44 inlet;
+#X obj 18 107 list prepend channels;
+#X msg 496 150 read -resize ./media/Tremblay-Iterative-M.wav bufselect.help.audiosrc
+;
+#X obj 496 127 loadbang;
+#X text 570 234 You can choose a different sound to analyse here:;
+#X text 571 132 sound to analyse;
+#N canvas 900 -1037 1536 592 zerounused 0;
+#X obj 27 25 inlet;
+#X obj 27 56 list length;
+#X floatatom 29 101 5 0 0 0 - - - 0;
+#X obj 39 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 29 309 sel 1;
+#X obj 36 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 25 356 \; descriptordata-0 const 0;
+#X obj 29 253 <= 1;
+#X msg 132 57 2;
+#X obj 132 26 loadbang;
+#X obj 25 417 array size descriptordata-0;
+#X msg 36 394 0;
+#X obj 239 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 229 309 sel 1;
+#X obj 236 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 236 394 0;
+#X obj 229 253 <= 2;
+#X msg 225 356 \; descriptordata-1 const 0;
+#X obj 225 417 array size descriptordata-1;
+#X obj 439 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 429 309 sel 1;
+#X obj 436 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 436 394 0;
+#X obj 639 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 629 309 sel 1;
+#X obj 636 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 636 394 0;
+#X obj 839 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 829 309 sel 1;
+#X obj 836 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 836 394 0;
+#X obj 1039 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 1029 309 sel 1;
+#X obj 1036 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 1036 394 0;
+#X obj 1239 284 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 1229 309 sel 1;
+#X obj 1236 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 1236 394 0;
+#X obj 429 253 <= 3;
+#X obj 629 253 <= 4;
+#X obj 829 253 <= 5;
+#X obj 1029 253 <= 6;
+#X obj 1229 253 <= 7;
+#X msg 425 356 \; descriptordata-2 const 0;
+#X obj 425 417 array size descriptordata-2;
+#X obj 625 417 array size descriptordata-3;
+#X msg 625 356 \; descriptordata-3 const 0;
+#X msg 825 356 \; descriptordata-4 const 0;
+#X obj 825 417 array size descriptordata-4;
+#X msg 1025 356 \; descriptordata-5 const 0;
+#X obj 1025 417 array size descriptordata-5;
+#X msg 1225 356 \; descriptordata-6 const 0;
+#X obj 1225 417 array size descriptordata-6;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 2 0 16 0;
+#X connect 2 0 39 0;
+#X connect 2 0 40 0;
+#X connect 2 0 41 0;
+#X connect 2 0 42 0;
+#X connect 2 0 43 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 5 0 11 0;
+#X connect 7 0 3 0;
+#X connect 7 0 4 0;
+#X connect 8 0 2 0;
 #X connect 9 0 8 0;
+#X connect 11 0 10 0;
+#X connect 13 0 14 0;
+#X connect 14 0 17 0;
+#X connect 14 0 15 0;
+#X connect 15 0 18 0;
+#X connect 16 0 12 0;
+#X connect 16 0 13 0;
+#X connect 20 0 21 0;
+#X connect 21 0 44 0;
+#X connect 21 0 22 0;
+#X connect 22 0 45 0;
+#X connect 24 0 25 0;
+#X connect 25 0 47 0;
+#X connect 25 0 26 0;
+#X connect 26 0 46 0;
+#X connect 28 0 29 0;
+#X connect 29 0 48 0;
+#X connect 29 0 30 0;
+#X connect 30 0 49 0;
+#X connect 32 0 33 0;
+#X connect 33 0 50 0;
+#X connect 33 0 34 0;
+#X connect 34 0 51 0;
+#X connect 36 0 37 0;
+#X connect 37 0 52 0;
+#X connect 37 0 38 0;
+#X connect 38 0 53 0;
+#X connect 39 0 19 0;
+#X connect 39 0 20 0;
+#X connect 40 0 23 0;
+#X connect 40 0 24 0;
+#X connect 41 0 27 0;
+#X connect 41 0 28 0;
+#X connect 42 0 31 0;
+#X connect 42 0 32 0;
+#X connect 43 0 35 0;
+#X connect 43 0 36 0;
+#X restore 18 160 pd zerounused;
+#X obj 230 107 list prepend indices;
+#X obj 230 230 t b a, f 15;
+#X obj 48 230 t b a, f 17;
+#X obj 230 186 list trim;
+#X obj 145 186 list trim;
+#X obj 18 135 t l l, f 21;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 7 0 14 0;
+#X connect 8 0 15 0;
+#X connect 14 0 8 0;
+#X connect 15 0 11 0;
+#X connect 17 0 19 0;
+#X connect 18 0 25 0;
+#X connect 19 0 30 0;
+#X connect 20 0 2 0;
+#X connect 21 0 20 0;
+#X connect 25 0 28 0;
+#X connect 26 0 7 0;
+#X connect 26 1 15 0;
+#X connect 27 0 7 0;
+#X connect 27 1 14 0;
+#X connect 28 0 26 0;
+#X connect 29 0 27 0;
+#X connect 30 0 24 0;
+#X connect 30 1 29 0;
+#X restore 17 575 pd analysis;
+#X f 34;
+#N canvas 1809 -827 554 420 analysis_to_dataset 0;
+#X obj 26 13 inlet;
+#X obj 26 286 fluid.dataset bufselect.help.dataset;
+#X msg 155 111 frombuffer bufselect.help.isolated-stat 1;
+#N canvas 1666 -825 450 300 int2s 0;
+#X obj 168 174 list;
+#X obj 51 116 t f f;
+#X obj 51 208 sel 0;
+#X obj 83 137 t f f;
+#X obj 83 159 spigot;
+#X obj 193 151 t l l;
+#X obj 51 230 t b b;
+#X obj 51 48 t f f;
+#X obj 193 65 % 10;
+#X obj 51 93 i;
+#X obj 51 70 / 10;
+#X obj 193 129 list append;
+#X obj 193 87 + 48;
+#X obj 168 196 list tosymbol;
+#X obj 51 23 inlet;
+#X obj 168 218 outlet;
+#X connect 0 0 13 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 2 0 6 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 7 0;
+#X connect 5 0 0 1;
+#X connect 5 1 11 1;
+#X connect 6 0 0 0;
+#X connect 6 1 11 1;
+#X connect 7 0 10 0;
+#X connect 7 1 8 0;
+#X connect 8 0 12 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X connect 11 0 5 0;
+#X connect 12 0 11 0;
+#X connect 13 0 15 0;
+#X connect 14 0 7 0;
+#X restore 26 215 pd int2s;
+#X obj 26 136 until;
+#X obj 26 160 f;
+#X floatatom 26 186 5 0 0 0 - - - 0;
+#X obj 76 160 + 1;
+#X obj 76 186 mod, f 7;
+#X obj 26 114 t f f, f 14;
+#X msg 26 93 7;
+#X msg 26 260 getpoint \$1 descriptordata-\$1;
+#X connect 0 0 2 0;
+#X connect 0 0 10 0;
+#X connect 2 0 1 0;
+#X connect 3 0 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 1;
+#X connect 9 0 4 0;
+#X connect 9 1 8 1;
+#X connect 10 0 9 0;
+#X connect 11 0 1 0;
+#X restore 17 603 pd analysis_to_dataset;
+#X obj 22 652 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X listbox 18 826 58 0 0 0 - - - 0;
+#X listbox 18 846 58 0 0 0 - - - 0;
+#X listbox 18 866 58 0 0 0 - - - 0;
+#X listbox 18 886 58 0 0 0 - - - 0;
+#X listbox 18 906 58 0 0 0 - - - 0;
+#X listbox 18 926 58 0 0 0 - - - 0;
+#X listbox 18 946 58 0 0 0 - - - 0;
+#X obj 386 210 clone fluid.multiarray 7 descriptordata 7;
+#X obj 60 676 array get descriptordata-0;
+#X obj 67 697 array get descriptordata-1;
+#X obj 74 718 array get descriptordata-2;
+#X obj 83 739 array get descriptordata-3;
+#X obj 91 760 array get descriptordata-4;
+#X obj 102 781 array get descriptordata-5;
+#X obj 111 802 array get descriptordata-6;
+#X text 15 161 bufselect~ is useful in an analytical context \, because
+it allows you to extract and isolate specific descriptors and analyses
+from a larger collection.;
+#X text 15 258 1) Select some speactral features to analyse:, f 18
+;
+#X text 147 256 2) Select desired statistical analyses, f 17;
+#N canvas 908 181 679 786 interface 0;
+#N canvas 1199 -947 966 758 choices 0;
+#X obj 46 587 list store;
+#X msg 46 368 bang;
+#X text 90 368 output list;
+#X obj 757 324 sel 0;
+#X msg 757 368 prepend 6;
+#X obj 127 55 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 847 368 list;
+#X obj 127 78 trigger b b b b b b b b b, f 103;
+#X obj 806 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 667 324 sel 0;
+#X obj 714 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X msg 667 368 prepend 5;
+#X obj 577 324 sel 0;
+#X obj 626 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 487 324 sel 0;
+#X obj 536 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 397 324 sel 0;
+#X obj 446 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 307 324 sel 0;
+#X obj 354 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 193 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 234 242 * 1;
+#X obj 216 324 sel 1;
+#X msg 216 368 prepend 0;
+#X msg 307 368 prepend 1;
+#X msg 397 368 prepend 2;
+#X msg 487 368 prepend 3;
+#X msg 577 368 prepend 4;
+#X obj 193 216 s _uc;
+#X obj 216 297 f 0;
+#X obj 307 297 f 0;
+#X obj 397 297 f 0;
+#X obj 487 297 f 0;
+#X obj 577 297 f 0;
+#X obj 667 297 f 0;
+#X obj 757 297 f 0;
+#X obj 127 28 r _uc;
+#X obj 201 192 t b f;
+#X obj 284 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 325 242 * 1;
+#X obj 284 216 s _uc;
+#X obj 292 192 t b f;
+#X obj 374 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 374 216 s _uc;
+#X obj 382 192 t b f;
+#X obj 464 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 464 216 s _uc;
+#X obj 472 192 t b f;
+#X obj 554 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 554 216 s _uc;
+#X obj 562 192 t b f;
+#X obj 644 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 644 216 s _uc;
+#X obj 652 192 t b f;
+#X obj 734 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 734 216 s _uc;
+#X obj 742 192 t b f;
+#X obj 415 242 * 2;
+#X obj 505 242 * 3;
+#X obj 595 242 * 4;
+#X obj 685 242 * 5;
+#X obj 775 242 * 6;
+#X obj 223 25 inlet;
+#X obj 314 25 inlet;
+#X obj 404 25 inlet;
+#X obj 494 25 inlet;
+#X obj 584 25 inlet;
+#X obj 674 25 inlet;
+#X obj 764 25 inlet;
+#X obj 46 642 outlet;
+#X connect 0 0 69 0;
+#X connect 1 0 0 0;
+#X connect 3 1 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 0 1;
+#X connect 7 0 1 0;
+#X connect 7 1 29 0;
+#X connect 7 2 30 0;
+#X connect 7 3 31 0;
+#X connect 7 4 32 0;
+#X connect 7 5 33 0;
+#X connect 7 6 34 0;
+#X connect 7 7 35 0;
+#X connect 7 8 6 0;
+#X connect 9 1 11 0;
+#X connect 11 0 0 0;
+#X connect 12 1 27 0;
+#X connect 14 1 26 0;
+#X connect 16 1 25 0;
+#X connect 18 1 24 0;
+#X connect 20 0 28 0;
+#X connect 20 0 37 0;
+#X connect 21 0 29 1;
+#X connect 22 0 23 0;
+#X connect 23 0 0 0;
+#X connect 24 0 0 0;
+#X connect 25 0 0 0;
+#X connect 26 0 0 0;
+#X connect 27 0 0 0;
+#X connect 29 0 22 0;
+#X connect 30 0 18 0;
+#X connect 30 0 19 0;
+#X connect 31 0 16 0;
+#X connect 31 0 17 0;
+#X connect 32 0 14 0;
+#X connect 32 0 15 0;
+#X connect 33 0 12 0;
+#X connect 33 0 13 0;
+#X connect 34 0 9 0;
+#X connect 34 0 10 0;
+#X connect 35 0 3 0;
+#X connect 35 0 8 0;
+#X connect 36 0 5 0;
+#X connect 37 0 28 0;
+#X connect 37 1 21 0;
+#X connect 38 0 40 0;
+#X connect 38 0 41 0;
+#X connect 39 0 30 1;
+#X connect 41 0 40 0;
+#X connect 41 1 39 0;
+#X connect 42 0 43 0;
+#X connect 42 0 44 0;
+#X connect 44 0 43 0;
+#X connect 44 1 57 0;
+#X connect 45 0 46 0;
+#X connect 45 0 47 0;
+#X connect 47 0 46 0;
+#X connect 47 1 58 0;
+#X connect 48 0 49 0;
+#X connect 48 0 50 0;
+#X connect 50 0 49 0;
+#X connect 50 1 59 0;
+#X connect 51 0 52 0;
+#X connect 51 0 53 0;
+#X connect 53 0 52 0;
+#X connect 53 1 60 0;
+#X connect 54 0 55 0;
+#X connect 54 0 56 0;
+#X connect 56 0 55 0;
+#X connect 56 1 61 0;
+#X connect 57 0 31 1;
+#X connect 58 0 32 1;
+#X connect 59 0 33 1;
+#X connect 60 0 34 1;
+#X connect 61 0 35 1;
+#X connect 62 0 20 0;
+#X connect 63 0 38 0;
+#X connect 64 0 42 0;
+#X connect 65 0 45 0;
+#X connect 66 0 48 0;
+#X connect 67 0 51 0;
+#X connect 68 0 54 0;
+#X restore 14 410 pd choices;
+#X f 34;
+#X obj 114 125 tgl 26 0 empty empty centroid 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 114 154 tgl 26 0 empty empty spread 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 114 183 tgl 26 0 empty empty skewness 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 114 212 tgl 26 0 empty empty kurtosis 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 114 241 tgl 26 0 empty empty rolloff 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 114 270 tgl 26 0 empty empty flatness 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 114 299 tgl 26 0 empty empty crest 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#N canvas 1364 -874 967 828 choices 0;
+#X obj 46 587 list store;
+#X msg 46 368 bang;
+#X text 90 368 output list;
+#X obj 757 324 sel 0;
+#X msg 757 368 prepend 6;
+#X obj 127 55 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 847 368 list;
+#X obj 127 78 trigger b b b b b b b b b, f 103;
+#X obj 806 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 667 324 sel 0;
+#X obj 714 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X msg 667 368 prepend 5;
+#X obj 577 324 sel 0;
+#X obj 626 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 487 324 sel 0;
+#X obj 536 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 397 324 sel 0;
+#X obj 446 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 307 324 sel 0;
+#X obj 354 326 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 193 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 234 242 * 1;
+#X obj 216 324 sel 1;
+#X msg 216 368 prepend 0;
+#X msg 307 368 prepend 1;
+#X msg 397 368 prepend 2;
+#X msg 487 368 prepend 3;
+#X msg 577 368 prepend 4;
+#X obj 193 216 s _uc;
+#X obj 216 297 f 0;
+#X obj 307 297 f 0;
+#X obj 397 297 f 0;
+#X obj 487 297 f 0;
+#X obj 577 297 f 0;
+#X obj 667 297 f 0;
+#X obj 757 297 f 0;
+#X obj 127 28 r _uc;
+#X obj 201 192 t b f;
+#X obj 284 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 325 242 * 1;
+#X obj 284 216 s _uc;
+#X obj 292 192 t b f;
+#X obj 374 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 374 216 s _uc;
+#X obj 382 192 t b f;
+#X obj 464 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 464 216 s _uc;
+#X obj 472 192 t b f;
+#X obj 554 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 554 216 s _uc;
+#X obj 562 192 t b f;
+#X obj 644 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 644 216 s _uc;
+#X obj 652 192 t b f;
+#X obj 734 168 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 734 216 s _uc;
+#X obj 742 192 t b f;
+#X obj 415 242 * 2;
+#X obj 505 242 * 3;
+#X obj 595 242 * 4;
+#X obj 685 242 * 5;
+#X obj 775 242 * 6;
+#X obj 223 25 inlet;
+#X obj 314 25 inlet;
+#X obj 404 25 inlet;
+#X obj 494 25 inlet;
+#X obj 584 25 inlet;
+#X obj 674 25 inlet;
+#X obj 764 25 inlet;
+#X obj 46 642 outlet;
+#X connect 0 0 69 0;
+#X connect 1 0 0 0;
+#X connect 3 1 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 0 1;
+#X connect 7 0 1 0;
+#X connect 7 1 29 0;
+#X connect 7 2 30 0;
+#X connect 7 3 31 0;
+#X connect 7 4 32 0;
+#X connect 7 5 33 0;
+#X connect 7 6 34 0;
+#X connect 7 7 35 0;
+#X connect 7 8 6 0;
+#X connect 9 1 11 0;
+#X connect 11 0 0 0;
+#X connect 12 1 27 0;
+#X connect 14 1 26 0;
+#X connect 16 1 25 0;
+#X connect 18 1 24 0;
+#X connect 20 0 28 0;
+#X connect 20 0 37 0;
+#X connect 21 0 29 1;
+#X connect 22 0 23 0;
+#X connect 23 0 0 0;
+#X connect 24 0 0 0;
+#X connect 25 0 0 0;
+#X connect 26 0 0 0;
+#X connect 27 0 0 0;
+#X connect 29 0 22 0;
+#X connect 30 0 18 0;
+#X connect 30 0 19 0;
+#X connect 31 0 16 0;
+#X connect 31 0 17 0;
+#X connect 32 0 14 0;
+#X connect 32 0 15 0;
+#X connect 33 0 12 0;
+#X connect 33 0 13 0;
+#X connect 34 0 9 0;
+#X connect 34 0 10 0;
+#X connect 35 0 3 0;
+#X connect 35 0 8 0;
+#X connect 36 0 5 0;
+#X connect 37 0 28 0;
+#X connect 37 1 21 0;
+#X connect 38 0 40 0;
+#X connect 38 0 41 0;
+#X connect 39 0 30 1;
+#X connect 41 0 40 0;
+#X connect 41 1 39 0;
+#X connect 42 0 43 0;
+#X connect 42 0 44 0;
+#X connect 44 0 43 0;
+#X connect 44 1 57 0;
+#X connect 45 0 46 0;
+#X connect 45 0 47 0;
+#X connect 47 0 46 0;
+#X connect 47 1 58 0;
+#X connect 48 0 49 0;
+#X connect 48 0 50 0;
+#X connect 50 0 49 0;
+#X connect 50 1 59 0;
+#X connect 51 0 52 0;
+#X connect 51 0 53 0;
+#X connect 53 0 52 0;
+#X connect 53 1 60 0;
+#X connect 54 0 55 0;
+#X connect 54 0 56 0;
+#X connect 56 0 55 0;
+#X connect 56 1 61 0;
+#X connect 57 0 31 1;
+#X connect 58 0 32 1;
+#X connect 59 0 33 1;
+#X connect 60 0 34 1;
+#X connect 61 0 35 1;
+#X connect 62 0 20 0;
+#X connect 63 0 38 0;
+#X connect 64 0 42 0;
+#X connect 65 0 45 0;
+#X connect 66 0 48 0;
+#X connect 67 0 51 0;
+#X connect 68 0 54 0;
+#X restore 261 410 pd choices;
+#X f 34;
+#X obj 231 125 tgl 26 0 empty empty mean 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 231 154 tgl 26 0 empty empty stddev 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 231 183 tgl 26 0 empty empty skewness 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 231 212 tgl 26 0 empty empty kurtosis 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 231 241 tgl 26 0 empty empty low 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 231 270 tgl 26 0 empty empty mid 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 231 299 tgl 26 0 empty empty high 32 13 1 14 #bbbbbb #ff8300
+#000000 0 1;
+#X obj 14 11 loadbang;
+#X msg 14 69 1;
+#X obj 14 476 outlet;
+#X obj 262 476 outlet;
+#X obj 14 446 route bang;
+#X text 87 445 filter out empty lists;
+#X obj 261 446 route bang;
+#X connect 0 0 20 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 2;
+#X connect 4 0 0 3;
+#X connect 5 0 0 4;
+#X connect 6 0 0 5;
+#X connect 7 0 0 6;
+#X connect 8 0 22 0;
+#X connect 9 0 8 0;
+#X connect 10 0 8 1;
+#X connect 11 0 8 2;
+#X connect 12 0 8 3;
+#X connect 13 0 8 4;
+#X connect 14 0 8 5;
+#X connect 15 0 8 6;
+#X connect 16 0 17 0;
+#X connect 17 0 1 0;
+#X connect 17 0 9 0;
+#X connect 20 1 18 0;
+#X connect 22 1 19 0;
+#X coords 0 -1 1 1 244 230 1 100 100;
+#X restore 17 312 pd interface;
+#X text 15 632 3) Display the dataset;
+#X listbox 26 549 20 0 0 0 - - - 0;
+#X listbox 266 547 20 0 0 0 - - - 0;
+#X connect 4 0 5 0;
+#X connect 6 0 15 0;
+#X connect 6 0 16 0;
+#X connect 6 0 17 0;
+#X connect 6 0 18 0;
+#X connect 6 0 19 0;
+#X connect 6 0 20 0;
+#X connect 6 0 21 0;
+#X connect 15 0 7 0;
+#X connect 16 0 8 0;
+#X connect 17 0 9 0;
+#X connect 18 0 10 0;
+#X connect 19 0 11 0;
+#X connect 20 0 12 0;
+#X connect 21 0 13 0;
+#X connect 25 0 4 0;
+#X connect 25 0 27 0;
+#X connect 25 1 28 0;
+#X connect 25 1 4 1;
+#X restore 481 831 pd curating_descriptor_data;
+#X obj 481 853 note_on_multithreading;
+#X text 16 255 2) show values in input channels 0-5;
+#X connect 1 0 2 0;
+#X connect 4 0 3 0;
+#X connect 7 0 3 0;
 #X connect 12 0 13 0;
-#X connect 13 0 2 0;
-#X connect 13 1 14 0;
-#X connect 14 0 2 2;
-#X connect 14 0 3 0;
-#X connect 15 0 8 0;
+#X connect 12 0 16 0;
+#X connect 12 0 19 0;
+#X connect 12 0 20 0;
+#X connect 12 0 22 0;
+#X connect 12 0 29 0;
+#X connect 13 0 14 0;
+#X connect 16 0 15 0;
+#X connect 19 0 17 0;
+#X connect 20 0 18 0;
+#X connect 22 0 21 0;
+#X connect 23 0 26 0;
+#X connect 23 0 27 0;
+#X connect 23 0 34 0;
+#X connect 26 0 24 0;
+#X connect 27 0 25 0;
+#X connect 29 0 28 0;
+#X connect 32 0 3 0;
+#X connect 34 0 33 0;

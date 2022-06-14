@@ -1,181 +1,153 @@
-#N canvas 67 122 912 855 10;
-#X obj 8 587 *~;
-#X obj 54 565 osc~ 320;
-#X obj 471 730 tabwrite~ ampslicesourceview;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array ampslicesourceview 413 float 2;
-#X coords 0 1 413 -1 200 140 1;
-#X restore 509 204 graph;
-#X obj 449 670 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 449 651 loadbang;
-#X obj 449 687 metro 37.7;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array ampsliceview 413 float 2;
-#X coords 0 1.1 413 -0.1 200 140 1 0 0;
-#X restore 508 359 graph;
-#X obj 329 729 tabwrite~ ampsliceview;
-#X obj 118 744 *~;
-#X obj 118 765 dac~;
-#X obj 151 699 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 151 719 * 0.2;
-#X text 706 362 -on;
-#X text 706 479 -off;
-#X floatatom 522 646 5 0 0 0 - - -;
-#X obj 521 708 delread~ ampslicedel;
-#X obj 8 621 delwrite~ ampslicedel 1000;
-#X obj 568 665 samplerate~;
-#X obj 568 645 r pd-dsp-started;
-#X obj 522 687 / 1;
-#X obj 522 664 * 1000;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.ampslice~ 20 12 0 36 -262144
--66577 0;
-#X text 37 58 Amplitude-based Detrending Slicer;
-#X text 38 96 This class implements an amplitude-based slicer \, with
+#N canvas 481 56 693 871 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.ampslice~.html reference/ampslice/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\\\ Detrending\\\ Slicer
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 This class implements an amplitude-based slicer \, with
 various customisable options and conditions to detect relative amplitude
-changes as onsets., f 121;
-#N canvas 760 23 651 739 a_musical_example 0;
-#X obj 33 29 loadbang;
-#X obj 33 71 soundfiler;
-#X obj 137 69 array define ampslice_drums;
-#X obj 34 196 *~, f 11;
-#X obj 34 156 /~;
-#X msg 33 113 1;
-#X obj 34 177 phasor~;
-#X obj 34 215 tabread~ ampslice_drums;
-#X obj 30 717 dac~;
-#X obj 134 112 samplerate~;
-#X obj 108 131 / 1;
-#X obj 117 555 / 1;
-#X obj 117 532 * 1000;
-#X obj 41 237 delwrite~ ampslicedel2 1000;
-#X obj 116 576 delread~ ampslicedel2;
-#X obj 30 509 fluid.ampslice~;
-#X text 164 275 a sort of click on the right \, relative envelope mostly
-\, with a gate, f 67;
-#X text 31 7 Amplitude followers love drums;
-#X obj 30 689 *~;
-#X obj 55 690 *~;
-#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 33 92 t b f b;
-#X msg 33 50 read -resize media/Nicol-LoopE-M.wav ampslice_drums;
-#X msg 164 292 reset \, slowrampup 4410 \, slowrampdown 4410 \, onthreshold
-10 \, offthreshold 5 \, fastrampup 10 \, fastrampdown 2205 \, minslicelength
-4410 \, highpassfreq 20 \, floor -40, f 75;
-#X connect 0 0 22 0;
-#X connect 1 0 21 0;
-#X connect 3 0 7 0;
-#X connect 4 0 6 0;
-#X connect 5 0 4 0;
-#X connect 6 0 3 0;
-#X connect 7 0 13 0;
-#X connect 7 0 15 0;
-#X connect 9 0 10 1;
-#X connect 9 0 11 1;
-#X connect 10 0 4 1;
-#X connect 11 0 14 0;
-#X connect 12 0 11 0;
-#X connect 14 0 18 0;
-#X connect 15 0 19 0;
-#X connect 15 1 12 0;
-#X connect 18 0 8 0;
-#X connect 19 0 8 1;
-#X connect 20 0 19 1;
-#X connect 20 0 18 1;
-#X connect 21 0 5 0;
-#X connect 21 1 3 1;
-#X connect 21 1 10 0;
-#X connect 21 2 9 0;
-#X connect 22 0 1 0;
-#X connect 23 0 15 0;
-#X restore 293 499 pd a_musical_example;
-#X text 170 699 sonify state;
-#X text 534 627 computed latency is max of latency-inducing attributes
-;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.ampslice~.html;
-#X msg 143 89 browse \$1;
+changes as onsets., f 64;
+#X obj 20 179 fluid.demosound~;
+#X text 19 159 1) Select a source., f 66;
+#X obj 119 382 fluid.ampslice~ -slowrampup 4410 -slowrampdown 4410
+-fastrampup 10 -fastrampdown 10 -onthreshold 9 -offthreshold 6 -minslicelength
+4410 -highpassfreq 20 -floor -40, f 38;
+#X msg 119 350 getlatency;
+#X floatatom 382 478 5 0 0 0 - - - 0;
+#X obj 21 630 delread~ ampslicedel;
+#X obj 21 594 delwrite~ ampslicedel 1000;
+#X obj 428 501 samplerate~;
+#X obj 428 481 r pd-dsp-started;
+#X obj 382 531 / 1;
+#X obj 382 500 * 1000;
+#X obj 119 327 loadbang;
+#X obj 21 752 *~;
+#X obj 37 717 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 117 752 *~;
+#X obj 135 717 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X floatatom 382 588 5 0 0 0 - - - 0;
+#X floatatom 58 717 5 0 0 0 - - - 0;
+#X text 34 699 unprocessed;
+#X text 133 699 slice ticks;
+#X obj 531 725 cnv 15 145 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 413 114 695 831 more_info 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\\\ Detrending\\\ Slicer
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 18 145 cnv 15 220 320 empty empty empty 20 12 0 14 #f0f3f3 #404040
+0;
+#X obj 29 253 osc~ 80;
+#X obj 121 160 loadbang;
+#X obj 121 253 metro 1000;
+#X obj 121 207 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X msg 190 207 1000;
+#X floatatom 190 228 5 0 0 0 - - - 0;
+#X obj 121 184 t b b, f 12;
+#X obj 122 358 line~;
+#X obj 121 282 f, f 12;
+#X msg 121 324 1 \, 0 \$1;
+#X obj 122 384 *~;
+#X obj 29 434 *~;
+#X obj 248 620 fluid.ampslice~;
+#X msg 248 314 onthreshold 6;
+#X msg 258 364 offthreshold 6;
+#X msg 268 444 fastrampup 10 \, fastrampdown 50 \, slowrampu 500 \,
+slowrampdown 500, f 46;
+#X msg 278 554 minslicelength 4410;
+#X obj 247 693 +;
+#X obj 276 693 f;
+#X msg 247 670 1;
+#X floatatom 247 727 5 0 0 0 - - - 0;
+#X obj 247 643 threshold~ 0.5 1 0.1 1;
+#X obj 121 407 lop~ 80;
+#X text 285 726 count onsets;
+#N canvas 208 226 408 216 link 0;
+#X obj 40 21 inlet;
+#X obj 40 70 pdcontrol;
+#X msg 40 45 browse https://learn.flucoma.org/reference/ampslice;
 #X connect 0 0 2 0;
-#X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 736 154 pd;
-#X text 605 135 launch the HTML doc->;
-#X obj 737 137 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 178 596 fluid.ampslice~ -fastrampup 5 -fastrampdown 50 -slowrampup
-220 -slowrampdown 220 -onthreshold 10 -offthreshold 10 -floor -60;
-#X obj 8 537 *~ 0.8;
-#X obj 8 558 +~ 0.2;
-#X msg 42 300 reset;
-#X msg 113 365 reset \, offthreshold 7 \, getlatency;
-#X msg 158 417 reset \, offthreshold 7 \, minslicelength 220 \, getlatency
+#X restore 338 249 pd link;
+#X obj 321 249 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 253 249 go to URL;
+#X text 252 143 The fluid.ampslice~ object performs segmentation by
+comparing the difference between two amplitude envelopes \, one capturing
+slow changes \, one capturing fast changes in a signal. The slow one
+provides a context which the fast one is compared to meaning the threshold
+of this slicer is dynamic. For a more detailed explanation see: https://learn.flucoma.org/reference/ampslice"
 ;
-#X text 39 271 2) the default settings thresholds on the same value
-of the difference between a slow and a fast envelope;
-#X text 110 338 3) beware of double trigger at the begining of the
-cycles. A solution: Schmidth triggers, f 58;
-#X text 153 398 4) better still \, adding a minslicelength sorts it
-all;
-#X text 136 203 1) Our source here is a sinewave that does not go to
-silence and has sharp-ish amplitude bumps as onsets we try to track
+#X text 254 335 Fast envelope has to exceed slow envelope by 6dB;
+#X text 264 382 Fast envelope has to go 6dB below slow envelope for
+a new onset to be detected. This causes "false" onsets to be detected.
 ;
-#X floatatom 34 722 0 0 0 0 - - -;
-#X obj 34 684 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#N canvas 0 23 450 300 counter 0;
-#X obj 92 39 inlet;
-#X obj 100 106 fexpr~ $x1[0] + $y1[-1];
-#X obj 36 71 loadbang;
-#X msg 96 75 clear y1;
-#X obj 92 130 snapshot~;
-#X obj 36 106 metro 100;
-#X obj 36 89 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X text 271 480 Make the fast envelope a bit smoother \, and the slow
+envelope a lot smoother. It's not perfect but a little less jittery.
 ;
-#X obj 92 151 outlet;
-#X obj 244 47 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 4 0;
-#X connect 2 0 6 0;
-#X connect 3 0 1 0;
-#X connect 4 0 7 0;
-#X connect 5 0 4 0;
+#X text 285 571 The minimum time between detected segments is now 4410
+samples \, or about 100 ms.;
+#X msg 67 234 0;
+#X obj 27 750 fluid.out~ ampslicehelp;
+#X connect 3 0 14 0;
+#X connect 4 0 9 0;
+#X connect 5 0 11 0;
+#X connect 5 0 35 0;
 #X connect 6 0 5 0;
-#X connect 8 0 1 0;
-#X restore 34 704 pd counter;
-#X text 51 683 reset;
-#X obj 8 516 phasor~ -1.1;
-#X connect 0 0 17 0;
-#X connect 0 0 31 0;
-#X connect 1 0 0 1;
-#X connect 4 0 6 0;
-#X connect 5 0 4 0;
-#X connect 6 0 2 0;
-#X connect 6 0 8 0;
-#X connect 9 0 10 0;
-#X connect 9 0 10 1;
+#X connect 7 0 8 0;
+#X connect 8 0 5 1;
+#X connect 8 0 11 1;
+#X connect 9 0 6 0;
+#X connect 9 1 7 0;
+#X connect 10 0 13 1;
+#X connect 10 0 13 0;
 #X connect 11 0 12 0;
-#X connect 12 0 9 1;
-#X connect 15 0 21 0;
-#X connect 16 0 2 0;
-#X connect 18 0 20 1;
-#X connect 19 0 18 0;
-#X connect 20 0 16 0;
-#X connect 21 0 20 0;
-#X connect 30 0 28 0;
-#X connect 31 0 8 0;
-#X connect 31 0 9 0;
-#X connect 31 0 43 1;
-#X connect 31 1 15 0;
-#X connect 32 0 33 0;
-#X connect 33 0 0 0;
-#X connect 34 0 31 0;
-#X connect 35 0 31 0;
-#X connect 36 0 31 0;
-#X connect 42 0 43 0;
-#X connect 43 0 41 0;
-#X connect 45 0 32 0;
+#X connect 12 0 10 0;
+#X connect 13 0 25 0;
+#X connect 14 0 15 0;
+#X connect 14 0 36 0;
+#X connect 15 0 24 0;
+#X connect 15 0 36 1;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 15 0;
+#X connect 19 0 15 0;
+#X connect 20 0 23 0;
+#X connect 20 0 21 0;
+#X connect 21 0 20 1;
+#X connect 22 0 20 0;
+#X connect 24 0 22 0;
+#X connect 25 0 14 1;
+#X connect 28 0 27 0;
+#X connect 35 0 3 1;
+#X restore 535 749 pd more_info;
+#X obj 21 828 fluid.out~ ampslicehelp;
+#X obj 109 787 loadbang;
+#X msg 109 809 1, f 2;
+#X text 431 442 computed latency is max of latency-inducing attributes
+, f 27;
+#X connect 4 0 10 0;
+#X connect 4 0 6 0;
+#X connect 6 0 18 0;
+#X connect 6 1 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 14 0;
+#X connect 9 0 16 0;
+#X connect 11 0 13 1;
+#X connect 12 0 11 0;
+#X connect 13 0 20 0;
+#X connect 14 0 13 0;
+#X connect 15 0 7 0;
+#X connect 16 0 26 0;
+#X connect 17 0 16 1;
+#X connect 18 0 26 1;
+#X connect 19 0 18 1;
+#X connect 20 0 9 0;
+#X connect 21 0 16 1;
+#X connect 27 0 28 0;
+#X connect 28 0 26 2;

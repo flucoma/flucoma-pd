@@ -1,4 +1,4 @@
-#N canvas 43 58 707 598 12;
+#N canvas 56 362 707 598 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyfeature~ 1 22 0
 36 #4ba3fb #ffffff 0;
 #X obj 23 412 dac~;
@@ -31,7 +31,7 @@
 #X msg 120 104 threshold \$1;
 #X msg 175 127 filtersize \$1 \, getlatency;
 #X msg 361 105 kernelsize \$1 \, getlatency;
-#X msg 203 67 3;
+#X msg 203 58 3;
 #X floatatom 23 108 8 0 0 0 - - - 0;
 #X msg 23 89 0;
 #X text 15 19 0: spectrum, f 17;
@@ -39,13 +39,12 @@
 #X text 15 41 2: pitch;
 #X text 15 52 3: loudness;
 #X msg 361 67 11;
-#X msg 120 67 0.33;
+#X msg 153 62 0.33;
 #X obj 731 27 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #N canvas 0 23 450 176 anotherpreset 0;
 #X obj 37 37 inlet;
 #X msg 38 80 1;
-#X msg 66 80 0.0035;
 #X msg 114 80 4;
 #X msg 142 80 31;
 #X obj 38 113 outlet;
@@ -58,20 +57,21 @@
 #X msg 254 77 128;
 #X obj 300 111 outlet;
 #X msg 299 77 32;
+#X msg 69 80 0.009;
 #X connect 0 0 1 0;
-#X connect 0 0 12 0;
-#X connect 0 0 4 0;
-#X connect 0 0 10 0;
+#X connect 0 0 11 0;
 #X connect 0 0 3 0;
+#X connect 0 0 9 0;
 #X connect 0 0 2 0;
 #X connect 0 0 14 0;
-#X connect 1 0 5 0;
+#X connect 0 0 13 0;
+#X connect 1 0 4 0;
 #X connect 2 0 6 0;
 #X connect 3 0 7 0;
-#X connect 4 0 8 0;
-#X connect 10 0 11 0;
-#X connect 12 0 9 0;
-#X connect 14 0 13 0;
+#X connect 9 0 10 0;
+#X connect 11 0 8 0;
+#X connect 13 0 12 0;
+#X connect 14 0 5 0;
 #X restore 731 68 pd anotherpreset;
 #X msg 400 134 minslicelength \$1;
 #X floatatom 522 85 8 0 0 0 - - - 0;
@@ -128,6 +128,7 @@
 #X connect 28 0 20 0;
 #X connect 28 0 26 0;
 #X connect 28 0 27 0;
+#X connect 28 0 9 0;
 #X connect 30 0 28 0;
 #X connect 31 0 3 0;
 #X connect 31 0 32 0;
