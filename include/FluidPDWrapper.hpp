@@ -899,7 +899,7 @@ public:
   
   static void inletProxyBuffer(InletProxy* x, t_symbol*, int ac, t_atom* av)
   {
-    x->mOwner->doBufferInlet(x->mIndex + 1, ac, av);
+    x->mOwner->doBufferInlet(x->mIndex, ac, av);
   }
   
   static void inletProxySetup(const char* className)
