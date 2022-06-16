@@ -31,8 +31,8 @@ parts and place the results in the resynth buffer;
 #X obj 69 126 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 69 155 t b b;
-#X obj 23 208 realtime;
-#X floatatom 23 229 5 0 0 0 - - - 0;
+#X obj 23 230 realtime;
+#X floatatom 23 251 5 0 0 0 - - - 0;
 #N canvas 491 222 799 596 fluid.bufnmf.noiseplay.fft 0;
 #X obj 78 96 inlet~;
 #X obj 74 137 *~;
@@ -126,9 +126,6 @@ parts and place the results in the resynth buffer;
 #X connect 15 0 8 0;
 #X connect 16 0 14 0;
 #X restore 372 254 pd make.scaled.hann.window;
-#X obj 68 178 fluid.bufnmf -components 5 -source bufnmf_monosynth -resynth
-bufnmf_resynth -bases bufnmf_bases -activations bufnmf_activations
--fftsettings 512 256 1024, f 77;
 #X msg 130 352 set bufnmf_bases-\$1;
 #X msg 268 352 set bufnmf_activations-\$1;
 #N canvas 0 23 576 714 visualisation 0;
@@ -197,21 +194,27 @@ in src / hopSize) + 1, f 78;
 #X text 43 674 - both will have a channel count of (components * source
 channels), f 68;
 #X obj 47 495 dac~;
+#X obj 68 210 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 68 178 fluid.bufnmf -components 5 -source bufnmf_monosynth -bases
+bufnmf_bases -activations bufnmf_activations -fftsettings 512 256 1024
+, f 77;
 #X connect 0 0 1 0;
-#X connect 1 0 10 0;
+#X connect 1 0 29 0;
 #X connect 1 1 2 0;
 #X connect 2 0 3 0;
-#X connect 4 0 20 0;
+#X connect 4 0 19 0;
 #X connect 5 0 8 0;
-#X connect 6 0 11 0;
-#X connect 7 0 12 0;
+#X connect 6 0 10 0;
+#X connect 7 0 11 0;
 #X connect 8 0 4 0;
-#X connect 10 0 2 1;
-#X connect 11 0 4 1;
-#X connect 12 0 4 2;
-#X connect 20 0 28 0;
-#X connect 20 0 28 1;
-#X connect 21 0 20 1;
+#X connect 10 0 4 1;
+#X connect 11 0 4 2;
+#X connect 19 0 27 0;
+#X connect 19 0 27 1;
+#X connect 20 0 19 1;
+#X connect 28 0 2 1;
+#X connect 29 0 28 0;
 #X restore 564 283 pd bases_and_activations;
 #N canvas 476 51 990 675 updating_bases 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -450,16 +453,10 @@ index;
 #X obj 531 420 dac~;
 #X msg 27 141 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
 bufnmf_guitar;
-#X obj 27 231 fluid.bufnmf -source bufnmf_guitar -numframes 88200 -components
-10 -bases bufnmf_guit-bases -resynth bufnmf_guit-resynth -fftsettings
-1024 256 2048;
 #X obj 27 290 fluid.bufspectralshape -source bufnmf_guit-resynth -features
 bufnmf_guit-features -fftsettings 1024 256 2048;
 #X obj 27 343 fluid.bufstats -source bufnmf_guit-features -stats bufnmf_guit-stats
 ;
-#X obj 27 449 fluid.bufnmf -source bufnmf_guitar -fftsettings 1024
-256 2048 -iterations 100 -bases bufnmf_summed-bases -basesmode 2 -components
-2 -resynth bufnmf_guit-resynth;
 #X obj 297 576 array define bufnmf_guitar;
 #X obj 297 597 clone fluid.multiarray 10 bufnmf_guit-resynth;
 #X obj 24 555 clone fluid.multiarray 10 bufnmf_guit-bases;
@@ -480,19 +477,34 @@ we run 20 seconds of sound and we know where things will go.;
 #X text 24 121 1) press to start;
 #X text 530 339 3) play: 0 is pick \, 1 is string;
 #X text 48 500 2) wait for finishing;
+#X obj 27 224 fluid.bufnmf -source bufnmf_guitar -numframes 88200 -components
+10 -bases bufnmf_guit-bases -resynth bufnmf_guit-resynth -resynthmode
+1 -fftsettings 1024 256 2048, f 62;
+#X obj 27 267 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 27 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 27 375 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 27 449 fluid.bufnmf -source bufnmf_guitar -fftsettings 1024
+256 2048 -iterations 100 -bases bufnmf_summed-bases -basesmode 2 -components
+2 -resynth bufnmf_guit-resynth -resynthmode 1;
 #X connect 0 0 1 0;
-#X connect 1 0 9 0;
+#X connect 1 0 24 0;
 #X connect 2 0 3 0;
-#X connect 3 0 12 0;
-#X connect 5 0 19 0;
+#X connect 3 0 28 0;
+#X connect 5 0 17 0;
 #X connect 6 0 7 0;
 #X connect 6 0 7 1;
 #X connect 8 0 0 0;
-#X connect 9 0 10 0;
-#X connect 10 0 11 0;
-#X connect 11 0 2 0;
-#X connect 12 0 4 0;
-#X connect 19 0 6 0;
+#X connect 9 0 26 0;
+#X connect 10 0 27 0;
+#X connect 17 0 6 0;
+#X connect 24 0 25 0;
+#X connect 25 0 9 0;
+#X connect 26 0 10 0;
+#X connect 27 0 2 0;
+#X connect 28 0 4 0;
 #X restore 564 358 pd fixed_bases;
 #X obj 61 501 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
@@ -565,7 +577,7 @@ can be used as a basic source separator!, f 62;
 #X text 176 530 this adds the original out of phase \, to check null-summing
 , f 32;
 #X text 66 461 4) Listen to the results;
-#N canvas 496 54 584 516 multichannel 0;
+#N canvas 848 205 584 516 multichannel 0;
 #X text 12 12 fluid.bufnmf will process each channel independently
 ;
 #X text 14 48 The output channels (in resynth \, bases and activations
@@ -573,8 +585,6 @@ buffer~s) will be grouped by component. For example \, with a stereo
 input and 2 components: channel 1: channel 1 \, component 1 channel
 2: channel 1 \, component 2 channel 3: channel 2 \, component 1 channel
 4: channel 2 \, component 2, f 74;
-#X obj 17 207 fluid.bufnmf -source bufnmf_bells -resynth bufnmf_bells_resynth
--components 12, f 79;
 #X obj 17 166 soundfiler;
 #X obj 17 187 t b;
 #X obj 24 455 clone fluid.multiarray 2 bufnmf_bells;
@@ -595,17 +605,19 @@ details' tab for an explanation., f 89;
 #X obj 245 347 tabplay~;
 #X msg 245 326 set bufnmf_bells_resynth-\$1 \, bang;
 #X obj 244 306 + 12;
-#X connect 2 0 7 0;
-#X connect 3 0 4 0;
-#X connect 4 0 2 0;
-#X connect 8 0 3 0;
-#X connect 11 0 14 0;
-#X connect 11 0 17 0;
-#X connect 12 0 13 0;
-#X connect 14 0 12 0;
-#X connect 15 0 13 1;
+#X obj 17 207 fluid.bufnmf -source bufnmf_bells -resynth bufnmf_bells_resynth
+-components 12 -resynthmode 1, f 93;
+#X connect 2 0 3 0;
+#X connect 3 0 17 0;
+#X connect 7 0 2 0;
+#X connect 10 0 13 0;
+#X connect 10 0 16 0;
+#X connect 11 0 12 0;
+#X connect 13 0 11 0;
+#X connect 14 0 12 1;
+#X connect 15 0 14 0;
 #X connect 16 0 15 0;
-#X connect 17 0 16 0;
+#X connect 17 0 6 0;
 #X restore 564 308 pd multichannel;
 #N canvas 553 45 670 612 subsections 0;
 #X text 28 18 fluid.bufnmf can work on smaller portions of a buffer~
@@ -729,15 +741,15 @@ and numchans to process only what you want, f 94;
 #X obj 541 491 loadbang;
 #X obj 31 552 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 31 518 fluid.bufnmf -source bufnmf_st_src -resynth bufnmf_st_resynth
--components 5;
 #X text 477 461 4) listen to the result;
 #X text 53 551 3) wait for the process to finish;
+#X obj 31 518 fluid.bufnmf -source bufnmf_st_src -resynth bufnmf_st_resynth
+-components 5 -resynthmode 1;
 #X connect 3 0 16 0;
-#X connect 6 0 37 0;
-#X connect 7 0 37 0;
-#X connect 8 0 37 0;
-#X connect 9 0 37 0;
+#X connect 6 0 39 0;
+#X connect 7 0 39 0;
+#X connect 8 0 39 0;
+#X connect 9 0 39 0;
 #X connect 10 0 15 0;
 #X connect 11 0 6 0;
 #X connect 12 0 7 0;
@@ -750,7 +762,7 @@ and numchans to process only what you want, f 94;
 #X connect 21 0 19 1;
 #X connect 22 0 20 0;
 #X connect 22 0 21 0;
-#X connect 24 0 37 0;
+#X connect 24 0 39 0;
 #X connect 27 0 32 1;
 #X connect 28 0 32 2;
 #X connect 29 0 32 3;
@@ -765,7 +777,7 @@ and numchans to process only what you want, f 94;
 #X connect 35 0 29 0;
 #X connect 35 0 30 0;
 #X connect 35 0 31 0;
-#X connect 37 0 36 0;
+#X connect 39 0 36 0;
 #X restore 564 333 pd subsections;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
