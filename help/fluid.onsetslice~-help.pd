@@ -160,7 +160,7 @@
 #X text 116 146 Tremblay-AaS-AcousticStrums-M.wav;
 #X text 116 165 Tremblay-ASWINE-ScratchySynth-M.wav;
 #X text 116 184 Tremblay-BaB-HumDC-M.wav;
-#X text 116 203 Tremblay-beatRemember.wav;
+#X text 116 203 Tremblay-BeatRemember.wav;
 #X text 116 222 Tremblay-UW-ComplexDescent-M.wav;
 #X text 116 241 Tremblay-FMTriDist-M.wav;
 #X msg 252 592 \; metrics 0 0.2 66 5 128 -1 -1;
@@ -209,7 +209,7 @@ src1;
 #X msg 909 142 read -resize ./media/Tremblay-ASWINE-ScratchySynth-M.wav
 src2, f 63;
 #X msg 919 163 read -resize ./media/Tremblay-BaB-HumDC-M.wav src3;
-#X msg 929 184 read -resize ./media/Tremblay-beatRemember.wav src4
+#X msg 929 184 read -resize ./media/Tremblay-BeatRemember.wav src4
 ;
 #X msg 939 205 read -resize ./media/Tremblay-UW-ComplexDescent-M.wav
 src5;
