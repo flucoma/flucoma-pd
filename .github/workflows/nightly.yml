@@ -15,25 +15,23 @@ jobs:
         with:
           branch: origin/dev
 
-      - name: sign and notarise
+      - name: sign binaries
         uses: flucoma/actions/distribution@main
         with:
           glob: '-e pd_darwin'
           package: 'release-packaging'
+          output_type: 'dmg'
+          output: FluCoMa-PD-Mac-nightly
           cert: ${{ secrets.CERT }}
           certpwd: ${{ secrets.CERTPWD }}
           teamid: ${{ secrets.WWDRTEAMID }}
           apppwd: ${{ secrets.APPSTORECONNECTPWD }}
           appusr: ${{ secrets.APPSTORECONNECTUSERNAME }}
 
-      - name: compress archive
-        run: zip -r FluCoMa-PD-Mac-nightly.zip FluidCorpusManipulation
-        working-directory: release-packaging
-
       - uses: actions/upload-artifact@v2
         with:
           name: macbuild
-          path: release-packaging/FluCoMa-PD-Mac-nightly.zip
+          path: release-packaging/FluCoMa-PD-Mac-nightly.dmg
 
   winbuild:
     runs-on: windows-latest
