@@ -15,6 +15,17 @@ jobs:
         with:
           branch: origin/dev
 
+      - name: sign and notarise
+        uses: flucoma/actions/distribution@main
+        with:
+          glob: '-e pd_darwin'
+          package: 'release-packaging'
+          cert: ${{ secrets.CERT }}
+          certpwd: ${{ secrets.CERTPWD }}
+          teamid: ${{ secrets.WWDRTEAMID }}
+          apppwd: ${{ secrets.APPSTORECONNECTPWD }}
+          appusr: ${{ secrets.APPSTORECONNECTUSERNAME }}
+
       - name: compress archive
         run: zip -r FluCoMa-PD-Mac-nightly.zip FluidCorpusManipulation
         working-directory: release-packaging
