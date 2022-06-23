@@ -567,25 +567,12 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
     }
   }
   fclose(fp);
-  // post("%f %f", minVal, maxVal);
-  
-  // convert the path
-  // const char *file_name_open = fwf_filepath(x, x->x_filename); // path
-  // if (!file_name_open) {
-  //     post("error loading");
-  //     // delete the file
-  // }
+
+  // format the file for TCL for Windows
   char file_name_open[L_tmpnam];
-  // sys_bashfilename(x->x_filename, file_name_open);
-  for (int i = 0; i < strlen(x->x_filename); i++) {
-    if (x->x_filename[i] == '\\') {
-      file_name_open[i] = '/';
-    } else {
-      file_name_open[i] = x->x_filename[i];
-    }
-  }
-  
-  post("%s",x->x_filename); post("%s",file_name_open);
+  sys_unbashfilename(x->x_filename, file_name_open);
+
+  // post("%s",x->x_filename); post("%s",file_name_open);
 
   //delete the image if already cached
   sys_vgui("if { [info exists %lx_picname] == 1} { image delete %lx_picname \n}\n",
@@ -596,7 +583,7 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
     fwf_erase(x, x->x_glist);
     sys_vgui("image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n",
     x->x_fullname, file_name_open, x->x_fullname);
-    sys_vgui("file delete %s\n", x->x_filename); // and delete the tmpfile here after load
+    sys_vgui("file delete %s\n", file_name_open); // and delete the tmpfile here after load
     fwf_erase(x, x->x_glist);
     fwf_draw(x, x->x_glist, 0);
   }
