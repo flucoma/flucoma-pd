@@ -42,7 +42,7 @@ if (APPLE)
   string(APPEND CMAKE_CXX_FLAGS " -stdlib=libc++")
 endif()
 
-project (flucoma-pd LANGUAGES CXX)
+project (flucoma-pd LANGUAGES CXX C)
 
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
