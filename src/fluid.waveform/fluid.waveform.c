@@ -81,6 +81,21 @@ typedef struct _pic{
      t_outlet      *x_outlet;
 }t_pic;
 
+// helper
+static const char* fwf_filepath(t_pic *x, const char *filename){
+    static char fn[MAXPDSTRING];
+    char *bufptr;
+    int fd = canvas_open(glist_getcanvas(x->x_glist),
+        filename, "", fn, &bufptr, MAXPDSTRING, 1);
+    if(fd > 0){
+        fn[strlen(fn)]='/';
+        sys_close(fd);
+        return(fn);
+    }
+    else
+        return(0);
+}
+
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fwf_draw_io_let(t_pic *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -553,6 +568,15 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   }
   fclose(fp);
   // post("%f %f", minVal, maxVal);
+  
+  // convert the path
+  const char *file_name_open = fwf_filepath(x, x->x_filename); // path
+  char *bufptr;
+  if (file_name_open != 0) {
+      post("error loading");
+      // delete the file
+  }
+  post("%s",x->x_filename); post("%s",file_name_open);
 
   //delete the image if already cached
   sys_vgui("if { [info exists %lx_picname] == 1} { image delete %lx_picname \n}\n",
@@ -562,7 +586,7 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
     fwf_erase(x, x->x_glist);
     sys_vgui("image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n",
-    x->x_fullname, x->x_filename, x->x_fullname);
+    x->x_fullname, file_name_open, x->x_fullname);
     sys_vgui("file delete %s\n", x->x_filename); // and delete the tmpfile here after load
     fwf_erase(x, x->x_glist);
     fwf_draw(x, x->x_glist, 0);
