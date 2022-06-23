@@ -66,3 +66,4 @@
 -Wl,-U,_sys_vgui
 -Wl,-U,_text_xpix
 -Wl,-U,_text_ypix
+-Wl,-U,_sys_bashfilename

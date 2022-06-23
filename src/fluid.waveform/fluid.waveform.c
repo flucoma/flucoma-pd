@@ -570,11 +570,14 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   // post("%f %f", minVal, maxVal);
   
   // convert the path
-  const char *file_name_open = fwf_filepath(x, x->x_filename); // path
-  if (!file_name_open) {
-      post("error loading");
-      // delete the file
-  }
+  // const char *file_name_open = fwf_filepath(x, x->x_filename); // path
+  // if (!file_name_open) {
+  //     post("error loading");
+  //     // delete the file
+  // }
+  char file_name_open[L_tmpnam];
+  sys_bashfilename(x->x_filename, file_name_open);
+  
   post("%s",x->x_filename); post("%s",file_name_open);
 
   //delete the image if already cached
