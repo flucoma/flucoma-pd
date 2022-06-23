@@ -571,8 +571,7 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   
   // convert the path
   const char *file_name_open = fwf_filepath(x, x->x_filename); // path
-  char *bufptr;
-  if (file_name_open != 0) {
+  if (!file_name_open) {
       post("error loading");
       // delete the file
   }
