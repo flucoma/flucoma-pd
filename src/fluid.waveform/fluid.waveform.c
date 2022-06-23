@@ -576,7 +576,14 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   //     // delete the file
   // }
   char file_name_open[L_tmpnam];
-  sys_bashfilename(x->x_filename, file_name_open);
+  // sys_bashfilename(x->x_filename, file_name_open);
+  for (int i = 0; i < strlen(x->x_filename); i++) {
+    if (x->x_filename[i] == '\\') {
+      file_name_open[i] = '/';
+    } else {
+      file_name_open[i] = x->x_filename[i];
+    }
+  }
   
   post("%s",x->x_filename); post("%s",file_name_open);
 
