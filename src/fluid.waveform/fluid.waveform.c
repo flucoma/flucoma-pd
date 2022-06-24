@@ -81,21 +81,6 @@ typedef struct _pic{
      t_outlet      *x_outlet;
 }t_pic;
 
-// helper
-static const char* fwf_filepath(t_pic *x, const char *filename){
-    static char fn[MAXPDSTRING];
-    char *bufptr;
-    int fd = canvas_open(glist_getcanvas(x->x_glist),
-        filename, "", fn, &bufptr, MAXPDSTRING, 1);
-    if(fd > 0){
-        fn[strlen(fn)]='/';
-        sys_close(fd);
-        return(fn);
-    }
-    else
-        return(0);
-}
-
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fwf_draw_io_let(t_pic *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -236,12 +221,12 @@ static void fwf_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
     t_canvas *cv = glist_getcanvas(glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(x->x_def_img && (visible || vis)){ // DEFAULT LOAD STATE AS FRAME
+    if(x->x_def_img && (visible || (_Bool)vis)){ // DEFAULT LOAD STATE AS FRAME
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
                 cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
     }
     else{
-        if(visible || vis){
+        if(visible || (_Bool)vis){
             sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} \n",
                 x->x_fullname, cv, xpos, ypos, x->x_fullname, x);
             sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
@@ -254,7 +239,7 @@ static void fwf_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
         }
         if(!x->x_init)
             x->x_init = 1;
-        else if((visible || vis) && (x->x_edit || x->x_outline))
+        else if((visible || (_Bool)vis) && (x->x_edit || x->x_outline))
             sys_vgui("if { [info exists %lx_picname] == 1 } {.x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d}\n",
                 x->x_fullname, cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
             sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"}\n",
@@ -350,7 +335,7 @@ void fwf_audiobuffer(t_pic* x, t_symbol* name){
   }
   else {
     snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
-    while (inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class)) {
+    while ((inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class))) {
       nbchans ++;
       garray_getfloatwords(inputarray, &length, &words);
       nbframes = MAX(nbframes, length);
@@ -373,9 +358,9 @@ void fwf_audiobuffer(t_pic* x, t_symbol* name){
 
   // make a local copy of the input
   // allocate the memory
-  float** localcopy = (float**) malloc(nbchans * sizeof(float*));
+  float** localcopy = (float**) malloc((unsigned long)nbchans * sizeof(float*));
   for(int i=0;i<nbchans;i++) {
-    localcopy[i]=(float*)malloc(nbframes * sizeof(float));
+    localcopy[i]=(float*)malloc((unsigned long)nbframes * sizeof(float));
   }
 
   // iterated and copy
@@ -479,7 +464,7 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   else {
     snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
     // post("%s",nameString);
-    while (inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class)) {
+    while ((inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class))) {
       nbchans ++;
       garray_getfloatwords(inputarray, &length, &words);
       // post("%f %f", minVal, maxVal);
@@ -502,9 +487,9 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
 
   // make a local copy of the input
   //allocate the memory
-  float** localcopy = (float**) malloc(nbchans * sizeof(float*));
+  float** localcopy = (float**) malloc((unsigned long)nbchans * sizeof(float*));
   for(int i=0;i<nbchans;i++) {
-    localcopy[i]=(float*)malloc(nbframes * sizeof(float));
+    localcopy[i]=(float*)malloc((unsigned long)nbframes * sizeof(float));
   }
 
   // iterated and copy
@@ -617,7 +602,7 @@ void fwf_featuresbuffer(t_pic* x, t_symbol* name){
   }
   else {
     snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
-    while (inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class)) {
+    while ((inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class))) {
       nbchans ++;
       garray_getfloatwords(inputarray, &length, &words);
       nbframes = MAX(nbframes, length);
@@ -635,14 +620,14 @@ void fwf_featuresbuffer(t_pic* x, t_symbol* name){
 
   // make a local copy of the input
   // allocate the memory
-  float** localcopy = (float**) malloc(nbchans * sizeof(float*));
+  float** localcopy = (float**) malloc((unsigned long)nbchans * sizeof(float*));
   for(int i=0;i<nbchans;i++) {
-    localcopy[i]=(float*)malloc(nbframes * sizeof(float));
+    localcopy[i]=(float*)malloc((unsigned long)nbframes * sizeof(float));
   }
   
   // arrays for min and max
-  minVal = (float*) malloc (nbchans * sizeof(float));
-  maxVal = (float*) malloc (nbchans * sizeof(float));
+  minVal = (float*) malloc((unsigned long)nbchans * sizeof(float));
+  maxVal = (float*) malloc((unsigned long)nbchans * sizeof(float));
 
   // iterated and copy
   //iterate through channels
@@ -687,7 +672,7 @@ void fwf_featuresbuffer(t_pic* x, t_symbol* name){
   sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {array unset %lx_featurespeaks\n unset %lx_featurescount\n unset %lx_featureslen}\n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname); // delete previous version
   sys_vgui("set %lx_featurescount %d\n set %lx_featureslen %d\n set %lx_featurespeaks {", x->x_fullname, nbchans, x->x_fullname, ioutw*2, x->x_fullname); //header to the channel line
   for (int ch = 0; ch < nbchans; ch++) {
-    float invDeltaVal = 1.0 / (maxVal[ch] - minVal[ch]);
+    float invDeltaVal = (float)(1.0 / (maxVal[ch] - minVal[ch]));
     for (int fr = 0; fr < ioutw; fr++) {
       float val = localcopy[ch][(int)(fr*ratiow)];
       for (int localidx = (int)(fr*ratiow); localidx < (int)((fr+1)*ratiow); localidx++) {
@@ -729,7 +714,7 @@ void fwf_indicesbuffer(t_pic* x, t_symbol* name){
   }
   else {
     snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
-    while (inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class)) {
+    while ((inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class))) {
       nbchans ++;
       garray_getfloatwords(inputarray, &length, &words);
       nbindices = MAX(nbindices, length);
@@ -751,9 +736,9 @@ void fwf_indicesbuffer(t_pic* x, t_symbol* name){
   
   // make a local copy of the input
   // allocate the memory
-  float** localcopy = (float**) malloc(nbchans * sizeof(float*));
+  float** localcopy = (float**) malloc((unsigned long)nbchans * sizeof(float*));
   for(int i=0;i<nbchans;i++) {
-    localcopy[i]=(float*)malloc(nbindices * sizeof(float));
+    localcopy[i]=(float*)malloc((unsigned long)nbindices * sizeof(float));
   }
 
   // iterated and copy
@@ -999,10 +984,10 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     x->x_fullname = gensym(x->x_filename);
 
     if(ac && av->a_type == A_FLOAT){ // 1ST width
-        x->x_width = MAX(av->a_w.w_float, 10);
+        x->x_width = MAX((int)av->a_w.w_float, 10);
         ac--; av++;
         if(ac && av->a_type == A_FLOAT){ // 2nd height
-            x->x_height = MAX(av->a_w.w_float, 10);
+            x->x_height = MAX((int)av->a_w.w_float, 10);
             ac--; av++;
     if(ac && av->a_type == A_FLOAT){ // 3rd outline
         x->x_outline = (int)(av->a_w.w_float != 0);
