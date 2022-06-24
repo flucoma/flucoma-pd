@@ -15,12 +15,9 @@
 
 #define MIN(A,B) ((A)<(B) ? (A) : (B))
 #define MAX(A,B) ((A)>(B) ? (A) : (B))
-#define LOGFLAG 1
-#define SCHEMEFLAG 1
 #define WAVEFORMCOLOR "F00"
 #define INDICESCOLOR "0F0"
 #define FEATURESCOLOR "F0F"
-#define LINEWIDTH 2
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -72,6 +69,9 @@ typedef struct _pic{
      int            x_latch;
      char           x_filename[L_tmpnam];
      int            x_nbframes;
+     int            x_imagelogflag;
+     int            x_imagecolorscheme;
+     int            x_linewidth;
      t_symbol      *x_fullname;
      t_symbol      *x_x;
      t_symbol      *x_receive;
@@ -248,9 +248,9 @@ static void fwf_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
                 x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, WAVEFORMCOLOR);
             // sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {puts $%lx_featureslen \n puts $%lx_featurescount \n puts [llength $%lx_featurespeaks] \n} \n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
             sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
-                x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, LINEWIDTH, FEATURESCOLOR);
+                x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, FEATURESCOLOR);
             sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
-                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, LINEWIDTH, INDICESCOLOR);
+                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, INDICESCOLOR);
         }
         if(!x->x_init)
             x->x_init = 1;
@@ -308,9 +308,9 @@ static void fwf_size_callback(t_pic *x, t_float w, t_float h){ // callback
             x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, WAVEFORMCOLOR);
         // sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {puts $%lx_featureslen \n puts $%lx_featurescount \n puts [llength $%lx_featurespeaks] \n} \n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
         sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
-            x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, LINEWIDTH, FEATURESCOLOR);
-        sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -fill #%s\n}\n}\n",
-                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, WAVEFORMCOLOR);
+            x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, FEATURESCOLOR);
+        sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
+            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, INDICESCOLOR);
 //        post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
@@ -539,9 +539,9 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
   // write the components
   // post("%f %f", minVal, maxVal);
 
-  if (LOGFLAG) {
-    minVal = log(minVal+0.000001);
-    maxVal = log(maxVal+0.000001);
+  if (x->x_imagelogflag) {
+    minVal = (float)log(minVal+0.000001);
+    maxVal = (float)log(maxVal+0.000001);
   }
   
   float invDeltaVal = 255 / (maxVal - minVal);
@@ -561,9 +561,9 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
           }
         };  
       }
-      if (LOGFLAG) value2convert = log(value2convert+0.000001);
+      if (x->x_imagelogflag) value2convert = (float)log(value2convert+0.000001);
       unsigned char where2look = (unsigned char)((value2convert - minVal) * invDeltaVal);
-      (void) fwrite(colourscheme[SCHEMEFLAG][255 - where2look], 1, 3, fp);
+      (void) fwrite(colourscheme[x->x_imagecolorscheme][255 - where2look], 1, 3, fp);
     }
   }
   fclose(fp);
@@ -858,10 +858,19 @@ static void fwf_outline(t_pic *x, t_float f){
 }
 
 static void fwf_latch(t_pic *x, t_float f){
-    int latch = (int)(f != 0);
-    if(x->x_latch != latch){
-        x->x_latch = latch;
-    }
+    x->x_latch = (int)(f != 0);
+}
+
+static void fwf_imagelog(t_pic *x, t_float f){
+    x->x_imagelogflag = (int)(f != 0);
+}
+
+static void fwf_imagecolor(t_pic *x, t_float f){
+    x->x_imagecolorscheme = (int)(f != 0);
+}
+
+static void fwf_linewidth(t_pic *x, t_float f){
+    x->x_linewidth = MAX(1,(int)(f));
 }
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
@@ -981,8 +990,9 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_x = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_outline = x->x_nbframes =  0;
+    x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_outline = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;
     x->x_width = x->x_height = 10;
+    x->x_linewidth = 1;
 
     //generate the cachename
     tmpnam(x->x_filename);
@@ -1074,9 +1084,12 @@ void setup_fluid0x2ewaveform(void){
     class_addmethod(fwf_class, (t_method)fwf_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_latch, gensym("latch"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_audiobuffer, gensym("audiobuffer"), A_DEFSYMBOL, 0);
-    class_addmethod(fwf_class, (t_method)fwf_imagebuffer, gensym("imagebuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_imagebuffer, gensym("imagebuffer"), A_DEFSYMBOL, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fwf_class, (t_method)fwf_imagecolor, gensym("imagecolorscheme"), A_DEFFLOAT, 0);
+    class_addmethod(fwf_class, (t_method)fwf_imagelog, gensym("imagelogflag"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_featuresbuffer, gensym("featuresbuffer"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_indicesbuffer, gensym("indicesbuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_linewidth, gensym("linewidth"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_ok, gensym("ok"), A_GIMME, 0);
     class_addmethod(fwf_class, (t_method)fwf_receive, gensym("receive"), A_DEFSYMBOL, 0);
