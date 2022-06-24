@@ -15,9 +15,6 @@
 
 #define MIN(A,B) ((A)<(B) ? (A) : (B))
 #define MAX(A,B) ((A)>(B) ? (A) : (B))
-#define WAVEFORMCOLOR "F00"
-#define INDICESCOLOR "0F0"
-#define FEATURESCOLOR "F0F"
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -69,9 +66,12 @@ typedef struct _pic{
      int            x_latch;
      char           x_filename[L_tmpnam];
      int            x_nbframes;
+     char           x_indicescolor[6];
      int            x_imagelogflag;
      int            x_imagecolorscheme;
+     char           x_waveformcolor[6];
      int            x_linewidth;
+     char           x_featurescolor[6];
      t_symbol      *x_fullname;
      t_symbol      *x_x;
      t_symbol      *x_receive;
@@ -230,12 +230,12 @@ static void fwf_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
             sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} \n",
                 x->x_fullname, cv, xpos, ypos, x->x_fullname, x);
             sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
-                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, WAVEFORMCOLOR);
+                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_waveformcolor);
             // sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {puts $%lx_featureslen \n puts $%lx_featurescount \n puts [llength $%lx_featurespeaks] \n} \n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
             sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
-                x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, FEATURESCOLOR);
+                x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, x->x_featurescolor);
             sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
-                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, INDICESCOLOR);
+                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, x->x_indicescolor);
         }
         if(!x->x_init)
             x->x_init = 1;
@@ -290,12 +290,12 @@ static void fwf_size_callback(t_pic *x, t_float w, t_float h){ // callback
         sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} \n",
             x->x_fullname, cv, xpos, ypos, x->x_fullname, x);
         sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] }  { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
-            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, WAVEFORMCOLOR);
+            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_waveformcolor);
         // sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {puts $%lx_featureslen \n puts $%lx_featurescount \n puts [llength $%lx_featurespeaks] \n} \n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
         sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
-            x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, FEATURESCOLOR);
+            x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, x->x_featurescolor);
         sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
-            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, INDICESCOLOR);
+            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, x->x_indicescolor);
 //        post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
@@ -858,6 +858,24 @@ static void fwf_linewidth(t_pic *x, t_float f){
     x->x_linewidth = MAX(1,(int)(f));
 }
 
+static void fwf_waveformcolor(t_pic *x, t_symbol *s) {
+  if (strlen(s->s_name) == 7 && s->s_name[0] == '#') {
+    memcpy((x->x_waveformcolor),(s->s_name + 1),6);
+  } 
+}
+
+static void fwf_featurescolor(t_pic *x, t_symbol *s) {
+  if (strlen(s->s_name) == 7 && s->s_name[0] == '#') {
+    memcpy((x->x_featurescolor),(s->s_name + 1),6);
+  } 
+}
+
+static void fwf_indicescolor(t_pic *x, t_symbol *s) {
+  if (strlen(s->s_name) == 7 && s->s_name[0] == '#') {
+    memcpy((x->x_indicescolor),(s->s_name + 1),6);
+  } 
+}
+
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     int edit = ac = 0;
     if(p->p_cnv){
@@ -977,7 +995,10 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
     x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_outline = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;
     x->x_width = x->x_height = 10;
-    x->x_linewidth = 1;
+    x->x_linewidth = 2;
+    memcpy((x->x_featurescolor),"880000",6);
+    memcpy((x->x_indicescolor),"EECC00",6);
+    memcpy((x->x_waveformcolor),"123456",6);
 
     //generate the cachename
     tmpnam(x->x_filename);
@@ -1069,11 +1090,14 @@ void setup_fluid0x2ewaveform(void){
     class_addmethod(fwf_class, (t_method)fwf_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_latch, gensym("latch"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_audiobuffer, gensym("audiobuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_waveformcolor, gensym("waveformcolor"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_imagebuffer, gensym("imagebuffer"), A_DEFSYMBOL, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_imagecolor, gensym("imagecolorscheme"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_imagelog, gensym("imagelogflag"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_featuresbuffer, gensym("featuresbuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_featurescolor, gensym("featurescolor"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_indicesbuffer, gensym("indicesbuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_indicescolor, gensym("indicescolor"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_linewidth, gensym("linewidth"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_ok, gensym("ok"), A_GIMME, 0);
