@@ -43,10 +43,10 @@ typedef struct _edit_proxy{
     t_object    p_obj;
     t_symbol   *p_sym;
     t_clock    *p_clock;
-    struct      _pic *p_cnv;
+    struct      _fwf *p_cnv;
 }t_edit_proxy;
 
-typedef struct _pic{
+typedef struct _fwf{
      t_object       x_obj;
      t_glist       *x_glist;
      t_edit_proxy  *x_proxy;
@@ -79,10 +79,10 @@ typedef struct _pic{
      t_symbol      *x_send;
      t_symbol      *x_snd_raw;
      t_outlet      *x_outlet;
-}t_pic;
+}t_fwf;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
-static void fwf_draw_io_let(t_pic *x){
+static void fwf_draw_io_let(t_fwf *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
@@ -95,7 +95,7 @@ static void fwf_draw_io_let(t_pic *x){
             cv, xpos, ypos+x->x_height, xpos+(IOWIDTH*x->x_zoom), ypos+x->x_height-IHEIGHT*x->x_zoom, x);
 }
 
-static void fwf_mouserelease(t_pic* x){
+static void fwf_mouserelease(t_fwf* x){
     if(x->x_latch){
         outlet_float(x->x_outlet, 0);
         if(x->x_send != &s_ && x->x_send->s_thing)
@@ -103,7 +103,7 @@ static void fwf_mouserelease(t_pic* x){
     }
 }
 
-static void fwf_get_snd_rcv(t_pic* x){
+static void fwf_get_snd_rcv(t_fwf* x){
     t_binbuf *bb = x->x_obj.te_binbuf;
     int n_args = binbuf_getnatom(bb), i = 0; // number of arguments
     char buf[128];
@@ -162,7 +162,7 @@ static void fwf_get_snd_rcv(t_pic* x){
 }
 
 // ------------------------ pic widgetbehaviour-------------------------------------------------------------------
-static int fwf_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shift, int alt, int dbl, int doit){
+static int fwf_click(t_fwf *x, struct _glist *glist, int xpos, int ypos, int shift, int alt, int dbl, int doit){
     glist = NULL, xpos = ypos = shift = alt = dbl = 0;
     if(doit){
         x->x_latch ? outlet_float(x->x_outlet, 1) : outlet_bang(x->x_outlet) ;
@@ -173,13 +173,13 @@ static int fwf_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
 }
 
 static void fwf_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
-    t_pic* x = (t_pic*)z;
+    t_fwf* x = (t_fwf*)z;
     int xpos = *xp1 = text_xpix(&x->x_obj, glist), ypos = *yp1 = text_ypix(&x->x_obj, glist);
     *xp2 = xpos + x->x_width*x->x_zoom, *yp2 = ypos + x->x_height*x->x_zoom;
 }
 
 static void fwf_displace(t_gobj *z, t_glist *glist, int dx, int dy){
-    t_pic *obj = (t_pic *)z;
+    t_fwf *obj = (t_fwf *)z;
     obj->x_obj.te_xpix += dx, obj->x_obj.te_ypix += dy;
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c move %lx_outline %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
@@ -195,7 +195,7 @@ static void fwf_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 }
 
 static void fwf_select(t_gobj *z, t_glist *glist, int state){
-    t_pic *x = (t_pic *)z;
+    t_fwf *x = (t_fwf *)z;
     int xpos = text_xpix(&x->x_obj, glist);
     int ypos = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(glist);
@@ -217,7 +217,7 @@ static void fwf_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
-static void fwf_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
+static void fwf_draw(t_fwf* x, struct _glist *glist, t_floatarg vis){
     t_canvas *cv = glist_getcanvas(glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
@@ -242,14 +242,14 @@ static void fwf_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
         else if((visible || (_Bool)vis) && (x->x_edit || x->x_outline))
             sys_vgui("if { [info exists %lx_picname] == 1 } {.x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d}\n",
                 x->x_fullname, cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-            sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"}\n",
+            sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
                 x->x_fullname, x->x_x->s_name, x->x_fullname, x->x_fullname);
     }
     sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_x->s_name);
     fwf_draw_io_let(x);
 }
 
-static void fwf_erase(t_pic* x, struct _glist *glist){
+static void fwf_erase(t_fwf* x, struct _glist *glist){
 //    post("erase");
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c delete %lx_picture\n", cv, x); // ERASE
@@ -262,12 +262,12 @@ static void fwf_erase(t_pic* x, struct _glist *glist){
 }
 
 static void fwf_vis(t_gobj *z, t_glist *glist, int vis){
-    t_pic* x = (t_pic*)z;
+    t_fwf* x = (t_fwf*)z;
     vis ? fwf_draw(x, glist, 1) : fwf_erase(x, glist);
 }
 
 static void fwf_save(t_gobj *z, t_binbuf *b){
-    t_pic *x = (t_pic *)z;
+    t_fwf *x = (t_fwf *)z;
     fwf_get_snd_rcv(x);
         binbuf_addv(b, "ssiisiiissi", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
             atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_width, x->x_height, x->x_outline, x->x_snd_raw,
@@ -276,7 +276,7 @@ static void fwf_save(t_gobj *z, t_binbuf *b){
 }
 
 //------------------------------- METHODS --------------------------------------------
-static void fwf_size_callback(t_pic *x, t_float w, t_float h){ // callback
+static void fwf_size_callback(t_fwf *x, t_float w, t_float h){ // callback
 //    post("callback");
     if ((x->x_width != w) || (x->x_height != h)){
       pd_error(x,"strange size");
@@ -313,7 +313,7 @@ static void fwf_size_callback(t_pic *x, t_float w, t_float h){ // callback
         fwf_erase(x, x->x_glist);
 }
 
-void fwf_audiobuffer(t_pic* x, t_symbol* name){
+void fwf_audiobuffer(t_fwf* x, t_symbol* name){
   t_garray* inputarray;
   t_word* words = NULL;
   int length = 0;
@@ -439,7 +439,7 @@ void fwf_audiobuffer(t_pic* x, t_symbol* name){
 
 }
 
-void fwf_imagebuffer(t_pic* x, t_symbol* name){
+void fwf_imagebuffer(t_fwf* x, t_symbol* name){
   t_garray* inputarray;
   t_word* words = NULL;
   int length = 0;
@@ -580,7 +580,7 @@ void fwf_imagebuffer(t_pic* x, t_symbol* name){
 
 }
 
-void fwf_featuresbuffer(t_pic* x, t_symbol* name){
+void fwf_featuresbuffer(t_fwf* x, t_symbol* name){
   t_garray* inputarray;
   t_word* words = NULL;
   int length = 0;
@@ -693,7 +693,7 @@ void fwf_featuresbuffer(t_pic* x, t_symbol* name){
   free(maxVal);
 }
 
-void fwf_indicesbuffer(t_pic* x, t_symbol* name){
+void fwf_indicesbuffer(t_fwf* x, t_symbol* name){
   t_garray* inputarray;
   t_word* words = NULL;
   int length = 0;
@@ -783,7 +783,7 @@ void fwf_indicesbuffer(t_pic* x, t_symbol* name){
   free(localcopy);
 }
 
-static void fwf_send(t_pic *x, t_symbol *s){
+static void fwf_send(t_fwf *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(snd != x->x_send){
@@ -800,7 +800,7 @@ static void fwf_send(t_pic *x, t_symbol *s){
     }
 }
 
-static void fwf_receive(t_pic *x, t_symbol *s){
+static void fwf_receive(t_fwf *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(rcv != x->x_receive){
@@ -822,7 +822,7 @@ static void fwf_receive(t_pic *x, t_symbol *s){
     }
 }
 
-static void fwf_outline(t_pic *x, t_float f){
+static void fwf_outline(t_fwf *x, t_float f){
     int outline = (int)(f != 0);
     if(x->x_outline != outline){
         x->x_outline = outline;
@@ -842,35 +842,35 @@ static void fwf_outline(t_pic *x, t_float f){
     }
 }
 
-static void fwf_latch(t_pic *x, t_float f){
+static void fwf_latch(t_fwf *x, t_float f){
     x->x_latch = (int)(f != 0);
 }
 
-static void fwf_imagelog(t_pic *x, t_float f){
+static void fwf_imagelog(t_fwf *x, t_float f){
     x->x_imagelogflag = (int)(f != 0);
 }
 
-static void fwf_imagecolor(t_pic *x, t_float f){
+static void fwf_imagecolor(t_fwf *x, t_float f){
     x->x_imagecolorscheme = (int)(f != 0);
 }
 
-static void fwf_linewidth(t_pic *x, t_float f){
+static void fwf_linewidth(t_fwf *x, t_float f){
     x->x_linewidth = MAX(1,(int)(f));
 }
 
-static void fwf_waveformcolor(t_pic *x, t_symbol *s) {
+static void fwf_waveformcolor(t_fwf *x, t_symbol *s) {
   if (strlen(s->s_name) == 7 && s->s_name[0] == '#') {
     memcpy((x->x_waveformcolor),(s->s_name + 1),6);
   } 
 }
 
-static void fwf_featurescolor(t_pic *x, t_symbol *s) {
+static void fwf_featurescolor(t_fwf *x, t_symbol *s) {
   if (strlen(s->s_name) == 7 && s->s_name[0] == '#') {
     memcpy((x->x_featurescolor),(s->s_name + 1),6);
   } 
 }
 
-static void fwf_indicescolor(t_pic *x, t_symbol *s) {
+static void fwf_indicescolor(t_fwf *x, t_symbol *s) {
   if (strlen(s->s_name) == 7 && s->s_name[0] == '#') {
     memcpy((x->x_indicescolor),(s->s_name + 1),6);
   } 
@@ -912,7 +912,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fwf_zoom(t_pic *x, t_floatarg zoom){
+static void fwf_zoom(t_fwf *x, t_floatarg zoom){
     x->x_zoom = (int)zoom;
     fwf_draw_io_let(x);
 }
@@ -920,7 +920,7 @@ static void fwf_zoom(t_pic *x, t_floatarg zoom){
 //------------------- Properties --------------------------------------------------------
 void fwf_properties(t_gobj *z, t_glist *gl){
     gl = NULL;
-    t_pic *x = (t_pic *)z;
+    t_fwf *x = (t_fwf *)z;
     fwf_get_snd_rcv(x);
     char buffer[512];
     sprintf(buffer, "fwf_properties %%s %d %d %d %d {%s} {%s} \n",
@@ -933,7 +933,7 @@ void fwf_properties(t_gobj *z, t_glist *gl){
     gfxstub_new(&x->x_obj.ob_pd, x, buffer);
 }
 
-static void fwf_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
+static void fwf_ok(t_fwf *x, t_symbol *s, int ac, t_atom *av){
   // post("in ok");
     s = NULL;
     x->x_width = MAX(10, (int)(atom_getfloatarg(0, ac, av)));
@@ -954,7 +954,7 @@ static void edit_proxy_free(t_edit_proxy *p){
     pd_free(&p->p_obj.ob_pd);
 }
 
-static t_edit_proxy * edit_proxy_new(t_pic *x, t_symbol *s){
+static t_edit_proxy * edit_proxy_new(t_fwf *x, t_symbol *s){
     t_edit_proxy *p = (t_edit_proxy*)pd_new(edit_proxy_class);
     p->p_cnv = x;
     pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
@@ -962,7 +962,7 @@ static t_edit_proxy * edit_proxy_new(t_pic *x, t_symbol *s){
     return(p);
 }
 
-static void fwf_free(t_pic *x){ // delete if variable is unset and image is unused
+static void fwf_free(t_fwf *x){ // delete if variable is unset and image is unused
     sys_vgui("if { [info exists %lx_picname] == 1 && [image inuse %lx_picname] == 0} { image delete %lx_picname \n unset %lx_picname\n}\n",
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
     sys_vgui("if { [info exists %lx_audiopeaks] == 1 } {array unset %lx_audiopeaks}\n",
@@ -981,7 +981,7 @@ static void fwf_free(t_pic *x){ // delete if variable is unset and image is unus
 
 static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_pic *x = (t_pic *)pd_new(fwf_class);
+    t_fwf *x = (t_fwf *)pd_new(fwf_class);
     t_canvas *cv = canvas_getcurrent();
     x->x_glist = (t_glist*)cv;
     x->x_zoom = x->x_glist->gl_zoom;
@@ -1086,7 +1086,7 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
 }
 
 void setup_fluid0x2ewaveform(void){
-    fwf_class = class_new(gensym("fluid.waveform"), (t_newmethod)fwf_new, (t_method)fwf_free, sizeof(t_pic),0, A_GIMME,0);
+    fwf_class = class_new(gensym("fluid.waveform"), (t_newmethod)fwf_new, (t_method)fwf_free, sizeof(t_fwf),0, A_GIMME,0);
     class_addmethod(fwf_class, (t_method)fwf_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_latch, gensym("latch"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_audiobuffer, gensym("audiobuffer"), A_DEFSYMBOL, 0);
@@ -1103,7 +1103,7 @@ void setup_fluid0x2ewaveform(void){
     class_addmethod(fwf_class, (t_method)fwf_ok, gensym("ok"), A_GIMME, 0);
     class_addmethod(fwf_class, (t_method)fwf_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_zoom, gensym("zoom"), A_CANT, 0);
-    class_addmethod(fwf_class, (t_method)fwf_size_callback, gensym("_picsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fwf_class, (t_method)fwf_size_callback, gensym("_fwfsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_mouserelease, gensym("_mouserelease"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
