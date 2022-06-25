@@ -15,6 +15,7 @@
 
 #define MIN(A,B) ((A)<(B) ? (A) : (B))
 #define MAX(A,B) ((A)>(B) ? (A) : (B))
+#define CLIP(A,B,C) (MAX(B,(MIN(A,C))))
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -50,9 +51,12 @@ typedef struct _fwf{
      t_object       x_obj;
      t_glist       *x_glist;
      t_edit_proxy  *x_proxy;
+     t_symbol       *x_bindname;
      int            x_zoom;
      int            x_width;
      int            x_height;
+     int            x_x;
+     int            x_y;
      int            x_snd_set;
      int            x_rcv_set;
      int            x_edit;
@@ -73,7 +77,6 @@ typedef struct _fwf{
      int            x_linewidth;
      char           x_featurescolor[6];
      t_symbol      *x_fullname;
-     t_symbol      *x_x;
      t_symbol      *x_receive;
      t_symbol      *x_rcv_raw;
      t_symbol      *x_send;
@@ -93,14 +96,6 @@ static void fwf_draw_io_let(t_fwf *x){
     if(x->x_edit && x->x_send == &s_)
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
             cv, xpos, ypos+x->x_height, xpos+(IOWIDTH*x->x_zoom), ypos+x->x_height-IHEIGHT*x->x_zoom, x);
-}
-
-static void fwf_mouserelease(t_fwf* x){
-    if(x->x_latch){
-        outlet_float(x->x_outlet, 0);
-        if(x->x_send != &s_ && x->x_send->s_thing)
-            pd_float(x->x_send->s_thing, 0);
-    }
 }
 
 static void fwf_get_snd_rcv(t_fwf* x){
@@ -161,15 +156,47 @@ static void fwf_get_snd_rcv(t_fwf* x){
         x->x_rcv_raw = gensym("empty");
 }
 
-// ------------------------ pic widgetbehaviour-------------------------------------------------------------------
-static int fwf_click(t_fwf *x, struct _glist *glist, int xpos, int ypos, int shift, int alt, int dbl, int doit){
-    glist = NULL, xpos = ypos = shift = alt = dbl = 0;
-    if(doit){
-        x->x_latch ? outlet_float(x->x_outlet, 1) : outlet_bang(x->x_outlet) ;
-        if(x->x_send != &s_ && x->x_send->s_thing)
-            x->x_latch ? pd_float(x->x_send->s_thing, 1) : pd_bang(x->x_send->s_thing);
+// ------------------------ widgetbehaviour-------------------------------------------------------------------
+static void fwf_motion(t_fwf *x, t_floatarg dx, t_floatarg dy){
+    x->x_x += (int)(dx/x->x_zoom);
+    x->x_y -= (int)(dy/x->x_zoom);
+    x->x_x = CLIP(x->x_x,0,x->x_width);
+    x->x_y = CLIP(x->x_y,0,x->x_height);
+    t_atom at[2];
+    SETFLOAT(at, x->x_x);
+    SETFLOAT(at+1, x->x_y);
+    outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+}
+
+static int fwf_click(t_fwf *x, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
+    shift = alt = dbl = 0;
+    t_atom at[2];
+    int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
+    x->x_x = CLIP((xpix - xpos) / x->x_zoom,0,x->x_width);
+    x->x_y = CLIP(x->x_height - (ypix - ypos) / x->x_zoom,0,x->x_height);
+    if(doit){//if mousedown
+        // SETFLOAT(at, (float)doit);       // to send a click message if we want to eventually
+        // outlet_anything(x->x_obj.ob_outlet, gensym("click"), 1, at);
+        SETFLOAT(at, (float)x->x_x);
+        SETFLOAT(at+1, (float)x->x_y);
+        outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+        // start streaming the coordinates
+        glist_grab(x->x_glist, &x->x_obj.te_g, (t_glistmotionfn)fwf_motion, 0, xpix, ypix);
     }
+    // else{// to send the coordinates on mouse up if we want to eventually
+    //     SETFLOAT(at, (float)x->x_x);
+    //     SETFLOAT(at+1, (float)x->x_y);
+    //     outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+    // }
     return(1);
+}
+
+static void fwf_mouserelease(t_fwf* x){
+    if(x->x_latch){
+        outlet_float(x->x_outlet, -1);
+        if(x->x_send != &s_ && x->x_send->s_thing)
+            pd_float(x->x_send->s_thing, -1);
+    }
 }
 
 static void fwf_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -243,9 +270,9 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, t_floatarg vis){
             sys_vgui("if { [info exists %lx_picname] == 1 } {.x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d}\n",
                 x->x_fullname, cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
             sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
-                x->x_fullname, x->x_x->s_name, x->x_fullname, x->x_fullname);
+                x->x_fullname, x->x_bindname->s_name, x->x_fullname, x->x_fullname);
     }
-    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_x->s_name);
+    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
     fwf_draw_io_let(x);
 }
 
@@ -973,7 +1000,7 @@ static void fwf_free(t_fwf *x){ // delete if variable is unset and image is unus
                     x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);    
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-    pd_unbind(&x->x_obj.ob_pd, x->x_x);
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
     gfxstub_deleteforkey(x);
@@ -990,7 +1017,7 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buf));
     sprintf(buf, "#%lx", (long)x);
-    pd_bind(&x->x_obj.ob_pd, x->x_x = gensym(buf));
+    pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
     x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_outline = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;

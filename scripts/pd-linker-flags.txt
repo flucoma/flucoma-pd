@@ -59,10 +59,12 @@
 -Wl,-U,_glist_getcanvas
 -Wl,-U,_glist_isvisible
 -Wl,-U,_gobj_shouldvis
+-Wl,-U,_glist_grab
 -Wl,-U,_pd_bang
 -Wl,-U,_pd_float
 -Wl,-U,_s_
 -Wl,-U,_s_bang
+-Wl,-U,_s_list
 -Wl,-U,_sys_vgui
 -Wl,-U,_text_xpix
 -Wl,-U,_text_ypix
