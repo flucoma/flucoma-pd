@@ -1,6 +1,6 @@
-#N struct 1055-draw-item float x float y float c float a float b;
-#N struct 1076-rectangle float x float c;
-#N struct 1076-pixel float x0 float y0 float x1 float y1;
+#N struct 1110-draw-item float x float y float c float a float b;
+#N struct 1014-rectangle float x float c;
+#N struct 1014-pixel float x0 float y0 float x1 float y1;
 #N canvas 0 23 705 811 12;
 #X obj 285 237 fluid.ampslice~;
 #X obj 285 147 fluid.onsetslice~;
@@ -128,12 +128,12 @@
 #X obj 496 1701 fluid.bufselectevery;
 #X obj 494 1494 fluid.grid;
 #X obj 494 1464 fluid.skmeans;
-#X text 146 1790 Data-Viewing GUI;
-#X obj 286 1791 fluid.plotter;
+#X text 146 1879 Data-Viewing GUI;
+#X obj 286 1876 fluid.plotter;
 #X obj 286 1731 fluid.bufinfo;
 #X obj 286 1819 fluid.waveform 100 40 0 empty empty 0;
 #X text 118 1820 Waveform-Viewing GUI;
-#X obj 496 1790 fluid.s2f;
+#X obj 286 1790 fluid.s2f;
 #X obj 286 1762 fluid.ds2text;
 #X obj 496 1762 fluid.ls2text;
 #X text 77 1763 Dataset/Labelset Utilities;
