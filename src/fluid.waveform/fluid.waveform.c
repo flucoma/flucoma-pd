@@ -1116,14 +1116,14 @@ void setup_fluid0x2ewaveform(void){
     fwf_class = class_new(gensym("fluid.waveform"), (t_newmethod)fwf_new, (t_method)fwf_free, sizeof(t_fwf),0, A_GIMME,0);
     class_addmethod(fwf_class, (t_method)fwf_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_latch, gensym("latch"), A_DEFFLOAT, 0);
-    class_addmethod(fwf_class, (t_method)fwf_audiobuffer, gensym("audiobuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_audiobuffer, gensym("waveform"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_waveformcolor, gensym("waveformcolor"), A_DEFSYMBOL, 0);
-    class_addmethod(fwf_class, (t_method)fwf_imagebuffer, gensym("imagebuffer"), A_DEFSYMBOL, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fwf_class, (t_method)fwf_imagebuffer, gensym("image"), A_DEFSYMBOL, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_imagecolor, gensym("imagecolorscheme"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_imagelog, gensym("imagelogflag"), A_DEFFLOAT, 0);
-    class_addmethod(fwf_class, (t_method)fwf_featuresbuffer, gensym("featuresbuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_featuresbuffer, gensym("features"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_featurescolor, gensym("featurescolor"), A_DEFSYMBOL, 0);
-    class_addmethod(fwf_class, (t_method)fwf_indicesbuffer, gensym("indicesbuffer"), A_DEFSYMBOL, 0);
+    class_addmethod(fwf_class, (t_method)fwf_indicesbuffer, gensym("indices"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_indicescolor, gensym("indicescolor"), A_DEFSYMBOL, 0);
     class_addmethod(fwf_class, (t_method)fwf_linewidth, gensym("linewidth"), A_DEFFLOAT, 0);
     class_addmethod(fwf_class, (t_method)fwf_send, gensym("send"), A_DEFSYMBOL, 0);
