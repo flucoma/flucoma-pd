@@ -1,92 +1,406 @@
-#N struct 1079-draw-item float x float y float c float a float b;
-#N struct 1080-rectangle float x float c;
-#N struct 1080-pixel float x0 float y0 float x1 float y1;
-#N canvas 634 126 1065 914 12;
+#N struct 1096-draw-item float x float y float c float a float b;
+#N struct 1097-rectangle float x float c;
+#N struct 1097-pixel float x0 float y0 float x1 float y1;
+#N struct 1111-draw-item float x float y float c float a float b;
+#N struct 1112-rectangle float x float c;
+#N struct 1112-pixel float x0 float y0 float x1 float y1;
+#N struct 1122-draw-item float x float y float c float a float b;
+#N struct 1123-rectangle float x float c;
+#N struct 1123-pixel float x0 float y0 float x1 float y1;
+#N struct 1149-draw-item float x float y float c float a float b;
+#N struct 1150-rectangle float x float c;
+#N struct 1150-pixel float x0 float y0 float x1 float y1;
+#N canvas 66 73 697 762 12;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.plotter 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 510 66 fluid.referencelauncher fluid.plotter.html reference/plotter/
+;
+#X obj 531 643 cnv 15 145 95 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 18 66 cnv 15 488 17 empty empty Plot\\\ data\\\ in\\\ a\\\ two-dimensional\\\ graph.
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 27 386 fluid.plotter;
+#X text 18 85 A native GUI to plot and query datasets in two-dimension
+;
+#X text 20 156 1) Select a prefab dataset, f 27;
+#X msg 22 182 line;
+#X msg 22 227 read data/\$1.json;
+#X obj 22 205 symbol;
+#X obj 28 700 text define help.plotting.1.txt;
+#X obj 22 250 fluid.dataset help.plotting.1;
+#X obj 26 337 fluid.ds2text help.plotting.1 help.plotting.1.txt;
+#X msg 26 361 setpoints help.plotting.1.txt;
+#X obj 25 316 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 63 182 moon;
+#X msg 105 182 circles;
+#X msg 166 182 blobs;
+#X msg 214 182 gaussian4;
+#X text 50 300 2) Transfer the dataset to a text object \, whose name
+is passed on with the setpoint message, f 47;
+#X obj 393 185 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#N canvas 199 508 450 300 clustering 0;
+#X obj 37 37 inlet;
+#X msg 37 61 clear \, fitpredict help.plotting.1 help.plotting.classes.1
+;
+#X obj 37 85 fluid.kmeans -numbclusters 4;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 393 205 pd clustering;
+#X obj 345 409 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 345 446 fluid.ls2text help.plotting.classes.1 help.plotting.classes.1.txt
+;
+#X obj 28 722 text define help.plotting.classes.1.txt;
+#X msg 345 484 setlabels help.plotting.classes.1.txt;
+#X text 370 164 3) Cluster the points;
+#N canvas 325 173 698 764 range 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.plotter 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 18 66 cnv 15 488 17 empty empty Plot\\\ data\\\ in\\\ a\\\ two-dimensional\\\ graph.
+4 8 0 13 #e0e0e0 #404040 0;
 #N canvas 536 104 617 462 makepoints 0;
 #X obj 23 141 until;
 #X obj 23 169 f;
 #X obj 7 211 + 1;
 #X msg 61 166 0;
 #X msg 23 113 100;
-#X msg 229 215 0 \, 1;
 #X obj 32 56 inlet;
 #X obj 32 80 t b b;
-#X obj 299 290 array define plotterdatapoint 2;
-#X msg 24 288 setpoint index\$1 plotterdatapoint;
 #X obj 24 312 outlet;
 #X obj 57 227 trigger f f b;
-#X obj 227 237 expr plotterdatapoint[$f1] = random(0 \, 10001)/10000.
-;
+#X obj 207 201 expr help_p2_pt[0] = random(0 \, 10001);
+#X obj 207 231 expr help_p2_pt[1] = random(40 \, 601);
+#X obj 299 290 array define help_p2_pt 2;
+#X msg 24 288 setpoint index\$1 help_p2_pt;
 #X connect 0 0 1 0;
-#X connect 1 0 11 0;
+#X connect 1 0 8 0;
 #X connect 2 0 1 1;
 #X connect 3 0 1 1;
 #X connect 4 0 0 0;
-#X connect 5 0 12 0;
-#X connect 6 0 7 0;
-#X connect 7 0 4 0;
-#X connect 7 1 3 0;
-#X connect 9 0 10 0;
-#X connect 11 0 2 0;
-#X connect 11 1 9 0;
-#X connect 11 2 5 0;
-#X restore 46 82 pd makepoints;
-#X obj 44 56 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 6 1 3 0;
+#X connect 8 0 2 0;
+#X connect 8 1 12 0;
+#X connect 8 2 9 0;
+#X connect 8 2 10 0;
+#X connect 12 0 7 0;
+#X restore 26 180 pd makepoints;
+#X obj 25 157 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X msg 77 121 print;
-#X obj 47 152 fluid.dataset plotter-help-DS;
-#X obj 46 232 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X msg 57 219 print;
+#X text 129 157 1) Generate a random set of points that are not normal.
+In this case the horizontal values range between 0 and 10000 and the
+vertical values between 40 and 600;
+#X obj 28 434 fluid.plotter;
+#X obj 28 288 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 48 282 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 50 338 text define plotter-help-DS-text;
-#X obj 46 252 fluid.ds2text plotter-help-DS plotter-help-DS-text;
-#X obj 66 772 text define plotter-help-LS-text;
-#X msg 69 556 print;
-#X obj 54 474 fluid.kmeans -numclusters 4;
-#X msg 55 449 clear \, fitpredict plotter-help-DS plotter-help-LS;
-#X obj 60 586 fluid.labelset plotter-help-LS;
-#X obj 63 675 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 64 726 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 63 695 fluid.ls2text plotter-help-LS plotter-help-LS-text;
-#X text 68 228 2 transfer the dataset to text for Pd manipulations
+#N canvas 173 212 450 300 dump_and_draw 0;
+#X obj 37 37 inlet;
+#X obj 37 61 fluid.ds2text help.plotter.2 help.plotter.2.txt;
+#X obj 147 91 text define help.plotter.2.txt;
+#X msg 37 139 setpoints help.plotter.2.txt;
+#X obj 37 163 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 4 0;
+#X restore 28 308 pd dump_and_draw;
+#X obj 27 250 fluid.dataset help.plotter.2;
+#X text 58 287 2) Draw - all bunched up in the top right corner;
+#X floatatom 374 340 5 0 0 0 - - - 0;
+#X floatatom 414 340 5 0 0 0 - - - 0;
+#X obj 414 361 t b f;
+#X obj 374 385 pack f f;
+#X msg 374 407 xrange \$1 \$2;
+#X floatatom 496 341 5 0 0 0 - - - 0;
+#X floatatom 536 341 5 0 0 0 - - - 0;
+#X obj 536 362 t b f;
+#X obj 496 386 pack f f;
+#X msg 496 408 yrange \$1 \$2;
+#X msg 373 589 range \$1 \$2;
+#X text 370 611 this would set both x and y at the same time, f 15
 ;
-#X text 56 426 3 cluster the points in 4 \, generating a labelset of
-classes;
-#X text 85 673 4 transfer the labelset to text for Pd manipualtions
+#X text 370 318 3) Change the range of each dimension;
+#X text 18 85 By default \, the range of the fluid.plotter is between
+0 and 1 for both the X and Y axis. You can modify the displayed range
+of the plotter with two messages \, xrange and yrange. Each message
+accepts two values \, the minimum and maximum for each., f 91;
+#X connect 2 0 9 0;
+#X connect 3 0 2 0;
+#X connect 4 0 9 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 11 0 14 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 13 1 14 1;
+#X connect 14 0 15 0;
+#X connect 15 0 6 0;
+#X connect 16 0 19 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 18 1 19 1;
+#X connect 19 0 20 0;
+#X connect 20 0 6 0;
+#X restore 534 669 pd range;
+#N canvas 642 23 693 899 querying 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.plotter 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 18 66 cnv 15 488 17 empty empty Plot\\\ data\\\ in\\\ a\\\ two-dimensional\\\ graph.
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 23 110 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 23 143 t b b b, f 76;
+#X obj 17 313 fluid.plotter;
+#X msg 217 824 highlight index3 index7 index9;
+#X msg 215 800 highlight index1 index17 index29;
+#X msg 212 776 highlight;
+#N canvas 536 104 729 496 dataset 0;
+#X obj 49 158 until;
+#X obj 49 186 f;
+#X obj 33 228 + 1;
+#X msg 87 183 0;
+#X msg 49 130 100;
+#X msg 255 232 0 \, 1;
+#X obj 32 56 inlet;
+#X obj 83 244 trigger f f b;
+#X obj 253 254 expr help_plotter_3_pt[$f1] = random(0 \, 10001)/10000.
 ;
-#X obj 571 315 fluid.plotter;
-#X msg 342 170 setpoints plotter-help-DS-text;
-#X floatatom 588 116 5 0 0 0 - - - 0;
-#X floatatom 646 105 5 0 0 0 - - - 0;
-#X obj 592 155 pack f f;
-#X obj 646 128 t b f;
-#X msg 592 176 range \$1 \$2;
-#X msg 759 175 highlight index3 index7 index9;
-#X msg 757 151 highlight index1 index17 index29;
-#X msg 754 127 highlight;
-#X msg 732 243 setlabels plotter-help-LS-text;
-#X text 67 60 1 generate a random set of points \, 2D from 0 to +1
-;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
+#X obj 325 307 array define help_plotter_3_pt 2;
+#X msg 50 305 setpoint index\$1 help_plotter_3_pt;
+#X obj 50 366 fluid.dataset help.plotter.3;
+#X obj 32 80 t b b b;
+#X obj 331 363 text define help.plotter.3.txt;
+#X obj 15 407 fluid.ds2text help.plotter.3 help.plotter.3.txt;
+#X obj 15 431 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 1;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X connect 5 0 8 0;
+#X connect 6 0 12 0;
+#X connect 7 0 2 0;
+#X connect 7 1 10 0;
+#X connect 7 2 5 0;
+#X connect 10 0 11 0;
+#X connect 12 0 14 0;
+#X connect 12 1 4 0;
+#X connect 12 2 3 0;
+#X connect 14 0 15 0;
+#X restore 552 170 pd dataset;
+#N canvas 194 235 497 222 cluster 0;
+#X obj 30 23 inlet;
+#X obj 30 71 fluid.kmeans -numclusters 4;
+#X obj 30 95 route fitpredict;
+#X obj 30 119 fluid.ls2text help.plotter.3.labels help.plotter.3.labels.txt
+, f 61;
+#X obj 126 157 text define help.plotter.3.labels.txt;
+#X obj 125 189 fluid.labelset help.plotter.3.labels;
+#X msg 30 47 fitpredict help.plotter.3 help.plotter.3.labels;
+#X obj 30 143 outlet;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
 #X connect 2 0 3 0;
-#X connect 4 0 7 0;
-#X connect 7 0 5 0;
+#X connect 3 0 7 0;
+#X connect 6 0 1 0;
+#X restore 286 171 pd cluster;
+#X msg 23 167 fit help.plotter.3;
+#X obj 23 191 fluid.kdtree help.plotter.3.tree;
+#X msg 17 260 setpoints help.plotter.3.txt;
+#X msg 310 258 setlabels help.plotter.3.labels.txt;
+#X listbox 27 618 20 0 0 0 - - - 0;
+#X msg 17 760 highlight \$1;
+#X obj 17 858 s help.plotter.3.plotter;
+#X obj 35 284 r help.plotter.3.plotter;
+#X text 328 411 2) Move your moise over the plotter;
+#X text 177 617 3) These are the coordinates of your mouse inside the
+two-dimensional space according to the ranges which have been set by
+xrange and yrange.;
+#N canvas 215 258 1090 890 querying 0;
+#X obj 37 37 inlet;
+#X obj 70 130 array set help.plotter.3.query;
+#X obj 116 155 array define help.plotter.3.query 2;
+#X obj 39 255 fluid.kdtree help.plotter.3.tree;
+#X msg 39 231 knearest help.plotter.3.query;
+#X obj 39 286 route knearest;
+#X obj 39 323 symbol;
+#X obj 39 105 t b l;
+#X obj 39 347 outlet;
+#X text 330 126 here we store the coordinates in an array;
+#X text 263 226 then query the kdtree \, named and fitted in the previous
+patch, f 62;
+#X connect 0 0 7 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 7 0 4 0;
+#X connect 7 1 1 0;
+#X restore 17 683 pd querying;
+#X text 36 722 4) the highlight message \, followed by identifiers
+\, will make these points bigger, f 42;
+#X text 291 774 5) sending nothing deselects \, and multiple points
+;
+#X text 462 795 can be sent at once;
+#X text 46 108 1) Generate random data and cluster it. Also \, fit
+a kdtree so we can query for the closest point., f 73;
+#X connect 2 0 3 0;
+#X connect 3 0 10 0;
+#X connect 3 1 9 0;
+#X connect 3 2 8 0;
+#X connect 4 0 14 0;
+#X connect 4 0 20 0;
+#X connect 5 0 16 0;
+#X connect 6 0 16 0;
+#X connect 7 0 16 0;
+#X connect 8 0 12 0;
+#X connect 9 0 13 0;
+#X connect 10 0 11 0;
+#X connect 12 0 4 0;
+#X connect 13 0 4 1;
+#X connect 15 0 16 0;
+#X connect 17 0 4 0;
+#X connect 20 0 15 0;
+#X restore 534 691 pd querying;
+#N canvas 0 23 699 669 advanced 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.plotter 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 18 66 cnv 15 488 17 empty empty Plot\\\ data\\\ in\\\ a\\\ two-dimensional\\\ graph.
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 18 85 Drawing through the "advanced" interface lets you be
+more draw at a lower level., f 80;
+#X text 392 233 Set the size of each point. Format is: <identifer>
+<size>, f 28;
+#X text 79 236 Set the pointcolor of each point. Format is: <identifier>
+<class>, f 33;
+#X obj 23 122 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 46 120 1) Generate random data., f 73;
+#N canvas 536 104 729 496 random_coordinates 0;
+#X obj 49 158 until;
+#X obj 49 186 f;
+#X obj 33 228 + 1;
+#X msg 87 183 0;
+#X msg 49 130 100;
+#X obj 32 56 inlet;
+#X obj 83 244 trigger f f b;
+#X obj 32 80 t b b b;
+#X obj 77 280 makefilename index-%d;
+#X obj 77 386 pack s f f;
+#X obj 108 314 expr random(0 \, 10001)/10000.;
+#X obj 130 361 expr random(0 \, 10001)/10000.;
+#X obj 77 410 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 1;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 2 0;
+#X connect 6 1 8 0;
+#X connect 6 2 10 0;
+#X connect 6 2 11 0;
+#X connect 7 1 4 0;
+#X connect 7 2 3 0;
+#X connect 8 0 9 0;
 #X connect 9 0 12 0;
-#X connect 11 0 10 0;
-#X connect 13 0 15 0;
-#X connect 15 0 14 0;
-#X connect 20 0 19 0;
-#X connect 21 0 23 0;
-#X connect 22 0 24 0;
+#X connect 10 0 9 1;
+#X connect 11 0 9 2;
+#X restore 23 170 pd random_coordinates;
+#X obj 23 342 fluid.plotter;
+#X text 180 166 You don't need a fluid.dataset~ necessarily. Using
+the setpoint message you can create a plot point by point. Format is
+<identifier> <x> <y> <size> <class>, f 71;
+#N canvas 536 104 1084 911 random_color 0;
+#X obj 49 158 until;
+#X obj 49 186 f;
+#X obj 33 228 + 1;
+#X msg 87 183 0;
+#X msg 49 130 100;
+#X obj 32 56 inlet;
+#X obj 83 244 trigger f f b;
+#X obj 32 80 t b b b;
+#X obj 77 280 makefilename index-%d;
+#X obj 77 410 outlet;
+#X obj 77 386 pack s f;
+#X obj 108 314 expr random(0 \, 8);
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 1;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 2 0;
+#X connect 6 1 8 0;
+#X connect 6 2 11 0;
+#X connect 7 1 4 0;
+#X connect 7 2 3 0;
+#X connect 8 0 10 0;
+#X connect 10 0 9 0;
+#X connect 11 0 10 1;
+#X restore 56 276 pd random_color;
+#X msg 56 299 pointcolor \$1 \$2;
+#X obj 56 238 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 23 193 setpoint \$1 \$2 \$3 2;
+#X obj 364 238 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#N canvas 536 104 1084 911 random_size 0;
+#X obj 49 158 until;
+#X obj 49 186 f;
+#X obj 33 228 + 1;
+#X msg 87 183 0;
+#X msg 49 130 100;
+#X obj 32 56 inlet;
+#X obj 83 244 trigger f f b;
+#X obj 32 80 t b b b;
+#X obj 77 280 makefilename index-%d;
+#X obj 77 410 outlet;
+#X obj 77 386 pack s f;
+#X obj 108 314 expr random(2 \, 8);
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 2 0 1 1;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 2 0;
+#X connect 6 1 8 0;
+#X connect 6 2 11 0;
+#X connect 7 1 4 0;
+#X connect 7 2 3 0;
+#X connect 8 0 10 0;
+#X connect 10 0 9 0;
+#X connect 11 0 10 1;
+#X restore 364 283 pd random_size;
+#X msg 364 306 pointsize \$1 \$2;
+#X connect 5 0 7 0;
+#X connect 7 0 13 0;
+#X connect 10 0 11 0;
+#X connect 11 0 8 0;
+#X connect 12 0 10 0;
+#X connect 13 0 8 0;
+#X connect 14 0 15 0;
+#X connect 15 0 16 0;
+#X connect 16 0 8 0;
+#X restore 534 713 pd advanced;
+#X text 365 393 4) Transfer the labelset to a text object \, whose
+name is passed on with the setlabels message in the right inlet, f
+42;
+#X connect 7 0 9 0;
+#X connect 8 0 11 0;
+#X connect 9 0 8 0;
+#X connect 12 0 13 0;
+#X connect 13 0 4 0;
+#X connect 14 0 12 0;
+#X connect 15 0 9 0;
+#X connect 16 0 9 0;
+#X connect 17 0 9 0;
+#X connect 18 0 9 0;
+#X connect 20 0 21 0;
+#X connect 22 0 23 0;
 #X connect 23 0 25 0;
-#X connect 24 0 23 0;
-#X connect 24 1 23 1;
-#X connect 25 0 19 0;
-#X connect 26 0 19 0;
-#X connect 27 0 19 0;
-#X connect 28 0 19 0;
-#X connect 29 0 19 1;
+#X connect 25 0 4 1;
