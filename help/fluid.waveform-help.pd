@@ -42,7 +42,7 @@ for a better view, f 47;
 #X connect 7 0 8 0;
 #X connect 8 0 1 0;
 #X restore 467 677 pd features;
-#N canvas 683 24 705 547 markers_for_indicies 0;
+#N canvas 683 24 705 547 markers_for_indices 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 63 Display markers for slice indices;
@@ -63,7 +63,7 @@ reference;
 #X connect 4 0 2 0;
 #X connect 5 0 10 0;
 #X connect 10 0 4 0;
-#X restore 467 655 pd markers_for_indicies;
+#X restore 467 655 pd markers_for_indices;
 #N canvas 683 23 696 772 spectrograms 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
 #ffffff 0;
