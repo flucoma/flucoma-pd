@@ -1,34 +1,993 @@
-#N canvas 609 232 600 427 12;
-#X obj 67 211 fluid.dataset source;
-#X obj 63 40 until;
-#X obj 65 78 f;
-#X obj 99 82 + 1;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array dsq1 1 float 3;
-#A 0 2.9;
-#X coords 0 1 1 -1 200 140 1;
-#X restore 301 30 graph;
-#X obj 67 126 trigger float float;
-#X obj 195 154 * 0.1;
-#X obj 197 180 tabwrite dsq1;
-#X msg 66 166 setpoint \$1 dsq1;
-#X msg 55 11 10;
-#X obj 190 389 fluid.dataset filtered;
-#X msg 57 253 clear \, filter 0 < 0.5 \, addcolumn 0 \, transform source
-filtered;
-#X obj 187 330 route transform;
-#X msg 188 360 print;
-#X obj 58 305 fluid.datasetquery;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 2 0 5 0;
-#X connect 3 0 2 1;
-#X connect 5 0 8 0;
-#X connect 5 1 6 0;
-#X connect 6 0 7 0;
-#X connect 8 0 0 0;
-#X connect 9 0 1 0;
-#X connect 11 0 14 0;
+#N canvas 18 38 696 995 12;
+#X obj 245 621 fluid.datasetquery;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 457 867 cnv 15 222 110 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.datasetquery.html reference/datasetquery/
+;
+#X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 17 79 Query a FluidDataSet;
+#X text 17 129 A selection of columns and a set of conditions that
+match rows of a FluidDataSet. Use to filter and search in a database
+of descriptors.;
+#N canvas 376 244 705 845 operators 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 17 79 We can also combine multiple operators to refine the
+filter for the query.;
+#X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 48 210 1) Generate some example data to query, f 21;
+#X obj 25 211 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1243 -1046 807 809 make_data 0;
+#X obj 30 24 inlet;
+#X obj 30 51 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 30 408 outlet;
+#X msg 335 114 clear;
+#X obj 233 154 until;
+#X msg 233 130 4;
+#X obj 233 108 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 233 178 f;
+#X obj 273 182 + 1;
+#X obj 273 206 % 4;
+#X floatatom 233 242 5 0 0 0 - - - 0;
+#X obj 234 282 t f f f f f, f 68;
+#X obj 234 306 sel 0 1 2 3;
+#X msg 234 521 symbol first;
+#X msg 252 491 symbol second;
+#X msg 271 461 symbol third;
+#X msg 289 431 symbol fourth;
+#X obj 352 336 pack 0 0 0 0, f 51;
+#X listbox 472 362 20 0 0 0 - - - 0;
+#X listbox 408 620 44 0 0 0 - - - 0;
+#X obj 384 591 list prepend setpoint;
+#X obj 384 649 list trim;
+#X obj 131 637 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 30 74 t b b b b, f 44;
+#X obj 384 685 outlet;
+#X obj 470 306 * 10;
+#X obj 588 307 * 100;
+#X obj 707 306 * 1000;
+#X obj 470 43 array define help.dsq.data.num.2 4;
+#X obj 335 143 fluid.dataset dsq.help.join.src.2, f 19;
+#X obj 478 143 text define dsq.help.src.2.text;
+#X f 18;
+#X obj 352 383 array set help.dsq.data.num.2;
+#X obj 384 566 list append help.dsq.data.num.2;
+#X obj 131 657 fluid.ds2text dsq.help.src.2 dsq.help.src.2.text, f
+20;
+#X connect 0 0 1 0;
+#X connect 1 0 23 0;
+#X connect 3 0 29 0;
+#X connect 3 0 30 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 1;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 1 17 0;
+#X connect 11 2 25 0;
+#X connect 11 3 26 0;
+#X connect 11 4 27 0;
 #X connect 12 0 13 0;
-#X connect 13 0 10 0;
-#X connect 14 0 12 0;
+#X connect 12 1 14 0;
+#X connect 12 2 15 0;
+#X connect 12 3 16 0;
+#X connect 13 0 32 0;
+#X connect 14 0 32 0;
+#X connect 15 0 32 0;
+#X connect 16 0 32 0;
+#X connect 17 0 18 0;
+#X connect 17 0 31 0;
+#X connect 20 0 19 0;
+#X connect 20 0 21 0;
+#X connect 21 0 24 0;
+#X connect 22 0 33 0;
+#X connect 23 0 2 0;
+#X connect 23 1 22 0;
+#X connect 23 2 6 0;
+#X connect 23 3 3 0;
+#X connect 25 0 17 1;
+#X connect 26 0 17 2;
+#X connect 27 0 17 3;
+#X connect 32 0 20 0;
+#X restore 25 269 pd make_data;
+#X f 10;
+#N canvas 1405 -870 997 760 displaydata 0;
+#X obj 101 -106 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X listbox 102 102 27 0 0 0 - - - 0;
+#X obj 101 -59 list split 5;
+#X obj 181 -13 list split 5;
+#X listbox 102 120 27 0 0 0 - - - 0;
+#X obj 141 -36 list split 1;
+#X obj 261 33 list split 5;
+#X listbox 102 138 27 0 0 0 - - - 0;
+#X obj 221 10 list split 1;
+#X obj 341 79 list split 5;
+#X listbox 102 156 27 0 0 0 - - - 0;
+#X obj 301 56 list split 1;
+#X obj 101 -133 inlet;
+#X obj 101 -86 text tolist dsq.help.src.2.text;
+#X connect 0 0 13 0;
+#X connect 2 0 1 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 3 1 8 0;
+#X connect 5 1 3 0;
+#X connect 6 0 7 0;
+#X connect 6 1 11 0;
+#X connect 8 1 6 0;
+#X connect 9 0 10 0;
+#X connect 11 1 9 0;
+#X connect 12 0 0 0;
+#X connect 13 0 2 0;
+#X coords 0 -1 1 1 195 76 2 100 100;
+#X restore 25 383 pd displaydata;
+#X obj 25 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 92 326 fluid.dataset dsq.help.src.2, f 16;
+#X obj 295 591 fluid.datasetquery;
+#X msg 311 219 filter 0 < 3;
+#X obj 414 219 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 456 289 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X msg 295 181 clear;
+#X obj 483 389 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 531 479 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 157 739 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 158 738 6) double-click text object to see the data, f 16
+;
+#X text 277 751 ->;
+#X obj 349 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 350 180 2) Clear the filters so we start fresh;
+#X text 415 218 3) Now add our basic filter;
+#X obj 295 738 text define dsq.help.dest.text.2;
+#X f 21;
+#X text 457 288 4) Optionally add any number of additional opeartors
+to constrain the search, f 21;
+#X text 484 388 5) Then add columns we want to copy, f 19;
+#X text 532 478 6) Transform to do the query and copy, f 20;
+#X msg 330 289 and 1 <= 10;
+#X msg 340 319 or 3 <= 5000, f 13;
+#X msg 360 389 addcolumn 0;
+#X msg 367 479 transform dsq.help.src.2 dsq.help.dest.2, f 20;
+#X obj 295 644 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 295 620 route transform;
+#X obj 295 664 fluid.ds2text dsq.help.dest.2 dsq.help.dest.text.2,
+f 20;
+#X msg 370 419 addcolumn 3, f 13;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 5 1 8 0;
+#X connect 7 0 6 0;
+#X connect 9 0 31 0;
+#X connect 10 0 9 0;
+#X connect 13 0 9 0;
+#X connect 26 0 9 0;
+#X connect 27 0 9 0;
+#X connect 28 0 9 0;
+#X connect 29 0 9 0;
+#X connect 30 0 32 0;
+#X connect 31 0 30 0;
+#X connect 33 0 9 0;
+#X restore 472 887 pd operators;
+#N canvas 228 57 712 946 column_ranges 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 17 79 Only copy a range of columns using addrange;
+#X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 48 210 1) Generate some example data to query, f 21;
+#X obj 25 211 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1243 -1046 807 809 make_data 0;
+#X obj 30 24 inlet;
+#X obj 30 51 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 30 408 outlet;
+#X msg 335 114 clear;
+#X obj 233 154 until;
+#X msg 233 130 4;
+#X obj 233 108 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 233 178 f;
+#X obj 273 182 + 1;
+#X obj 273 206 % 4;
+#X floatatom 233 242 5 0 0 0 - - - 0;
+#X obj 234 282 t f f f f f, f 68;
+#X obj 234 306 sel 0 1 2 3;
+#X msg 234 521 symbol first;
+#X msg 252 491 symbol second;
+#X msg 271 461 symbol third;
+#X msg 289 431 symbol fourth;
+#X obj 352 336 pack 0 0 0 0, f 51;
+#X listbox 472 362 20 0 0 0 - - - 0;
+#X listbox 408 620 44 0 0 0 - - - 0;
+#X obj 384 591 list prepend setpoint;
+#X obj 384 649 list trim;
+#X obj 131 637 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 30 74 t b b b b, f 44;
+#X obj 384 685 outlet;
+#X obj 470 306 * 10;
+#X obj 588 307 * 100;
+#X obj 707 306 * 1000;
+#X obj 470 43 array define help.dsq.data.num.3 4;
+#X obj 478 143 text define dsq.help.src.3.text;
+#X f 18;
+#X obj 335 143 fluid.dataset dsq.help.join.src.3, f 19;
+#X obj 352 383 array set help.dsq.data.num.3;
+#X obj 384 566 list append help.dsq.data.num.3;
+#X obj 131 657 fluid.ds2text dsq.help.src.3 dsq.help.src.3.text, f
+20;
+#X connect 0 0 1 0;
+#X connect 1 0 23 0;
+#X connect 3 0 29 0;
+#X connect 3 0 30 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 1;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 1 17 0;
+#X connect 11 2 25 0;
+#X connect 11 3 26 0;
+#X connect 11 4 27 0;
+#X connect 12 0 13 0;
+#X connect 12 1 14 0;
+#X connect 12 2 15 0;
+#X connect 12 3 16 0;
+#X connect 13 0 32 0;
+#X connect 14 0 32 0;
+#X connect 15 0 32 0;
+#X connect 16 0 32 0;
+#X connect 17 0 18 0;
+#X connect 17 0 31 0;
+#X connect 20 0 19 0;
+#X connect 20 0 21 0;
+#X connect 21 0 24 0;
+#X connect 22 0 33 0;
+#X connect 23 0 2 0;
+#X connect 23 1 22 0;
+#X connect 23 2 6 0;
+#X connect 23 3 3 0;
+#X connect 25 0 17 1;
+#X connect 26 0 17 2;
+#X connect 27 0 17 3;
+#X connect 32 0 20 0;
+#X restore 25 269 pd make_data;
+#X f 10;
+#N canvas 1405 -870 997 760 displaydata 0;
+#X obj 101 -106 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X listbox 102 102 27 0 0 0 - - - 0;
+#X obj 101 -59 list split 5;
+#X obj 181 -13 list split 5;
+#X listbox 102 120 27 0 0 0 - - - 0;
+#X obj 141 -36 list split 1;
+#X obj 261 33 list split 5;
+#X listbox 102 138 27 0 0 0 - - - 0;
+#X obj 221 10 list split 1;
+#X obj 341 79 list split 5;
+#X listbox 102 156 27 0 0 0 - - - 0;
+#X obj 301 56 list split 1;
+#X obj 101 -133 inlet;
+#X obj 101 -86 text tolist dsq.help.src.2.text;
+#X connect 0 0 13 0;
+#X connect 2 0 1 0;
+#X connect 2 1 5 0;
+#X connect 3 0 4 0;
+#X connect 3 1 8 0;
+#X connect 5 1 3 0;
+#X connect 6 0 7 0;
+#X connect 6 1 11 0;
+#X connect 8 1 6 0;
+#X connect 9 0 10 0;
+#X connect 11 1 9 0;
+#X connect 12 0 0 0;
+#X connect 13 0 2 0;
+#X coords 0 -1 1 1 195 76 2 100 100;
+#X restore 25 383 pd displaydata;
+#X obj 25 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 295 591 fluid.datasetquery;
+#X msg 311 239 filter 0 < 3;
+#X obj 311 218 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 329 267 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X msg 295 181 clear;
+#X obj 366 465 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 157 739 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 158 738 6) double-click text object to see the data, f 16
+;
+#X text 277 751 ->;
+#X obj 295 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 296 160 2) Clear the filters so we start fresh;
+#X text 312 217 3) Now add our basic filter;
+#X obj 295 644 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 295 620 route transform;
+#X obj 92 326 fluid.dataset dsq.help.src.3, f 16;
+#X msg 367 499 transform dsq.help.src.3 dsq.help.dest.3, f 20;
+#X obj 295 664 fluid.ds2text dsq.help.dest.3 dsq.help.dest.text.3,
+f 20;
+#X obj 295 738 text define dsq.help.dest.text.3;
+#X f 20;
+#X text 330 266 4) Add a range of columns to copy, f 18;
+#X msg 330 299 addrange 1 2;
+#X text 367 464 5) Transform to do the query and copy, f 20;
+#X text 472 264 Add a range of columns in the format <start> <number
+of columns>. This will add two columns starting from the second.,
+f 30;
+#X connect 4 0 5 0;
+#X connect 5 0 7 0;
+#X connect 5 1 22 0;
+#X connect 7 0 6 0;
+#X connect 8 0 21 0;
+#X connect 9 0 8 0;
+#X connect 12 0 8 0;
+#X connect 20 0 24 0;
+#X connect 21 0 20 0;
+#X connect 23 0 8 0;
+#X connect 27 0 8 0;
+#X restore 472 909 pd column_ranges;
+#N canvas 363 72 688 840 combining_columns 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 17 79 The transformjoin message allows filtering the contents
+of a dataset based on the contents found in another.;
+#X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 48 210 1) Generate some example data to query, f 21;
+#X obj 25 211 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas -583 -1080 1386 1052 make_data 0;
+#X obj 30 24 inlet;
+#X obj 30 51 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 30 408 outlet;
+#X msg 853 104 clear;
+#X obj 283 294 until;
+#X obj 283 248 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 283 318 f;
+#X obj 323 322 + 1;
+#X floatatom 283 382 5 0 0 0 - - - 0;
+#X msg 284 741 symbol first;
+#X msg 300 718 symbol second;
+#X msg 316 695 symbol third;
+#X msg 332 672 symbol fourth;
+#X listbox 428 840 44 0 0 0 - - - 0;
+#X obj 404 811 list prepend setpoint;
+#X obj 404 869 list trim;
+#X obj -9 747 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 404 905 outlet;
+#X obj 873 213 fluid.dataset dsq.help.join.A, f 21;
+#X obj 853 253 fluid.dataset dsq.help.join.B, f 21;
+#X obj 886 133 text define dsq.help.join.A.text;
+#X f 20;
+#X obj 876 173 text define dsq.help.join.B.text;
+#X f 20;
+#X obj 11 767 fluid.ds2text dsq.help.join.A dsq.help.join.A.text,
+f 20;
+#X obj -9 832 fluid.ds2text dsq.help.join.B dsq.help.join.B.text,
+f 22;
+#X obj 442 503 array set dsq.help.join.A.data;
+#X obj 404 786 list append dsq.help.join.A.data;
+#X obj 442 449 * 1000;
+#X obj 284 422 t f f, f 23;
+#X obj 442 476 pack 0, f 7;
+#X msg 348 650 symbol fifth;
+#X msg 364 627 symbol sixth;
+#X msg 380 604 symbol seventh;
+#X msg 396 581 symbol eighth;
+#X obj 30 74 t b b b b b, f 118;
+#X obj 723 294 until;
+#X obj 723 248 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 723 318 f;
+#X obj 763 322 + 1;
+#X floatatom 723 382 5 0 0 0 - - - 0;
+#X msg 756 695 symbol third;
+#X msg 772 672 symbol fourth;
+#X listbox 898 840 44 0 0 0 - - - 0;
+#X obj 874 811 list prepend setpoint;
+#X obj 874 869 list trim;
+#X obj 874 905 outlet;
+#X obj 882 449 * 1000;
+#X obj 724 422 t f f, f 23;
+#X obj 882 476 pack 0, f 7;
+#X msg 723 270 8;
+#X obj 763 346 % 8;
+#X obj 724 446 sel 0 1 2 3 4 5 6 7;
+#X msg 789 650 symbol fifth;
+#X msg 805 627 symbol sixth;
+#X msg 821 604 symbol seventh;
+#X obj 284 446 sel 0 1 2 3 4 5 6 7 8;
+#X obj 323 346 % 9;
+#X msg 283 270 9;
+#X obj 882 503 array set dsq.help.join.B.data;
+#X obj 874 786 list append dsq.help.join.B.data;
+#X obj 469 22 array define dsq.help.join.A.data 1;
+#X obj 469 45 array define dsq.help.join.B.data 1;
+#X msg 412 558 symbol ninth;
+#X obj -20 408 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 33 0;
+#X connect 3 0 18 0;
+#X connect 3 0 20 0;
+#X connect 3 0 21 0;
+#X connect 3 0 19 0;
+#X connect 4 0 6 0;
+#X connect 5 0 56 0;
+#X connect 6 0 7 0;
+#X connect 6 0 8 0;
+#X connect 7 0 55 0;
+#X connect 8 0 27 0;
+#X connect 9 0 25 0;
+#X connect 10 0 25 0;
+#X connect 11 0 25 0;
+#X connect 12 0 25 0;
+#X connect 14 0 13 0;
+#X connect 14 0 15 0;
+#X connect 15 0 17 0;
+#X connect 16 0 22 0;
+#X connect 16 0 23 0;
+#X connect 25 0 14 0;
+#X connect 26 0 28 0;
+#X connect 27 0 54 0;
+#X connect 27 1 26 0;
+#X connect 28 0 24 0;
+#X connect 29 0 25 0;
+#X connect 30 0 25 0;
+#X connect 31 0 25 0;
+#X connect 32 0 25 0;
+#X connect 33 0 2 0;
+#X connect 33 0 62 0;
+#X connect 33 1 16 0;
+#X connect 33 2 5 0;
+#X connect 33 3 35 0;
+#X connect 33 4 3 0;
+#X connect 34 0 36 0;
+#X connect 35 0 48 0;
+#X connect 36 0 37 0;
+#X connect 36 0 38 0;
+#X connect 37 0 49 0;
+#X connect 38 0 46 0;
+#X connect 39 0 58 0;
+#X connect 40 0 58 0;
+#X connect 42 0 41 0;
+#X connect 42 0 43 0;
+#X connect 43 0 44 0;
+#X connect 45 0 47 0;
+#X connect 46 0 50 0;
+#X connect 46 1 45 0;
+#X connect 47 0 57 0;
+#X connect 48 0 34 0;
+#X connect 49 0 36 1;
+#X connect 50 2 39 0;
+#X connect 50 3 40 0;
+#X connect 50 4 51 0;
+#X connect 50 5 52 0;
+#X connect 50 6 53 0;
+#X connect 51 0 58 0;
+#X connect 52 0 58 0;
+#X connect 53 0 58 0;
+#X connect 54 0 9 0;
+#X connect 54 1 10 0;
+#X connect 54 2 11 0;
+#X connect 54 3 12 0;
+#X connect 54 4 29 0;
+#X connect 54 5 30 0;
+#X connect 54 6 31 0;
+#X connect 54 7 32 0;
+#X connect 54 8 61 0;
+#X connect 55 0 6 1;
+#X connect 56 0 4 0;
+#X connect 58 0 42 0;
+#X connect 61 0 25 0;
+#X restore 25 269 pd make_data;
+#X f 10;
+#N canvas 1464 -910 997 760 displaydata 0;
+#X obj -29 -326 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X listbox 102 102 27 0 0 0 - - - 0;
+#X listbox 102 120 27 0 0 0 - - - 0;
+#X obj 11 -256 list split 1;
+#X listbox 102 138 27 0 0 0 - - - 0;
+#X obj 91 -210 list split 1;
+#X listbox 102 156 27 0 0 0 - - - 0;
+#X obj 171 -164 list split 1;
+#X obj -29 -353 inlet;
+#X listbox 102 174 27 0 0 0 - - - 0;
+#X obj 251 -117 list split 1;
+#X listbox 102 192 27 0 0 0 - - - 0;
+#X obj 331 -70 list split 1;
+#X listbox 102 210 27 0 0 0 - - - 0;
+#X obj 411 -22 list split 1;
+#X listbox 102 228 27 0 0 0 - - - 0;
+#X obj 491 30 list split 1;
+#X obj -29 -306 text tolist dsq.help.join.A.text;
+#X obj -29 -279 list split 2;
+#X obj 51 -233 list split 2;
+#X obj 131 -187 list split 2;
+#X obj 211 -141 list split 2;
+#X obj 291 -94 list split 2;
+#X obj 371 -47 list split 2;
+#X obj 451 1 list split 2;
+#X obj 531 53 list split 2;
+#X listbox 102 246 27 0 0 0 - - - 0;
+#X obj 571 77 list split 1;
+#X obj 611 100 list split 2;
+#X connect 0 0 17 0;
+#X connect 3 1 19 0;
+#X connect 5 1 20 0;
+#X connect 7 1 21 0;
+#X connect 8 0 0 0;
+#X connect 10 1 22 0;
+#X connect 12 1 23 0;
+#X connect 14 1 24 0;
+#X connect 16 1 25 0;
+#X connect 17 0 18 0;
+#X connect 18 0 1 0;
+#X connect 18 1 3 0;
+#X connect 19 0 2 0;
+#X connect 19 1 5 0;
+#X connect 20 0 4 0;
+#X connect 20 1 7 0;
+#X connect 21 0 6 0;
+#X connect 21 1 10 0;
+#X connect 22 0 9 0;
+#X connect 22 1 12 0;
+#X connect 23 0 11 0;
+#X connect 23 1 14 0;
+#X connect 24 0 13 0;
+#X connect 24 1 16 0;
+#X connect 25 0 15 0;
+#X connect 25 1 27 0;
+#X connect 27 1 28 0;
+#X connect 28 0 26 0;
+#X coords 0 -1 1 1 195 165 2 100 100;
+#X restore 47 433 pd displaydata;
+#X obj 47 414 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 295 591 fluid.datasetquery;
+#X obj 564 219 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 520 349 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 487 429 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 477 719 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 478 718 6) double-click text object to see the data, f 16
+;
+#X obj 475 174 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 295 644 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 69 345 fluid.dataset dsq.help.join.A, f 16;
+#X obj 92 306 fluid.dataset dsq.help.join.B, f 16;
+#X text 66 412 dataset A;
+#N canvas 1498 -912 997 760 displaydata 0;
+#X obj -29 -326 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X listbox 102 102 27 0 0 0 - - - 0;
+#X listbox 102 120 27 0 0 0 - - - 0;
+#X obj 11 -256 list split 1;
+#X listbox 102 138 27 0 0 0 - - - 0;
+#X obj 91 -210 list split 1;
+#X listbox 102 156 27 0 0 0 - - - 0;
+#X obj 171 -164 list split 1;
+#X obj -29 -353 inlet;
+#X listbox 102 174 27 0 0 0 - - - 0;
+#X obj 251 -117 list split 1;
+#X obj -29 -279 list split 2;
+#X obj 51 -233 list split 2;
+#X obj 131 -187 list split 2;
+#X obj 211 -141 list split 2;
+#X obj 291 -94 list split 2;
+#X obj -29 -306 text tolist dsq.help.join.B.text;
+#X connect 0 0 16 0;
+#X connect 3 1 12 0;
+#X connect 5 1 13 0;
+#X connect 7 1 14 0;
+#X connect 8 0 0 0;
+#X connect 10 1 15 0;
+#X connect 11 0 1 0;
+#X connect 11 1 3 0;
+#X connect 12 0 2 0;
+#X connect 12 1 5 0;
+#X connect 13 0 4 0;
+#X connect 13 1 7 0;
+#X connect 14 0 6 0;
+#X connect 14 1 10 0;
+#X connect 15 0 9 0;
+#X connect 16 0 11 0;
+#X coords 0 -1 1 1 195 93 2 100 100;
+#X restore 25 623 pd displaydata;
+#X obj 25 604 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 44 602 dataset B;
+#X text 476 173 2);
+#X msg 295 174 clear \, filter 0 >= 3000;
+#X text 565 218 3);
+#X msg 311 219 transformjoin dsq.help.join.A dsq.help.join.B dsq.help.join.out
+, f 33;
+#X text 521 348 4);
+#X text 488 428 5) When a column is manually added with addcolumn \,
+the filter only respects the contents of dataset A. Any points that
+satisfy the filter have the respective column merged with that of dataset
+B. In this case \, any point where the first column is equal to 6000
+has the corresponding column for that point in dataset B's merged with
+dataset A., f 27;
+#X msg 337 429 transformjoin dsq.help.join.A dsq.help.join.B dsq.help.join.out
+, f 18;
+#X msg 330 349 clear \, filter 0 == 6000 \, addcolumn 0, f 24;
+#X text 334 259 Unlike transform \, we're not obliged to add columns
+to the query. In this case \, we can just filter dataset B based on
+conditions in dataset A., f 40;
+#X obj 295 664 fluid.ds2text dsq.help.join.out dsq.help.join.out.text
+, f 23;
+#X obj 295 718 text define dsq.help.join.out.text;
+#X f 23;
+#X obj 295 620 route transformjoin;
+#X connect 4 0 5 0;
+#X connect 5 0 20 0;
+#X connect 5 1 7 0;
+#X connect 5 2 16 0;
+#X connect 5 3 17 0;
+#X connect 7 0 6 0;
+#X connect 8 0 33 0;
+#X connect 15 0 31 0;
+#X connect 20 0 19 0;
+#X connect 23 0 8 0;
+#X connect 25 0 8 0;
+#X connect 28 0 8 0;
+#X connect 29 0 8 0;
+#X connect 33 0 15 0;
+#X restore 472 931 pd combining_columns;
+#X text 48 210 1) Generate some example data to query, f 21;
+#X obj 25 211 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 92 326 fluid.dataset dsq.help.src, f 16;
+#N canvas -189 -1017 807 809 make_data 0;
+#X obj 30 24 inlet;
+#X obj 30 51 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 30 408 outlet;
+#X obj 335 143 fluid.dataset dsq.help.join.src, f 19;
+#X msg 335 114 clear;
+#X obj 233 154 until;
+#X msg 233 130 4;
+#X obj 233 108 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 233 178 f;
+#X obj 273 182 + 1;
+#X obj 273 206 % 4;
+#X floatatom 233 242 5 0 0 0 - - - 0;
+#X obj 234 282 t f f f f f, f 68;
+#X obj 234 306 sel 0 1 2 3;
+#X msg 234 521 symbol first;
+#X msg 252 491 symbol second;
+#X msg 271 461 symbol third;
+#X msg 289 431 symbol fourth;
+#X obj 352 336 pack 0 0 0 0, f 51;
+#X listbox 472 362 20 0 0 0 - - - 0;
+#X obj 352 383 array set help.dsq.data.num;
+#X listbox 408 620 44 0 0 0 - - - 0;
+#X obj 384 566 list append help.dsq.data.num;
+#X obj 384 591 list prepend setpoint;
+#X obj 384 649 list trim;
+#X obj 131 637 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 131 657 fluid.ds2text dsq.help.src dsq.help.src.text, f 20
+;
+#X obj 478 143 text define dsq.help.src.text;
+#X f 18;
+#X obj 470 43 array define help.dsq.data.num 4;
+#X obj 30 74 t b b b b, f 44;
+#X obj 384 685 outlet;
+#X obj 470 306 * 10;
+#X obj 588 307 * 100;
+#X obj 707 306 * 1000;
+#X connect 0 0 1 0;
+#X connect 1 0 29 0;
+#X connect 4 0 3 0;
+#X connect 4 0 27 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 9 0;
+#X connect 8 0 11 0;
+#X connect 9 0 10 0;
+#X connect 10 0 8 1;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 12 1 18 0;
+#X connect 12 2 31 0;
+#X connect 12 3 32 0;
+#X connect 12 4 33 0;
+#X connect 13 0 14 0;
+#X connect 13 1 15 0;
+#X connect 13 2 16 0;
+#X connect 13 3 17 0;
+#X connect 14 0 22 0;
+#X connect 15 0 22 0;
+#X connect 16 0 22 0;
+#X connect 17 0 22 0;
+#X connect 18 0 19 0;
+#X connect 18 0 20 0;
+#X connect 22 0 23 0;
+#X connect 23 0 21 0;
+#X connect 23 0 24 0;
+#X connect 24 0 30 0;
+#X connect 25 0 26 0;
+#X connect 29 0 2 0;
+#X connect 29 1 25 0;
+#X connect 29 2 7 0;
+#X connect 29 3 4 0;
+#X connect 31 0 18 1;
+#X connect 32 0 18 2;
+#X connect 33 0 18 3;
+#X restore 25 269 pd make_data;
+#X f 10;
+#X msg 261 272 filter 0 < 3;
+#X msg 280 399 addcolumn 0;
+#X msg 280 459 transform dsq.help.src dsq.help.dest, f 18;
+#X msg 277 549 clear \, filter 1 < 3 \, addcolumn 1 \, transform dsq.help.src
+dsq.help.dest, f 27;
+#N canvas 1405 -870 997 760 displaydata 0;
+#X obj 101 -106 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 101 -86 text tolist dsq.help.src.text;
+#X listbox 102 102 27 0 0 0 - - - 0;
+#X obj 101 -59 list split 5;
+#X obj 181 -13 list split 5;
+#X listbox 102 120 27 0 0 0 - - - 0;
+#X obj 141 -36 list split 1;
+#X obj 261 33 list split 5;
+#X listbox 102 138 27 0 0 0 - - - 0;
+#X obj 221 10 list split 1;
+#X obj 341 79 list split 5;
+#X listbox 102 156 27 0 0 0 - - - 0;
+#X obj 301 56 list split 1;
+#X obj 101 -133 inlet;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 3 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 1 9 0;
+#X connect 6 1 4 0;
+#X connect 7 0 8 0;
+#X connect 7 1 12 0;
+#X connect 9 1 7 0;
+#X connect 10 0 11 0;
+#X connect 12 1 10 0;
+#X connect 13 0 0 0;
+#X coords 0 -1 1 1 195 76 2 100 100;
+#X restore 25 383 pd displaydata;
+#X obj 25 334 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 245 768 text define dsq.help.dest.text;
+#X f 19;
+#X obj 261 239 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 262 238 2) Queries always start with a filter., f 21;
+#X obj 278 338 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 279 337 3) Then we specify which columns we would like to copy
+if they satisfy the filter., f 24;
+#X msg 245 201 clear;
+#X obj 433 459 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 491 549 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 434 458 4) Calling transform executes the query and copies
+the results from the source to the destination., f 31;
+#X text 492 548 5) Composing the query as one message, f 23;
+#X obj 107 769 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 108 768 6) double-click text object to see the data, f 16
+;
+#X text 227 781 ->;
+#X text 390 763 The result is such that only the first column (0th)
+of each point is copied over if the value in this column is less than
+0.5., f 35;
+#X text 278 441 transform <source> <destination>;
+#X obj 442 197 cnv 15 200 125 empty empty empty 20 12 0 14 #dfdfdf
+#404040 0;
+#X obj 493 341 cnv 15 185 80 empty empty empty 20 12 0 14 #dfdfdf #404040
+0;
+#X text 446 200 filter <column index> <operator> <value>, f 25;
+#X text 446 239 In this case this says that we are only interested
+in points in the dataset where the first column is less than 3, f
+27;
+#X text 495 345 In effect \, we are saying \, for each point where
+the filter is satisfied copy THIS column to our destination., f 25
+;
+#X obj 245 678 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 245 698 fluid.ds2text dsq.help.dest dsq.help.dest.text, f 20
+;
+#X obj 245 650 route transform;
+#N canvas 899 23 964 917 transformjoin_in_practice 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 17 79 The transformjoin message allows filtering the contents
+of a dataset based on the contents found in another.;
+#X obj 502 665 cnv 15 243 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X obj 51 675 cnv 15 179 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X obj 43 438 cnv 15 144 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X obj 252 543 cnv 15 208 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 1600 23 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Tremblay-ASWINE-ScratchySynth-M.wav
+dsq.help.src.5;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 38 162 pd loadsrc;
+#X obj 484 162 array define dsq.help.src.5;
+#X obj 38 212 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1814 -956 687 668 analysis 0;
+#X obj 37 37 inlet;
+#X obj 37 183 outlet;
+#X msg 37 66 blocking 0 \, buffer dsq.help.src.5;
+#X obj 37 125 fluid.bufpitch;
+#X msg 37 154 frombuffer \$1 \, print \, size;
+#X obj 237 183 outlet;
+#X msg 237 154 frombuffer \$1 \, print \, size;
+#X obj 37 95 t a a;
+#X obj 237 125 fluid.bufspectralshape;
+#X connect 0 0 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 6 0 5 0;
+#X connect 7 0 3 0;
+#X connect 7 1 8 0;
+#X connect 8 0 6 0;
+#X restore 38 249 pd analysis;
+#X f 22;
+#X obj 38 288 fluid.dataset dsq.help.pitch, f 16;
+#X obj 247 306 fluid.datasetquery;
+#X obj 247 335 route transform;
+#X obj 247 393 fluid.dataset dsq.help.pitch.filtered, f 25;
+#X obj 497 442 fluid.datasetquery;
+#X msg 497 385 clear \, filter 1 > 0.9 \, transformjoin dsq.help.pitch
+dsq.help.specshape dsq.help.specshape.filtered, f 37;
+#X obj 497 472 route transformjoin;
+#X obj 38 360 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 38 388 fluid.ds2text dsq.help.pitch dsq.help.pitch.text, f
+19;
+#X obj 43 438 text define dsq.help.pitch.text;
+#X f 20;
+#X floatatom 92 360 5 0 0 0 - - - 0;
+#X obj 247 490 fluid.ds2text dsq.help.pitch.filtered dsq.help.pitch.filtered.text
+, f 30;
+#X obj 252 542 text define dsq.help.pitch.filtered.text;
+#X f 29;
+#X obj 497 588 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 497 530 fluid.dataset dsq.help.specshape.filtered;
+#X obj 497 613 fluid.ds2text dsq.help.specshape.filtered dsq.help.specshape.filtered.text
+, f 32;
+#X obj 502 665 text define dsq.help.specshape.filtered.text;
+#X f 34;
+#X obj 45 526 fluid.dataset dsq.help.specshape, f 20;
+#X obj 45 598 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X floatatom 99 598 5 0 0 0 - - - 0;
+#X obj 45 623 fluid.ds2text dsq.help.specshape dsq.help.specshape.text
+, f 24;
+#X obj 50 675 text define dsq.help.specshape.text;
+#X f 25;
+#X obj 189 493 t a;
+#X obj 247 465 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 247 249 clear \, filter 1 > 0.9 \, addrange 0 2 \, transform
+dsq.help.pitch dsq.help.pitch.filtered, f 37;
+#X floatatom 301 465 5 0 0 0 - - - 0;
+#X floatatom 551 588 5 0 0 0 - - - 0;
+#X obj 56 212 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 57 211 1) Generate some pitch and spectral analyses, f 23
+;
+#X obj 356 212 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 357 211 2) Filter the pitch analyses by confidence, f 22;
+#X obj 526 329 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 527 328 3) Filter the spectral shape analyses by the pitch
+confidence values of the pitch dataset., f 33;
+#X obj 47 741 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 48 740 4) Double click the text objects to see the data.,
+f 26;
+#X text 48 780 Note the size (number of rows) in each dataset., f
+26;
+#X text 313 595 Once we filter the data based on pitch confidence there
+are fewer rows in the dataset. Any identifier where the confidence
+was lower than 0.9 in the pitch dataset is removed from both., f 20
+;
+#X obj 38 331 route size;
+#X obj 45 569 route size;
+#X obj 247 436 route size;
+#X obj 497 559 route size;
+#X msg 247 364 size;
+#X msg 497 501 size;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 9 1 32 0;
+#X connect 10 0 47 0;
+#X connect 11 0 12 0;
+#X connect 12 0 51 0;
+#X connect 13 0 49 0;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;
+#X connect 16 0 52 0;
+#X connect 17 0 18 0;
+#X connect 23 0 25 0;
+#X connect 24 0 50 0;
+#X connect 27 0 48 0;
+#X connect 28 0 30 0;
+#X connect 32 0 27 0;
+#X connect 33 0 21 0;
+#X connect 34 0 11 0;
+#X connect 47 0 17 0;
+#X connect 47 0 20 0;
+#X connect 48 0 28 0;
+#X connect 48 0 29 0;
+#X connect 49 0 33 0;
+#X connect 49 0 35 0;
+#X connect 50 0 23 0;
+#X connect 50 0 36 0;
+#X connect 51 0 13 0;
+#X connect 52 0 24 0;
+#X restore 472 953 pd transformjoin_in_practice;
+#X connect 0 0 42 0;
+#X connect 11 0 13 0;
+#X connect 13 0 19 0;
+#X connect 13 1 12 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 19 0 18 0;
+#X connect 25 0 0 0;
+#X connect 40 0 41 0;
+#X connect 42 0 40 0;

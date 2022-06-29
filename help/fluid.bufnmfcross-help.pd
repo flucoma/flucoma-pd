@@ -1,33 +1,191 @@
-#N canvas 497 206 991 703 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnmfcross 20 12 0 36
--262144 -66577 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 493 225 array define fluid.nmfcross.src;
-#X obj 494 245 array define fluid.nmfcross.tgt;
-#X obj 35 197 fluid.bufnmfcross -source fluid.nmfcross.src -target
-fluid.nmfcross.tgt -output fluid.nmfcross.out -fftsettings 2048 -blocking
+#N canvas 11 40 696 767 12;
+#X obj 452 610 array define fluid.nmfcross.src;
+#X floatatom 401 359 5 0 0 0 - - - 0;
+#X obj 40 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 40 361 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmfcross 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufnmfcross.html reference/bufnmfcross/
+;
+#X text 18 88 Reconstructs the sound in the target buffer using components
+learned from the source buffer using NMF decomposition., f 69;
+#X obj 424 633 array define fluid.nmfcross.target;
+#X f 35;
+#X obj 424 656 array define fluid.nmfcross.result;
+#X f 35;
+#X text 58 378 the length of the source will have a large effect on
+processing time !, f 41;
+#X obj 42 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 42 500 tabplay~ fluid.nmfcross.src, f 20;
+#N canvas 63 101 381 262 sum 0;
+#X obj 54 39 inlet~;
+#X obj 104 39 inlet~;
+#X obj 54 72 +~;
+#X obj 54 120 outlet~;
+#X obj 54 96 +~;
+#X obj 154 39 inlet~;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 1;
+#X restore 42 562 pd sum;
+#X f 10;
+#X obj 192 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 352 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 42 597 fluid.out~ bufnmfcrosshelp;
+#X obj 192 500 tabplay~ fluid.nmfcross.target, f 21;
+#X obj 352 500 tabplay~ fluid.nmfcross.result, f 22;
+#N canvas 266 304 979 371 loadsounds 0;
+#X obj 25 21 inlet;
+#X obj 25 150 soundfiler;
+#X msg 25 49 read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav
+fluid.nmfcross.src, f 47;
+#X msg 44 104 read -resize media/Tremblay-CF-ChurchBells.wav fluid.nmfcross.target
+, f 47;
+#X obj 415 62 fluid.demoaudiofiles;
+#X msg 415 121 read -resize \$1 fluid.nmfcross.src;
+#X obj 668 60 fluid.demoaudiofiles;
+#X msg 668 119 read -resize \$1 fluid.nmfcross.target;
+#X text 413 37 pick your own source...;
+#X text 673 37 ...and your own target.;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X restore 42 169 pd loadsounds;
+#X obj 42 146 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 62 146 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X obj 493 266 array define fluid.nmfcross.out;
-#X obj 490 375 soundfiler;
-#X floatatom 307 259 5 0 0 0 - - -;
-#X obj 42 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 37 259 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 85 435 tabplay~;
-#X obj 83 479 dac~;
-#X msg 85 360 set fluid.nmfcross.src \, bang;
-#X msg 97 382 set fluid.nmfcross.tgt \, bang;
-#X msg 107 404 set fluid.nmfcross.out \, bang;
-#X msg 392 317 read -resize media/Tremblay-CF-ChurchBells.wav fluid.nmfcross.tgt
-\, read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav fluid.nmfcross.src
-, f 74;
-#X connect 4 0 9 0;
-#X connect 4 1 7 0;
-#X connect 8 0 4 0;
+#X text 62 145 1) load sounds;
+#X obj 60 270 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 60 269 2) process;
+#X obj 42 455 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 42 454 3) listen to source \, target or processed sound;
+#X obj 540 700 cnv 15 135 43 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 40 182 692 864 parameters 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmfcross 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 18 88 The result of the cross synthesis is a hybrid of the
+source and target sounds. The algorithm tries to match the target spectrum
+over time using components learned from the source. These parameters
+affect the reconstruction:, f 69;
+#X obj 42 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 42 500 tabplay~ fluid.nmfcross.src, f 20;
+#N canvas 63 101 381 262 sum 0;
+#X obj 54 39 inlet~;
+#X obj 104 39 inlet~;
+#X obj 54 72 +~;
+#X obj 54 120 outlet~;
+#X obj 54 96 +~;
+#X obj 154 39 inlet~;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 4 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 1;
+#X restore 42 553 pd sum;
+#X f 45;
+#X obj 198 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 354 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 42 588 fluid.out~ bufnmfcrosshelp;
+#X obj 198 500 tabplay~ fluid.nmfcross.target, f 21;
+#X obj 354 500 tabplay~ fluid.nmfcross.result, f 22;
+#X obj 42 455 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 42 454 3) listen to source \, target or processed sound;
+#X floatatom 403 415 5 0 0 0 - - - 0;
+#X obj 42 417 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 42 355 fluid.bufnmfcross -source fluid.nmfcross.src -target
+fluid.nmfcross.target -output fluid.nmfcross.result -fftsettings 2048
+-blocking 0;
+#X text 60 414 bang when done;
+#N canvas 492 301 794 564 parameters 0;
+#X floatatom 195 188 8 1 100 0 - - - 0;
+#X floatatom 195 147 8 1 8192 0 - - - 0;
+#X obj 196 331 outlet;
+#X floatatom 195 106 8 1 100 0 - - - 0;
+#X obj 234 -19 loadbang;
+#X obj 234 44 r help.bufnmfcross.presets;
+#X msg 234 6 \; help.bufnmfcross.presets 7 11 7;
+#X text 107 106 timesparsity;
+#X text 128 147 polyphony;
+#X text 121 188 continuity;
+#X text 270 106 Avoid reusing a component from the source for this
+number of time frames;
+#X text 270 146 Avoid overlapping more than this number of source components
+at the same time;
+#X text 270 186 Encourage the reconstruction to use this many temporally
+consecutive frames from the source, f 60;
+#X obj 234 67 unpack 0 0 0;
+#X msg 279 248 timesparsity \$1;
+#X msg 234 273 polyphony \$1;
+#X msg 196 299 continuity \$1;
+#X connect 0 0 16 0;
+#X connect 1 0 15 0;
+#X connect 3 0 14 0;
+#X connect 4 0 6 0;
+#X connect 5 0 13 0;
+#X connect 13 0 3 0;
+#X connect 13 1 1 0;
+#X connect 13 2 0 0;
+#X connect 14 0 2 0;
+#X connect 15 0 2 0;
+#X connect 16 0 2 0;
+#X coords 0 -1 1 1 595 130 2 100 100;
+#X restore 42 169 pd parameters;
+#X obj 82 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 100 321 process;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 0 7 1;
+#X connect 5 0 8 0;
+#X connect 6 0 9 0;
+#X connect 8 0 4 1;
+#X connect 9 0 4 2;
+#X connect 14 0 13 0;
+#X connect 14 1 12 0;
+#X connect 16 0 14 0;
+#X connect 17 0 14 0;
+#X restore 543 720 pd parameters;
+#X text 58 358 bang when done;
+#X obj 40 299 fluid.bufnmfcross -source fluid.nmfcross.src -target
+fluid.nmfcross.target -output fluid.nmfcross.result -blocking 0 -fftsettings
+2048;
+#X msg 63 478 stop;
+#X msg 214 478 stop;
+#X msg 372 479 stop;
+#X connect 2 0 29 0;
 #X connect 10 0 11 0;
-#X connect 10 0 11 1;
-#X connect 12 0 10 0;
-#X connect 13 0 10 0;
-#X connect 14 0 10 0;
-#X connect 15 0 6 0;
+#X connect 11 0 12 0;
+#X connect 12 0 15 0;
+#X connect 12 0 15 1;
+#X connect 13 0 16 0;
+#X connect 14 0 17 0;
+#X connect 16 0 12 1;
+#X connect 17 0 12 2;
+#X connect 19 0 18 0;
+#X connect 29 0 3 0;
+#X connect 29 1 1 0;
+#X connect 30 0 11 0;
+#X connect 31 0 16 0;
+#X connect 32 0 17 0;
