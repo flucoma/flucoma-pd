@@ -1,38 +1,134 @@
-#N canvas 12 49 707 598 12;
+#N canvas 51 50 692 774 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.ampfeature~ 1 22 0 36
 #4ba3fb #ffffff 0;
-#X obj 23 412 dac~;
 #X obj 23 141 fluid.demosound~;
 #X obj 509 60 fluid.referencelauncher fluid.ampfeature~.html reference/ampfeature/
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Realtime\\\ Amplitude\\\ Differential\\\ Feature
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Calculate the amplitude differential feature used by
-fluid.ampslice~;
+fluid.ampslice~, f 68;
 #X text 22 121 1) Select a source., f 66;
-#X obj 206 320 fluid.ampfeature~;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array ampfeature_helpviewer 300 float 2;
-#X coords 0 100 300 -100 300 140 1 0 0;
-#X restore 379 337 graph;
-#X obj 205 486 tabwrite~ ampfeature_helpviewer;
-#X obj 220 416 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 214 537 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X obj 220 436 metro 100;
-#X msg 212 263 reset \, slowrampup 4410 \, slowrampdown 4410 \, fastrampup
-10 \, fastrampdown 2205 \, highpassfreq 20 \, floor -40;
-#X obj 48 319 fluid.ampslice~ -onthreshold 10 -offthreshold 5, f 16
-;
-#X obj 212 242 loadbang;
-#X obj 220 391 loadbang;
-#X connect 2 0 1 0;
-#X connect 2 0 7 0;
-#X connect 2 0 13 0;
-#X connect 7 0 9 0;
-#X connect 10 0 11 0;
-#X connect 11 0 9 0;
-#X connect 12 0 7 0;
-#X connect 12 0 13 0;
-#X connect 13 0 1 1;
+#X obj 214 512 loadbang;
+#X obj 23 620 fluid.out~ ampfeaturehelp;
+#X obj 52 432 fluid.ampslice~ -fastrampup 100 -fastrampdown 100 -slowrampup
+1000 -slowrampdown 1000 -onthreshold 9 -offthreshold 3, f 20;
+#X obj 208 432 fluid.ampfeature~ -fastrampup 100 -fastrampdown 100
+-slowrampup 1000 -slowrampdown 1000, f 19;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array ampfeature_helpviewer 4096 float 2;
+#X coords 0 100 4096 -100 300 140 1 0 0;
+#X restore 203 620 graph;
+#X obj 207 578 tabwrite~ ampfeature_helpviewer;
+#X obj 214 556 metro 100;
+#N canvas 1721 -839 1038 697 parameters 0;
+#X floatatom 199 148 8 0 0 0 - - - 0;
+#X floatatom 199 126 8 0 0 0 - - - 0;
+#X floatatom 199 169 8 0 0 0 - - - 0;
+#X obj 152 503 outlet;
+#X floatatom 199 105 8 0 0 0 - - - 0;
+#X text 400 212 0: Energy, f 17;
+#X text 400 223 1: HFC, f 11;
+#X text 400 234 2: SpectralFlux;
+#X text 400 245 3: MKL;
+#X text 400 255 4: IS, f 17;
+#X text 400 265 5: Cosine, f 11;
+#X text 513 212 6: PhaseDev;
+#X text 513 224 7: WPhaseDev;
+#X text 513 234 8: ComplexDev;
+#X text 513 245 9: RComplexDev;
+#X obj 97 -58 loadbang;
+#X obj 210 60 unpack 0 0 0 0;
+#X text 118 105 fastrampup, f 11;
+#X text 104 126 fastrampdown, f 13;
+#X text 118 148 slowrampup, f 11;
+#X text 104 169 slowrampdown, f 13;
+#X msg 153 224 fastrampup \$1;
+#X msg 185 246 fastrampdown \$1;
+#X msg 215 267 slowrampup \$1;
+#X msg 242 289 slowrampdown \$1;
+#X msg 97 -37 \; help.ampfeature.presets 100 100 1000 1000;
+#X obj 210 37 r help.ampfeature.presets;
+#X connect 0 0 23 0;
+#X connect 1 0 22 0;
+#X connect 2 0 24 0;
+#X connect 4 0 21 0;
+#X connect 15 0 25 0;
+#X connect 16 0 4 0;
+#X connect 16 1 1 0;
+#X connect 16 2 0 0;
+#X connect 16 3 2 0;
+#X connect 21 0 3 0;
+#X connect 22 0 3 0;
+#X connect 23 0 3 0;
+#X connect 24 0 3 0;
+#X connect 26 0 16 0;
+#X coords 0 -1 1 1 162 90 2 100 100;
+#X restore 208 262 pd parameters;
+#X text 328 393 <-- more parameters;
+#N canvas 492 171 717 633 parameters 0;
+#X obj 29 577 r \$0-params;
+#X obj 29 600 outlet;
+#X obj 415 120 s \$0-params;
+#X obj 29 74 cnv 10 340 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X obj 415 74 cnv 10 270 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 415 256 Warnings;
+#X obj 418 356 s \$0-params;
+#X msg 418 299 warnings 1;
+#X msg 428 321 warnings 0;
+#X text 507 298 warnings;
+#X text 507 320 or no warnings;
+#X text 28 6 Optional parameters to fluid.ampfeature~;
+#X obj 29 120 s \$0-params;
+#X text 27 54 Ramps;
+#X msg 29 97 fastrampdown 1;
+#X obj 29 202 s \$0-params;
+#X obj 29 284 s \$0-params;
+#X obj 29 366 s \$0-params;
+#X obj 29 458 s \$0-params;
+#X msg 29 179 fastrampup 1;
+#X msg 29 261 slowrampdown 100;
+#X msg 29 343 floor -145;
+#X msg 29 435 slowrampup 100;
+#X text 413 54 Highpass frequency;
+#X msg 415 97 highpassfreq 85;
+#X text 155 91 number of samples the relative envelope follower will
+take to reach the next value when falling, f 30;
+#X text 155 341 level in dB the slowRamp needs to be above to consider
+a detected difference valid \, allowing to ignore the slices in the
+noise floor, f 30;
+#X text 535 91 frequency of the fourth-order Linkwitz–Riley high-pass
+filter, f 21;
+#X obj 415 274 cnv 10 270 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 155 171 number of samples the relative envelope follower will
+take to reach the next value when rising, f 30;
+#X text 155 251 number of samples the absolute envelope follower will
+take to reach the next value when falling., f 30;
+#X text 155 431 number of samples the absolute envelope follower will
+take to reach the next value when raising., f 30;
+#X connect 0 0 1 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
 #X connect 14 0 12 0;
-#X connect 15 0 10 0;
+#X connect 19 0 15 0;
+#X connect 20 0 16 0;
+#X connect 21 0 17 0;
+#X connect 22 0 18 0;
+#X connect 24 0 2 0;
+#X restore 225 392 pd parameters;
+#X connect 1 0 9 0;
+#X connect 1 0 10 0;
+#X connect 1 0 8 0;
+#X connect 6 0 13 0;
+#X connect 7 0 6 0;
+#X connect 9 0 8 1;
+#X connect 10 0 12 0;
+#X connect 13 0 12 0;
+#X connect 14 0 9 0;
+#X connect 14 0 10 0;
+#X connect 16 0 10 0;

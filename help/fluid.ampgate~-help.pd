@@ -1,236 +1,314 @@
-#N canvas 124 42 912 855 10;
-#X obj 8 524 -~ 0.5;
-#X obj 8 545 abs~;
-#X obj 8 566 *~ 2;
-#X obj 8 587 *~;
-#X obj 44 567 osc~ 320;
-#X obj 471 730 tabwrite~ ampgatesourceview;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array ampgatesourceview 413 float 2;
-#X coords 0 1 413 -1 200 140 1;
-#X restore 509 204 graph;
-#X obj 449 670 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 449 651 loadbang;
-#X obj 449 687 metro 37.7;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array ampgateview 413 float 2;
-#X coords 0 1.1 413 -0.1 200 140 1 0 0;
-#X restore 508 359 graph;
-#X obj 329 729 tabwrite~ ampgateview;
-#X obj 91 685 biquad~ 0 0 1 -1 0;
-#X obj 91 759 clip~ 0 1;
-#X obj 154 759 clip~ -1 0;
-#X obj 91 799 *~;
-#X obj 154 799 *~;
-#X obj 91 820 dac~;
-#X obj 223 758 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 223 778 * 0.2;
-#X msg 19 176 reset \, getlatency;
-#X text 706 362 -on;
-#X text 706 479 -off;
-#X msg 134 358 reset \, minslicelength 441 \, getlatency;
-#X msg 133 378 reset \, minsilencelength 441 \, getlatency;
-#X floatatom 522 646 5 0 0 0 - - -;
-#X obj 521 708 delread~ ampgatedel;
-#X obj 8 621 delwrite~ ampgatedel 1000;
-#X obj 568 665 samplerate~;
-#X obj 568 645 r pd-dsp-started;
-#X obj 522 687 / 1;
-#X obj 522 664 * 1000;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.ampgate~ 20 12 0 36 -262144
--66577 0;
-#X text 38 96 This class implements an amplitude-based slicer \, with
-various customisable options and conditions to detect absolute amplitude
-changes as onsets and offsets., f 121;
-#N canvas 830 29 481 477 looking_ahead_and_or_back 0;
-#X msg 10 131 reset \, minlengthabove 441 \, getlatency;
-#X msg 28 176 reset \, minlengthbelow 441 \, getlatency;
-#X msg 68 271 reset \, lookback 8820 \, getlatency;
-#X msg 68 315 reset \, lookahead 8820 \, getlatency;
-#X msg 71 375 reset \, lookback 221 \, lookahead 22050 \, getlatency
+#N canvas 49 51 695 926 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ampgate~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 22 141 fluid.demosound~;
+#X obj 509 60 fluid.referencelauncher fluid.ampgate~.html reference/ampgate/
 ;
-#X text 8 8 look forward or backward in the signal to exercise more
-control, f 70;
-#X text 10 62 by inducing some latency \, we can move onsets / offsets
-to more desireable positions \, or supress state changes that are too
-fast, f 73;
-#X obj 12 414 outlet;
-#X text 11 113 set a minimum time for a transition to be above absthreshon
-\, else ignore, f 73;
-#X text 26 158 set a minimum time for a transition to be below absthreshoff
-\, else ignore, f 76;
-#X text 66 251 move onset backwards to minimum within window;
-#X text 69 296 move offset forwards to minimum within window;
-#X text 71 357 set both \, e.g. to capture reverb tail and a slow attack
-;
+#X obj 17 60 cnv 15 488 17 empty empty Gate\\\ Detection\\\ on\\\ a\\\ Signal
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 22 121 1) Select a source., f 66;
+#X obj 499 863 cnv 15 178 45 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 368 121 964 821 looking_ahead_or_back 0;
+#X obj 327 735 fluid.out~ ampgatehelp;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ampgate~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 17 59 look forward or backward in the signal to exercise more
+control;
+#X obj 39 345 phasor~ 0.1;
+#X obj 176 290 osc~ 320;
+#X obj 39 373 expr~ (abs($v1-0.5)*4)-1, f 18;
+#X text 180 368 turn into a triangle waveform, f 11;
+#X obj 39 426 *~, f 20;
+#N canvas 1488 -903 501 476 latencydelay 0;
+#X obj 37 46 inlet~;
+#X obj 327 189 samplerate~;
+#X obj 327 160 loadbang;
+#X floatatom 207 267 12 0 0 0 - - - 0;
+#X floatatom 332 214 15 0 0 0 - - - 0;
+#X obj 197 242 expr ($f1*1000/$f2);
+#X obj 37 350 outlet~;
+#X obj 37 192 delwrite~ help.ampgate.del2 1000, f 18;
+#X obj 37 268 delread~ help.ampgate.del2, f 19;
+#X obj 197 160 r \$0-latency2;
 #X connect 0 0 7 0;
-#X connect 1 0 7 0;
-#X connect 2 0 7 0;
-#X connect 3 0 7 0;
-#X connect 4 0 7 0;
-#X restore 224 459 pd looking_ahead_and_or_back;
-#N canvas 760 23 651 739 a_musical_example 0;
-#X obj 33 29 loadbang;
-#X obj 33 71 soundfiler;
-#X obj 137 69 array define ampgate_drums;
-#X obj 34 196 *~, f 11;
-#X obj 34 156 /~;
-#X msg 33 113 1;
-#X obj 34 177 phasor~;
-#X obj 34 215 tabread~ ampgate_drums;
-#X obj 30 717 dac~;
-#X obj 134 112 samplerate~;
-#X obj 108 131 / 1;
-#X obj 117 555 / 1;
-#X obj 117 532 * 1000;
-#X obj 41 237 delwrite~ ampgatedel2 1000;
-#X obj 116 576 delread~ ampgatedel2;
-#X obj 30 509 fluid.ampgate~;
-#X obj 30 655 *~;
-#X obj 83 636 biquad~ 0 0 1 -1 0;
-#X obj 83 655 clip~ 0 0.5;
-#X text 164 275 a sort of click on the right \, relative envelope mostly
-\, with a gate, f 67;
-#X text 165 378 an absolute gate for fun - explore the lookahead to
-allow for tails \, but with added latency, f 72;
-#X floatatom 185 444 10 0 0 0 - - -;
-#X text 31 7 Amplitude followers love drums;
-#X obj 30 689 *~;
-#X obj 55 690 *~;
-#X obj 256 639 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 33 92 t b f b;
-#X msg 185 461 lookback \$1 \, getlatency;
-#X msg 33 50 read -resize media/Nicol-LoopE-M.wav ampgate_drums;
-#X msg 166 408 reset \, onthreshold -27 \, offthreshold -31 \, rampup
-441 \, rampdown 4410 \, minsilencelength 4410 \, highpassfreq 20 \,
-lookback 441 \, getlatency, f 73;
-#X msg 164 292 reset \, onthreshold -27 \, offthreshold -31 \, rampup
-441 \, rampdown 4410 \, minsilencelength 4410 \, highpassfreq 20 \,
-getlatency, f 75;
-#X connect 0 0 28 0;
-#X connect 1 0 26 0;
-#X connect 3 0 7 0;
-#X connect 4 0 6 0;
-#X connect 5 0 4 0;
-#X connect 6 0 3 0;
-#X connect 7 0 13 0;
-#X connect 7 0 15 0;
-#X connect 9 0 10 1;
-#X connect 9 0 11 1;
-#X connect 10 0 4 1;
-#X connect 11 0 14 0;
-#X connect 12 0 11 0;
-#X connect 14 0 16 1;
-#X connect 15 0 16 0;
-#X connect 15 0 17 0;
-#X connect 15 1 12 0;
-#X connect 16 0 23 0;
-#X connect 17 0 18 0;
-#X connect 18 0 24 0;
-#X connect 21 0 27 0;
-#X connect 23 0 8 0;
-#X connect 24 0 8 1;
-#X connect 25 0 24 1;
-#X connect 25 0 23 1;
-#X connect 26 0 5 0;
-#X connect 26 1 3 1;
-#X connect 26 1 10 0;
-#X connect 26 2 9 0;
-#X connect 27 0 15 0;
-#X connect 28 0 1 0;
-#X connect 29 0 15 0;
-#X connect 30 0 15 0;
-#X restore 360 541 pd a_musical_example;
-#X text 242 758 sonify state;
-#X text 132 331 we can also enforce a minimum slice length \, or a
-minimum silence length, f 38;
-#X text 534 627 computed latency is max of latency-inducing attributes
-;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.ampgate~.html;
-#X msg 143 89 browse \$1;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 736 154 pd;
-#X text 605 135 launch the HTML doc->;
-#X obj 737 137 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 8 503 phasor~ 0.2;
-#X text 37 58 Amplitude-based Gating Slicer;
-#X text 16 145 At its most basic \, fluid.ampgate~ is like [4th-order
-highpass]–[abs]–[atodb]-[slide]-[>];
-#X text 72 232 by using different 'on' and 'off' thresholds \, we add
-hysterisis \, which can help with triggering errors. This is like replacing
-[>] with [thresh];
-#X msg 73 270 reset \, offthreshold -16 \, getlatency;
-#X obj 172 615 fluid.ampgate~ -rampup 5 -rampdown 25 -onthreshold -12
--offthreshold -12;
-#X floatatom 10 805 0 0 0 0 - - -;
-#X obj 10 767 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#N canvas 0 23 450 300 counter 0;
-#X obj 92 39 inlet;
-#X obj 100 106 fexpr~ $x1[0] + $y1[-1];
-#X obj 36 71 loadbang;
-#X msg 96 75 clear y1;
-#X obj 92 130 snapshot~;
-#X obj 36 106 metro 100;
-#X obj 36 89 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
-;
-#X obj 92 151 outlet;
-#X obj 244 47 inlet~;
-#X connect 0 0 3 0;
 #X connect 1 0 4 0;
+#X connect 1 0 5 1;
+#X connect 2 0 1 0;
+#X connect 5 0 3 0;
+#X connect 5 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 5 0;
+#X restore 39 478 pd latencydelay;
+#X obj 327 475 fluid.ampgate~ -rampup 5 -rampdown 25 -onthreshold -12
+-offthreshold -12;
+#X obj 327 563 fexpr~ $x1[0]-$x1[-1];
+#X text 336 544 delta~;
+#X obj 564 541 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 564 561 * 0.2;
+#X obj 327 692 *~;
+#X obj 415 692 *~;
+#X obj 327 632 expr~ if($v1==1 \, 1 \, 0), f 10;
+#X obj 415 632 expr~ if($v1==-1 \, 1 \, 0), f 11;
+#X msg 327 214 reset \, minlengthabove 441 \, getlatency;
+#X msg 337 254 reset \, minlengthbelow 441 \, getlatency;
+#X msg 347 294 reset \, lookback 8820 \, getlatency;
+#X msg 357 334 reset \, lookahead 8820 \, getlatency;
+#X msg 367 374 reset \, lookback 221 \, lookahead 22050 \, getlatency
+;
+#X text 616 211 set a minimum time for a transition to be above absthreshon
+\, else ignore, f 37;
+#X text 616 251 set a minimum time for a transition to be below absthreshoff
+\, else ignore, f 37;
+#X text 616 291 move onset backwards to minimum within window, f 37
+;
+#X text 616 331 move offset forwards to minimum within window, f 37
+;
+#X text 726 371 set both \, e.g. to capture reverb tail, f 21;
+#X floatatom 702 516 5 0 0 0 - - - 0;
+#N canvas 353 391 450 300 scope 0;
+#X obj 104 15 inlet~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array help.ampgate.scope.2 8192 float 2;
+#X coords 0 1 8192 -1 196 51 2 0 0;
+#X restore 100 100 graph;
+#X obj 284 36 block~ 16384 8;
+#X obj 104 41 tabsend~ help.ampgate.scope.2;
+#X connect 0 0 3 0;
+#X coords 0 -1 1 1 196 51 2 100 100;
+#X restore 564 634 pd scope;
+#N canvas 353 391 450 300 scope 0;
+#X obj 104 15 inlet~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array help.ampgate.scope.1 8192 float 2;
+#X coords 0 1 8192 -1 196 51 2 0 0;
+#X restore 100 100 graph;
+#X obj 297 16 block~ 16384 8;
+#X obj 104 41 tabsend~ help.ampgate.scope.1;
+#X connect 0 0 3 0;
+#X coords 0 -1 1 1 196 51 2 100 100;
+#X restore 69 517 pd scope;
+#X obj 702 539 s \$0-latency2;
+#X connect 3 0 5 0;
+#X connect 4 0 7 1;
+#X connect 5 0 7 0;
+#X connect 7 0 8 0;
+#X connect 7 0 9 0;
+#X connect 8 0 30 0;
+#X connect 9 0 10 0;
+#X connect 9 0 29 0;
+#X connect 9 1 28 0;
+#X connect 10 0 16 0;
+#X connect 10 0 17 0;
+#X connect 12 0 13 0;
+#X connect 13 0 15 1;
+#X connect 13 0 14 1;
+#X connect 14 0 0 0;
+#X connect 15 0 0 1;
+#X connect 16 0 14 0;
+#X connect 17 0 15 0;
+#X connect 18 0 9 0;
+#X connect 19 0 9 0;
+#X connect 20 0 9 0;
+#X connect 21 0 9 0;
+#X connect 22 0 9 0;
+#X connect 28 0 31 0;
+#X restore 502 883 pd looking_ahead_or_back;
+#X obj 196 676 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 219 673 onsets;
+#X text 219 688 offsets;
+#X obj 24 884 fluid.out~ ampgatehelp;
+#X obj 24 493 fluid.ampgate~ -rampup 441 -rampdown 2205 -onthreshold
+-27 -offthreshold -31 -minsilencelength 4410 -lookback 441 -highpassfreq
+85, f 51;
+#X obj 308 438 loadbang;
+#X msg 308 462 getlatency;
+#X obj 24 745 expr~ if($v1==$v2 \, 1 \, -1);
+#X floatatom 378 566 5 0 0 0 - - - 0;
+#X obj 24 676 fexpr~ $x1[0]-$x1[-1];
+#N canvas 1488 -904 501 476 latencydelay 0;
+#X obj 37 192 delwrite~ help.ampgate.del 1000, f 18;
+#X obj 37 46 inlet~;
+#X obj 327 189 samplerate~;
+#X obj 327 160 loadbang;
+#X obj 37 268 delread~ help.ampgate.del, f 19;
+#X floatatom 207 267 12 0 0 0 - - - 0;
+#X floatatom 332 214 15 0 0 0 - - - 0;
+#X obj 197 242 expr ($f1*1000/$f2);
+#X obj 37 350 outlet~;
+#X obj 197 160 r \$0-latency;
+#X connect 1 0 0 0;
 #X connect 2 0 6 0;
-#X connect 3 0 1 0;
-#X connect 4 0 7 0;
-#X connect 5 0 4 0;
-#X connect 6 0 5 0;
-#X connect 8 0 1 0;
-#X restore 10 787 pd counter;
-#X text 27 766 reset;
+#X connect 2 0 7 1;
+#X connect 3 0 2 0;
+#X connect 4 0 8 0;
+#X connect 7 0 4 0;
+#X connect 7 0 5 0;
+#X connect 9 0 7 0;
+#X restore 405 748 pd latencydelay;
+#N canvas 121 159 221 227 load 0;
+#X obj 54 83 loadbang;
+#X msg 54 106 0;
+#X obj 54 130 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 196 641 pd load;
+#N canvas 1586 -669 321 310 select_trigger 0;
+#X obj 25 25 inlet;
+#X obj 25 62 expr if ($f1==0 \, 1 \, -1), f 17;
+#X floatatom 25 119 5 0 0 0 - - - 0;
+#X obj 25 145 sig~;
+#X obj 25 175 outlet~;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
-#X connect 3 0 27 0;
-#X connect 3 0 47 0;
-#X connect 4 0 3 1;
-#X connect 7 0 9 0;
-#X connect 8 0 7 0;
-#X connect 9 0 5 0;
-#X connect 9 0 11 0;
+#X connect 3 0 4 0;
+#X restore 196 716 pd select_trigger;
+#X text 17 79 Absolute amplitude threshold gate detector on a realtime
+signal;
+#X text 31 657 delta~;
+#X text 274 405 <-- more parameters;
+#N canvas 506 127 1028 903 parameters 0;
+#X obj 29 737 r \$0-params;
+#X obj 29 760 outlet;
+#X text 28 6 Optional parameters to fluid.bufaudiotransport;
+#X obj 29 125 s \$0-params;
+#X obj 29 195 s \$0-params;
+#X obj 29 279 s \$0-params;
+#X obj 29 355 s \$0-params;
+#X obj 29 445 s \$0-params;
+#X obj 29 515 s \$0-params;
+#X obj 29 585 s \$0-params;
+#X obj 29 655 s \$0-params;
+#X obj 519 125 s \$0-params;
+#X obj 519 195 s \$0-params;
+#X obj 519 265 s \$0-params;
+#X msg 29 632 minslicelength 2;
+#X msg 519 102 offthreshold 0;
+#X msg 519 172 onthreshold 14;
+#X msg 519 242 rampdown;
+#X obj 519 335 s \$0-params;
+#X obj 519 405 s \$0-params;
+#X obj 519 475 s \$0-params;
+#X text 643 449 Calling reset will change parameter values back to
+those the object was created with, f 45;
+#X msg 519 312 rampup 0;
+#X msg 519 382 warnings 14;
+#X msg 519 452 reset;
+#X text 173 100 size of the buffer to allocate at instantiation time
+for keeping track of the time-critical conditions, f 45;
+#X text 173 170 frequency of the fourth-order Linkwitz-Riley high-pass
+filter applied to the input signal to minimise low frequency intermodulation
+with very short ramp length, f 45;
+#X text 173 250 when an offset is detected \, the algorithm will wait
+this duration (in samples) to find a minimum in the envelope follower
+to identify as the offset point, f 45;
+#X text 173 330 when an onset is detected \, the algorithm will look
+in the recent past (via an internal recorded buffer of this length
+in samples) for a minimum in the envelope follower to identify as the
+onset point, f 45;
+#X text 173 420 length in samples that the envelope must be above the
+threshold to consider it a valid transition to 1, f 45;
+#X msg 29 102 maxsize 88200;
+#X msg 29 172 highpassfreq 85;
+#X msg 29 242 lookahead 0;
+#X msg 29 332 lookback 0;
+#X msg 29 422 minlengthabove 1;
+#X msg 29 492 minlengthbelow 1;
+#X msg 29 562 minsilencelength 1;
+#X text 173 490 length in samples that the envelope must be below the
+threshold to consider it a valid transition to 0, f 45;
+#X text 173 560 minimum length in samples for which the gate will stay
+closed, f 45;
+#X text 173 630 minimum length in samples for which the gate will stay
+open., f 45;
+#X text 643 170 threshold in dB of the envelope follower to trigger
+an onset, f 45;
+#X text 643 239 number of samples the envelope follower will take to
+reach the next value when falling, f 45;
+#X text 643 310 number of samples the envelope follower will take to
+reach the next value when rising, f 45;
+#X text 643 380 enable warnings to be issued whenever a parameter value
+is constrained, f 45;
+#X text 643 100 threshold in dB of the envelope follower to trigger
+an offset, f 45;
+#X connect 0 0 1 0;
+#X connect 14 0 10 0;
+#X connect 15 0 11 0;
+#X connect 16 0 12 0;
+#X connect 17 0 13 0;
+#X connect 22 0 18 0;
+#X connect 23 0 19 0;
+#X connect 24 0 20 0;
+#X connect 30 0 3 0;
+#X connect 31 0 4 0;
+#X connect 32 0 5 0;
+#X connect 33 0 6 0;
+#X connect 34 0 7 0;
+#X connect 35 0 8 0;
+#X connect 36 0 9 0;
+#X restore 171 402 pd parameters;
+#N canvas 1114 -945 559 681 parameters 0;
+#X obj 186 548 outlet;
+#X obj 34 -62 loadbang;
+#X obj 186 27 unpack 0 0 0 0 0 0;
+#X floatatom 199 105 8 0 0 0 - - - 0;
+#X floatatom 199 125 8 0 0 0 - - - 0;
+#X floatatom 199 145 8 0 0 0 - - - 0;
+#X floatatom 199 165 8 0 0 0 - - - 0;
+#X floatatom 199 185 8 0 0 0 - - - 0;
+#X floatatom 199 205 8 0 0 0 - - - 0;
+#X text 111 105 onthreshold, f 12;
+#X text 111 125 offthreshold;
+#X text 111 145 rampup, f 12;
+#X text 111 165 rampdown, f 12;
+#X text 111 185 lookahead, f 12;
+#X msg 186 271 onthreshold \$1;
+#X msg 206 301 offthreshold \$1;
+#X msg 236 331 rampup \$1;
+#X msg 266 361 rampdown \$1;
+#X msg 296 391 lookahead \$1;
+#X msg 34 -37 \; help.ampgate.presets -27 -31 441 2205 0 441;
+#X obj 186 4 r help.ampgate.presets;
+#X text 111 205 lookback, f 12;
+#X msg 336 421 lookback \$1;
+#X connect 1 0 19 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 0;
+#X connect 2 3 6 0;
+#X connect 2 4 7 0;
+#X connect 2 5 8 0;
+#X connect 3 0 14 0;
+#X connect 4 0 15 0;
+#X connect 5 0 16 0;
+#X connect 6 0 17 0;
+#X connect 7 0 18 0;
+#X connect 8 0 22 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X connect 20 0 2 0;
+#X connect 22 0 0 0;
+#X coords 0 -1 1 1 170 129 2 100 100;
+#X restore 96 260 pd parameters;
+#X obj 378 592 s \$0-latency;
+#X connect 1 0 11 0;
+#X connect 1 0 17 0;
+#X connect 7 0 19 0;
+#X connect 11 0 16 0;
+#X connect 11 1 15 0;
 #X connect 12 0 13 0;
-#X connect 12 0 14 0;
-#X connect 13 0 15 0;
-#X connect 13 0 50 1;
-#X connect 14 0 16 0;
-#X connect 15 0 17 0;
-#X connect 16 0 17 1;
-#X connect 18 0 19 0;
-#X connect 19 0 16 1;
-#X connect 19 0 15 1;
-#X connect 20 0 47 0;
-#X connect 23 0 47 0;
-#X connect 24 0 47 0;
-#X connect 25 0 31 0;
-#X connect 26 0 5 0;
-#X connect 28 0 30 1;
-#X connect 29 0 28 0;
-#X connect 30 0 26 0;
-#X connect 31 0 30 0;
-#X connect 34 0 47 0;
-#X connect 41 0 39 0;
-#X connect 42 0 0 0;
-#X connect 46 0 47 0;
-#X connect 47 0 11 0;
-#X connect 47 0 12 0;
-#X connect 47 1 25 0;
-#X connect 49 0 50 0;
-#X connect 50 0 48 0;
+#X connect 13 0 11 0;
+#X connect 14 0 10 0;
+#X connect 15 0 25 0;
+#X connect 16 0 14 0;
+#X connect 17 0 10 1;
+#X connect 18 0 7 0;
+#X connect 19 0 14 1;
+#X connect 23 0 11 0;
+#X connect 24 0 11 0;

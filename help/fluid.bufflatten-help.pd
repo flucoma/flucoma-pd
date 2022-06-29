@@ -1,52 +1,230 @@
-#N canvas 661 114 811 824 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufflatten 20 12 0 36
-#fcfcfc #404040 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 461 339 array define output;
-#X obj 355 418 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 353 584 array set;
-#X msg 402 551 symbol stereoinput-0;
-#X msg 389 529 0 0.1 0.2 0.3 0.4;
-#X obj 352 466 t b b b b;
-#X obj 462 317 clone fluid.multiarray 2 stereoinput 5;
-#X msg 370 507 symbol stereoinput-1;
-#X msg 55 280 bang;
-#X obj 108 506 array get stereoinput-1;
-#X obj 102 543 print;
-#X obj 106 474 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X msg 352 487 1 1.1 1.2 1.3 1.4;
-#X text 372 415 1 make the arrays;
-#X text 100 280 2 process - oops not working beyond mono yet;
-#X text 132 476 3 was the right channel right?;
-#X obj 29 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X msg 29 220 axis \$1;
-#X obj 55 315 fluid.bufflatten -source stereoinput -destination output
-;
-#X obj 27 141 loadbang;
-#X msg 28 169 1;
-#X obj 55 336 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#N canvas 7 50 708 876 12;
+#X obj 539 194 note_on_multiarrays;
+#X obj 539 259 array define output;
+#X obj 22 162 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
-#X obj 55 357 array get output;
-#X obj 55 378 print;
-#X connect 3 0 7 0;
-#X connect 5 0 4 2;
-#X connect 6 0 4 0;
-#X connect 7 0 14 0;
-#X connect 7 1 9 0;
-#X connect 7 2 6 0;
-#X connect 7 3 5 0;
-#X connect 9 0 4 2;
-#X connect 10 0 20 0;
-#X connect 11 0 12 0;
-#X connect 13 0 11 0;
-#X connect 14 0 4 0;
+#X msg 279 521 axis \$1;
+#X obj 214 424 loadbang;
+#X msg 214 446 1, f 2;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufflatten 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Flatten\\\ a\\\ multichannel\\\ array
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufflatten.html reference/bufflatten/
+;
+#X text 17 79 Flatten a multichannel array to a single channel. This
+can be useful to structure an array to added to a DataSet.;
+#X obj 448 237 clone fluid.multiarray 3 input 3;
+#X obj 25 545 fluid.bufflatten -source input -destination output;
+#N canvas 1202 -891 1520 779 fillarrays 0;
+#X obj -65 14 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj -65 41 array get input-0;
+#X obj 104 125 fluid.box;
+#X obj 154 125 fluid.box;
+#X obj 204 125 fluid.box;
+#X obj -66 64 unpack 0 0 0;
+#X obj 105 14 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 104 175 fluid.box;
+#X obj 154 175 fluid.box;
+#X obj 204 175 fluid.box;
+#X obj 104 64 unpack 0 0 0;
+#X obj 275 14 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 104 225 fluid.box;
+#X obj 154 225 fluid.box;
+#X obj 204 225 fluid.box;
+#X obj 274 64 unpack 0 0 0;
+#X obj -84 -134 inlet;
+#X obj 488 163 array set, f 17;
+#X obj 487 -44 t b b b b b b, f 26;
+#X msg 487 12 300 600 900;
+#X msg 558 58 30 60 90;
+#X msg 630 104 3 6 9;
+#X msg 522 -11 symbol input-0;
+#X msg 594 35 symbol input-1;
+#X msg 666 81 symbol input-2;
+#X obj 427 -116 t b b b b;
+#X obj 105 41 array get input-1;
+#X obj 275 41 array get input-2;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 3 0;
+#X connect 5 2 4 0;
+#X connect 6 0 26 0;
+#X connect 10 0 7 0;
+#X connect 10 1 8 0;
+#X connect 10 2 9 0;
+#X connect 11 0 27 0;
+#X connect 15 0 12 0;
+#X connect 15 1 13 0;
+#X connect 15 2 14 0;
+#X connect 16 0 25 0;
 #X connect 18 0 19 0;
-#X connect 19 0 20 0;
-#X connect 20 0 23 0;
-#X connect 21 0 22 0;
-#X connect 22 0 18 0;
-#X connect 23 0 24 0;
-#X connect 24 0 25 0;
+#X connect 18 1 22 0;
+#X connect 18 2 20 0;
+#X connect 18 3 23 0;
+#X connect 18 4 21 0;
+#X connect 18 5 24 0;
+#X connect 19 0 17 0;
+#X connect 20 0 17 0;
+#X connect 21 0 17 0;
+#X connect 22 0 17 2;
+#X connect 23 0 17 2;
+#X connect 24 0 17 2;
+#X connect 25 0 0 0;
+#X connect 25 1 6 0;
+#X connect 25 2 11 0;
+#X connect 25 3 18 0;
+#X connect 26 0 10 0;
+#X connect 27 0 15 0;
+#X coords 0 -1 1 1 150 170 1 100 100;
+#X restore 22 187 pd fillarrays;
+#N canvas 1495 -795 959 624 showresult 0;
+#X obj 104 144 fluid.box;
+#X obj 104 67 unpack 0 0 0 0 0 0 0 0 0;
+#X obj 154 144 fluid.box;
+#X obj 204 144 fluid.box;
+#X obj 254 144 fluid.box;
+#X obj 304 144 fluid.box;
+#X obj 354 144 fluid.box;
+#X obj 404 144 fluid.box;
+#X obj 454 144 fluid.box;
+#X obj 504 144 fluid.box;
+#X obj 104 9 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 104 -16 inlet;
+#X obj 104 36 array get output;
+#X connect 1 0 0 0;
+#X connect 1 1 2 0;
+#X connect 1 2 3 0;
+#X connect 1 3 4 0;
+#X connect 1 4 5 0;
+#X connect 1 5 6 0;
+#X connect 1 6 7 0;
+#X connect 1 7 8 0;
+#X connect 1 8 9 0;
+#X connect 10 0 12 0;
+#X connect 11 0 10 0;
+#X connect 12 0 1 0;
+#X coords 0 -1 1 1 450 90 1 100 100;
+#X restore 25 601 pd showresult;
+#X obj 25 575 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 494 737 cnv 15 177 42 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 172 77 725 956 real_use_case 0;
+#X obj 17 23 cnv 15 660 42 empty empty fluid.bufflatten 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 17 79 Flattening analysis so it can be added to a fluid.dataset~
+;
+#X obj 37 276 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1541 -768 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav
+help.flatten.src;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 37 226 pd loadsrc;
+#X obj 37 296 fluid.bufchroma 12 -source help.flatten.src -features
+help.flatten.chroma -numchans 1, f 33;
+#X text 281 295 Produces a buffer of 12 channels with as many frames
+as there are analysis windows, f 29;
+#X obj 37 384 fluid.bufstats -stats help.flatten.stats, f 22;
+#X obj 540 268 note_on_multiarrays;
+#X obj 491 126 clone fluid.multiarray 12 help.flatten.chroma, f 26
+;
+#X obj 491 163 clone fluid.multiarray 12 help.flatten.stats, f 26
+;
+#X obj 491 200 clone fluid.multiarray 12 help.flatten.means, f 26
+;
+#X obj 428 237 array define help.flatten.flatstats;
+#X obj 37 458 fluid.bufselect -indices 0 -destination help.flatten.means
+, f 33;
+#X obj 37 532 fluid.bufflatten -destination help.flatten.flatstats
+, f 30;
+#X msg 37 626 setpoint chroma help.flatten.flatstats \, print;
+#X obj 37 650 fluid.dataset help.chroma.stats;
+#X obj 470 103 array define help.flatten.src;
+#N canvas 523 184 452 401 automatically_managed_arrays 0;
+#X obj 27 31 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 48 30 Press me!;
+#X obj 27 56 fluid.bufchroma 12 -source help.flatten.src -numchans
+1;
+#X obj 27 81 fluid.bufstats;
+#X obj 27 106 fluid.bufflatten -numframes 1;
+#X msg 27 156 setpoint chroma \$2 \, print;
+#X obj 27 181 fluid.dataset help.chroma.stats;
+#X obj 27 206 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 47 205 store dataset into a text object;
+#X text 234 281 <- double-click 'text' to see data, f 18;
+#X obj 27 231 fluid.ds2text help.chroma.stats help.bufflatten.text.2
+, f 27;
+#X obj 32 281 text define help.bufflatten.text.2;
+#X f 27;
+#X obj 27 131 list;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 12 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 10 0;
+#X connect 12 0 5 0;
+#X restore 374 688 pd automatically_managed_arrays;
+#X obj 37 709 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 57 706 store dataset into a text object;
+#X text 244 788 <- double-click 'text' to see data, f 18;
+#X obj 37 734 fluid.ds2text help.chroma.stats help.bufflatten.text.1
+, f 27;
+#X obj 42 788 text define help.bufflatten.text.1;
+#X f 27;
+#X text 216 383 Produces a buffer of 12 channels with 7 frames. Each
+frame is a statistical measurement of the chroma values, f 40;
+#X text 280 457 Extracts only the first index of each channel. This
+isolates the "mean" amplitude of each chroma., f 51;
+#X text 259 531 Flattens the 12 channels with a single frame in each
+\, to a single channel of 12 values., f 48;
+#X connect 2 0 4 0;
+#X connect 4 0 6 0;
+#X connect 6 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
+#X connect 15 0 18 0;
+#X connect 18 0 21 0;
+#X restore 496 757 pd real_use_case;
+#X obj 45 162 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 46 161 1) Generate a 3x3 buffer of values;
+#X obj 279 465 vradio 15 1 0 2 empty empty Axis 0 -8 0 10 #fcfcfc #000000
+#000000 0;
+#X text 297 463 Frames, f 12;
+#X text 297 479 Channels, f 12;
+#X obj 183 335 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 206 335 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 207 334 2) Flatten the source multiarray to a flat array,
+f 25;
+#X text 480 596 output will be 1 channel with (in channels * in frames)
+samples, f 22;
+#X text 176 253 | channels;
+#X obj 175 281 cnv 15 1 1 empty empty ˇ 0 0 0 22 #ffffff #404040 0
+;
+#X text 177 221 -> samples/frames;
+#X connect 2 0 12 0;
+#X connect 3 0 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 19 0;
+#X connect 11 0 14 0;
+#X connect 14 0 13 0;
+#X connect 19 0 3 0;
+#X connect 22 0 11 0;
