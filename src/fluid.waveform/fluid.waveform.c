@@ -244,7 +244,7 @@ static void fwf_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
-static void fwf_draw(t_fwf* x, struct _glist *glist, t_floatarg vis){
+static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
@@ -457,7 +457,7 @@ void fwf_audiobuffer(t_fwf* x, t_symbol* name){
   }
   sys_vgui("}\n"); //footer to the channel line
   fwf_erase(x, x->x_glist);
-  fwf_draw(x, x->x_glist, 0);
+  fwf_draw(x, x->x_glist, 1);
 
   for(int i=0;i<nbchans;i++) {
     free(localcopy[i]);
@@ -597,7 +597,7 @@ void fwf_imagebuffer(t_fwf* x, t_symbol* name){
     x->x_fullname, file_name_open, x->x_fullname);
     sys_vgui("file delete %s\n", file_name_open); // and delete the tmpfile here after load
     fwf_erase(x, x->x_glist);
-    fwf_draw(x, x->x_glist, 0);
+    fwf_draw(x, x->x_glist, 1);
   }
 
   for(int i=0;i<nbchans;i++) {
@@ -710,7 +710,7 @@ void fwf_featuresbuffer(t_fwf* x, t_symbol* name){
   }
   sys_vgui("}\n"); //footer to the channel line
   fwf_erase(x, x->x_glist);
-  fwf_draw(x, x->x_glist, 0);
+  fwf_draw(x, x->x_glist, 1);
 
   for(int i=0;i<nbchans;i++) {
     free(localcopy[i]);
@@ -802,7 +802,7 @@ void fwf_indicesbuffer(t_fwf* x, t_symbol* name){
   sys_vgui("}\n"); //footer to the channel line
 
   fwf_erase(x, x->x_glist);
-  fwf_draw(x, x->x_glist, 0);
+  fwf_draw(x, x->x_glist, 1);
 
   for(int i=0;i<nbchans;i++) {
     free(localcopy[i]);
