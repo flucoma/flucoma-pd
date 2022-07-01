@@ -1,5 +1,121 @@
-#N canvas 56 23 809 703 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufnmfseed 20 12 0 36 -262144
--66577 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 98 227 fluid.bufnmfseed;
+#N canvas 22 34 700 867 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmfseed 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 459 777 cnv 15 222 68 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufnmfseed.html reference/bufnmfseed/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Non-Negative\\\ Double\\\ Singular\\\ Value\\\ Decomposition\\\ on\\\ a\\\ Buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Find Initial Bases and Activations for BufNMF;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 115 outlet;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.svd.src;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X restore 17 218 pd loadsrc;
+#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 170 fluid.demoaudiofiles;
+#X text 19 151 1) Pick a source;
+#X obj 490 161 array define help.svd.src;
+#X f 26;
+#X msg 17 340 coverage \$1 \, bang;
+#X floatatom 216 473 5 0 0 0 - - - 0;
+#X text 147 335 The coverage dictates how much of the information is
+preserved in the decomposition. Higher values will require more components
+\, to express the intricacies of the original information., f 70;
+#X obj 58 282 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 59 282 2) Set a coverage amount to trigger processing;
+#X obj 72 510 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 97 510 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 98 510 3) Resynthesise using computed bases, f 15;
+#X msg 215 563 components \$1, f 15;
+#X floatatom 464 545 5 0 0 0 - - - 0;
+#N canvas 1300 -1029 693 477 resynthesis_audition 0;
+#X obj 37 37 inlet;
+#X obj 37 293 outlet~;
+#X obj 37 69 t b f;
+#X listbox 88 186 35 0 0 0 - - - 0;
+#X msg 78 105 symbol help.svd.resynth-\$1;
+#X obj 78 157 list prepend set;
+#X obj 37 249 tabplay~ help.svd.resynth-3;
+#X obj 78 214 list trim;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 2 1 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 5 0 7 0;
+#X connect 6 0 1 0;
+#X connect 7 0 6 0;
+#X restore 464 598 pd resynthesis_audition;
+#X obj 464 691 fluid.out~ bufnmfseedhelp;
+#X obj 542 696 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 543 696 4) audio on, f 17;
+#X obj 512 546 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 513 546 5) Select a component to listen to, f 22;
+#X obj 465 821 note_on_multithreading;
+#X obj 465 799 note_on_automatic_multiarrays;
+#X obj 17 283 cnv 15 40 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X floatatom 17 282 5 0 0 0 - - - 0;
+#N canvas 1407 -890 586 431 status 0;
+#X obj 257 21 loadbang;
+#X msg 257 82 symbol;
+#X obj 33 21 inlet;
+#X obj 164 21 inlet;
+#X obj 33 136 outlet;
+#X msg 33 82 symbol processing;
+#X msg 164 82 symbol done;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 2 0 5 0;
+#X connect 3 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X restore 28 697 pd status;
+#X obj 28 722 cnv 15 143 15 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X listbox 28 720 20 0 0 0 - - - 0;
+#X text 321 398 By retrieveing the number of channels in the bases
+buffer \, we can determine how many components fluid.bufnmf~ should
+decompose to \, to achieve the coverage of variance we specified. In
+Pd \, it relies heavily on automatic multiarrays to allow dynamic channel
+count., f 38;
+#X obj 17 399 fluid.bufnmfseed -source help.svd.src;
+#X obj 215 429 fluid.bufinfo;
+#X msg 215 450 \$2;
+#X msg 17 423 bases \$1;
+#X obj 88 632 fluid.bufnmf -source help.svd.src -resynth help.svd.resynth
+-basesmode 1 -resynthmode 1 -blocking 0, f 34;
+#X obj 490 184 clone 200 fluid.multiarray help.svd.resynth, f 26;
+#X obj 27 573 t b b b, f 10;
+#X msg 210 593 \; help.svd.resynth const;
+#X connect 7 0 5 0;
+#X connect 10 0 34 0;
+#X connect 11 0 18 0;
+#X connect 15 0 40 0;
+#X connect 18 0 38 0;
+#X connect 19 0 20 0;
+#X connect 20 0 21 0;
+#X connect 20 0 21 1;
+#X connect 29 0 10 0;
+#X connect 30 0 32 0;
+#X connect 34 0 37 0;
+#X connect 34 1 35 0;
+#X connect 35 0 36 0;
+#X connect 36 0 11 0;
+#X connect 37 0 38 0;
+#X connect 38 0 30 1;
+#X connect 40 0 30 0;
+#X connect 40 1 38 0;
+#X connect 40 2 41 0;
