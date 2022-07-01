@@ -1,38 +1,28 @@
-#N canvas 63 144 693 769 12;
+#N canvas 84 126 701 752 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyslice 1 22 0
 36 #4ba3fb #ffffff 0;
-#X obj 449 686 cnv 15 222 65 empty empty More\\\ information 4 10 0
+#X obj 456 668 cnv 15 222 65 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufnoveltyslice.html reference/noveltyslice/
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Novelty-Based\\\ Slicer
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 A non-realtime slicer using an algorithm assessing novelty
-in the signal to estimate the slicing points., f 67;
-#N canvas 1376 -757 448 179 loadsrc 0;
-#X obj 16 83 soundfiler;
-#X obj 16 115 outlet;
-#X obj 16 19 inlet;
-#X msg 16 41 read -resize \$1 help.ns.src;
-#X connect 0 0 1 0;
-#X connect 2 0 3 0;
-#X connect 3 0 0 0;
-#X restore 27 188 pd loadsrc;
+in the signal to estimate the slicing points.;
 #X obj 506 161 array define help.ns.src;
-#X obj 27 513 fluid.waveform 313 130 1 empty empty 0;
-#X obj 66 246 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 19 514 fluid.waveform 430 130 1 empty empty 0;
+#X obj 57 251 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 392 638 fluid.out~ bufnoveltyslicehelp;
-#X obj 464 643 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 495 599 fluid.out~ bufnoveltyslicehelp;
+#X obj 567 604 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 465 643 1) Start audio, f 17;
-#X obj 90 246 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 81 251 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X obj 66 426 fluid.bufnoveltyslice -source help.ns.src -indices help.ns.slices
+#X obj 57 426 fluid.bufnoveltyslice -source help.ns.src -indices help.ns.slices
 -maxfiltersize 71 -maxkernelsize 101;
 #X obj 485 184 array define help.ns.slices;
-#X msg 66 464 indices help.ns.slices;
-#X floatatom 391 550 5 0 0 0 - - - 0;
+#X msg 57 464 indices help.ns.slices;
+#X floatatom 494 511 5 0 0 0 - - - 0;
 #N canvas 1175 -1036 412 479 extract_slices 0;
 #X obj 37 427 outlet~;
 #X obj 37 391 tabplay~ help.ns.src;
@@ -69,8 +59,8 @@ in the signal to estimate the slicing points., f 67;
 #X connect 15 0 13 1;
 #X connect 16 0 4 0;
 #X connect 16 0 8 0;
-#X restore 391 573 pd extract_slices;
-#X msg 27 212 waveform help.ns.src;
+#X restore 494 534 pd extract_slices;
+#X msg 18 220 waveform help.ns.src;
 #N canvas 1493 -934 671 674 parameters 0;
 #X floatatom 185 146 8 0 0 0 - - - 0;
 #X floatatom 185 125 8 0 0 0 - - - 0;
@@ -125,9 +115,9 @@ in the signal to estimate the slicing points., f 67;
 #X connect 16 0 18 0;
 #X connect 17 0 9 0;
 #X coords 0 -1 1 1 294 90 2 100 100;
-#X restore 133 292 pd parameters;
-#X text 236 390 <-- more parameters;
-#N canvas 1154 -1045 835 1003 parameters 0;
+#X restore 267 250 pd parameters;
+#X text 370 383 <-- more parameters;
+#N canvas 1315 -1045 835 1003 parameters 0;
 #X obj 415 308 s \$0-params;
 #X obj 29 927 r \$0-params;
 #X obj 29 950 outlet;
@@ -235,33 +225,32 @@ processed., f 33;
 #X connect 59 0 58 0;
 #X connect 61 0 60 0;
 #X connect 63 0 62 0;
-#X restore 133 389 pd parameters;
-#X obj 460 728 note_on_multithreading;
-#X obj 460 706 note_on_automatic_multiarrays;
-#X obj 28 121 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X restore 267 382 pd parameters;
+#X obj 467 710 note_on_multithreading;
+#N canvas 1426 -858 567 271 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 115 outlet;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.ns.src;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X restore 18 193 pd loadsrc;
+#X obj 18 121 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X obj 27 140 fluid.demoaudiofiles;
-#X text 29 121 2) Pick a source;
-#X text 91 246 3) Segment the audio;
-#X text 136 272 Modifying these parameters in this order is a good
-way to tune the results, f 74;
-#N canvas 497 459 468 182 notes_on_tuning 0;
-#X text 21 19 What feature do you want to look for novelty in?;
-#X text 21 44 Change the size of the novelty "kernel". The larger this
-number is the bigger the context of time is considered as part of the
-novelty calculation.;
-#X text 21 97 Change the threshold.;
-#X text 21 122 Smooth out bumps in the detection of novelty (makes
-it less sensitive).;
-#X restore 438 296 pd notes_on_tuning;
-#X connect 5 0 18 0;
-#X connect 8 0 13 0;
-#X connect 13 0 15 0;
-#X connect 15 0 7 0;
-#X connect 16 0 17 0;
-#X connect 17 0 9 0;
-#X connect 17 0 9 1;
-#X connect 18 0 7 0;
-#X connect 19 0 13 0;
-#X connect 21 0 13 0;
-#X connect 25 0 5 0;
+#X obj 18 140 fluid.demoaudiofiles;
+#X text 19 121 1) select a source;
+#X obj 467 688 note_on_automatic_multiarrays;
+#X text 82 251 2) Segment the audio, f 11;
+#X text 569 604 3) Start audio, f 17;
+#X connect 7 0 11 0;
+#X connect 11 0 13 0;
+#X connect 13 0 6 0;
+#X connect 14 0 15 0;
+#X connect 15 0 8 0;
+#X connect 15 0 8 1;
+#X connect 16 0 6 0;
+#X connect 17 0 11 0;
+#X connect 19 0 11 0;
+#X connect 21 0 16 0;
+#X connect 23 0 21 0;

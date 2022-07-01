@@ -1,234 +1,206 @@
-#N canvas 160 75 582 680 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufampslice 20 12 0 36
-#fcfcfc #404040 0;
-#X text 37 50 Amplitude-based Detrending Slicer for Buffers;
-#X text 36 92 This class implements an amplitude-based slicer \, with
+#N canvas 7 41 699 805 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufampslice 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 457 699 cnv 15 216 89 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufampslice.html reference/ampslice/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\\\ Detrending\\\ Slicer\\\ for\\\ Buffers
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 80 This class implements an amplitude-based slicer \, with
 various customisable options and conditions to detect relative amplitude
-changes as onsets., f 86;
-#X obj 59 197 until;
-#X msg 41 149 6;
-#X msg 59 338 1;
-#X msg 180 200 const 0;
-#X obj 40 401 list store;
-#X obj 183 374 t l l;
-#X obj 40 430 t b l;
-#X obj 59 316 t b f f f;
-#X obj 59 282 +;
-#X obj 183 353 list prepend;
-#X msg 115 263 0;
-#X obj 41 170 t b f b, f 14;
-#X text 70 149 trigger 6 random spikes in the buffer;
-#X obj 67 459 print original_positions;
-#X obj 40 612 print discovered_onsets;
-#X text 203 590 the detected locations are slightly before the click
-in this toy example \, since the envelope follower is 1 sample long
-(not very useful on real signal);
-#X text 220 461 the actual locations;
-#N canvas 525 241 536 554 musical_example 0;
-#X obj 17 77 soundfiler;
-#X obj 17 97 t b;
-#X obj 20 356 t f f;
-#X obj 22 521 dac~;
-#X obj 47 459 -;
-#X obj 21 480 pack;
-#X floatatom 20 334 5 0 0 0 - - - 0;
-#X obj 255 473 array define bufampslice_source;
-#X obj 20 421 t b f;
-#X obj 21 499 tabplay~ bufampslice_source;
-#X msg 17 57 read -resize media/Nicol-LoopE-M.wav bufampslice_source
-;
-#X floatatom 17 274 5 0 0 0 - - - 0;
-#X obj 21 442 f;
-#X text 18 35 1) read a source \, and triggers the analysis;
-#X text 54 274 number of slices found;
-#X floatatom 209 136 8 0 0 0 - - - 0;
-#X floatatom 349 136 8 0 0 0 - - - 0;
-#X text 260 136 dB;
-#X text 401 137 dB;
-#X text 207 99 change the thresholds;
-#X obj 17 181 fluid.bufampslice -source bufampslice_source -indices
-bufampslice_indices -slowrampup 4410 -slowrampdown 4410 -onthreshold
-10 -offthreshold 5 -fastrampup 10 -fastrampdown 2205 -minslicelength
-4410 -highpassfreq 20 -floor -40, f 76;
-#X msg 209 117 10;
-#X msg 349 117 5;
-#X msg 209 155 onthreshold \$1 \, bang;
-#X msg 349 155 offthreshold \$1 \, bang;
-#X obj 255 494 array define bufampslice_indices;
-#X obj 20 400 tabread bufampslice_indices;
-#X obj 204 399 tabread bufampslice_indices;
-#X obj 20 378 + 1;
-#X obj 17 253 array size bufampslice_indices;
-#X text 18 314 2) play a give slice \, by retrieving the onset indices
-, f 65;
-#X obj 17 234 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X connect 0 0 1 0;
-#X connect 1 0 20 0;
-#X connect 2 0 28 0;
-#X connect 2 1 27 0;
-#X connect 4 0 5 1;
-#X connect 5 0 9 0;
-#X connect 6 0 2 0;
-#X connect 8 0 12 0;
-#X connect 8 1 4 0;
-#X connect 9 0 3 0;
-#X connect 9 0 3 1;
-#X connect 10 0 0 0;
-#X connect 12 0 5 0;
-#X connect 15 0 23 0;
-#X connect 16 0 24 0;
-#X connect 20 0 31 0;
-#X connect 21 0 15 0;
-#X connect 22 0 16 0;
-#X connect 23 0 20 0;
-#X connect 24 0 20 0;
-#X connect 26 0 8 0;
-#X connect 27 0 4 1;
-#X connect 27 0 12 1;
-#X connect 28 0 26 0;
-#X connect 29 0 11 0;
-#X connect 31 0 29 0;
-#X restore 435 238 pd musical_example;
-#N canvas 466 89 770 604 options_explained 0;
-#N canvas 86 337 450 300 wavemaker 0;
-#X msg 37 87 44100;
-#X obj 37 132 until;
-#X obj 37 108 t f b;
-#X msg 82 151 -1;
-#X msg 37 153 1;
-#X obj 37 174 +;
-#X obj 37 66 loadbang;
-#X obj 36 265 tabwrite bufampslice_wave;
-#X obj 37 196 t f f f, f 40;
-#X obj 37 217 expr sin($f1 * 3.14159 * 640 / 44100) * (((abs(79000-$f1)%22050)/28000.)
-+ 0.2);
-#X connect 0 0 2 0;
-#X connect 1 0 4 0;
-#X connect 2 0 1 0;
-#X connect 2 1 3 0;
-#X connect 3 0 5 1;
-#X connect 4 0 5 0;
-#X connect 5 0 8 0;
-#X connect 6 0 0 0;
-#X connect 8 0 9 0;
-#X connect 8 1 7 1;
-#X connect 8 2 5 1;
-#X connect 9 0 7 0;
-#X restore 295 228 pd wavemaker;
-#N canvas 931 327 450 394 markermaker 0;
-#X obj 37 37 inlet;
-#X obj 37 58 t b b;
-#X msg 63 77 \; bufampslice_markers const;
-#X obj 37 129 t f b;
-#X obj 37 150 until;
-#X msg 37 169 1;
-#X obj 37 188 +;
-#X msg 81 151 -1;
-#X obj 37 271 t b f;
-#X obj 88 348 tabwrite bufampslice_markers;
-#X msg 37 292 1;
-#X obj 37 252 tabread bufampslice_pointers;
-#X obj 37 207 t f f;
-#X obj 37 110 array size bufampslice_pointers;
-#X connect 0 0 1 0;
-#X connect 1 0 13 0;
-#X connect 1 1 2 0;
-#X connect 3 0 4 0;
-#X connect 3 1 7 0;
-#X connect 4 0 5 0;
-#X connect 5 0 6 0;
-#X connect 6 0 12 0;
-#X connect 7 0 6 1;
-#X connect 8 0 10 0;
-#X connect 8 1 9 1;
-#X connect 10 0 9 0;
-#X connect 11 0 8 0;
-#X connect 12 0 11 0;
-#X connect 12 1 6 1;
-#X connect 13 0 3 0;
-#X restore 23 564 pd markermaker;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufampslice_wave 44100 float 0;
-#X coords 0 1 44099 -1 720 144 1;
-#X restore 17 15 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufampslice_markers 44100 float 2;
-#X coords 0 1 44100 -1 719 52 1;
-#X restore 18 172 graph;
-#X obj 18 228 array define bufampslice_pointers;
-#X obj 23 520 fluid.bufampslice -source bufampslice_wave -indices bufampslice_pointers
--fastrampup 5 -fastrampdown 50 -slowrampup 220 -slowrampdown 220 -onthreshold
-10 -offthreshold 10 -floor -60, f 73;
-#X msg 26 338 reset \, bang;
-#X msg 58 397 reset \, offthreshold 7 \, bang;
-#X msg 121 450 reset \, offthreshold 7 \, minslicelength 220 \, bang
-;
-#X text 17 259 Our source here is a sinewave that does not go to silence
-and has sharp-ish amplitude bumps as onsets we try to track., f 118
-;
-#X text 21 318 1) the default settings thresholds on the same value
-of the difference between a slow and a fast envelope, f 105;
-#X text 62 379 2) beware of double trigger at the begining of the cycles.
-A solution: Schmidth triggers, f 89;
-#X text 124 428 3) better still \, adding a minslicelength sorts it
-all;
-#X connect 5 0 1 0;
-#X connect 6 0 5 0;
-#X connect 7 0 5 0;
-#X connect 8 0 5 0;
-#X restore 435 210 pd options_explained;
-#X obj 59 358 tabwrite ampspikes;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.bufampslice.html;
-#X msg 143 89 browse \$1;
+changes as onsets.;
+#N canvas 114 97 697 875 tuning_the_parameters 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufampslice 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 17 80 How to tweak the parameters of fluid.bufampslice~ to
+segment to your needs;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 inlet;
+#X obj 16 107 outlet;
+#X msg 16 41 read -resize \$1 help.bufampslice.tuningsrc;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 524 315 pd;
-#X text 393 296 launch the HTML doc->;
-#X obj 525 298 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 411 352 note_on_multithreading;
-#X obj 180 217 array define ampspikes 60000;
-#X obj 59 240 + 10;
-#X obj 59 261 * 300;
-#X obj 59 218 random 41;
-#X obj 40 518 fluid.bufampslice -source ampspikes -indices ampslicepoints
--fastrampup 5 -fastrampdown 55 -slowrampup 441 -slowrampdown 441 -onthreshold
-8 -offthreshold 5, f 63;
-#X obj 180 237 array define ampslicepoints;
-#X obj 40 591 array get ampslicepoints;
-#X obj 40 565 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X connect 3 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 180 fluid.demoaudiofiles;
+#X obj 399 166 array define help.bufampslice.tuningsrc;
+#X f 30;
+#X obj 399 206 array define help.bufampslice.tuningslices;
+#X f 30;
+#X obj 18 272 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
 #000000;
-#X connect 3 0 30 0;
+#X obj 18 622 fluid.bufampslice -source help.bufampslice.tuningsrc
+-indices help.bufampslice.tuningslices -fastrampup 10 -fastrampdown
+10 -slowrampup 50 -slowrampdown 50 -onthreshold 2 -offthreshold 0 -highpassfreq
+200 -floor -48, f 36;
+#X obj 18 796 fluid.waveform 670 60 1 empty empty 0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 19 161 1) Select a source;
+#X obj 38 271 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 271 2) Segment the source, f 12;
+#X text 141 266 This is a small selection of ways that the algorithm
+can be tuned to be less or more sensitive., f 72;
+#X text 141 306 Small changes in thresholds can have a drastic effect.
+This increases the amount of energy required for an onset meaning less
+quiet (potentially erroneous) sounds are detected., f 72;
+#X msg 37 398 minslicelength 4410 \, bang, f 15;
+#X msg 57 458 onthreshold 3.5 \, bang, f 12;
+#X msg 77 528 slowrampup 1000 \, slowrampdown 1000 \, fastrampup 100
+\, fastrampdown 100 \, bang 3.5 \, bang, f 18;
+#X text 161 397 Adding a minimum slice length is always a good idea
+for debouncing the time between onsets, f 69;
+#X text 211 457 Small changes in thresholds can have a drastic effect.
+This increases the amount of energy required for an onset meaning less
+quiet (potentially erroneous) sounds are detected., f 62;
+#X text 241 527 This makes both envelopes in the internal tracking
+slower than the default \, meaning it is less nervous but also less
+precise.;
+#X text 292 712 Check out fluid.ampslice~;
+#X text 290 617 It is always a good idea to prototype with the realtime
+version of these objects so you can hear how parameter changes work
+almost immediately., f 26;
+#X obj 532 734 fluid.out~ bufnoveltyslicehelp;
+#X obj 604 739 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X floatatom 531 646 5 0 0 0 - - - 0;
+#N canvas 2139 -776 666 626 extract_slices 0;
+#X obj 37 427 outlet~;
+#X obj 37 14 inlet;
+#X floatatom 37 45 5 0 0 0 - - - 0;
+#X floatatom 47 185 5 0 0 0 - - - 0;
+#X obj 286 92 + 1;
+#X floatatom 296 185 10 0 0 0 - - - 0;
+#X obj 37 236 t f f, f 8;
+#X floatatom 90 329 11 0 0 0 - - - 0;
+#X floatatom 292 115 5 0 0 0 - - - 0;
+#X obj 90 302 expr $f2-$f1, f 29;
+#X obj 37 354 pack 0 0;
+#X obj 37 68 t f f, f 36;
+#X floatatom 55 109 5 0 0 0 - - - 0;
+#X obj 37 142 array get help.bufampslice.tuningslices;
+#X obj 286 142 array get help.bufampslice.tuningslices;
+#X obj 37 391 tabplay~ help.bufampslice.tuningsrc;
+#X connect 1 0 2 0;
+#X connect 2 0 11 0;
+#X connect 4 0 8 0;
 #X connect 4 0 14 0;
-#X connect 5 0 22 0;
-#X connect 6 0 27 0;
-#X connect 7 0 9 0;
-#X connect 8 0 7 1;
-#X connect 8 1 12 1;
-#X connect 9 0 31 0;
-#X connect 9 1 16 0;
-#X connect 10 0 5 0;
-#X connect 10 1 22 1;
-#X connect 10 2 12 0;
-#X connect 10 3 11 1;
-#X connect 11 0 10 0;
-#X connect 12 0 8 0;
-#X connect 13 0 11 1;
-#X connect 14 0 7 0;
-#X connect 14 1 3 0;
-#X connect 14 2 6 0;
-#X connect 14 2 12 1;
-#X connect 14 2 13 0;
-#X connect 25 0 23 0;
-#X connect 28 0 29 0;
-#X connect 29 0 11 0;
-#X connect 30 0 28 0;
-#X connect 31 0 34 0;
-#X connect 33 0 17 0;
-#X connect 34 0 33 0;
+#X connect 6 0 10 0;
+#X connect 6 1 9 0;
+#X connect 7 0 10 1;
+#X connect 9 0 7 0;
+#X connect 10 0 15 0;
+#X connect 11 0 13 0;
+#X connect 11 1 4 0;
+#X connect 12 0 13 0;
+#X connect 13 0 3 0;
+#X connect 13 0 6 0;
+#X connect 14 0 5 0;
+#X connect 14 0 9 1;
+#X connect 15 0 0 0;
+#X restore 531 669 pd extract_slices;
+#X obj 528 609 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 605 739 3) Audio on;
+#X text 529 607 4) Play back onset/offset pairs, f 18;
+#X msg 18 738 waveform help.bufampslice.tuningsrc \, indices help.bufampslice.tuningslices
+\, indicescolor #ffbcb8 \, waveformcolor #0000ff;
+#X connect 3 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 30 0;
+#X connect 15 0 7 0;
+#X connect 16 0 7 0;
+#X connect 17 0 7 0;
+#X connect 25 0 26 0;
+#X connect 26 0 23 0;
+#X connect 26 0 23 1;
+#X connect 30 0 8 0;
+#X restore 462 720 pd tuning_the_parameters;
+#X obj 462 764 note_on_multithreading;
+#X obj 462 742 note_on_automatic_multiarrays;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.bufampslice.src;
+#X obj 16 107 outlet;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 180 fluid.demoaudiofiles;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 19 161 1) Select a source;
+#X obj 511 156 array define help.bufampslice.src;
+#X f 23;
+#X obj 18 556 fluid.waveform 450 130 1 empty empty 0;
+#X obj 167 321 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 144 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
+#000000 #000000;
+#X text 168 321 2) Segment the source;
+#X obj 144 342 fluid.bufampslice -source help.bufampslice.src -indices
+help.bufampslice.slices -highpassfreq 200 -floor -55 -fastrampup 3
+-fastrampdown 383 -slowrampup 2205 -slowrampdown 2205 -minslicelength
+1024 -onthreshold 11 -offthreshold 5;
+#X obj 511 196 array define help.bufampslice.slices;
+#X f 23;
+#X obj 483 646 fluid.out~ bufnoveltyslicehelp;
+#X obj 555 651 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X floatatom 482 558 5 0 0 0 - - - 0;
+#N canvas 2040 -1065 666 626 extract_slices 0;
+#X obj 37 427 outlet~;
+#X obj 37 14 inlet;
+#X floatatom 37 45 5 0 0 0 - - - 0;
+#X floatatom 47 185 5 0 0 0 - - - 0;
+#X obj 286 92 + 1;
+#X floatatom 296 185 10 0 0 0 - - - 0;
+#X obj 37 236 t f f, f 8;
+#X floatatom 90 329 11 0 0 0 - - - 0;
+#X floatatom 292 115 5 0 0 0 - - - 0;
+#X obj 90 302 expr $f2-$f1, f 29;
+#X obj 37 354 pack 0 0;
+#X obj 37 68 t f f, f 36;
+#X floatatom 55 109 5 0 0 0 - - - 0;
+#X obj 37 142 array get help.bufampslice.slices;
+#X obj 286 142 array get help.bufampslice.slices;
+#X obj 37 391 tabplay~ help.bufampslice.src;
+#X connect 1 0 2 0;
+#X connect 2 0 11 0;
+#X connect 4 0 8 0;
+#X connect 4 0 14 0;
+#X connect 6 0 10 0;
+#X connect 6 1 9 0;
+#X connect 7 0 10 1;
+#X connect 9 0 7 0;
+#X connect 10 0 15 0;
+#X connect 11 0 13 0;
+#X connect 11 1 4 0;
+#X connect 12 0 13 0;
+#X connect 13 0 3 0;
+#X connect 13 0 6 0;
+#X connect 14 0 5 0;
+#X connect 14 0 9 1;
+#X connect 15 0 0 0;
+#X restore 482 581 pd extract_slices;
+#X obj 482 517 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 556 651 3) Audio on, f 17;
+#X msg 144 422 indices help.bufampslice.slices \, indicescolor #ffbcb8
+;
+#X msg 18 252 waveform help.bufampslice.src \, waveformcolor #0000ff
+;
+#X text 484 518 4) Play back onset/offset pairs, f 18;
+#X connect 8 0 26 0;
+#X connect 9 0 8 0;
+#X connect 15 0 17 0;
+#X connect 17 0 25 0;
+#X connect 21 0 22 0;
+#X connect 22 0 19 0;
+#X connect 22 0 19 1;
+#X connect 25 0 13 0;
+#X connect 26 0 13 0;
