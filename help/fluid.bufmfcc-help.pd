@@ -1,7 +1,150 @@
-#N canvas 0 23 696 892 12;
+#N canvas 37 74 706 910 12;
+#X obj 983 195 soundfiler;
+#X obj 962 19 cnv 15 100 10 empty empty fluid.bufmfcc 20 12 0 36 #fcfcfc
+#404040 0;
+#X obj 984 156 loadbang;
+#X obj 1329 98 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 1084 257 dac~;
+#X obj 1083 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 1102 215 stop;
+#N canvas 805 51 707 604 multichannel 0;
+#X obj 46 510 loadbang;
+#X obj 46 559 soundfiler;
+#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 48 195 dac~;
+#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 67 80 1) compose an artificially wide "stereo" array;
+#X text 46 11 "multichannel" arrays will process each channel in turn
+\, and output 'channels' will be consecutive \, i.e. all features of
+"channel" 1 \, then all features of "channel" 2 \, etc, f 87;
+#X text 146 152 2) listen to the source;
+#X msg 48 152 stop;
+#X text 64 241 3) process;
+#X obj 48 100 fluid.bufcompose -source bufmfccguitar -startframe 555000
+-numframes 468335 -deststartchan 1 -destination bufmfcc_source, f
+73;
+#X obj 48 174 tabplay~ bufmfcc_source-0;
+#X obj 211 175 tabplay~ bufmfcc_source-1;
+#X obj 45 259 fluid.bufmfcc 6 -source bufmfcc_source -features bufmfcc_feats
+, f 84;
+#X obj 115 559 array define bufmfccguitar;
+#X obj 287 559 clone fluid.multiarray 2 bufmfcc_source;
+#X msg 46 529 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+bufmfcc_source-0 bufmfcc_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
+bufmfccguitar, f 90;
+#X text 44 450 4) Look in the main window: since we have requested
+6 MFCC coefficients on a stereo buffer \, the first 6 feats arrays
+are the left channel's coefficients \, and the following 6 feats are
+the right channel melbands., f 100;
+#X msg 45 277 \; bufmfcc_feats-0 xticks 0 0 0 \; bufmfcc_feats-1 xticks
+0 0 0 \; bufmfcc_feats-2 xticks 0 0 0 \; bufmfcc_feats-3 xticks 0 0
+0 \; bufmfcc_feats-4 xticks 0 0 0 \; bufmfcc_feats-5 xticks 0 0 0 \;
+bufmfcc_feats-6 xticks 0 0 0 \; bufmfcc_feats-7 xticks 0 0 0 \; bufmfcc_feats-8
+xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
+0 0 0 \; bufmfcc_feats-11 xticks 0 0 0 \; bufmfcc_feats-12 const;
+#X connect 0 0 17 0;
+#X connect 2 0 11 0;
+#X connect 4 0 14 0;
+#X connect 5 0 12 0;
+#X connect 5 0 13 0;
+#X connect 9 0 12 0;
+#X connect 9 0 13 0;
+#X connect 12 0 3 0;
+#X connect 13 0 3 1;
+#X connect 14 0 19 0;
+#X connect 17 0 1 0;
+#X restore 1774 161 pd multichannel;
+#X msg 984 176 read -resize media/Nicol-LoopE-M.wav bufmfcc_drums;
+#X obj 1084 236 tabplay~ bufmfcc_drums;
+#X msg 1329 136 \; bufmfcc_feats-0 xticks 0 0 0 \; bufmfcc_feats-1
+xticks 0 0 0 \; bufmfcc_feats-2 xticks 0 0 0 \; bufmfcc_feats-3 xticks
+0 0 0 \; bufmfcc_feats-4 xticks 0 0 0 \; bufmfcc_feats-5 xticks 0 0
+0 \; bufmfcc_feats-6 xticks 0 0 0 \; bufmfcc_feats-7 xticks 0 0 0 \;
+bufmfcc_feats-8 xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10
+xticks 0 0 0 \; bufmfcc_feats-11 xticks 0 0 0 \; bufmfcc_feats-12 xticks
+0 0 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-0 915 float 0;
+#X coords 0 300 914 -300 887 30 1 0 0;
+#X restore 981 367 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_drums 453932 float 0;
+#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
+#X restore 981 299 graph;
+#X obj 1329 117 fluid.bufmfcc 13 -source bufmfcc_drums -features bufmfcc_feats
+, f 63;
+#X obj 1732 185 note_on_sampling_rates;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-1 915 float 0;
+#X coords 0 200 914 -200 887 30 1 0 0;
+#X restore 981 410 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-2 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 453 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-3 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 496 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-4 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 539 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-5 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 582 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-6 915 float 0;
+#X coords 0 300 914 -300 887 30 1 0 0;
+#X restore 981 625 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-7 915 float 0;
+#X coords 0 200 914 -200 887 30 1 0 0;
+#X restore 981 668 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-8 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 711 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-9 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 754 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-10 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 797 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-11 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 840 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array bufmfcc_feats-12 915 float 0;
+#X coords 0 100 914 -100 887 30 1 0 0;
+#X restore 981 883 graph;
+#N canvas 0 23 450 300 (subpatch) 0;
+#X obj 83 51 inlet;
+#X obj 83 89 pdcontrol;
+#X msg 83 71 dir 0 docs/fluid.bufmfcc.html;
+#X msg 143 89 browse \$1;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 1841 258 pd;
+#X text 1710 239 launch the HTML doc->;
+#X obj 1842 241 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 1732 209 note_on_multithreading;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufmfcc 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 445 786 cnv 15 228 90 empty empty More\\\ information 4 10 0
+#X obj 435 478 cnv 15 235 90 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufmfcc.html reference/bufmfcc/
 ;
@@ -17,13 +160,13 @@ Cepstral Coefficients (MFCCs).;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
-#X restore 27 201 pd loadsrc;
-#X obj 27 582 fluid.waveform 600 200 1 empty empty 0;
-#X obj 66 306 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#X restore 21 201 pd loadsrc;
+#X obj 21 573 fluid.waveform 650 300 1 empty empty 0;
+#X obj 60 306 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
 #000000;
-#X obj 90 306 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 84 306 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#N canvas 1493 -934 535 646 parameters 0;
+#N canvas 1493 23 535 646 parameters 0;
 #X floatatom 185 146 8 0 0 0 - - - 0;
 #X floatatom 185 125 8 0 0 0 - - - 0;
 #X floatatom 185 167 8 0 0 0 - - - 0;
@@ -41,6 +184,8 @@ Cepstral Coefficients (MFCCs).;
 #X msg 63 257 numbands \$1;
 #X msg 100 281 minfreq \$1;
 #X msg 123 305 maxfreq \$1;
+#X obj 115 357 t b;
+#X msg 115 381 \; help.mfcc.features const;
 #X connect 0 0 15 0;
 #X connect 1 0 14 0;
 #X connect 2 0 16 0;
@@ -52,13 +197,18 @@ Cepstral Coefficients (MFCCs).;
 #X connect 6 0 12 0;
 #X connect 11 0 5 0;
 #X connect 13 0 3 0;
+#X connect 13 0 17 0;
 #X connect 14 0 3 0;
+#X connect 14 0 17 0;
 #X connect 15 0 3 0;
+#X connect 15 0 17 0;
 #X connect 16 0 3 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
 #X coords 0 -1 1 1 150 90 2 100 100;
-#X restore 276 326 pd parameters;
-#X text 379 443 <-- more parameters;
-#N canvas 337 136 857 1009 parameters 0;
+#X restore 270 326 pd parameters;
+#X text 373 443 <-- more parameters;
+#N canvas 1151 -1080 1375 1009 parameters 0;
 #X obj 29 927 r \$0-params;
 #X obj 29 950 outlet;
 #X obj 29 145 s \$0-params;
@@ -95,7 +245,7 @@ of 2, f 26;
 #X obj 415 831 s \$0-params;
 #X obj 415 901 s \$0-params;
 #X obj 415 751 s \$0-params;
-#X obj 412 410 s \$0-params;
+#X obj 415 410 s \$0-params;
 #X msg 415 107 source arrayname;
 #X msg 415 177 features arrayname;
 #X msg 415 247 numcoeffs 13;
@@ -107,7 +257,7 @@ of 2, f 26;
 #X msg 415 807 numframes -1;
 #X msg 415 877 padding 1;
 #X msg 415 727 startchan 0;
-#X msg 412 386 startcoeff 0;
+#X msg 415 386 startcoeff 0;
 #X obj 415 971 s \$0-params;
 #X msg 415 947 startframe 0;
 #X text 557 170 destination buffer to write the MFCC analysis into
@@ -151,54 +301,55 @@ samples, f 39;
 #X connect 42 0 30 0;
 #X connect 43 0 31 0;
 #X connect 45 0 44 0;
-#X restore 276 442 pd parameters;
-#X msg 27 225 waveform help.mfcc.src;
+#X restore 270 442 pd parameters;
 #X obj 490 201 array define help.mfcc.src;
-#X obj 66 486 fluid.bufmfcc 13 -source help.mfcc.src -features help.mfcc.features
-, f 67;
-#X text 91 305 1) start MFCC analysis;
-#N canvas 362 157 694 837 multichannel 0;
+#X obj 60 486 fluid.bufmfcc 13 -source help.mfcc.src -features help.mfcc.features
+;
+#X obj 483 222 clone fluid.multiarray 13 help.mfcc.features, f 27
+;
+#X text 85 305 1) start MFCC analysis;
+#N canvas 88 48 705 855 multichannel 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufmfcc 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X text 18 74 multichannel processing with fluid.bufmfcc~;
-#X obj 487 146 clone fluid.multiarray 2 help.mfcc.src.2, f 26;
-#N canvas 1376 -757 447 162 loadsrc 0;
+#X text 19 83 multichannel processing with fluid.bufmfcc~;
+#X obj 490 181 clone fluid.multiarray 2 help.mfcc.src.2, f 26;
+#N canvas 1376 23 447 162 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 loadbang;
 #X msg 16 41 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
 help.mfcc.src.2-0 help.mfcc.src.2-1;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
-#X restore 24 166 pd loadsrc;
-#X obj 23 271 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#X restore 21 127 pd loadsrc;
+#X obj 26 306 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
 #000000;
-#X obj 47 271 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 50 306 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 48 270 1) start analysis;
-#X obj 23 291 fluid.bufmfcc 3 -source help.mfcc.src.2 -features help.mfcc.features.2
+#X text 51 305 1) start analysis;
+#X obj 26 326 fluid.bufmfcc 3 -source help.mfcc.src.2 -features help.mfcc.features.2
 ;
-#X obj 23 409 fluid.waveform 510 243 1 empty empty 0;
-#X text 417 253 The fluid.bufmfcc~ object above only returns 3 MFCC
+#X obj 26 444 fluid.waveform 510 243 1 empty empty 0;
+#X text 406 290 The fluid.bufmfcc~ object above only returns 3 MFCC
 coefficients. The buffer~ with the analysis is 6 channels \, because
 it calculates 3 channels per channel in the input buffer \, which in
 this case is stereo., f 38;
-#X text 495 365 The layout is as follows:;
-#X text 565 406 MFCC 0 - L;
-#X text 565 426 MFCC 1 - L;
-#X text 565 446 MFCC 2 - L;
-#X text 565 466 MFCC 0 - R;
-#X text 565 486 MFCC 1 - R;
-#X text 565 506 MFCC 2 - R;
-#X obj 510 676 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
+#X text 498 400 The layout is as follows:;
+#X text 568 441 MFCC 0 - L;
+#X text 568 461 MFCC 1 - L;
+#X text 568 481 MFCC 2 - L;
+#X text 568 501 MFCC 0 - R;
+#X text 568 521 MFCC 1 - R;
+#X text 568 541 MFCC 2 - R;
+#X obj 513 706 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
 #000000 #000000;
-#X obj 362 697 tabplay~ help.mfcc.src.2-0, f 20;
-#X obj 480 758 fluid.out~ bufmfcchelp;
-#X obj 509 697 tabplay~ help.mfcc.src.2-0, f 20;
-#X text 536 661 Listen to the source if you want, f 18;
-#X obj 480 187 clone fluid.multiarray 6 help.mfcc.features.2, f 27
+#X obj 358 733 tabplay~ help.mfcc.src.2-0, f 20;
+#X obj 485 780 fluid.out~ bufmfcchelp;
+#X obj 514 735 tabplay~ help.mfcc.src.2-0, f 20;
+#X text 534 702 Listen to the source if you want, f 18;
+#X obj 483 222 clone fluid.multiarray 6 help.mfcc.features.2, f 27
 ;
-#X msg 23 329 waveform help.mfcc.src.2 \, features help.mfcc.features.2
-;
+#X msg 26 364 waveformcolor #aaaaaa \, waveform help.mfcc.src.2 \,
+features help.mfcc.features.2, f 48;
 #X connect 4 0 7 0;
 #X connect 7 0 23 0;
 #X connect 17 0 18 0;
@@ -206,24 +357,26 @@ this case is stereo., f 38;
 #X connect 18 0 19 0;
 #X connect 20 0 19 1;
 #X connect 23 0 8 0;
-#X restore 452 807 pd multichannel;
-#X obj 452 851 note_on_multithreading;
+#X restore 448 498 pd multichannel;
+#X obj 448 542 note_on_multithreading;
 #X obj 17 78 cnv 15 488 17 empty empty Descriptors\\\ on\\\ a\\\ Buffer
 4 8 0 13 #e0e0e0 #404040 0;
-#X msg 66 524 features help.mfcc.features;
-#X text 34 801 In Pd the number of outputs will not change dynamically
-because we use a fixed number of 'clones'. For a more dynamic sizing
-check the automatic_buffer_management patcher ->, f 45;
-#X obj 490 235 clone 13 fluid.multiarray help.mfcc.features, f 25
-;
-#X text 68 547 This plots each of the MFCC coefficients in time as
-it changes. It's not too informative \, but may be useful to get a
-sense of what these MFCC curves look like., f 83;
-#X obj 452 829 note_on_automatic_multiarrays;
-#X connect 5 0 12 0;
-#X connect 7 0 14 0;
-#X connect 9 0 14 0;
-#X connect 11 0 14 0;
-#X connect 12 0 6 0;
-#X connect 14 0 19 0;
-#X connect 19 0 6 0;
+#X obj 448 520 note_on_automatic_multiarrays;
+#X msg 60 524 features help.mfcc.features;
+#X msg 21 225 waveformcolor #666666 \, waveform help.mfcc.src;
+#X connect 2 0 8 0;
+#X connect 3 0 13 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
+#X connect 8 0 0 0;
+#X connect 9 0 4 0;
+#X connect 9 0 4 1;
+#X connect 13 0 10 0;
+#X connect 29 0 27 0;
+#X connect 36 0 52 0;
+#X connect 38 0 44 0;
+#X connect 40 0 44 0;
+#X connect 42 0 44 0;
+#X connect 44 0 51 0;
+#X connect 51 0 37 0;
+#X connect 52 0 37 0;

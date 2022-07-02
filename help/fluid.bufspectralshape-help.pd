@@ -1,171 +1,284 @@
-#N canvas 55 112 956 851 10;
-#X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufspectralshape 20 12
-0 36 #fcfcfc #404040 0;
-#X obj 34 156 loadbang;
-#X text 37 59 Seven Spectral Shape Descriptors on a Buffer;
-#X text 37 90 Seven of the spectral shape descriptors \, computed on
-a linear scale for both amplitude and frequency., f 102;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufshape_drums;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_drums 453932 float 0;
-#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
-#X restore 30 294 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-0 915 float 0;
-#X coords 0 22050 914 0 887 53 1 0 0;
-#X restore 29 363 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-1 915 float 0;
-#X coords 0 22050 914 0 887 53 1 0 0;
-#X restore 30 434 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-2 915 float 0;
-#X coords 0 20 914 0 887 53 1 0 0;
-#X restore 30 504 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-3 915 float 0;
-#X coords 0 500 914 0 887 53 1 0 0;
-#X restore 30 574 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-4 915 float 0;
-#X coords 0 22050 914 0 887 53 1 0 0;
-#X restore 30 644 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-5 915 float 0;
-#X coords 0 30 914 -60 887 53 1 0 0;
-#X restore 30 714 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-6 915 float 0;
-#X coords 0 30 914 -30 887 53 1 0 0;
-#X restore 30 784 graph;
-#X obj 410 151 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X text 142 488 skewness(ratio):;
-#X text 143 559 kurtosis(ratio):;
-#X text 144 698 flatness(dB):;
-#X text 146 768 crest(dB):;
-#X msg 410 189 \; bufshape_feats-0 xticks 0 0 0 \; bufshape_feats-1
-xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
-0 0 0 \; bufshape_feats-4 xticks 0 0 0 \; bufshape_feats-5 xticks 0
-0 0 \; bufshape_feats-6 xticks 0 0 0;
-#X obj 134 236 tabplay~ bufshape_drums;
-#X obj 134 257 dac~;
-#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X msg 152 215 stop;
-#N canvas 635 112 939 850 multichannel 0;
-#X obj 24 758 loadbang;
-#X obj 24 810 soundfiler;
-#X obj 28 81 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#N canvas 8 41 700 728 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22
+0 36 #4ba3fb #ffffff 0;
+#X obj 465 592 cnv 15 215 110 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufspectralshape.html reference/bufspectralshape/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Seven\\\ Spectral\\\ Shape\\\ Descriptors\\\ on\\\ a\\\ Buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Seven of the spectral shape descriptors \, computed on
+a linear scale for both amplitude and frequency.;
+#N canvas 119 59 706 918 layout_of_results 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22
+0 36 #4ba3fb #ffffff 0;
+#X text 17 79 fluid.bufspectralshape~ outputs its results to a buffer
+where each channel is a different descriptor and each "frame" is a
+window of spectral analysis.;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.specshape.2.src;
+#X obj 16 107 outlet;
+#X obj 69 108 s draw;
+#X connect 0 0 3 0;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 18 180 fluid.demoaudiofiles;
+#X text 19 161 1) select a source;
+#X obj 435 176 array define help.specshape.2.src;
+#X obj 18 279 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 28 196 dac~;
-#X obj 631 23 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 102 154 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X text 47 81 1) compose an artificially wide "stereo" array;
-#X text 26 12 "multichannel" arrays will process each channel in turn
-\, and output 'channels' will be consecutive \, i.e. all features of
-"channel" 1 \, then all features of "channel" 2 \, etc, f 87;
-#X obj 28 101 fluid.bufcompose -source bufshapeguitar -startframe 555000
--numframes 468335 -deststartchan 1 -destination bufshape_source, f
-73;
-#X obj 28 175 tabplay~ bufshape_source-0;
-#X obj 191 176 tabplay~ bufshape_source-1;
-#X text 126 153 2) listen to the source;
-#X msg 28 153 stop;
-#X obj 93 810 array define bufshapeguitar;
-#X obj 265 810 clone fluid.multiarray 2 bufshape_source;
-#X msg 24 779 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufshape_source-0 bufshape_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-bufshapeguitar, f 90;
-#X text 650 22 3) process;
-#X msg 631 69 \; bufshape_feats-0 xticks 0 0 0 \; bufshape_feats-1
-xticks 0 0 0 \; bufshape_feats-2 xticks 0 0 0 \; bufshape_feats-3 xticks
-0 0 0 \; bufshape_feats-4 xticks 0 0 0 \; bufshape_feats-5 xticks 0
-0 0 \; bufshape_feats-6 xticks 0 0 0 \; bufshape_feats-7 xticks 0 0
-0 \; bufshape_feats-8 xticks 0 0 0 \; bufshape_feats-9 xticks 0 0 0
-\; bufshape_feats-10 xticks 0 0 0 \; bufshape_feats-11 xticks 0 0 0
-\; bufshape_feats-12 xticks 0 0 0 \; bufshape_feats-13 xticks 0 0 0
-, f 32;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-7 915 float 0;
-#X coords 0 22050 914 0 887 53 1 0 0;
-#X restore 23 259 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-8 915 float 0;
-#X coords 0 22050 914 0 887 53 1 0 0;
-#X restore 24 330 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-9 915 float 0;
-#X coords 0 20 914 0 887 53 1 0 0;
-#X restore 24 400 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-10 915 float 0;
-#X coords 0 500 914 0 887 53 1 0 0;
-#X restore 24 470 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-11 915 float 0;
-#X coords 0 22050 914 0 887 53 1 0 0;
-#X restore 24 540 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-12 915 float 0;
-#X coords 0 30 914 -60 887 53 1 0 0;
-#X restore 24 610 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufshape_feats-13 915 float 0;
-#X coords 0 30 914 -30 887 53 1 0 0;
-#X restore 24 680 graph;
-#X text 136 384 skewness(ratio):;
-#X text 137 455 kurtosis(ratio):;
-#X text 138 594 flatness(dB):;
-#X text 140 664 crest(dB):;
-#X text 139 314 spread(Hz):;
-#X text 138 524 rolloff(Hz):;
-#X obj 631 40 fluid.bufspectralshape -source bufshape_source -features
-bufshape_feats, f 40;
-#X text 138 244 centroid(Hz):;
-#X text 156 223 All 'channel 2' features follow here. For 'channel
-1' look at the main window, f 77;
-#X connect 0 0 15 0;
-#X connect 2 0 8 0;
-#X connect 4 0 31 0;
-#X connect 5 0 9 0;
-#X connect 5 0 10 0;
-#X connect 9 0 3 0;
-#X connect 10 0 3 1;
-#X connect 12 0 9 0;
-#X connect 12 0 10 0;
-#X connect 15 0 1 0;
-#X connect 31 0 17 0;
-#X restore 821 209 pd multichannel;
-#X text 144 348 centroid(Hz):;
-#X text 145 418 spread(Hz):;
-#X text 144 628 rolloff(Hz):;
-#X obj 779 231 note_on_sampling_rates;
-#X obj 410 170 fluid.bufspectralshape -source bufshape_drums -features
-bufshape_feats, f 71;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.bufspectralshape.html;
-#X msg 143 89 browse \$1;
+#X obj 18 299 fluid.bufspectralshape -source help.specshape.2.src -features
+help.specshape.2.features -numchans 1;
+#X obj 435 206 clone 7 fluid.multiarray help.specshape.2.features,
+f 31;
+#X floatatom 17 357 5 0 0 0 - - - 0;
+#X obj 140 421 loadbang;
+#X msg 140 446 0;
+#X obj 140 487 vradio 15 1 0 7 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 156 499 spread, f 13;
+#X text 156 514 skewness, f 13;
+#X text 156 529 kurtosis, f 13;
+#X text 156 544 rolloff, f 13;
+#X text 156 559 flatness, f 13;
+#X text 156 574 crest, f 13;
+#X obj 17 766 array get, f 18;
+#X msg 140 619 symbol help.specshape.2.features-\$1, f 30;
+#X floatatom 17 802 5 0 0 0 - - - 0;
+#X text 59 802 value;
+#X obj 38 279 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 279 2) Do spectral shape analysis;
+#N canvas 1876 -561 678 492 draw_visualisation 0;
+#X obj 37 61 t a a, f 26;
+#X obj 37 229 outlet;
+#X msg 37 95 waveform help.specshape.2.src;
+#X msg 216 125 features help.specshape.2.features;
+#X obj 37 37 r draw;
 #X connect 0 0 2 0;
-#X connect 1 0 3 0;
+#X connect 0 1 3 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 0;
+#X restore 209 714 pd draw_visualisation;
+#X obj 192 742 hsl 345 100 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#e3c6ff #000000 0 1;
+#X obj 189 742 fluid.waveform 350 100 1 empty empty 0;
+#N canvas 1838 -1021 450 300 indexwave 0;
+#X obj 24 24 inlet;
+#X obj 131 102 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X floatatom 137 150 6 0 0 0 - - - 0;
+#X obj 25 191 outlet;
+#X obj 131 74 r draw;
+#X obj 25 161 /;
+#X obj 131 122 array size help.specshape.2.features-0;
+#X connect 0 0 5 0;
+#X connect 1 0 6 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;
+#X connect 6 0 2 0;
+#X connect 6 0 5 1;
+#X restore 189 693 pd indexwave;
+#X obj 17 662 t f f, f 25;
+#X obj 268 529 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 163 484 centroid, f 12;
+#X text 269 529 4) Select one of the seven descriptors;
+#X obj 58 359 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 59 359 3) Select a frame of analysis;
+#X connect 2 0 7 0;
+#X connect 4 0 2 0;
+#X connect 7 0 8 0;
+#X connect 10 0 30 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 21 0;
+#X connect 20 0 22 0;
+#X connect 21 0 20 2;
+#X connect 26 0 28 0;
+#X connect 29 0 27 0;
+#X connect 30 0 20 0;
+#X connect 30 1 29 0;
+#X restore 468 612 pd layout_of_results;
+#N canvas 216 104 711 872 select 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22
+0 36 #4ba3fb #ffffff 0;
+#X text 17 79 Seven of the spectral shape descriptors \, computed on
+a linear scale for both amplitude and frequency.;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.specshape.3.src;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 18 180 fluid.demoaudiofiles;
+#X text 19 161 1) select a source;
+#X obj 445 176 array define help.specshape.3.src;
+#X obj 18 588 fluid.bufspectralshape -source help.specshape.3.src -features
+help.specshape.3.features -numchans 1;
+#X text 105 265 No matter what order you specify the selection in \,
+the order that those choices are returned will follow the same order
+as if you didn't select any. A good trick for getting the order is
+to see the attributes listed out in the object when no '-select' is
+chosen., f 63;
+#X text 105 355 Think of this parameter like a filter \, rather than
+a reordering of the outputs., f 63;
+#X msg 39 450 select centroid skew \, bang;
+#X obj 18 409 cnv 15 420 17 empty empty order:\\\ centroid\\\ spread\\\ skew\\\ kurtosis\\\ rolloff\\\ flatness\\\ crest
+3 12 0 12 #c6ffc7 #404040 0;
+#X msg 59 490 select skew centroid \, bang;
+#X msg 79 530 select skew kurtosis centroid \, bang;
+#X text 250 448 only return the centroid and skew;
+#X text 261 487 this is actually the same as above;
+#X msg 18 631 features help.specshape.3.features;
+#X obj 18 661 fluid.waveform 480 110 1 empty empty 0;
+#X obj 445 205 clone 7 fluid.multiarray help.specshape.3.features,
+f 33;
+#X connect 4 0 2 0;
+#X connect 7 0 16 0;
+#X connect 10 0 7 0;
+#X connect 12 0 7 0;
+#X connect 13 0 7 0;
+#X connect 16 0 17 0;
+#X restore 468 634 pd select;
+#X obj 17 326 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 17 346 fluid.bufspectralshape -source help.specshape.src -features
+help.specshape.features -numchans 1;
+#X obj 453 176 array define help.specshape.src;
+#X obj 453 206 clone 7 fluid.multiarray help.specshape.features, f
+31;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.specshape.src;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 18 180 fluid.demoaudiofiles;
+#X text 19 161 1) select a source;
+#N canvas 1433 -768 477 251 drawing_commands 0;
+#X obj 37 7 inlet;
+#X obj 37 137 outlet;
+#X msg 37 61 waveform help.specshape.src, f 19;
+#X msg 202 61 features help.specshape.features, f 24;
+#X obj 37 34 t b b, f 24;
+#X connect 0 0 4 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
-#X restore 892 111 pd;
-#X text 761 92 launch the HTML doc->;
-#X obj 893 94 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 779 252 note_on_multithreading;
-#X connect 2 0 5 0;
-#X connect 5 0 0 0;
-#X connect 14 0 29 0;
-#X connect 20 0 21 0;
-#X connect 20 0 21 1;
-#X connect 22 0 20 0;
-#X connect 23 0 20 0;
-#X connect 29 0 19 0;
-#X connect 32 0 30 0;
+#X connect 4 0 2 0;
+#X connect 4 1 3 0;
+#X restore 17 384 pd drawing_commands;
+#X obj 17 408 fluid.waveform 490 100 0 empty empty 0;
+#X obj 38 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 326 2) Do spectral shape analysis;
+#X text 515 422 Use the mouse to scrub through different parts of the
+audio file and retrieve the analysis, f 24;
+#N canvas 998 -1001 1511 939 feature_lookup 0;
+#X obj 102 -580 inlet;
+#X obj 103 -396 *;
+#X obj 102 -513 t f b;
+#X obj 198 -454 change;
+#X floatatom 198 -432 5 0 0 0 - - - 0;
+#X floatatom 103 -343 10 0 0 0 - - - 0;
+#X obj 198 -484 array size help.specshape.features-0;
+#X obj 103 -369 int;
+#X obj 103 -254 array get help.specshape.features-0, f 26;
+#X floatatom 103 -211 5 0 0 0 - - - 0;
+#X floatatom 153 -514 5 0 0 0 - - - 0;
+#X floatatom 274 -568 5 0 0 0 - - - 0;
+#X obj 274 -545 / 490;
+#X floatatom 274 -521 5 0 0 0 - - - 0;
+#X msg 102 -554 \$1;
+#X listbox 103 119 25 0 0 0 - - - 0;
+#X obj 103 -183 list prepend centroid(Hz);
+#X floatatom 313 -211 5 0 0 0 - - - 0;
+#X listbox 103 139 25 0 0 0 - - - 0;
+#X obj 313 -254 array get help.specshape.features-1, f 26;
+#X obj 103 -311 t f f f f f f f, f 180;
+#X listbox 103 159 25 0 0 0 - - - 0;
+#X floatatom 733 -211 5 0 0 0 - - - 0;
+#X listbox 103 179 25 0 0 0 - - - 0;
+#X floatatom 943 -211 5 0 0 0 - - - 0;
+#X listbox 103 199 25 0 0 0 - - - 0;
+#X listbox 103 219 25 0 0 0 - - - 0;
+#X floatatom 1363 -211 5 0 0 0 - - - 0;
+#X listbox 103 239 25 0 0 0 - - - 0;
+#X floatatom 523 -211 5 0 0 0 - - - 0;
+#X floatatom 1153 -211 5 0 0 0 - - - 0;
+#X obj 523 -254 array get help.specshape.features-2, f 26;
+#X obj 733 -254 array get help.specshape.features-3, f 26;
+#X obj 943 -254 array get help.specshape.features-4, f 26;
+#X obj 1153 -254 array get help.specshape.features-5, f 26;
+#X obj 1363 -254 array get help.specshape.features-6, f 26;
+#X obj 313 -183 list prepend spread(Hz);
+#X obj 523 -183 list prepend skewness(ratio);
+#X obj 733 -183 list prepend kurtosis(ratio);
+#X obj 943 -183 list prepend rolloff(Hz);
+#X obj 1153 -183 list prepend flatness(dB);
+#X obj 1363 -183 list prepend crest(dB);
+#X connect 0 0 14 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 2 1 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 1;
+#X connect 5 0 20 0;
+#X connect 6 0 3 0;
+#X connect 7 0 5 0;
+#X connect 8 0 9 0;
+#X connect 9 0 16 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 2 0;
+#X connect 14 0 12 0;
+#X connect 16 0 15 0;
+#X connect 17 0 36 0;
+#X connect 19 0 17 0;
+#X connect 20 0 8 0;
+#X connect 20 1 19 0;
+#X connect 20 2 31 0;
+#X connect 20 3 32 0;
+#X connect 20 4 33 0;
+#X connect 20 5 34 0;
+#X connect 20 6 35 0;
+#X connect 22 0 38 0;
+#X connect 24 0 39 0;
+#X connect 27 0 41 0;
+#X connect 29 0 37 0;
+#X connect 30 0 40 0;
+#X connect 31 0 29 0;
+#X connect 32 0 22 0;
+#X connect 33 0 24 0;
+#X connect 34 0 30 0;
+#X connect 35 0 27 0;
+#X connect 36 0 18 0;
+#X connect 37 0 21 0;
+#X connect 38 0 23 0;
+#X connect 39 0 25 0;
+#X connect 40 0 26 0;
+#X connect 41 0 28 0;
+#X coords 0 -1 1 1 185 160 1 100 100;
+#X restore 17 543 pd feature_lookup;
+#X text 213 547 These are the features taken from reading the arrays
+, f 14;
+#X obj 468 678 note_on_multithreading;
+#X obj 468 656 note_on_automatic_multiarrays;
+#X connect 7 0 8 0;
+#X connect 8 0 15 0;
+#X connect 13 0 11 0;
+#X connect 15 0 16 0;
+#X connect 16 0 20 0;
