@@ -1,65 +1,312 @@
-#N struct 1050-draw-item float x float y float c float a float b;
-#N struct 1051-draw-item float x float y float c float a float b;
-#N struct 1054-draw-item float x float y float c float a float b;
-#N canvas 546 252 1356 602 12;
-#X obj 52 61 fluid.dataset in;
-#X obj 342 230 fluid.plotter;
-#X obj 334 134 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 534 155 text define outtxt;
-#X obj 538 78 fluid.dataset out;
-#X msg 52 32 read data/gaussian4.json;
-#X obj 538 127 text define intxt;
-#X obj 697 225 fluid.plotter;
-#X obj 704 128 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X msg 704 172 setpoints outtxt;
-#X obj 704 148 fluid.ds2text out outtxt;
-#X obj 334 154 fluid.ds2text in intxt;
-#X msg 334 178 setpoints intxt;
-#X msg 48 173 fittransform in out;
-#X obj 538 102 fluid.dataset rev;
-#X obj 535 184 text define revtxt;
-#X obj 1009 224 fluid.plotter;
-#X obj 1016 127 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 1016 147 fluid.ds2text rev revtxt;
-#X msg 1016 171 setpoints revtxt;
-#X msg 69 213 inversetransform out rev;
-#X obj 541 2 array define query 2;
-#X obj 541 26 array define reply 2;
-#X msg 47 405 0.5 0.5;
-#X obj 47 429 array set query;
-#X obj 48 492 array get reply;
-#X listbox 48 516 20 0 0 0 - - - 0;
-#X obj 47 471 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#N struct 1480-draw-item float x float y float c float a float b;
+#N struct 1481-rectangle float x float c;
+#N struct 1481-pixel float x0 float y0 float x1 float y1;
+#N struct 1482-draw-item float x float y float c float a float b;
+#N struct 1483-rectangle float x float c;
+#N struct 1483-pixel float x0 float y0 float x1 float y1;
+#N struct 1484-draw-item float x float y float c float a float b;
+#N struct 1485-rectangle float x float c;
+#N struct 1485-pixel float x0 float y0 float x1 float y1;
+#N canvas 52 62 697 904 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.standardize 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.standardize.html reference/standardize/
+;
+#X obj 453 822 cnv 15 222 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 1699 -807 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Tremblay-UW-ComplexDescent-M.wav help.s.src.1
+;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 37 196 pd loadsrc;
+#X obj 34 274 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X msg 73 273 transformpoint query reply;
-#X msg 78 300 inversetransformpoint reply revreply;
-#X obj 539 50 array define revreply 2;
-#X listbox 204 555 20 0 0 0 - - - 0;
-#X obj 203 510 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X text 307 310 Two channels of feature data. One pitch \, the other
+confidence, f 17;
+#X obj 34 358 list;
+#X obj 55 274 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 56 273 1) Analyse the pitch of a source buffer;
+#X text 162 398 Turn the two channel array into a two column dataset.
+, f 19;
+#X obj 37 676 text define help.standardize.text.1;
+#X f 23;
+#X obj 37 522 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 58 521 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 59 520 2) store dataset into a text object, f 21;
+#X text 34 714 The raw analysis \, where each identifier is an analysis
+window of two columns. The first column is the pitch in Hz \, the second
+is the confidence in linear values., f 28;
+#X obj 38 642 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 641 3) double-click 'text' to see data, f 22;
+#X msg 467 411 print;
+#X obj 467 676 text define help.standardize.text.1b;
+#X f 23;
+#X obj 468 303 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 469 302 4) Standardise the dataset of raw data, f 22;
+#N canvas 143 82 697 950 visualising_standardisation 0;
+#X obj 37 183 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 37 305 \$2;
+#X obj 37 277 list;
+#X obj 37 333 list prepend frombuffer;
+#X obj 37 357 list trim;
+#X obj 58 183 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 59 182 1) Analyse the pitch of a source buffer, f 21;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array s.visnorm-0 1780 float 2;
+#X coords 0 2.96 1780 -0.81 250 70 1 0 0;
+#X restore 422 626 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array s.visnorm-1 1780 float 2;
+#X coords 0 5.12 1780 -0.52 250 70 1 0 0;
+#X restore 422 720 graph;
+#X text 597 605 Pitch (Hz);
+#X text 597 701 confidence;
+#N canvas 907 -791 511 451 labels 0;
+#X obj 36 76 loadbang;
+#X obj 36 206 loadbang;
+#X msg 52 99 \; s.vis-0 ylabel -20 0 20000;
+#X msg 52 134 \; s.vis-1 ylabel -20 0 0.95;
+#X msg 52 229 \; s.visnorm-0 ylabel -20 -0.81 2.96;
+#X msg 52 264 \; s.visnorm-1 ylabel -20 5.12 -0.52;
+#X connect 0 0 2 0;
+#X connect 0 0 3 0;
+#X connect 1 0 4 0;
+#X connect 1 0 5 0;
+#X restore 610 87 pd labels;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array s.vis-0 1780 float 2;
+#X coords 0 20000 1780 0 250 70 1 0 0;
+#X restore 60 626 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array s.vis-1 1780 float 2;
+#X coords 0 1 1780 0 250 70 1 0 0;
+#X restore 61 720 graph;
+#X text 236 606 Pitch (Hz);
+#X text 236 699 confidence;
+#X obj 37 428 route frombuffer;
+#X obj 37 452 t b b;
+#X obj 418 428 route frombuffer;
+#X obj 419 183 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 420 182 2) Standardise the dataset of raw data, f 21;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.standardize 1 22 0 36
+#4ba3fb #ffffff 0;
+#X text 17 79 visualising standardisation;
+#X obj 37 233 fluid.bufpitch -source help.s.src.1 -features help.s.features.1
+, f 37;
+#X obj 37 401 fluid.dataset help.s.raw.2, f 27;
+#X obj 69 476 fluid.ds2text help.s.raw.2 help.s.raw.text, f 27;
+#X obj 37 541 text define help.s.raw.text;
+#X obj 418 401 fluid.dataset help.s.standardised.2;
+#X msg 418 236 fittransform help.s.raw.2 help.s.standardised.2, f
+26;
+#X obj 418 541 text define help.s.standardised.text;
+#X obj 418 476 fluid.ds2text help.s.standardised.2 help.s.standardised.text
+, f 27;
+#X obj 418 273 fluid.standardize;
+#X msg 176 371 tobuffer s.vis;
+#X msg 418 371 tobuffer s.visnorm;
+#X connect 0 0 23 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 24 0;
+#X connect 16 0 17 0;
+#X connect 17 0 32 0;
+#X connect 17 1 25 0;
+#X connect 18 0 30 0;
+#X connect 23 0 2 0;
+#X connect 24 0 16 0;
+#X connect 27 0 18 0;
+#X connect 28 0 31 0;
+#X connect 31 0 33 0;
+#X connect 32 0 24 0;
+#X connect 33 0 27 0;
+#X restore 456 842 pd visualising_standardisation;
+#N canvas 689 23 1359 1047 comparing_scalers 0;
+#X text 17 79 Comparing the shape of scalers;
+#N canvas -221 -807 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Olencki-TenTromboneLongTones-M.wav
+help.s.src.3;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 33 166 pd loadsrc;
+#X obj 33 247 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 33 319 list;
+#X obj 33 482 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 1025 184 fluid.normalize;
+#X text 57 481 save dataset in text;
+#X text 202 574 <- open to see data, f 10;
+#X msg 1025 207 print;
+#X obj 1025 307 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X obj 204 531 array get revreply;
-#X obj 46 332 fluid.standardize;
-#X msg 858 192 range -2.5 2.5;
-#X connect 2 0 11 0;
-#X connect 5 0 0 0;
-#X connect 8 0 10 0;
-#X connect 9 0 7 0;
-#X connect 10 0 9 0;
-#X connect 11 0 12 0;
-#X connect 12 0 1 0;
-#X connect 13 0 34 0;
-#X connect 17 0 18 0;
-#X connect 18 0 19 0;
+#X text 1047 306 save dataset in text;
+#X obj 1024 535 fluid.plotter;
+#X msg 715 207 print;
+#X obj 715 307 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 737 306 save dataset in text;
+#X obj 714 535 fluid.plotter;
+#X msg 405 207 print;
+#X obj 405 307 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 405 535 fluid.plotter;
+#X obj 405 184 fluid.robustscale;
+#X obj 715 184 fluid.standardize;
+#X obj 52 247 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 53 246 1) Analyse the pitch of a source buffer;
+#X obj 405 488 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 406 118 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 407 117 2) send messages to rescale the data;
+#X text 406 487 4) click to plot;
+#X obj 426 307 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 427 306 3) save dataset in text;
+#X text 719 850 Standardise produces a similar shape to the robust
+scaler. Notice how outliers still pull the entire shape such that centrally
+located data is still warped toward the outliers., f 40;
+#X text 1029 850 Normalise retains the exact same shape as the original
+data but remaps the extrema between 0 and 1 in both dimensions., f
+41;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.standardize 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 112 166 array define help.s.src.3;
+#X obj 33 267 fluid.bufspectralshape -source help.s.src.3 -select centroid
+flatness, f 25;
+#X obj 33 441 fluid.dataset help.s.scalercomparison.in, f 43;
+#X obj 33 507 fluid.ds2text help.s.scalercomparison.in help.standardise.text.3
+, f 27;
+#X obj 33 566 text define help.standardise.text.3;
+#X f 23;
+#X msg 405 147 fittransform help.s.scalercomparison.in help.s.scalercomparison.robust
+;
+#X msg 715 147 fittransform help.s.scalercomparison.in help.s.scalercomparison.std
+;
+#X msg 1025 147 fittransform help.s.scalercomparison.in help.s.scalercomparison.norm
+;
+#X obj 405 230 fluid.dataset help.s.scalercomparison.robust, f 34
+;
+#X obj 715 230 fluid.dataset help.s.scalercomparison.std, f 31;
+#X obj 1025 230 fluid.dataset help.s.scalercomparison.norm, f 31;
+#X obj 415 384 text define help.standardize.text.robust;
+#X obj 405 332 fluid.ds2text help.s.scalercomparison.robust help.standardize.text.robust
+, f 35;
+#X obj 725 384 text define help.standardize.text.std;
+#X obj 1035 384 text define help.standardize.text.norm;
+#X obj 1025 332 fluid.ds2text help.s.scalercomparison.norm help.standardize.text.norm
+, f 31;
+#X obj 715 332 fluid.ds2text help.s.scalercomparison.std help.standardize.text.std
+, f 30;
+#X msg 405 509 setpoints help.standardize.text.robust;
+#X msg 714 509 setpoints help.standardize.text.std;
+#X msg 1013 509 setpoints help.standardize.text.norm;
+#X text 409 850 Robust scaling keeps more of the data centred around
+0 in both dimensions compared to the standardised output., f 41;
+#X text 409 897 However \, notice how lots of data is "off the plot"
+\, because samples outside the IQR are pushed further from those that
+are., f 41;
+#X text 409 959 This makes it a scaler that is "robust" against outliers
+\, compared to say normalisation or standardisation., f 41;
+#X obj 1276 419 loadbang;
+#X msg 1276 443 10;
+#X msg 1277 512 range \$1 \$2;
+#N canvas 299 350 450 300 format 0;
+#X obj 37 37 inlet;
+#X obj 38 69 t f f;
+#X obj 38 93 * -1;
+#X obj 38 117 pack f f;
+#X obj 38 141 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X restore 1276 488 pd format;
+#X floatatom 1276 467 5 0 0 0 - - - 0;
+#X msg 33 345 frombuffer \$2;
+#X connect 2 0 33 0;
+#X connect 3 0 60 0;
+#X connect 4 0 35 0;
+#X connect 5 0 8 0;
+#X connect 8 0 42 0;
+#X connect 9 0 47 0;
+#X connect 12 0 41 0;
+#X connect 13 0 48 0;
+#X connect 16 0 40 0;
+#X connect 17 0 44 0;
 #X connect 19 0 16 0;
-#X connect 20 0 34 0;
-#X connect 23 0 24 0;
-#X connect 25 0 26 0;
-#X connect 27 0 25 0;
-#X connect 28 0 34 0;
-#X connect 29 0 34 0;
-#X connect 32 0 33 0;
-#X connect 33 0 31 0;
-#X connect 35 0 7 0;
+#X connect 20 0 12 0;
+#X connect 33 0 3 0;
+#X connect 34 0 4 0;
+#X connect 37 0 19 0;
+#X connect 38 0 20 0;
+#X connect 39 0 5 0;
+#X connect 49 0 18 0;
+#X connect 50 0 15 0;
+#X connect 51 0 11 0;
+#X connect 55 0 56 0;
+#X connect 56 0 59 0;
+#X connect 57 0 11 0;
+#X connect 57 0 18 0;
+#X connect 57 0 15 0;
+#X connect 58 0 57 0;
+#X connect 59 0 58 0;
+#X connect 60 0 34 0;
+#X restore 456 864 pd comparing_scalers;
+#X obj 467 522 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 17 79 Standardize a FluidDataSet;
+#X text 17 109 Standardize a fluid.dataset. Rescale using its mean(s)
+and standard deviation(s) in each dimension \, such that each dimension
+has a mean of 0 and a standard deviation of 1;
+#X obj 499 167 array define help.s.src.1;
+#X obj 379 197 clone fluid.multiarray 2 help.s.features.1;
+#X obj 34 314 fluid.bufpitch -source help.s.src.1 -features help.s.features.1
+, f 37;
+#X obj 34 422 fluid.dataset help.s.raw.1, f 16;
+#X obj 467 441 fluid.dataset help.s.standardised.1, f 19;
+#X msg 467 345 fittransform help.s.raw.1 help.s.standardised.1, f
+26;
+#X obj 467 557 fluid.ds2text help.s.standardised.1 help.standardize.text.1b
+, f 27;
+#X obj 37 557 fluid.ds2text help.s.raw.1 help.standardize.text.1,
+f 27;
+#X obj 467 387 fluid.standardize;
+#X msg 34 386 frombuffer \$2;
+#X text 364 725 The standardised analysis. Notice that it's the exact
+same "shape" as the raw data but the values are in a different range
+now. Both of the scales for pitch and confidence are now expressed
+as standard deviations from a mean of 0 \, meaning they are more comparable.
+, f 45;
+#X obj 491 521 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 471 642 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 492 520 5) store dataset into a text object, f 21;
+#X text 472 641 6) double-click 'text' to see data, f 22;
+#X connect 4 0 28 0;
+#X connect 6 0 35 0;
+#X connect 11 0 33 0;
+#X connect 17 0 30 0;
+#X connect 23 0 32 0;
+#X connect 28 0 6 0;
+#X connect 31 0 34 0;
+#X connect 34 0 17 0;
+#X connect 35 0 29 0;
