@@ -1,2 +1,284 @@
-#N canvas 546 252 836 602 12;
-#X obj 148 191 fluid.knnclassifier;
+#N canvas 51 23 699 813 12;
+#X obj 19 607 fluid.knnclassifier;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.knnclassifier 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.knnclassifier.html reference/knnclassifier/
+;
+#X text 17 79 Classification with K-Nearest Neighbours;
+#X text 17 129 A nearest neighbour classifier using a fluid.kdtree
+.;
+#X obj 19 207 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 44 207 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 45 206 1) Analyse two sounds using MFCC;
+#N canvas 1149 23 899 684 analysis_and_data_processing 0;
+#X obj 37 37 inlet;
+#X obj 37 417 outlet;
+#X obj 37 61 t b b;
+#X msg 69 93 clear;
+#X obj 69 117 fluid.dataset help.knnc.data;
+#X obj 279 117 fluid.labelset help.knnc.labels;
+#X obj 37 225 fluid.bufmfcc -source help.knnc.src.1 -features help.knnc.mfcc.1
+-numframes 44100 -numchans 1, f 38;
+#X obj 314 225 fluid.bufmfcc -source help.knnc.src.2 -features help.knnc.mfcc.2
+-numframes 44100 -numchans 1, f 38;
+#X obj 37 197 t a a, f 40;
+#X obj 37 331 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1133 23 915 908 fill_dataset_and_labelset 0;
+#X obj 37 37 inlet;
+#X obj 37 697 outlet;
+#X obj 37 65 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X floatatom 37 108 5 0 0 0 - - - 0;
+#X obj 37 85 array size help.knnc.mfcc.1-0;
+#X obj 108 201 until;
+#X msg 37 200 bang;
+#X text 43 665 bang when done;
+#X msg 251 198 0;
+#X obj 108 247 f;
+#X obj 147 236 + 1;
+#X obj 147 262 % 100;
+#X obj 37 150 t b f f b, f 31;
+#X floatatom 108 314 5 0 0 0 - - - 0;
+#X text 151 314 current index;
+#X obj 108 348 t f f, f 15;
+#X msg 108 394 \$1-bell;
+#X msg 210 392 startframe \$1 \, bang;
+#X obj 210 416 fluid.bufflatten -source help.knnc.mfcc.1 -numframes
+1, f 30;
+#X obj 108 620 fluid.dataset help.knnc.data;
+#X obj 210 465 list;
+#X msg 210 487 \$2;
+#X obj 108 533 list append;
+#X msg 108 562 addpoint \$1 \$2;
+#X obj 387 620 fluid.labelset help.knnc.labels;
+#X obj 387 533 list append bell;
+#X obj 387 562 list prepend addlabel;
+#X obj 387 591 list trim;
+#X obj 109 714 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 129 711 store dataset into a text object;
+#X text 290 792 <- double-click 'text' to see data, f 18;
+#X obj 109 739 fluid.ds2text help.knnc.data help.knnc.data.text, f
+27;
+#X obj 109 793 text define help.knnc.data.text;
+#X f 24;
+#X obj 479 714 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 688 796 <- double-click 'text' to see data, f 18;
+#X text 499 711 store labelset into a text object;
+#X obj 479 739 fluid.ls2text help.knnc.labels help.knnc.labels.text
+, f 27;
+#X obj 479 793 text define help.knnc.labels.text;
+#X f 24;
+#X text 258 86 get the number of samples in the mfcc analysis;
+#X text 524 531 create a unique identifier;
+#X text 432 413 iterate over each frame of analysis and get each MFCC
+coefficient (13 values), f 27;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 12 0;
+#X connect 4 0 3 0;
+#X connect 5 0 9 0;
+#X connect 6 0 1 0;
+#X connect 8 0 9 1;
+#X connect 9 0 10 0;
+#X connect 9 0 13 0;
+#X connect 10 0 11 0;
+#X connect 11 0 9 1;
+#X connect 12 0 6 0;
+#X connect 12 1 5 0;
+#X connect 12 2 11 1;
+#X connect 12 3 8 0;
+#X connect 13 0 15 0;
+#X connect 15 0 16 0;
+#X connect 15 1 17 0;
+#X connect 16 0 22 0;
+#X connect 16 0 25 0;
+#X connect 17 0 18 0;
+#X connect 18 0 20 0;
+#X connect 20 0 21 0;
+#X connect 21 0 22 1;
+#X connect 22 0 23 0;
+#X connect 23 0 19 0;
+#X connect 25 0 26 0;
+#X connect 26 0 27 0;
+#X connect 27 0 24 0;
+#X connect 28 0 31 0;
+#X connect 33 0 36 0;
+#X restore 37 292 pd fill_dataset_and_labelset;
+#X obj 521 35 clone fluid.multiarray 13 help.knnc.mfcc.1;
+#X obj 521 59 clone fluid.multiarray 13 help.knnc.mfcc.2;
+#N canvas 1854 -1070 877 842 fill_dataset_and_labelset 0;
+#X obj 37 37 inlet;
+#X obj 37 697 outlet;
+#X obj 37 65 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X floatatom 37 108 5 0 0 0 - - - 0;
+#X obj 108 201 until;
+#X msg 37 200 bang;
+#X text 43 665 bang when done;
+#X msg 251 198 0;
+#X obj 108 247 f;
+#X obj 147 236 + 1;
+#X obj 147 262 % 100;
+#X obj 37 150 t b f f b, f 31;
+#X floatatom 108 314 5 0 0 0 - - - 0;
+#X text 151 314 current index;
+#X obj 108 348 t f f, f 15;
+#X msg 210 392 startframe \$1 \, bang;
+#X obj 108 620 fluid.dataset help.knnc.data;
+#X obj 210 465 list;
+#X msg 210 487 \$2;
+#X obj 108 533 list append;
+#X msg 108 562 addpoint \$1 \$2;
+#X obj 387 620 fluid.labelset help.knnc.labels;
+#X obj 387 562 list prepend addlabel;
+#X obj 387 591 list trim;
+#X obj 109 714 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 129 711 store dataset into a text object;
+#X obj 109 739 fluid.ds2text help.knnc.data help.knnc.data.text, f
+27;
+#X obj 479 714 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 499 711 store labelset into a text object;
+#X obj 479 739 fluid.ls2text help.knnc.labels help.knnc.labels.text
+, f 27;
+#X obj 37 85 array size help.knnc.mfcc.2-0;
+#X obj 210 416 fluid.bufflatten -source help.knnc.mfcc.2 -numframes
+1, f 30;
+#X msg 108 394 \$1-piano;
+#X obj 387 533 list append piano;
+#X text 258 86 get the number of samples in the mfcc analysis;
+#X text 524 531 create a unique identifier;
+#X text 432 413 iterate over each frame of analysis and get each MFCC
+coefficient (13 values), f 27;
+#X connect 0 0 2 0;
+#X connect 2 0 30 0;
+#X connect 3 0 11 0;
+#X connect 4 0 8 0;
+#X connect 5 0 1 0;
+#X connect 7 0 8 1;
+#X connect 8 0 9 0;
+#X connect 8 0 12 0;
+#X connect 9 0 10 0;
+#X connect 10 0 8 1;
+#X connect 11 0 5 0;
+#X connect 11 1 4 0;
+#X connect 11 2 10 1;
+#X connect 11 3 7 0;
+#X connect 12 0 14 0;
+#X connect 14 0 32 0;
+#X connect 14 1 15 0;
+#X connect 15 0 31 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 1;
+#X connect 19 0 20 0;
+#X connect 20 0 16 0;
+#X connect 22 0 23 0;
+#X connect 23 0 21 0;
+#X connect 24 0 26 0;
+#X connect 27 0 29 0;
+#X connect 30 0 3 0;
+#X connect 31 0 17 0;
+#X connect 32 0 19 0;
+#X connect 32 0 33 0;
+#X connect 33 0 22 0;
+#X restore 314 292 pd fill_dataset_and_labelset;
+#X obj 314 331 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 324 375 This patcher compiles a singular fluid.dataset~ and
+fluid.labelset~ using analysis of two sound files. It only analyses
+the first second of audio so that we don't classify every single frame
+of audio in the source. This way we can test to see how well the fluid.knnclassifier~
+can classify data it hasn't seen before.;
+#X connect 0 0 2 0;
+#X connect 2 0 8 0;
+#X connect 2 1 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 5 0;
+#X connect 6 0 10 0;
+#X connect 7 0 13 0;
+#X connect 8 0 6 0;
+#X connect 8 1 7 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X connect 13 0 14 0;
+#X connect 14 0 1 0;
+#X restore 19 233 pd analysis_and_data_processing;
+#X obj 19 263 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 19 303 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1555 23 493 309 loadsrc 0;
+#X obj 16 177 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 15 61 read -resize media/Tremblay-CF-ChurchBells.wav help.knnc.src.1
+;
+#X msg 111 102 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+help.knnc.src.2;
+#X connect 1 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X restore 18 162 pd loadsrc;
+#X obj 201 303 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 201 377 fluid.out~ knnclassifierhelp;
+#X obj 266 298 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 267 297 4) play one of the sources back;
+#X obj 270 382 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 271 381 3) audio on;
+#X obj 19 447 fluid.mfcc~ 13;
+#X text 245 232 Have a look in here!;
+#X obj 476 151 array define help.knnc.src.1;
+#X obj 476 175 array define help.knnc.src.2;
+#X obj 19 323 tabplay~ help.knnc.src.1;
+#X obj 201 323 tabplay~ help.knnc.src.2;
+#X obj 19 482 array set help.knnc.query;
+#X obj 456 215 array define help.knnc.query 13;
+#X msg 19 565 predictpoint help.knnc.query;
+#X listbox 19 705 25 0 0 0 - - - 0;
+#X msg 239 565 fit help.knnc.data help.knnc.labels;
+#X text 18 734 The detected class here should correspond to the source
+sound type., f 24;
+#X text 205 702 You might notice that silence is detected as the piano.
+This makes sense as a large portion of the first second of audio that
+was analysed in that source is silence., f 33;
+#X obj 19 654 list;
+#X msg 44 301 stop;
+#X msg 222 297 stop;
+#X obj 19 540 metro 250;
+#X obj 19 518 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 241 533 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 242 532 2) Fit the knnclassifier~ to the fluid.dataset~ and
+fluid.labelset~, f 34;
+#X obj 41 519 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 42 518 5) start predicting;
+#X connect 0 0 31 0;
+#X connect 5 0 8 0;
+#X connect 8 0 9 0;
+#X connect 10 0 22 0;
+#X connect 12 0 23 0;
+#X connect 18 0 24 0;
+#X connect 22 0 13 0;
+#X connect 22 0 13 1;
+#X connect 22 0 18 0;
+#X connect 23 0 13 1;
+#X connect 23 0 13 0;
+#X connect 23 0 18 0;
+#X connect 26 0 0 0;
+#X connect 28 0 0 0;
+#X connect 31 0 27 0;
+#X connect 32 0 22 0;
+#X connect 33 0 23 0;
+#X connect 34 0 26 0;
+#X connect 35 0 34 0;

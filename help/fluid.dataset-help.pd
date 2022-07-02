@@ -437,13 +437,12 @@ across all channels as the columns of a given identifier.;
 #000000;
 #X obj 40 679 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X obj 41 761 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 19 761 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X obj 19 705 fluid.ds2text help.dataset help.dataset.text.1, f 27
 ;
 #X obj 19 784 text define help.dataset.text.1;
 #X text 41 678 8) store dataset into a text object;
-#X text 21 759 4) 9)double-click 'text' to see data;
 #N canvas 1009 23 691 591 using_text 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -493,6 +492,7 @@ f 36;
 #X connect 24 0 8 0;
 #X connect 24 0 9 0;
 #X restore 478 751 pd using_text;
+#X text 20 759 9) double-click 'text' to see data;
 #X connect 5 0 6 0;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
