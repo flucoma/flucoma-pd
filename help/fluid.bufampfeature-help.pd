@@ -45,27 +45,6 @@ slow "ramps" is shown in red., f 29;
 above the onthreshold \, and goes below the offthreshold., f 29;
 #X obj 443 760 cnv 15 222 65 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 252 88 701 747 automatic_array_management 0;
-#X text 17 79 Learn how arrays can be automatically managed with FluCoMa
-;
-#X text 37 159 Instead of always having to supply output buffers~ for
-FluCoMa buffer processing objects \, you can have those objects automatically
-manage their own buffers~.;
-#X listbox 98 371 28 0 0 0 - - - 0;
-#X obj 98 340 list;
-#X obj 252 266 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 253 266 1) click me;
-#X text 147 390 name of the "internal" array output by fluid object.
-, f 30;
-#X obj 98 310 fluid.bufsines;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufampfeature 1 22 0 36
-#4ba3fb #ffffff 0;
-#X msg 98 266 buffer help.amp.src;
-#X connect 3 0 2 0;
-#X connect 7 0 3 0;
-#X connect 9 0 7 0;
-#X restore 454 780 pd automatic_array_management;
 #X obj 454 802 note_on_multithreading;
 #N canvas 1180 -934 813 814 parameters 0;
 #X floatatom 201 147 8 0 0 0 - - - 0;
@@ -212,13 +191,14 @@ samples, f 39;
 100 -slowrampup 1000 -slowrampdown 1000 -minslicelength 200, f 43
 ;
 #X obj 384 400 print;
-#X connect 6 0 22 0;
+#X obj 454 780 note_on_automatic_multiarrays;
+#X connect 6 0 21 0;
 #X connect 9 0 12 0;
 #X connect 12 0 13 0;
+#X connect 18 0 9 0;
+#X connect 18 1 22 0;
+#X connect 18 1 23 0;
 #X connect 19 0 9 0;
-#X connect 19 1 23 0;
-#X connect 19 1 24 0;
-#X connect 20 0 9 0;
-#X connect 22 0 9 0;
-#X connect 22 1 23 0;
-#X connect 23 0 12 1;
+#X connect 21 0 9 0;
+#X connect 21 1 22 0;
+#X connect 22 0 12 1;

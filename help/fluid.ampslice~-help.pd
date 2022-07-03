@@ -1,4 +1,4 @@
-#N canvas 481 56 693 871 12;
+#N canvas 139 41 693 871 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.ampslice~.html reference/ampslice/
@@ -131,9 +131,13 @@ slowrampdown 500, f 47;
 #X msg 109 809 1, f 2;
 #X text 431 442 computed latency is max of latency-inducing attributes
 , f 27;
+#X obj 141 522 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
+#000000 #000000;
+#X obj 141 491 threshold~ 0.5 1 0.1 1;
 #X connect 4 0 10 0;
 #X connect 4 0 6 0;
 #X connect 6 0 18 0;
+#X connect 6 0 31 0;
 #X connect 6 1 8 0;
 #X connect 7 0 6 0;
 #X connect 8 0 14 0;
@@ -151,3 +155,4 @@ slowrampdown 500, f 47;
 #X connect 21 0 16 1;
 #X connect 27 0 28 0;
 #X connect 28 0 26 2;
+#X connect 31 0 30 0;

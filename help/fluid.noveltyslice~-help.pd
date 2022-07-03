@@ -124,10 +124,14 @@
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 18 85 A musical example.;
 #X floatatom 367 490 5 0 0 0 - - - 0;
+#X obj 208 576 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
+#000000 #000000;
+#X obj 208 545 threshold~ 0.5 1 0.1 1;
 #X connect 0 0 9 0;
 #X connect 1 0 0 0;
 #X connect 2 0 4 0;
 #X connect 4 0 10 1;
+#X connect 4 0 16 0;
 #X connect 4 1 1 0;
 #X connect 4 1 14 0;
 #X connect 5 0 6 0;
@@ -135,6 +139,7 @@
 #X connect 7 0 4 0;
 #X connect 7 0 8 0;
 #X connect 9 0 10 0;
+#X connect 16 0 15 0;
 #X restore 480 698 pd musical_example;
 #X obj 18 149 phasor~ 1.11;
 #X obj 18 193 clip~ 0 1;
