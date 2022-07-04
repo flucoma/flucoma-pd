@@ -1,5 +1,84 @@
-#N canvas 40 40 716 635 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.nmfmorph~ 20 12 0 36 -262144
--66577 0;
-#X obj 530 84 note_on_multiarrays;
-#X obj 98 227 fluid.nmfmorph~;
+#N canvas 38 73 698 867 12;
+#X obj 539 372 note_on_multiarrays;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmorph~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.nmfmorph~.html reference/nmfmorph/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Morph\\\ between\\\ sounds 4
+8 0 13 #e0e0e0 #404040 0;
+#X obj 37 241 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 37 321 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 37 749 *~ 20;
+#X floatatom 69 725 5 0 0 0 - - - 0;
+#X obj 37 816 fluid.out~ nmfmorphhelp;
+#X obj 37 394 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 1700 23 348 350 loadsrcs 0;
+#X obj 16 208 soundfiler;
+#X obj 16 78 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 16 48 inlet;
+#X msg 16 97 read -resize media/Nicol-LoopE-M.wav help.morph.src.1
+, f 37;
+#X msg 35 148 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+help.morph.src.2, f 37;
+#X connect 1 0 3 0;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 37 196 pd loadsrcs;
+#X obj 57 177 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 37 177 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 57 176 1) load sounds;
+#X obj 126 612 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 123 586 cnv 15 75 17 empty empty Interpolate 3 12 1 14 #dfdfdf
+#0400ff 0;
+#X floatatom 370 313 5 0 0 0 - - - 0;
+#X floatatom 370 392 5 0 0 0 - - - 0;
+#X text 18 88 Perform cross-synthesis using Nonnegative Matrix Factorization
+(NMF) and Optimal Transport (OT). NMF analyses of sources and target
+sounds decompose their material into a selectable number of components
+\, which are in turn represented by their bases (spectrum) and activations.
+, f 69;
+#X msg 38 494 activations help.morph.act.1 \, interpolation 1 \, autoassign
+0 \, autoassign 1, f 73;
+#X obj 462 176 array define help.morph.src.1;
+#X obj 504 222 clone fluid.multiarray 5 help.morph.bases.1, f 24;
+#X obj 504 259 clone fluid.multiarray 5 help.morph.bases.2, f 24;
+#X obj 504 296 clone fluid.multiarray 5 help.morph.act.1, f 24;
+#X obj 504 333 clone fluid.multiarray 5 help.morph.act.2, f 24;
+#X obj 37 261 fluid.bufnmf -source help.morph.src.1 -bases help.morph.bases.1
+-activations help.morph.act.1 -components 5 -blocking 0, f 48;
+#X obj 462 199 array define help.morph.src.2;
+#X obj 37 341 fluid.bufnmf -source help.morph.src.2 -bases help.morph.bases.2
+-activations help.morph.act.2 -components 5 -blocking 0, f 48;
+#X obj 37 681 fluid.nmfmorph~ -source help.morph.bases.1 -target help.morph.bases.2
+-activations help.morph.act.1;
+#X msg 123 634 interpolation \$1;
+#X text 404 680 note: to trigger mapping changes \, change autoassign.
+, f 29;
+#X msg 51 553 activations help.morph.act.2 \, interpolation 0 \, autoassign
+0;
+#X text 39 471 set the temporal shape to the drums;
+#X text 53 531 set temporal shape to the piano;
+#X connect 4 0 25 0;
+#X connect 5 0 27 0;
+#X connect 6 0 8 0;
+#X connect 6 0 8 1;
+#X connect 7 0 6 1;
+#X connect 12 0 10 0;
+#X connect 14 0 29 0;
+#X connect 19 0 28 0;
+#X connect 25 0 5 0;
+#X connect 25 3 16 0;
+#X connect 27 0 9 0;
+#X connect 27 3 17 0;
+#X connect 28 0 6 0;
+#X connect 29 0 28 0;
+#X connect 31 0 28 0;
