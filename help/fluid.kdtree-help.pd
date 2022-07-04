@@ -1,11 +1,9 @@
-#N struct 1052-draw-item float x float y float c float a float b;
-#N struct 1053-rectangle float x float c;
-#N struct 1053-pixel float x0 float y0 float x1 float y1;
-#N struct 1054-rectangle float x float c;
-#N struct 1054-pixel float x0 float y0 float x1 float y1;
-#N struct 1067-draw-item float x float y float c float a float b;
-#N struct 1068-rectangle float x float c;
-#N struct 1068-pixel float x0 float y0 float x1 float y1;
+#N struct 1394-rectangle float x float c;
+#N struct 1394-pixel float x0 float y0 float x1 float y1;
+#N struct 1395-rectangle float x float c;
+#N struct 1395-pixel float x0 float y0 float x1 float y1;
+#N struct 1409-rectangle float x float c;
+#N struct 1409-pixel float x0 float y0 float x1 float y1;
 #N canvas 110 80 698 714 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -329,11 +327,7 @@ is a fast lookup mechanism so that we can scrub through the analysis
 space., f 49;
 #X text 330 478 For a relevant tutorial \, see https://learn.flucoma.org/overviews
 , f 37;
-#X obj 108 687 dac~;
 #X floatatom 108 621 5 0 0 0 - - - 0;
-#X obj 108 665 *~;
-#X obj 178 645 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
 #X obj 108 600 fluid.s2f;
 #N canvas 739 591 308 296 player 0;
 #X obj 37 15 inlet;
@@ -358,6 +352,7 @@ space., f 49;
 #X connect 8 0 4 0;
 #X connect 9 0 6 0;
 #X restore 108 644 pd player;
+#X obj 108 668 fluid.out~;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;
@@ -366,13 +361,11 @@ space., f 49;
 #X connect 12 0 13 0;
 #X connect 13 0 15 0;
 #X connect 15 0 16 0;
-#X connect 15 0 28 0;
+#X connect 15 0 25 0;
 #X connect 16 0 18 0;
 #X connect 17 0 9 0;
 #X connect 18 0 19 0;
-#X connect 25 0 29 0;
-#X connect 26 0 24 1;
-#X connect 26 0 24 0;
-#X connect 27 0 26 1;
-#X connect 28 0 25 0;
-#X connect 29 0 26 0;
+#X connect 24 0 26 0;
+#X connect 25 0 24 0;
+#X connect 26 0 27 0;
+#X connect 26 0 27 1;
