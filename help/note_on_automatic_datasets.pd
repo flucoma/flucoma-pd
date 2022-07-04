@@ -1,0 +1,38 @@
+#N canvas 68 97 590 401 12;
+#N canvas 82 492 450 300 (subpatch) 0;
+#X obj 83 48 inlet;
+#X obj 83 93 pdcontrol;
+#X msg 153 93 browse \$1;
+#X msg 83 71 dir 0 tutorial_on_automatic_multiarrays_and_datasets.pd
+;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 535 362 pd;
+#X obj 535 345 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X listbox 233 282 29 0 0 0 - - - 0;
+#X obj 233 251 list;
+#X obj 234 106 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 235 106 1) click me;
+#X text 14 19 Instead of always having to supply a fluid.dataset for
+FluCoMa's fluid.dataset processing objects \, you can have those objects
+automatically managed their own internal fluid.dataset(s), f 75;
+#X text 46 78 Here is a quick example with fluid.standardize;
+#X obj 47 150 fluid.dataset help.dsmanage;
+#X msg 47 106 read data/gaussian4.json;
+#X obj 233 176 route read;
+#X msg 233 200 fittransform help.dsmanage;
+#X obj 233 224 fluid.standardize;
+#X text 29 326 Each object uses different arguments (fittransform \,
+fitpredict \, etc) in this regard \, so it is best to see the tutorial
+to see how this works ->, f 71;
+#X connect 1 0 0 0;
+#X connect 3 0 2 0;
+#X connect 8 1 10 0;
+#X connect 9 0 8 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 3 0;
