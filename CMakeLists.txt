@@ -187,6 +187,8 @@ install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic
         RENAME LICENSE.md)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/FluidCorpusManipulationOverview.pd 
         DESTINATION ${PD_PACKAGE_ROOT})
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/local_docs/"
+        DESTINATION "${PD_PACKAGE_ROOT}/docs")
 if(DOCS)
   install(DIRECTORY "${PD_DOC_OUT}/" 
           DESTINATION "${PD_PACKAGE_ROOT}/docs" 

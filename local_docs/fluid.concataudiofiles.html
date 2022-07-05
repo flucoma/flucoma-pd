@@ -1,0 +1,94 @@
+<!--
+Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
+Copyright 2017-2019 University of Huddersfield.
+Licensed under the BSD-3 License.
+See license.md file in the project root for full license information.
+This project has received funding from the European Research Council (ERC)
+under the European Union’s Horizon 2020 research and innovation programme
+(grant agreement No 725899).
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>fluid.concataudiofiles Reference</title>
+<style>
+	* {
+		font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		--blue: rgb(80,164,252);
+		--dark-blue: #204265;
+	}
+
+	body {
+		padding: 1em;
+	}
+
+	h1 {
+		text-decoration: underline;
+		background-color: var(--blue);
+		color: white;
+		padding: 0.25em;
+		margin: 0;
+	}
+	h2 {
+		border-bottom: 0.5px solid rgba(128, 128, 128, 0.513);
+	}
+
+	a {
+		color: var(--blue);
+	}
+
+	a:hover {
+		background-color: var(--blue);
+		color: white;
+	}
+	
+	.type, .defaultval { 
+		font-weight: normal; 
+  	}
+</style> 
+</head>
+<body>
+  	<h1 class="ref_title">fluid.concataudiofiles</h1>
+  	<div class="digest">A utility to concatenate audio files</div>
+  	<section class="object_description">
+		<h2>Description</h2> 
+	<p>Given a list of valid audio file paths, concatenates them into a single array.</p>
+  	</section> 
+  		<section class="object_discussion"> 
+    	<h2>Discussion</h2> 
+    	<p>This object takes a list of paths to audio files, loads them one after the other into a <a href='fluid.multiarray.html'>fluid.multiarray</a>, and fills a text with the filenames, start and end frames, sampling rate and channel count.
+</p>
+    	<p>fluid.concataudiofiles is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
+  	</section>
+  	<section class="argument_section">
+    	<h2>Arguments</h2>
+      	<h3 class="argument_name">multiarray<span class="type"> [symbol]</span></h3> 
+      	<div class="optional">Optional</div> 
+    	<div class="description">Given a list of valid audio file paths, concatenates them into a single array.</div>
+      	<h3 class="argument_name">text<span class="type"> [symbol]</span></h3> 
+      	<div class="optional">Optional</div> 
+    	<div class="description">A destination text object to store metadata about the concatenated files</div>
+ 	 </section> 
+  	<section class="attribute_section">
+    <h2>Attributes</h2>
+  	</section> 
+  	<section class="method_section"> 
+    <h2>Messages</h2>
+	<div class='method_group'>
+		<h3 class='method_name' name='list'>list</h3>
+		<span class='arglist'>Arguments: </span>
+		<div class='description'>
+		<p>Trigger concatenation</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+		</ul>
+	</div>
+  </section> 
+  <section class="seealso"> 
+    <h2>See Also</h2> 
+  </section> 
+</body>
+</html>
