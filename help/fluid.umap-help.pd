@@ -1,8 +1,7 @@
-#N struct 1229-rectangle float x float c;
-#N struct 1229-pixel float x0 float y0 float x1 float y1;
-#N struct 1247-draw-item float x float y float c float a float b;
-#N struct 1248-rectangle float x float c;
-#N struct 1248-pixel float x0 float y0 float x1 float y1;
+#N struct 1009-rectangle float x float c;
+#N struct 1009-pixel float x0 float y0 float x1 float y1;
+#N struct 1028-rectangle float x float c;
+#N struct 1028-pixel float x0 float y0 float x1 float y1;
 #N canvas 0 23 697 800 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.umap 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -177,8 +176,6 @@ Manifold Approximation and Projection (UMAP) algorithm.;
 #N canvas 88 118 699 853 numneighbourgs_and_mindist 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.umap 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.umap.html reference/umap/
-;
 #X obj 42 327 fluid.plotter;
 #N canvas 764 429 741 300 normalisation_plotting_and_kdtree 0;
 #X obj 37 37 inlet;
@@ -312,14 +309,14 @@ dataset) and increasing the minimum distance could be a tool for creating
 more stark separations between points. Likewise \, lowering the mindist
 and increasing the numneighbours might create a flatter and more spread
 out space for exploring more widely., f 47;
-#X connect 2 0 5 0;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
 #X connect 3 0 2 0;
-#X connect 4 0 3 0;
-#X connect 5 0 2 0;
-#X connect 5 1 6 0;
-#X connect 5 1 6 1;
-#X connect 10 0 4 0;
-#X connect 12 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 1 5 0;
+#X connect 4 1 5 1;
+#X connect 9 0 3 0;
+#X connect 11 0 3 0;
 #X restore 463 737 pd numneighbourgs_and_mindist;
 #X text 20 401 Each identifier is a segment of sound from a corpus
 of all the media files in the Fluid Corpus Manipulation Toolkit package.
