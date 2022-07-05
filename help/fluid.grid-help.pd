@@ -1,2 +1,565 @@
-#N canvas 546 252 836 602 12;
-#X obj 151 210 fluid.grid;
+#N struct 1041-draw-item float x float y float c float a float b;
+#N struct 1042-rectangle float x float c;
+#N struct 1042-pixel float x0 float y0 float x1 float y1;
+#N struct 1043-draw-item float x float y float c float a float b;
+#N struct 1044-rectangle float x float c;
+#N struct 1044-pixel float x0 float y0 float x1 float y1;
+#N struct 1050-draw-item float x float y float c float a float b;
+#N struct 1051-rectangle float x float c;
+#N struct 1051-pixel float x0 float y0 float x1 float y1;
+#N struct 1052-draw-item float x float y float c float a float b;
+#N struct 1053-rectangle float x float c;
+#N struct 1053-pixel float x0 float y0 float x1 float y1;
+#N struct 1059-draw-item float x float y float c float a float b;
+#N struct 1060-rectangle float x float c;
+#N struct 1060-pixel float x0 float y0 float x1 float y1;
+#N struct 1061-draw-item float x float y float c float a float b;
+#N struct 1062-rectangle float x float c;
+#N struct 1062-pixel float x0 float y0 float x1 float y1;
+#N canvas 0 23 697 1007 12;
+#X obj 373 341 fluid.grid;
+#X obj 117 180 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.grid 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 470 894 cnv 15 202 90 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.grid.html reference/grid/
+;
+#X text 17 79 Constrain a 2D DataSet into a Grid.;
+#X text 17 119 Maps a set of 2D points in a fluid.dataset to a rectangular
+grid., f 65;
+#X obj 24 181 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc #000000
+#000000 0;
+#X text 43 179 moon;
+#X text 43 193 lines;
+#X text 43 209 circle;
+#X text 43 224 blobs;
+#X text 43 238 gaussian4;
+#N canvas 1366 23 682 662 readfile 0;
+#X obj 63 36 inlet;
+#X obj 63 60 sel 0 1 2 3 4;
+#X msg 63 187 read data/moon.json;
+#X msg 115 118 read data/blobs.json;
+#X msg 133 95 read data/gaussian4.json;
+#X msg 255 212 print;
+#X msg 98 141 read data/circles.json;
+#X msg 80 164 read data/line.json;
+#X obj 263 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 283 280 read;
+#X text 277 379 <- double-click 'text' to see data, f 18;
+#X obj 78 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 78 448 outlet;
+#X obj 133 241 fluid.dataset help.grid.1.input, f 19;
+#X obj 78 327 fluid.ds2text help.grid.1.input help.grid.1.input.text
+, f 27;
+#X obj 91 380 text define help.grid.1.input.text;
+#X f 25;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 7 0;
+#X connect 1 2 6 0;
+#X connect 1 3 3 0;
+#X connect 1 4 4 0;
+#X connect 2 0 13 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 0;
+#X connect 5 0 13 0;
+#X connect 6 0 13 0;
+#X connect 7 0 13 0;
+#X connect 8 0 14 0;
+#X connect 11 0 12 0;
+#X connect 13 1 8 0;
+#X connect 14 0 11 0;
+#X restore 24 264 pd readfile;
+#X obj 24 478 fluid.plotter;
+#X msg 92 430 setpoints help.grid.1.input.text;
+#N canvas 1653 23 395 491 calculate_point_colours 0;
+#X obj 24 27 inlet;
+#X obj 27 399 outlet;
+#X obj 25 79 text size help.grid.1.input.text;
+#X obj 25 103 t f b;
+#X obj 25 127 until;
+#X obj 25 151 f;
+#X obj 56 151 + 1;
+#X msg 68 126 0;
+#X obj 25 185 text get help.grid.1.input.text;
+#X obj 65 268 expr (int($f1*9) * 100) + (int($f2*9) * 10) + 9, f 27
+;
+#X obj 25 225 unpack s f f;
+#X obj 27 338 pack s f;
+#X msg 27 362 pointcolor \$1 \$2;
+#X obj 130 414 text define help.grid.1.out.txt;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 7 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 1;
+#X connect 7 0 5 1;
+#X connect 8 0 10 0;
+#X connect 9 0 11 1;
+#X connect 10 0 11 0;
+#X connect 10 1 9 0;
+#X connect 10 2 9 1;
+#X connect 11 0 12 0;
+#X connect 12 0 1 0;
+#X restore 25 368 pd calculate_point_colours;
+#X obj 24 288 t b b;
+#X msg 373 298 fittransform help.grid.1.input help.grid.1.output,
+f 30;
+#N canvas 1653 23 395 491 calculate_point_colours 0;
+#X obj 24 27 inlet;
+#X obj 27 399 outlet;
+#X obj 25 79 text size help.grid.1.input.text;
+#X obj 25 103 t f b;
+#X obj 25 127 until;
+#X obj 25 151 f;
+#X obj 56 151 + 1;
+#X msg 68 126 0;
+#X obj 25 185 text get help.grid.1.input.text;
+#X obj 96 38 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 65 268 expr (int($f1*9) * 100) + (int($f2*9) * 10) + 9, f 27
+;
+#X obj 25 225 unpack s f f;
+#X obj 27 338 pack s f;
+#X msg 27 362 pointcolor \$1 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 1 7 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 5 0 8 0;
+#X connect 6 0 5 1;
+#X connect 7 0 5 1;
+#X connect 8 0 11 0;
+#X connect 9 0 2 0;
+#X connect 10 0 12 1;
+#X connect 11 0 12 0;
+#X connect 11 1 10 0;
+#X connect 11 2 10 1;
+#X connect 12 0 13 0;
+#X connect 13 0 1 0;
+#X restore 368 447 pd calculate_point_colours;
+#X obj 365 477 fluid.plotter;
+#X obj 373 365 route fittransform;
+#N canvas 47 74 1027 763 make_presentable 0;
+#X obj 37 37 inlet;
+#X obj 33 203 fluid.ds2text help.grid.1.output help.grid.1.out.txt
+;
+#X msg 32 278 setpoints help.grid.1.out.txt;
+#X msg 38 105 fittransform help.grid.1.output help.grid.1.output;
+#X obj 32 302 outlet;
+#X obj 38 129 fluid.normalize -min 0.05 -max 0.95;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 5 0 1 0;
+#X restore 373 389 pd make_presentable;
+#X obj 373 413 t b a;
+#X text 118 179 1) Select a premade dataset to load.;
+#X obj 375 263 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 376 260 2) Transform the dataset into a grid. (Take a look
+inside the sub-patch too), f 38;
+#X text 29 805 The raw dataset is plotted here and each point is assigned
+a colour based on its position to create a smooth colour change spectrum
+, f 41;
+#X text 365 804 Each point retains the same colour between the input
+and griddified output \, so you can see how the algorithm tries to
+preserve the original layout of points in space while conforming it
+to a grid., f 42;
+#N canvas 88 118 704 959 oversampling 0;
+#X obj 373 341 fluid.grid;
+#X obj 117 180 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.grid 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 24 181 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc #000000
+#000000 0;
+#X text 43 179 moon;
+#X text 43 193 lines;
+#X text 43 209 circle;
+#X text 43 224 blobs;
+#X text 43 238 gaussian4;
+#N canvas 1366 23 682 662 readfile 0;
+#X obj 63 36 inlet;
+#X obj 63 60 sel 0 1 2 3 4;
+#X msg 63 187 read data/moon.json;
+#X msg 115 118 read data/blobs.json;
+#X msg 133 95 read data/gaussian4.json;
+#X msg 255 212 print;
+#X msg 98 141 read data/circles.json;
+#X msg 80 164 read data/line.json;
+#X obj 263 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 283 280 read;
+#X text 277 379 <- double-click 'text' to see data, f 18;
+#X obj 78 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 78 448 outlet;
+#X obj 91 380 text define help.grid.2.input.text;
+#X f 25;
+#X obj 78 327 fluid.ds2text help.grid.2.input help.grid.2.input.text
+, f 27;
+#X obj 133 241 fluid.dataset help.grid.2.input, f 19;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 7 0;
+#X connect 1 2 6 0;
+#X connect 1 3 3 0;
+#X connect 1 4 4 0;
+#X connect 2 0 15 0;
+#X connect 3 0 15 0;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 6 0 15 0;
+#X connect 7 0 15 0;
+#X connect 8 0 14 0;
+#X connect 11 0 12 0;
+#X connect 14 0 11 0;
+#X connect 15 1 8 0;
+#X restore 24 264 pd readfile;
+#X obj 24 478 fluid.plotter;
+#N canvas 1653 23 395 491 calculate_point_colours 0;
+#X obj 24 27 inlet;
+#X obj 27 399 outlet;
+#X obj 25 103 t f b;
+#X obj 25 127 until;
+#X obj 25 151 f;
+#X obj 56 151 + 1;
+#X msg 68 126 0;
+#X obj 96 38 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 65 268 expr (int($f1*9) * 100) + (int($f2*9) * 10) + 9, f 27
+;
+#X obj 25 225 unpack s f f;
+#X obj 27 338 pack s f;
+#X msg 27 362 pointcolor \$1 \$2;
+#X obj 25 79 text size help.grid.2.input.text;
+#X obj 25 185 text get help.grid.2.input.text;
+#X obj 130 414 text define help.grid.2.out.txt;
+#X connect 0 0 12 0;
+#X connect 2 0 3 0;
+#X connect 2 1 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 13 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 1;
+#X connect 7 0 12 0;
+#X connect 8 0 10 1;
+#X connect 9 0 10 0;
+#X connect 9 1 8 0;
+#X connect 9 2 8 1;
+#X connect 10 0 11 0;
+#X connect 11 0 1 0;
+#X connect 12 0 2 0;
+#X connect 13 0 9 0;
+#X restore 25 368 pd calculate_point_colours;
+#X obj 24 288 t b b;
+#N canvas 1653 23 395 491 calculate_point_colours 0;
+#X obj 24 27 inlet;
+#X obj 27 399 outlet;
+#X obj 25 103 t f b;
+#X obj 25 127 until;
+#X obj 25 151 f;
+#X obj 56 151 + 1;
+#X msg 68 126 0;
+#X obj 96 38 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 65 268 expr (int($f1*9) * 100) + (int($f2*9) * 10) + 9, f 27
+;
+#X obj 25 225 unpack s f f;
+#X obj 27 338 pack s f;
+#X msg 27 362 pointcolor \$1 \$2;
+#X obj 25 79 text size help.grid.2.input.text;
+#X obj 25 185 text get help.grid.2.input.text;
+#X connect 0 0 12 0;
+#X connect 2 0 3 0;
+#X connect 2 1 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 13 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 1;
+#X connect 7 0 12 0;
+#X connect 8 0 10 1;
+#X connect 9 0 10 0;
+#X connect 9 1 8 0;
+#X connect 9 2 8 1;
+#X connect 10 0 11 0;
+#X connect 11 0 1 0;
+#X connect 12 0 2 0;
+#X connect 13 0 9 0;
+#X restore 368 447 pd calculate_point_colours;
+#X obj 365 477 fluid.plotter;
+#X obj 373 365 route fittransform;
+#N canvas 47 74 1027 763 make_presentable 0;
+#X obj 37 37 inlet;
+#X obj 32 302 outlet;
+#X obj 38 129 fluid.normalize -min 0.05 -max 0.95;
+#X msg 38 105 fittransform help.grid.2.output help.grid.2.output;
+#X obj 33 203 fluid.ds2text help.grid.2.output help.grid.2.out.txt
+;
+#X msg 32 278 setpoints help.grid.2.out.txt;
+#X connect 0 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X restore 373 389 pd make_presentable;
+#X obj 373 413 t b a;
+#X text 118 179 1) Select a premade dataset to load., f 19;
+#X obj 376 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 29 805 The raw dataset is plotted here and each point is assigned
+a colour based on its position to create a smooth colour change spectrum
+, f 41;
+#X text 18 68 fluid.grid attemps to create a square grid from the input
+data. You can change the "resolution" of the target grid with oversampling
+, f 82;
+#X msg 92 430 setpoints help.grid.2.input.text;
+#X msg 374 201 fittransform help.grid.2.input help.grid.2.output,
+f 30;
+#X obj 440 257 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 377 179 2) Transform the dataset into a grid.;
+#X msg 397 316 oversample \$1;
+#X floatatom 398 295 5 0 0 0 - - - 0;
+#X text 441 255 3) Experiment with transformations and modifying the
+oversampling factor \, then retransform, f 30;
+#X msg 388 249 1, f 2;
+#X msg 416 249 2, f 2;
+#X msg 388 271 3, f 2;
+#X msg 417 271 4, f 2;
+#X text 363 804 As the grid oversamples the original shape of the space
+is preseved. This gives you a flexible control over how "gridded" the
+result is. It is important to remember that oversampling changes the
+dimensions of the grid too as it essentially is a control of resolution.
+In this instance the changes in shape of the output are overcome by
+normalising the space., f 43;
+#X connect 0 0 15 0;
+#X connect 3 0 9 0;
+#X connect 9 0 12 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 12 1 22 0;
+#X connect 13 0 14 0;
+#X connect 15 0 16 0;
+#X connect 16 0 17 0;
+#X connect 17 0 13 0;
+#X connect 17 1 14 0;
+#X connect 22 0 10 0;
+#X connect 23 0 0 0;
+#X connect 26 0 0 0;
+#X connect 27 0 26 0;
+#X connect 29 0 27 0;
+#X connect 30 0 27 0;
+#X connect 31 0 27 0;
+#X connect 32 0 27 0;
+#X restore 473 914 pd oversampling;
+#N canvas 88 118 701 918 axis_and_extent 0;
+#X obj 374 313 fluid.grid;
+#X obj 118 152 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 16 cnv 15 660 42 empty empty fluid.grid 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 25 153 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc #000000
+#000000 0;
+#X text 44 151 moon;
+#X text 44 165 lines;
+#X text 44 181 circle;
+#X text 44 196 blobs;
+#X text 44 210 gaussian4;
+#N canvas 1366 23 682 662 readfile 0;
+#X obj 63 36 inlet;
+#X obj 63 60 sel 0 1 2 3 4;
+#X msg 63 187 read data/moon.json;
+#X msg 115 118 read data/blobs.json;
+#X msg 133 95 read data/gaussian4.json;
+#X msg 255 212 print;
+#X msg 98 141 read data/circles.json;
+#X msg 80 164 read data/line.json;
+#X obj 263 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 283 280 read;
+#X text 277 379 <- double-click 'text' to see data, f 18;
+#X obj 78 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 78 448 outlet;
+#X obj 133 241 fluid.dataset help.grid.3.input, f 19;
+#X obj 78 327 fluid.ds2text help.grid.3.input help.grid.3.input.text
+, f 27;
+#X obj 91 380 text define help.grid.3.input.text;
+#X f 25;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 7 0;
+#X connect 1 2 6 0;
+#X connect 1 3 3 0;
+#X connect 1 4 4 0;
+#X connect 2 0 13 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 0;
+#X connect 5 0 13 0;
+#X connect 6 0 13 0;
+#X connect 7 0 13 0;
+#X connect 8 0 14 0;
+#X connect 11 0 12 0;
+#X connect 13 1 8 0;
+#X connect 14 0 11 0;
+#X restore 25 236 pd readfile;
+#X obj 25 450 fluid.plotter;
+#N canvas 1653 23 395 491 calculate_point_colours 0;
+#X obj 24 27 inlet;
+#X obj 27 399 outlet;
+#X obj 25 103 t f b;
+#X obj 25 127 until;
+#X obj 25 151 f;
+#X obj 56 151 + 1;
+#X msg 68 126 0;
+#X obj 65 268 expr (int($f1*9) * 100) + (int($f2*9) * 10) + 9, f 27
+;
+#X obj 25 225 unpack s f f;
+#X obj 27 338 pack s f;
+#X msg 27 362 pointcolor \$1 \$2;
+#X obj 25 79 text size help.grid.3.input.text;
+#X obj 25 185 text get help.grid.3.input.text;
+#X obj 130 414 text define help.grid.3.out.txt;
+#X connect 0 0 11 0;
+#X connect 2 0 3 0;
+#X connect 2 1 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 12 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 1;
+#X connect 7 0 9 1;
+#X connect 8 0 9 0;
+#X connect 8 1 7 0;
+#X connect 8 2 7 1;
+#X connect 9 0 10 0;
+#X connect 10 0 1 0;
+#X connect 11 0 2 0;
+#X connect 12 0 8 0;
+#X restore 26 340 pd calculate_point_colours;
+#X obj 25 260 t b b;
+#N canvas 1653 23 395 491 calculate_point_colours 0;
+#X obj 24 27 inlet;
+#X obj 27 399 outlet;
+#X obj 25 103 t f b;
+#X obj 25 127 until;
+#X obj 25 151 f;
+#X obj 56 151 + 1;
+#X msg 68 126 0;
+#X obj 96 38 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 65 268 expr (int($f1*9) * 100) + (int($f2*9) * 10) + 9, f 27
+;
+#X obj 25 225 unpack s f f;
+#X obj 27 338 pack s f;
+#X msg 27 362 pointcolor \$1 \$2;
+#X obj 25 79 text size help.grid.3.input.text;
+#X obj 25 185 text get help.grid.3.input.text;
+#X connect 0 0 12 0;
+#X connect 2 0 3 0;
+#X connect 2 1 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 0 13 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 1;
+#X connect 7 0 12 0;
+#X connect 8 0 10 1;
+#X connect 9 0 10 0;
+#X connect 9 1 8 0;
+#X connect 9 2 8 1;
+#X connect 10 0 11 0;
+#X connect 11 0 1 0;
+#X connect 12 0 2 0;
+#X connect 13 0 9 0;
+#X restore 369 419 pd calculate_point_colours;
+#X obj 366 449 fluid.plotter;
+#X obj 374 337 route fittransform;
+#N canvas 47 74 1027 763 make_presentable 0;
+#X obj 37 37 inlet;
+#X obj 32 302 outlet;
+#X obj 38 129 fluid.normalize -min 0.05 -max 0.95;
+#X msg 38 105 fittransform help.grid.3.output help.grid.3.output;
+#X obj 33 203 fluid.ds2text help.grid.3.output help.grid.3.out.txt
+;
+#X msg 32 278 setpoints help.grid.3.out.txt;
+#X connect 0 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X restore 374 361 pd make_presentable;
+#X obj 374 385 t b a;
+#X text 119 151 1) Select a premade dataset to load., f 19;
+#X obj 377 153 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 30 777 The raw dataset is plotted here and each point is assigned
+a colour based on its position to create a smooth colour change spectrum
+, f 41;
+#X obj 441 229 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 378 151 2) Transform the dataset into a grid.;
+#X floatatom 399 240 5 0 0 0 - - - 0;
+#X text 18 71 Constraining the grid to an "extent" along either axis
+is possible. This means you can enforce the grid to have a certain
+dimensionality. Good for mapping sounds onto controllers!, f 92;
+#X text 364 776 The extent attribute constrains the dimensions of the
+selected axis when the grid is created. When the value is 0 \, the
+constraints are disabled. This allows you to control how points are
+compacted and arranged in the grid output \, facilitating distinct
+arrangements of points in lines of varying density and uniformity.
+, f 42;
+#X msg 93 402 setpoints help.grid.3.input.text;
+#X msg 398 261 extent \$1;
+#X text 442 227 3) Experiment by changing both the axis and extent
+attributes., f 31;
+#X msg 480 277 axis 0;
+#X msg 536 278 axis 1;
+#X msg 375 173 fittransform help.grid.3.input help.grid.3.output,
+f 30;
+#X connect 0 0 15 0;
+#X connect 3 0 9 0;
+#X connect 9 0 12 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 12 1 26 0;
+#X connect 13 0 14 0;
+#X connect 15 0 16 0;
+#X connect 16 0 17 0;
+#X connect 17 0 13 0;
+#X connect 17 1 14 0;
+#X connect 23 0 27 0;
+#X connect 26 0 10 0;
+#X connect 27 0 0 0;
+#X connect 29 0 0 0;
+#X connect 30 0 0 0;
+#X connect 31 0 0 0;
+#X restore 473 936 pd axis_and_extent;
+#X obj 473 958 note_on_automatic_datasets;
+#X connect 0 0 21 0;
+#X connect 7 0 13 0;
+#X connect 13 0 17 0;
+#X connect 15 0 14 0;
+#X connect 16 0 14 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 0 0;
+#X connect 19 0 20 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 19 0;
+#X connect 23 1 20 0;

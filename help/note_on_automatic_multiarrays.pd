@@ -3,7 +3,8 @@
 #X obj 83 48 inlet;
 #X obj 83 93 pdcontrol;
 #X msg 153 93 browse \$1;
-#X msg 83 71 dir 0 tutorial_on_internal_arrays.pd;
+#X msg 83 71 dir 0 tutorial_on_automatic_multiarrays_and_datasets.pd
+;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 1 0;
