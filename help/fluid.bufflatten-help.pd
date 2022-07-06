@@ -1,4 +1,4 @@
-#N canvas 7 50 708 876 12;
+#N canvas 7 50 708 820 12;
 #X obj 539 194 note_on_multiarrays;
 #X obj 539 259 array define output;
 #X obj 22 162 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -113,8 +113,8 @@ can be useful to structure an array to added to a DataSet.;
 #X restore 25 601 pd showresult;
 #X obj 25 575 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 494 737 cnv 15 177 42 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 471 732 cnv 15 213 68 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #N canvas 172 77 725 956 real_use_case 0;
 #X obj 17 23 cnv 15 660 42 empty empty fluid.bufflatten 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -200,7 +200,7 @@ isolates the "mean" amplitude of each chroma., f 51;
 #X connect 14 0 15 0;
 #X connect 15 0 18 0;
 #X connect 18 0 21 0;
-#X restore 496 757 pd real_use_case;
+#X restore 473 752 pd real_use_case;
 #X obj 45 162 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 46 161 1) Generate a 3x3 buffer of values;
@@ -220,6 +220,7 @@ samples, f 22;
 #X obj 175 281 cnv 15 1 1 empty empty ˇ 0 0 0 22 #ffffff #404040 0
 ;
 #X text 177 221 -> samples/frames;
+#X obj 472 777 note_on_automatic_multiarrays;
 #X connect 2 0 12 0;
 #X connect 3 0 11 0;
 #X connect 4 0 5 0;

@@ -1,11 +1,10 @@
-#N canvas 0 43 700 735 12;
+#N canvas 0 43 700 790 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.multiarray 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.multiarray.html reference/multiarray/
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Multichannel\\\ arrays 4 8 0
 13 #e0e0e0 #404040 0;
-#X obj 538 170 note_on_multiarrays;
 #X obj 17 375 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 17 507 array set;
@@ -24,8 +23,6 @@
 #X text 25 426 list of values to store;
 #X text 252 426 list of values to store;
 #X msg 17 442 0 0.1 0.2 0.3 0.4;
-#X obj 418 64 cnv 15 200 30 empty empty 1\\\ and\\\ 2\\\ not\\\ working\\\ because\\\ missing
-20 12 0 9 #faff00 #404040 0;
 #X text 17 164 This abstraction allows the creation of multichannel
 arrays. Note that it requires invoking with the clone object to work.
 , f 61;
@@ -52,24 +49,28 @@ arrays. Note that it requires invoking with the clone object to work.
 #X text 272 234 create 3-channel array of 5 elements 'myArray';
 #X text 263 573 see stored values in ch 1;
 #X text 491 573 see stored values in ch 2;
-#X connect 4 0 10 0;
-#X connect 7 0 33 0;
-#X connect 9 0 32 0;
-#X connect 10 0 17 0;
-#X connect 10 1 28 0;
-#X connect 11 0 14 0;
+#X obj 453 692 cnv 15 220 70 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 461 713 note_on_multiarrays;
+#X obj 461 737 note_on_automatic_multiarrays;
+#X connect 3 0 9 0;
+#X connect 6 0 31 0;
+#X connect 8 0 30 0;
+#X connect 9 0 16 0;
+#X connect 9 1 26 0;
+#X connect 10 0 13 0;
+#X connect 12 0 11 0;
 #X connect 13 0 12 0;
-#X connect 14 0 13 0;
-#X connect 14 1 29 0;
-#X connect 17 0 5 0;
-#X connect 21 0 31 0;
+#X connect 13 1 27 0;
+#X connect 16 0 4 0;
+#X connect 19 0 29 0;
+#X connect 20 0 22 0;
 #X connect 22 0 24 0;
-#X connect 24 0 26 0;
-#X connect 24 1 30 0;
-#X connect 26 0 23 0;
-#X connect 28 0 5 2;
-#X connect 29 0 12 2;
-#X connect 30 0 23 2;
-#X connect 31 0 20 0;
-#X connect 32 0 8 0;
-#X connect 33 0 6 0;
+#X connect 22 1 28 0;
+#X connect 24 0 21 0;
+#X connect 26 0 4 2;
+#X connect 27 0 11 2;
+#X connect 28 0 21 2;
+#X connect 29 0 18 0;
+#X connect 30 0 7 0;
+#X connect 31 0 5 0;

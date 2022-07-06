@@ -1,4 +1,4 @@
-#N canvas 52 80 707 781 12;
+#N canvas 52 80 700 650 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.concataudiofiles 1 22
 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ utility\\\ to\\\ concatenate\\\ audio\\\ files.

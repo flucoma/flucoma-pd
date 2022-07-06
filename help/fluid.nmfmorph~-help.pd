@@ -1,5 +1,4 @@
 #N canvas 38 73 698 867 12;
-#X obj 539 372 note_on_multiarrays;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmorph~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.nmfmorph~.html reference/nmfmorph/
@@ -67,18 +66,21 @@ sounds decompose their material into a selectable number of components
 0;
 #X text 39 471 set the temporal shape to the drums;
 #X text 53 531 set temporal shape to the piano;
-#X connect 4 0 25 0;
-#X connect 5 0 27 0;
-#X connect 6 0 8 0;
-#X connect 6 0 8 1;
-#X connect 7 0 6 1;
-#X connect 12 0 10 0;
-#X connect 14 0 29 0;
-#X connect 19 0 28 0;
-#X connect 25 0 5 0;
-#X connect 25 3 16 0;
-#X connect 27 0 9 0;
-#X connect 27 3 17 0;
-#X connect 28 0 6 0;
-#X connect 29 0 28 0;
-#X connect 31 0 28 0;
+#X obj 526 793 cnv 15 149 50 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 534 817 note_on_multiarrays;
+#X connect 3 0 24 0;
+#X connect 4 0 26 0;
+#X connect 5 0 7 0;
+#X connect 5 0 7 1;
+#X connect 6 0 5 1;
+#X connect 11 0 9 0;
+#X connect 13 0 28 0;
+#X connect 18 0 27 0;
+#X connect 24 0 4 0;
+#X connect 24 3 15 0;
+#X connect 26 0 8 0;
+#X connect 26 3 16 0;
+#X connect 27 0 5 0;
+#X connect 28 0 27 0;
+#X connect 30 0 27 0;

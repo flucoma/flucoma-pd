@@ -1,9 +1,9 @@
-#N canvas 47 27 692 809 12;
+#N canvas 47 27 692 847 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufpitch.html reference/pitch/
 ;
-#X obj 525 714 cnv 15 150 90 empty empty More\\\ information 4 10 0
+#X obj 458 715 cnv 15 215 115 empty empty More\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
@@ -72,7 +72,7 @@ as if you didn't select any., f 52;
 #X connect 9 0 11 0;
 #X connect 11 0 12 0;
 #X connect 13 0 9 0;
-#X restore 528 734 pd select;
+#X restore 461 735 pd select;
 #N canvas 201 101 698 909 musical_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -280,7 +280,7 @@ a grain, f 61;
 #X connect 35 0 8 1;
 #X connect 35 1 8 2;
 #X connect 38 0 37 0;
-#X restore 528 756 pd musical_example;
+#X restore 461 757 pd musical_example;
 #N canvas 281 140 724 868 multichannel 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -327,7 +327,7 @@ help.bufpitch.4.features;
 #X connect 15 0 18 0;
 #X connect 17 0 2 0;
 #X connect 18 0 16 0;
-#X restore 528 778 pd multichannel;
+#X restore 461 779 pd multichannel;
 #X obj 17 261 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
 #000000;
 #X obj 17 286 tabplay~ help.bufpitch.1.src;
@@ -364,6 +364,7 @@ f 72;
 channel is pitch confidence between 0 and1.0., f 72;
 #X text 17 685 See the next tab for how we might use this information
 musically., f 72;
+#X obj 461 802 note_on_automatic_multiarrays;
 #X connect 5 0 3 0;
 #X connect 12 0 13 0;
 #X connect 13 0 14 0;

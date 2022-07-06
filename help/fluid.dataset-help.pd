@@ -1,4 +1,4 @@
-#N canvas 24 61 695 838 12;
+#N canvas 24 61 695 855 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ set\\\ of\\\ data\\\ associated\\\ with\\\ identifiers.
@@ -73,8 +73,8 @@ to an array., f 26;
 #X text 136 265 1) Store a list of numbers in an array. These numbers
 could be anything \, including audio-descriptor data \, synthesiser
 parameters or anything!, f 54;
-#X obj 475 687 cnv 15 202 133 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 475 687 cnv 15 202 156 empty empty More\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 312 64 693 961 audio-descriptor_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -493,6 +493,7 @@ f 36;
 #X connect 24 0 9 0;
 #X restore 478 751 pd using_text;
 #X text 20 759 9) double-click 'text' to see data;
+#X obj 478 820 note_on_automatic_datasets;
 #X connect 5 0 6 0;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;

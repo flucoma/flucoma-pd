@@ -1,4 +1,4 @@
-#N canvas 74 86 699 924 12;
+#N canvas 74 86 695 918 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufstft.html reference/bufstft/
@@ -36,7 +36,7 @@ Transform (STFT) on a single channel source array.;
 #X obj 491 213 clone fluid.multiarray 513 help.stft.phases, f 26;
 #X obj 18 403 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 458 813 cnv 15 212 88 empty empty More\\\ information 4 10 0
+#X obj 462 813 cnv 15 212 88 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #N canvas 162 143 749 909 musical_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb
@@ -232,9 +232,9 @@ f 26;
 #X connect 27 1 25 0;
 #X connect 28 0 29 0;
 #X connect 30 0 27 0;
-#X restore 461 833 pd musical_example;
-#X obj 461 877 note_on_multithreading;
-#X obj 461 855 note_on_automatic_multiarrays;
+#X restore 465 833 pd musical_example;
+#X obj 465 877 note_on_multithreading;
+#X obj 465 855 note_on_automatic_multiarrays;
 #X obj 43 525 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X obj 18 525 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
@@ -257,9 +257,10 @@ help.stft.phases -resynth help.stft.resynth -inverse 1;
 #X text 326 314 3) Draw magnitudes as a spectrogram;
 #X text 44 524 4) Resynthesise the source using the magnitudes and
 phases;
-#X msg 18 665 waveformcolor #0000cc \, waveform help.stft.src;
-#X msg 344 665 waveformcolor #009900 \, waveform help.stft.resynth
+#X msg 18 665 waveformcolor #0000cc \, waveform help.stft.src, f 23
 ;
+#X msg 344 665 waveformcolor #009900 \, waveform help.stft.resynth
+, f 27;
 #X connect 5 0 4 0;
 #X connect 12 0 14 0;
 #X connect 14 0 17 0;

@@ -1,14 +1,14 @@
-#N struct 1160-rectangle float x float c;
-#N struct 1160-pixel float x0 float y0 float x1 float y1;
-#N struct 1163-rectangle float x float c;
-#N struct 1163-pixel float x0 float y0 float x1 float y1;
-#N struct 1167-rectangle float x float c;
-#N struct 1167-pixel float x0 float y0 float x1 float y1;
-#N struct 1174-rectangle float x float c;
-#N struct 1174-pixel float x0 float y0 float x1 float y1;
-#N struct 1178-rectangle float x float c;
-#N struct 1178-pixel float x0 float y0 float x1 float y1;
-#N canvas 29 38 701 972 12;
+#N struct 18319-rectangle float x float c;
+#N struct 18319-pixel float x0 float y0 float x1 float y1;
+#N struct 18322-rectangle float x float c;
+#N struct 18322-pixel float x0 float y0 float x1 float y1;
+#N struct 18326-rectangle float x float c;
+#N struct 18326-pixel float x0 float y0 float x1 float y1;
+#N struct 18333-rectangle float x float c;
+#N struct 18333-pixel float x0 float y0 float x1 float y1;
+#N struct 18337-rectangle float x float c;
+#N struct 18337-pixel float x0 float y0 float x1 float y1;
+#N canvas 29 38 701 919 12;
 #X obj 319 373 fluid.kmeans;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -37,7 +37,7 @@
 #X f 25;
 #X obj 319 402 route fitpredict;
 #X obj 358 461 fluid.labelset help.kmeans.1.labels, f 22;
-#X obj 446 814 cnv 15 230 135 empty empty More\\\ information 4 10
+#X obj 483 758 cnv 15 197 137 empty empty More\\\ information 4 10
 0 13 #e0e0e0 #404040 0;
 #N canvas 78 60 705 957 incremental_training 0;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
@@ -126,7 +126,7 @@ to., f 13;
 #X connect 19 0 21 0;
 #X connect 21 0 5 0;
 #X connect 25 0 8 0;
-#X restore 449 834 pd incremental_training;
+#X restore 490 782 pd incremental_training;
 #N canvas 403 38 696 1016 distances 0;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -324,7 +324,7 @@ are larger., f 48;
 #X connect 29 0 28 0;
 #X connect 29 1 27 0;
 #X connect 29 2 7 0;
-#X restore 449 900 pd distances;
+#X restore 490 848 pd distances;
 #X msg 26 531 setpoints help.kmeans.1.data.txt, f 22;
 #X obj 498 200 text define help.kmeans.1.labels.txt;
 #X f 25;
@@ -455,7 +455,7 @@ come to its own conclusions from a random starting point., f 47;
 #X connect 20 0 24 0;
 #X connect 23 0 9 0;
 #X connect 24 0 2 0;
-#X restore 449 856 pd accessing_the_means_1;
+#X restore 490 804 pd accessing_the_means_1;
 #N canvas 129 86 700 956 accessing_the_means_2 0;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -591,7 +591,7 @@ store in a dataset, f 25;
 #X connect 22 0 23 0;
 #X connect 23 0 2 0;
 #X connect 28 0 15 0;
-#X restore 449 878 pd accessing_the_means_2;
+#X restore 490 826 pd accessing_the_means_2;
 #N canvas 1738 -676 594 552 choosedataset 0;
 #X msg 105 238 line;
 #X msg 105 443 read data/\$1.json;
@@ -624,7 +624,7 @@ store in a dataset, f 25;
 #X connect 13 4 6 0;
 #X coords 0 -1 1 1 85 85 2 100 100;
 #X restore 26 178 pd choosedataset;
-#X obj 449 923 note_on_automatic_datasets;
+#X obj 490 871 note_on_automatic_datasets;
 #X connect 0 0 15 0;
 #X connect 8 0 13 0;
 #X connect 11 0 0 0;

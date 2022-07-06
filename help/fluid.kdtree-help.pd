@@ -1,15 +1,15 @@
-#N struct 1394-rectangle float x float c;
-#N struct 1394-pixel float x0 float y0 float x1 float y1;
-#N struct 1395-rectangle float x float c;
-#N struct 1395-pixel float x0 float y0 float x1 float y1;
-#N struct 1409-rectangle float x float c;
-#N struct 1409-pixel float x0 float y0 float x1 float y1;
+#N struct 18297-rectangle float x float c;
+#N struct 18297-pixel float x0 float y0 float x1 float y1;
+#N struct 18298-rectangle float x float c;
+#N struct 18298-pixel float x0 float y0 float x1 float y1;
+#N struct 18312-rectangle float x float c;
+#N struct 18312-pixel float x0 float y0 float x1 float y1;
 #N canvas 110 80 698 714 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
 ;
-#X obj 508 580 cnv 15 165 70 empty empty More\\\ information 4 10 0
+#X obj 488 605 cnv 15 192 93 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #X obj 18 66 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
 #404040 0;
@@ -118,7 +118,7 @@ radius is searched \; number of returned points is uncapped, f 45
 #X connect 13 0 14 0;
 #X connect 15 0 5 0;
 #X connect 18 0 10 0;
-#X restore 511 628 pd radius_&_neighbours;
+#X restore 491 653 pd radius_&_neighbours;
 #N canvas 112 98 698 764 stripping_it_back 0;
 #X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -226,7 +226,7 @@ in the dataset., f 27;
 #X connect 27 0 28 0;
 #X connect 29 0 26 0;
 #X connect 30 0 31 0;
-#X restore 511 606 pd stripping_it_back;
+#X restore 491 631 pd stripping_it_back;
 #X text 18 85 A K-dimensional tree for efficient neighbourhood searches
 of multi-dimensional data.;
 #X obj 22 157 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
@@ -353,6 +353,7 @@ space., f 49;
 #X connect 9 0 6 0;
 #X restore 108 644 pd player;
 #X obj 108 668 fluid.out~;
+#X obj 491 676 note_on_automatic_datasets;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;

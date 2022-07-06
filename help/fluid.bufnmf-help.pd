@@ -1,6 +1,6 @@
 #N canvas 36 26 692 884 12;
-#X obj 493 687 cnv 15 180 177 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 458 670 cnv 15 215 196 empty empty More\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 299 199 689 856 fixed_bases 0;
 #X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -364,7 +364,7 @@ fluid.bufnmf~ object that decomposes the whole file.;
 #X connect 37 0 11 0;
 #X connect 38 0 24 0;
 #X connect 39 0 22 0;
-#X restore 496 773 pd fixed_bases;
+#X restore 461 756 pd fixed_bases;
 #N canvas 150 98 689 755 bases_and_activation1 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -490,7 +490,7 @@ at a given point in time., f 41;
 #X connect 8 0 1 0;
 #X connect 14 0 4 0;
 #X connect 16 0 14 0;
-#X restore 496 707 pd bases_and_activation1;
+#X restore 461 690 pd bases_and_activation1;
 #N canvas 179 99 694 820 bases_and_activation2 0;
 #X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -659,7 +659,7 @@ things., f 38;
 #X connect 35 0 33 0;
 #X connect 36 0 38 0;
 #X connect 38 0 34 0;
-#X restore 496 729 pd bases_and_activation2;
+#X restore 461 712 pd bases_and_activation2;
 #N canvas 229 55 695 942 vocoder 0;
 #X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -782,15 +782,15 @@ spectral profile of another;
 #X msg 147 342 set help.nmf.bases.2-\$1, f 19;
 #N canvas 1149 -1008 955 628 visualisation 0;
 #N canvas 0 23 450 278 (subpatch) 0;
-#X array Bases 513 float 0;
-#X coords 0 1 512 0 250 70 1 0 0;
+#X array Bases 100 float 0;
+#X coords 0 1 99 0 250 70 1 0 0;
 #X restore 105 150 graph;
 #X obj 193 -3 array size;
 #X obj 113 21 array get;
 #X obj 113 -172 inlet;
 #N canvas 0 23 450 278 (subpatch) 0;
-#X array Activations 887 float 0;
-#X coords 0 1 886 0 250 70 1 0 0;
+#X array Activations 100 float 0;
+#X coords 0 1 99 0 250 70 1 0 0;
 #X restore 105 237 graph;
 #X obj 483 -3 array size;
 #X obj 403 21 array get;
@@ -834,7 +834,7 @@ spectral profile of another;
 #X connect 12 0 20 0;
 #X connect 18 0 3 2;
 #X connect 19 0 3 1;
-#X restore 496 751 pd vocoder;
+#X restore 461 734 pd vocoder;
 #N canvas 357 162 691 770 multichannel 0;
 #X text 16 113 fluid.bufnmf will process each channel independently
 ;
@@ -883,7 +883,7 @@ input and 2 components:, f 73;
 #X connect 13 0 12 0;
 #X connect 24 0 5 0;
 #X connect 24 3 23 0;
-#X restore 496 817 pd multichannel;
+#X restore 461 800 pd multichannel;
 #N canvas 288 169 696 822 updating_bases 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.nmf.src.5 88200 float 2;
@@ -1025,7 +1025,7 @@ the result on the right at each stage to see how it progresses., f
 #X connect 27 0 31 0;
 #X connect 30 0 26 0;
 #X connect 31 0 26 1;
-#X restore 496 795 pd updating_bases;
+#X restore 461 778 pd updating_bases;
 #X obj 15 220 soundfiler;
 #X obj 15 176 loadbang;
 #X obj 15 74 cnv 15 380 17 empty empty Buffer-Based\\\ Non-Negative\\\ Matrix\\\ Factorisation
@@ -1113,8 +1113,9 @@ This is beacuse the NMF algorithm starts from a random state., f 35
 #X obj 253 452 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc
 #000000 #000000 0;
 #X obj 369 265 clone fluid.multiarray 2 help.nmf.resynth.1;
-#X obj 496 840 note_on_multithreading;
+#X obj 461 823 note_on_multithreading;
 #X text 271 483 both together;
+#X obj 461 844 note_on_automatic_multiarrays;
 #X connect 8 0 21 0;
 #X connect 16 0 23 0;
 #X connect 21 0 7 0;

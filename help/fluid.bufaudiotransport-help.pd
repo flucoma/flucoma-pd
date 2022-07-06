@@ -1,4 +1,4 @@
-#N canvas 306 119 699 924 12;
+#N canvas 24 48 699 862 12;
 #X obj 18 727 tabplay~;
 #X msg 18 621 set interp \, bang;
 #X obj 18 507 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
@@ -11,8 +11,8 @@ reference/audiotransport/;
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 This object computes a histogram of the energy contained
 in each pitch class across the analysis frequency range, f 56;
-#X obj 515 807 cnv 15 165 43 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 465 780 cnv 15 215 67 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #X obj 18 232 soundfiler;
 #X obj 18 257 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
@@ -163,7 +163,7 @@ of 2, f 29;
 of this algorithm., f 28;
 #X text 367 488 See the real-time version of the object for a more
 interactive demonstration of their effect., f 28;
-#X obj 519 828 note_on_multithreading;
+#X obj 469 801 note_on_multithreading;
 #X obj 18 143 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 18 141 1) Pick two source sounds;
@@ -178,6 +178,7 @@ sourceA and sourceB, f 24;
 0;
 #X text 140 620 4) Listen to the result;
 #X text 36 504 'buffer <destination>' message when done;
+#X obj 469 824 note_on_automatic_multiarrays;
 #X connect 0 0 18 1;
 #X connect 0 0 18 0;
 #X connect 1 0 0 0;

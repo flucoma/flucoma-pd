@@ -1,4 +1,4 @@
-#N canvas 41 44 698 842 12;
+#N canvas 41 44 697 842 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufampfeature 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufampfeature.html reference/ampfeature/
@@ -190,14 +190,12 @@ samples, f 39;
 -offthreshold 0 -onthreshold 8.5 -floor -48 -fastrampup 100 -fastrampdown
 100 -slowrampup 1000 -slowrampdown 1000 -minslicelength 200, f 43
 ;
-#X obj 384 400 print;
 #X obj 454 780 note_on_automatic_multiarrays;
 #X connect 6 0 21 0;
 #X connect 9 0 12 0;
 #X connect 12 0 13 0;
 #X connect 18 0 9 0;
 #X connect 18 1 22 0;
-#X connect 18 1 23 0;
 #X connect 19 0 9 0;
 #X connect 21 0 9 0;
 #X connect 21 1 22 0;

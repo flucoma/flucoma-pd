@@ -1,10 +1,10 @@
-#N struct 1469-rectangle float x float c;
-#N struct 1469-pixel float x0 float y0 float x1 float y1;
-#N struct 1471-rectangle float x float c;
-#N struct 1471-pixel float x0 float y0 float x1 float y1;
-#N struct 1473-rectangle float x float c;
-#N struct 1473-pixel float x0 float y0 float x1 float y1;
-#N canvas 130 102 699 891 12;
+#N struct 1554-rectangle float x float c;
+#N struct 1554-pixel float x0 float y0 float x1 float y1;
+#N struct 1556-rectangle float x float c;
+#N struct 1556-pixel float x0 float y0 float x1 float y1;
+#N struct 1558-rectangle float x float c;
+#N struct 1558-pixel float x0 float y0 float x1 float y1;
+#N canvas 130 102 699 913 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.normalize 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 79 Normalize a FluidDataSet;
@@ -12,7 +12,7 @@
 ;
 #X text 17 109 Normalize a fluid.dataset or single point of data according
 to learnt minimum and maximum values.;
-#X obj 455 807 cnv 15 222 65 empty empty More\\\ information 4 10 0
+#X obj 455 807 cnv 15 225 87 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #N canvas 1699 -807 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
@@ -144,7 +144,7 @@ is the confidence in linear values., f 28;
 #X connect 29 0 18 0;
 #X connect 32 0 10 0;
 #X connect 33 0 20 0;
-#X restore 458 827 pd visualising_standardisation;
+#X restore 461 827 pd visualising_standardisation;
 #N canvas 689 23 1359 1047 comparing_scalers 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.normalize 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -281,7 +281,7 @@ flatness, f 25;
 #X connect 58 0 57 0;
 #X connect 59 0 5 0;
 #X connect 60 0 6 0;
-#X restore 458 849 pd comparing_scalers;
+#X restore 461 849 pd comparing_scalers;
 #X obj 346 518 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
 #X obj 345 636 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -295,6 +295,7 @@ same "shape" as the raw data but the values are in a different range
 now. Both of the scales for pitch and confidence are now between 0
 and 1 \, meaning they are more comparable., f 48;
 #X msg 37 375 frombuffer \$2;
+#X obj 461 872 note_on_automatic_datasets;
 #X connect 7 0 8 0;
 #X connect 8 0 12 0;
 #X connect 12 0 40 0;

@@ -1,9 +1,9 @@
-#N canvas 18 38 696 995 12;
+#N canvas 18 38 696 1023 12;
 #X obj 245 621 fluid.datasetquery;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
 #4ba3fb #ffffff 0;
-#X obj 457 867 cnv 15 222 110 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 457 867 cnv 15 222 132 empty empty More\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.datasetquery.html reference/datasetquery/
 ;
 #X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -979,6 +979,7 @@ was lower than 0.9 in the pitch dataset is removed from both., f 20
 #X connect 51 0 13 0;
 #X connect 52 0 24 0;
 #X restore 472 953 pd transformjoin_in_practice;
+#X obj 472 976 note_on_automatic_datasets;
 #X connect 0 0 42 0;
 #X connect 11 0 13 0;
 #X connect 13 0 19 0;

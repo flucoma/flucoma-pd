@@ -1,4 +1,4 @@
-#N canvas 39 44 697 698 12;
+#N canvas 39 44 697 719 12;
 #N canvas 69 -1070 1091 883 generators 0;
 #X obj 427 4 inlet;
 #X obj 427 119 until;
@@ -76,8 +76,8 @@
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Statistically\\\ summarise\\\ a\\\ time\\\ series\\\ in\\\ an\\\ array
 4 8 0 13 #e0e0e0 #404040 0;
-#X obj 497 545 cnv 15 172 130 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 465 545 cnv 15 215 152 empty empty More\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 880 94 698 745 musical_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -329,7 +329,7 @@ the segments by their pitch value;
 #X connect 24 0 25 0;
 #X connect 24 0 25 1;
 #X connect 26 0 24 0;
-#X restore 500 565 pd musical_example;
+#X restore 468 565 pd musical_example;
 #N canvas 160 78 869 772 derivative 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -434,7 +434,7 @@ help.bufstats.stats.down, f 29;
 #X connect 31 0 18 0;
 #X connect 32 0 25 0;
 #X connect 33 0 26 0;
-#X restore 500 609 pd derivative;
+#X restore 468 609 pd derivative;
 #N canvas 281 38 696 840 weighted_statistics 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -653,7 +653,7 @@ the closest for yourself!, f 27;
 #X connect 34 0 18 0;
 #X connect 34 1 19 0;
 #X connect 34 2 20 0;
-#X restore 500 631 pd weighted_statistics;
+#X restore 468 631 pd weighted_statistics;
 #N canvas 134 49 693 684 multichannel 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -836,7 +836,7 @@ on the left channel \, and noise on the right channel, f 76;
 #X connect 15 0 8 0;
 #X connect 16 0 12 0;
 #X connect 17 0 9 0;
-#X restore 500 653 pd multichannel;
+#X restore 468 653 pd multichannel;
 #X text 17 79 Statistical analysis on array channels.;
 #X obj 17 174 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000
 #000000 0;
@@ -890,7 +890,7 @@ the outputs., f 81;
 #X connect 10 0 12 0;
 #X connect 11 0 10 0;
 #X connect 12 0 13 0;
-#X restore 500 587 pd select;
+#X restore 468 587 pd select;
 #X obj 251 307 array get help.bufstats.stats.1 0;
 #X msg 251 280 0;
 #X obj 251 331 list split 7;
@@ -971,6 +971,7 @@ the outputs., f 81;
 #X connect 8 0 2 0;
 #X connect 9 0 3 0;
 #X restore 281 208 pd changing_the_centiles;
+#X obj 468 675 note_on_automatic_multiarrays;
 #X connect 12 0 0 0;
 #X connect 18 0 19 0;
 #X connect 19 0 22 0;

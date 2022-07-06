@@ -1,5 +1,5 @@
-#N canvas 11 40 696 767 12;
-#X obj 452 610 array define fluid.nmfcross.src;
+#N canvas 11 40 696 679 12;
+#X obj 452 186 array define fluid.nmfcross.src;
 #X floatatom 401 359 5 0 0 0 - - - 0;
 #X obj 40 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
@@ -11,9 +11,9 @@
 ;
 #X text 18 88 Reconstructs the sound in the target buffer using components
 learned from the source buffer using NMF decomposition., f 69;
-#X obj 424 633 array define fluid.nmfcross.target;
+#X obj 424 209 array define fluid.nmfcross.target;
 #X f 35;
-#X obj 424 656 array define fluid.nmfcross.result;
+#X obj 424 232 array define fluid.nmfcross.result;
 #X f 35;
 #X text 58 378 the length of the source will have a large effect on
 processing time !, f 41;
@@ -74,8 +74,8 @@ fluid.nmfcross.src, f 47;
 #X obj 42 455 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 42 454 3) listen to source \, target or processed sound;
-#X obj 540 700 cnv 15 135 43 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 459 592 cnv 15 215 65 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #N canvas 40 182 692 864 parameters 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmfcross 1 22 0 36
 #4ba3fb #ffffff 0;
@@ -166,7 +166,7 @@ consecutive frames from the source, f 60;
 #X connect 14 1 12 0;
 #X connect 16 0 14 0;
 #X connect 17 0 14 0;
-#X restore 543 720 pd parameters;
+#X restore 462 612 pd parameters;
 #X text 58 358 bang when done;
 #X obj 40 299 fluid.bufnmfcross -source fluid.nmfcross.src -target
 fluid.nmfcross.target -output fluid.nmfcross.result -blocking 0 -fftsettings
@@ -174,6 +174,7 @@ fluid.nmfcross.target -output fluid.nmfcross.result -blocking 0 -fftsettings
 #X msg 63 478 stop;
 #X msg 214 478 stop;
 #X msg 372 479 stop;
+#X obj 462 634 note_on_automatic_multiarrays;
 #X connect 2 0 29 0;
 #X connect 10 0 11 0;
 #X connect 11 0 12 0;

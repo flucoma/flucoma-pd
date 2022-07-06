@@ -1,18 +1,15 @@
-#N struct 1480-draw-item float x float y float c float a float b;
-#N struct 1481-rectangle float x float c;
-#N struct 1481-pixel float x0 float y0 float x1 float y1;
-#N struct 1482-draw-item float x float y float c float a float b;
-#N struct 1483-rectangle float x float c;
-#N struct 1483-pixel float x0 float y0 float x1 float y1;
-#N struct 1484-draw-item float x float y float c float a float b;
-#N struct 1485-rectangle float x float c;
-#N struct 1485-pixel float x0 float y0 float x1 float y1;
-#N canvas 52 62 697 904 12;
+#N struct 19304-rectangle float x float c;
+#N struct 19304-pixel float x0 float y0 float x1 float y1;
+#N struct 19306-rectangle float x float c;
+#N struct 19306-pixel float x0 float y0 float x1 float y1;
+#N struct 19308-rectangle float x float c;
+#N struct 19308-pixel float x0 float y0 float x1 float y1;
+#N canvas 52 62 697 932 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.standardize 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.standardize.html reference/standardize/
 ;
-#X obj 453 822 cnv 15 222 65 empty empty More\\\ information 4 10 0
+#X obj 453 822 cnv 15 222 87 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #N canvas 1699 -807 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
@@ -132,7 +129,7 @@ is the confidence in linear values., f 28;
 #X connect 31 0 33 0;
 #X connect 32 0 24 0;
 #X connect 33 0 27 0;
-#X restore 456 842 pd visualising_standardisation;
+#X restore 456 843 pd visualising_standardisation;
 #N canvas 689 23 1359 1047 comparing_scalers 0;
 #X text 17 79 Comparing the shape of scalers;
 #N canvas -221 -807 448 179 loadsrc 0;
@@ -269,7 +266,7 @@ are., f 41;
 #X connect 58 0 57 0;
 #X connect 59 0 58 0;
 #X connect 60 0 34 0;
-#X restore 456 864 pd comparing_scalers;
+#X restore 456 865 pd comparing_scalers;
 #X obj 467 522 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
 #X text 17 79 Standardize a FluidDataSet;
@@ -301,6 +298,7 @@ as standard deviations from a mean of 0 \, meaning they are more comparable.
 0;
 #X text 492 520 5) store dataset into a text object, f 21;
 #X text 472 641 6) double-click 'text' to see data, f 22;
+#X obj 456 887 note_on_automatic_datasets;
 #X connect 4 0 28 0;
 #X connect 6 0 35 0;
 #X connect 11 0 33 0;

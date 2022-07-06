@@ -1,22 +1,18 @@
-#N struct 1096-draw-item float x float y float c float a float b;
-#N struct 1097-rectangle float x float c;
-#N struct 1097-pixel float x0 float y0 float x1 float y1;
-#N struct 1111-draw-item float x float y float c float a float b;
-#N struct 1112-rectangle float x float c;
-#N struct 1112-pixel float x0 float y0 float x1 float y1;
-#N struct 1122-draw-item float x float y float c float a float b;
-#N struct 1123-rectangle float x float c;
-#N struct 1123-pixel float x0 float y0 float x1 float y1;
-#N struct 1149-draw-item float x float y float c float a float b;
-#N struct 1150-rectangle float x float c;
-#N struct 1150-pixel float x0 float y0 float x1 float y1;
+#N struct 19109-rectangle float x float c;
+#N struct 19109-pixel float x0 float y0 float x1 float y1;
+#N struct 19113-rectangle float x float c;
+#N struct 19113-pixel float x0 float y0 float x1 float y1;
+#N struct 19116-rectangle float x float c;
+#N struct 19116-pixel float x0 float y0 float x1 float y1;
+#N struct 19120-rectangle float x float c;
+#N struct 19120-pixel float x0 float y0 float x1 float y1;
 #N canvas 66 73 697 762 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.plotter 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 510 66 fluid.referencelauncher fluid.plotter.html reference/plotter/
 ;
-#X obj 531 643 cnv 15 145 95 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 531 643 cnv 15 145 95 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #X obj 18 66 cnv 15 488 17 empty empty Plot\\\ data\\\ in\\\ a\\\ two-dimensional\\\ graph.
 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 27 386 fluid.plotter;
@@ -44,7 +40,7 @@ is passed on with the setpoint message, f 47;
 #X obj 37 37 inlet;
 #X msg 37 61 clear \, fitpredict help.plotting.1 help.plotting.classes.1
 ;
-#X obj 37 85 fluid.kmeans -numbclusters 4;
+#X obj 37 85 fluid.kmeans -numclusters 4;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X restore 393 205 pd clustering;

@@ -181,6 +181,9 @@ how the mapping works., f 24;
 #X text 504 751 We have a quasi-exponential sine wave here as a result
 of predicting based on the curved ramp of help.knnreg.query, f 24
 ;
+#X obj 489 888 cnv 15 192 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 491 915 note_on_automatic_datasets;
 #X connect 0 0 19 0;
 #X connect 5 0 6 0;
 #X connect 5 0 7 0;

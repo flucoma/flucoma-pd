@@ -1,16 +1,16 @@
-#N struct 1449-rectangle float x float c;
-#N struct 1449-pixel float x0 float y0 float x1 float y1;
-#N struct 1451-rectangle float x float c;
-#N struct 1451-pixel float x0 float y0 float x1 float y1;
-#N struct 1453-rectangle float x float c;
-#N struct 1453-pixel float x0 float y0 float x1 float y1;
-#N canvas 58 88 699 889 12;
+#N struct 1507-rectangle float x float c;
+#N struct 1507-pixel float x0 float y0 float x1 float y1;
+#N struct 1509-rectangle float x float c;
+#N struct 1509-pixel float x0 float y0 float x1 float y1;
+#N struct 1511-rectangle float x float c;
+#N struct 1511-pixel float x0 float y0 float x1 float y1;
+#N canvas 58 88 699 914 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.robustscale 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.robustscale.html reference/robustscale/
 ;
-#X obj 455 807 cnv 15 222 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 455 807 cnv 15 222 87 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #N canvas 1699 -807 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 loadbang;
@@ -297,6 +297,7 @@ as values within a comparable range., f 46;
 #X text 377 512 5) store dataset into a text object, f 21;
 #X text 357 633 6) double-click 'text' to see data, f 22;
 #X msg 35 379 frombuffer \$2;
+#X obj 458 873 note_on_automatic_datasets;
 #X connect 5 0 6 0;
 #X connect 6 0 10 0;
 #X connect 10 0 40 0;

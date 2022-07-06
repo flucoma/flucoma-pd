@@ -1,4 +1,4 @@
-#N canvas 33 68 697 699 12;
+#N canvas 33 68 697 704 12;
 #X obj 17 135 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 17 267 array set;
@@ -88,9 +88,10 @@ range;
 #X text 38 478 calculate and store scaled values in destination buffer
 ;
 #X text 263 136 put values in right channel;
-#X obj 533 616 cnv 15 145 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 536 643 note_on_multiarrays;
+#X obj 461 611 cnv 15 215 74 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 464 638 note_on_multiarrays;
+#X obj 463 661 note_on_automatic_multiarrays;
 #X connect 0 0 18 0;
 #X connect 3 0 28 0;
 #X connect 5 0 10 0;

@@ -1,29 +1,22 @@
-#N struct 1591-draw-item float x float y float c float a float b;
-#N struct 1592-rectangle float x float c;
-#N struct 1592-pixel float x0 float y0 float x1 float y1;
-#N struct 1594-draw-item float x float y float c float a float b;
-#N struct 1595-rectangle float x float c;
-#N struct 1595-pixel float x0 float y0 float x1 float y1;
-#N struct 1597-draw-item float x float y float c float a float b;
-#N struct 1598-rectangle float x float c;
-#N struct 1598-pixel float x0 float y0 float x1 float y1;
-#N struct 1600-draw-item float x float y float c float a float b;
-#N struct 1601-rectangle float x float c;
-#N struct 1601-pixel float x0 float y0 float x1 float y1;
-#N struct 1603-draw-item float x float y float c float a float b;
-#N struct 1604-rectangle float x float c;
-#N struct 1604-pixel float x0 float y0 float x1 float y1;
-#N struct 1606-draw-item float x float y float c float a float b;
-#N struct 1607-rectangle float x float c;
-#N struct 1607-pixel float x0 float y0 float x1 float y1;
-#N struct 1624-draw-item float x float y float c float a float b;
-#N struct 1625-rectangle float x float c;
-#N struct 1625-pixel float x0 float y0 float x1 float y1;
+#N struct 1344-rectangle float x float c;
+#N struct 1344-pixel float x0 float y0 float x1 float y1;
+#N struct 1347-rectangle float x float c;
+#N struct 1347-pixel float x0 float y0 float x1 float y1;
+#N struct 1350-rectangle float x float c;
+#N struct 1350-pixel float x0 float y0 float x1 float y1;
+#N struct 1353-rectangle float x float c;
+#N struct 1353-pixel float x0 float y0 float x1 float y1;
+#N struct 1356-rectangle float x float c;
+#N struct 1356-pixel float x0 float y0 float x1 float y1;
+#N struct 1359-rectangle float x float c;
+#N struct 1359-pixel float x0 float y0 float x1 float y1;
+#N struct 1377-rectangle float x float c;
+#N struct 1377-pixel float x0 float y0 float x1 float y1;
 #N canvas 41 62 701 1005 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.mds 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 455 937 cnv 15 222 45 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 455 920 cnv 15 222 68 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.mds.html reference/mds/
 ;
 #X text 17 79 Multidimensional Scaling;
@@ -91,8 +84,8 @@ Scaling;
 #X connect 13 0 7 0;
 #X coords 0 -1 1 1 300 300 2 0 0;
 #X restore 24 892 pd help.mds.metrics.1;
-#X obj 23 864 cnv 15 302 26 empty empty Squared\ Euclidian 90 12 1
-16 #ecefef #0400ff 0;
+#X obj 23 864 cnv 15 302 26 empty empty Squared\\\ Euclidian 90 12
+1 16 #ecefef #0400ff 0;
 #N canvas 1644 -1035 838 883 help.mds.metrics.1 0;
 #X obj 0 -414 r help.mds.load_comparison;
 #X obj 0 -246 fluid.normalize;
@@ -125,7 +118,7 @@ Scaling;
 #X connect 11 0 5 0;
 #X coords 0 -1 1 1 300 300 2 0 0;
 #X restore 344 892 pd help.mds.metrics.1;
-#X obj 343 864 cnv 15 302 26 empty empty Max\ distance 100 12 1 16
+#X obj 343 864 cnv 15 302 26 empty empty Max\\\ distance 100 12 1 16
 #ecefef #0400ff 0;
 #N canvas 1351 -978 838 883 help.mds.metrics.1 0;
 #X obj 0 -414 r help.mds.load_comparison;
@@ -159,7 +152,7 @@ Scaling;
 #X connect 11 0 5 0;
 #X coords 0 -1 1 1 300 300 2 0 0;
 #X restore 23 1232 pd help.mds.metrics.1;
-#X obj 23 1204 cnv 15 302 26 empty empty Min\ Distance 100 12 1 16
+#X obj 23 1204 cnv 15 302 26 empty empty Min\\\ Distance 100 12 1 16
 #ecefef #0400ff 0;
 #N canvas 1644 -1035 838 883 help.mds.metrics.1 0;
 #X obj 0 -414 r help.mds.load_comparison;
@@ -193,8 +186,8 @@ Scaling;
 #X connect 11 0 5 0;
 #X coords 0 -1 1 1 300 300 2 0 0;
 #X restore 344 1232 pd help.mds.metrics.1;
-#X obj 343 1204 cnv 15 302 26 empty empty KL\ Divergence 100 12 1 16
-#ecefef #0400ff 0;
+#X obj 343 1204 cnv 15 302 26 empty empty KL\\\ Divergence 100 12 1
+16 #ecefef #0400ff 0;
 #N canvas -266 -936 838 883 help.mds.metrics.1 0;
 #X obj 0 -414 r help.mds.load_comparison;
 #X obj 0 -246 fluid.normalize;
@@ -280,7 +273,7 @@ Scaling;
 #X connect 9 0 10 0;
 #X connect 11 0 12 0;
 #X connect 29 0 9 0;
-#X restore 466 957 pd comparing_distance_metrics;
+#X restore 466 942 pd comparing_distance_metrics;
 #N canvas 1567 -787 448 179 loadsrc 0;
 #X obj 16 63 soundfiler;
 #X obj 16 19 loadbang;
@@ -342,6 +335,7 @@ Scaling;
 #X obj 44 482 text define help.mds.data.in.text;
 #X f 25;
 #X text 232 482 open text to see data, f 11;
+#X obj 466 965 note_on_automatic_datasets;
 #X connect 8 0 9 0;
 #X connect 9 0 18 0;
 #X connect 12 0 15 0;

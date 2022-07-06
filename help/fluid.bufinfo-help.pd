@@ -1,12 +1,12 @@
-#N canvas 37 41 691 447 12;
+#N canvas 37 41 697 441 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufinfo 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Retrieve\ the\ size\ of\ a\ fluid.multiarray
+#X obj 17 60 cnv 15 488 17 empty empty Retrieve\\\ the\\\ size\\\ of\\\ a\\\ fluid.multiarray
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 92 This utility object test the validity \, the size in
 frames and the number of channels of a fluid.multiarray \, either when
 created via the clone object \, or programmatically with automatically
-generated 'buffers'., f 89;
+generated 'buffers'., f 68;
 #X obj 23 303 fluid.bufinfo;
 #X obj 173 400 clone 3 fluid.multiarray bufinfo1 10;
 #X msg 23 202 buffer bufinfo1;
@@ -25,11 +25,11 @@ generated 'buffers'., f 89;
 #X coords 0 1 100 -1 100 70 1 0 0;
 #X restore 541 348 graph;
 #X msg 37 268 buffer bufinfo3;
-#X obj 502 158 note_on_multiarrays;
-#N canvas 277 114 696 462 auto_managed_buffers 0;
+#X obj 525 180 note_on_multiarrays;
+#N canvas 277 114 696 509 auto_managed_buffers 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufinfo 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Automatically\ managed\ buffers
+#X obj 17 60 cnv 15 488 17 empty empty Automatically\\\ managed\\\ buffers
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 92 Many objects \, when not provided with a destination
 buffer \, will create a multichannel array. The advantage is two-fold:
@@ -56,6 +56,7 @@ bufinfo_source, f 68;
 #000000 #000000;
 #X listbox 299 397 51 0 0 0 - - - 0;
 #X text 298 419 retrieve a channel's content with native objects;
+#X obj 29 469 note_on_automatic_multiarrays;
 #X connect 3 0 4 0;
 #X connect 4 0 12 0;
 #X connect 5 0 6 0;
@@ -71,7 +72,9 @@ bufinfo_source, f 68;
 #X connect 16 0 19 0;
 #X connect 17 0 16 2;
 #X connect 18 0 16 0;
-#X restore 475 185 pd auto_managed_buffers;
+#X restore 498 207 pd auto_managed_buffers;
+#X obj 509 60 fluid.referencelauncher fluid.bufinfo.html reference/bufinfo/
+;
 #X connect 3 0 6 0;
 #X connect 5 0 3 0;
 #X connect 9 0 3 0;

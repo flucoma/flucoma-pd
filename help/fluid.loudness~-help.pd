@@ -1,4 +1,4 @@
-#N canvas 264 140 693 801 12;
+#N canvas 264 140 693 766 12;
 #X obj 143 379 fluid.loudness~;
 #X obj 143 481 unpack f f, f 19;
 #X floatatom 143 502 5 0 0 0 - - - 0;
@@ -16,11 +16,11 @@ f 56;
 #X obj 20 179 fluid.demosound~;
 #X text 19 159 1) Select a source., f 66;
 #X obj 20 339 *~ 1;
-#X obj 51 602 noise~;
-#X obj 50 710 *~;
-#X obj 143 662 dbtorms;
-#X floatatom 144 682 5 0 0 0 - - - 0;
-#X obj 143 642 + 100;
+#X obj 51 567 noise~;
+#X obj 50 675 *~;
+#X obj 143 627 dbtorms;
+#X floatatom 144 647 5 0 0 0 - - - 0;
+#X obj 143 607 + 100;
 #N canvas 703 43 762 637 parameters 0;
 #X msg 473 405 reset;
 #X text 520 398 reset to parameters object was;
@@ -73,11 +73,11 @@ f 56;
 #X connect 24 0 12 0;
 #X connect 25 0 13 0;
 #X restore 237 325 pd parameters;
-#X text 116 598 Turn toggle on to hear the noise shaped by the loudness
+#X text 116 563 Turn toggle on to hear the noise shaped by the loudness
 value converted from dB to amplitude;
 #X text 148 433 loudness and peak as a list;
 #X text 234 306 open to see parameter messages;
-#X obj 531 725 cnv 15 150 50 empty empty More\\\ information 4 10 0
+#X obj 524 702 cnv 15 150 50 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #N canvas 416 56 689 1001 some_more_details 0;
 #X obj 20 759 unpack f f, f 17;
@@ -180,12 +180,12 @@ for momentary loudness, f 25;
 #X connect 20 0 0 0;
 #X connect 21 0 22 0;
 #X connect 21 0 22 1;
-#X restore 534 751 pd some_more_details;
-#X obj 79 716 loadbang;
-#X msg 79 738 1, f 2;
-#X obj 20 762 fluid.out~ loudnesshelp;
-#X obj 51 637 *~;
-#X obj 100 606 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X restore 527 728 pd some_more_details;
+#X obj 79 681 loadbang;
+#X msg 79 703 1, f 2;
+#X obj 20 727 fluid.out~ loudnesshelp;
+#X obj 51 602 *~;
+#X obj 100 571 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;

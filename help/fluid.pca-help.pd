@@ -1,16 +1,14 @@
-#N struct 1498-rectangle float x float c;
-#N struct 1498-pixel float x0 float y0 float x1 float y1;
-#N struct 1507-draw-item float x float y float c float a float b;
-#N struct 1508-rectangle float x float c;
-#N struct 1508-pixel float x0 float y0 float x1 float y1;
-#N struct 1509-draw-item float x float y float c float a float b;
-#N struct 1510-rectangle float x float c;
-#N struct 1510-pixel float x0 float y0 float x1 float y1;
-#N canvas 65 69 701 870 12;
+#N struct 1476-rectangle float x float c;
+#N struct 1476-pixel float x0 float y0 float x1 float y1;
+#N struct 1486-rectangle float x float c;
+#N struct 1486-pixel float x0 float y0 float x1 float y1;
+#N struct 1488-rectangle float x float c;
+#N struct 1488-pixel float x0 float y0 float x1 float y1;
+#N canvas 65 69 701 910 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 474 804 cnv 15 202 45 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 474 804 cnv 15 198 68 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.pca.html reference/pca/
 ;
 #X text 17 79 Principal Component Analysis;
@@ -206,7 +204,7 @@ when using PCA values in analysis can be found on learn.flucoma.org
 #X connect 12 1 9 1;
 #X connect 13 0 12 0;
 #X connect 14 0 11 0;
-#X restore 477 824 pd whitening;
+#X restore 480 825 pd whitening;
 #X msg 379 384 setpoints help.pca.norm.text;
 #X obj 466 188 fluid.dataset help.pca.norm.1;
 #X obj 35 468 text define help.pca.reduc.text;
@@ -293,6 +291,7 @@ a perceptually meaningful space., f 55;
 #X obj 530 720 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 531 719 6) switch on audio and browse the plotter, f 19;
+#X obj 480 848 note_on_automatic_datasets;
 #X connect 6 0 7 0;
 #X connect 8 0 9 0;
 #X connect 9 0 14 0;

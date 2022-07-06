@@ -1,4 +1,4 @@
-#N canvas 38 64 697 825 12;
+#N canvas 38 64 697 771 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.buftransientslice 1 22
 0 36 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.buftransientslice.html
@@ -12,10 +12,10 @@ reference/buftransientslice/;
 help.ts.slices;
 #X obj 482 170 array define help.ts.src;
 #X obj 482 194 array define help.ts.slices;
-#X obj 449 716 cnv 15 228 90 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 456 781 note_on_multithreading;
-#X obj 456 759 note_on_automatic_multiarrays;
+#X obj 455 681 cnv 15 215 68 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 460 725 note_on_multithreading;
+#X obj 460 703 note_on_automatic_multiarrays;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;

@@ -1,4 +1,4 @@
-#N canvas 443 168 697 655 12;
+#N canvas 94 116 697 672 12;
 #X obj 18 232 soundfiler;
 #X obj 18 266 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
@@ -11,8 +11,8 @@
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufchroma.html reference/chroma/
 ;
-#X obj 515 527 cnv 15 165 110 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 464 520 cnv 15 215 132 empty empty More\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ on\\\ an\\\ array.
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 This object computes a histogram of the energy contained
@@ -112,9 +112,9 @@ empty -2 -8 0 10 #fcfcfc #49a3fa #000000 0 1;
 #X connect 28 0 27 0;
 #X restore 19 357 pd visualizer;
 #X floatatom 19 424 8 0 1e+06 0 - - - 12;
-#X obj 518 591 note_on_sampling_rates;
-#X obj 518 614 note_on_multithreading;
-#X obj 518 569 note_on_multiarrays;
+#X obj 467 584 note_on_sampling_rates;
+#X obj 467 607 note_on_multithreading;
+#X obj 467 562 note_on_multiarrays;
 #X text 17 141 1) Pick a source. Piano works well with this example.
 ;
 #X text 503 220 2) Listen to the source;
@@ -361,8 +361,9 @@ amplitudes in each time frame will be 1, f 85;
 #X connect 9 0 10 0;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
-#X restore 518 547 pd some_more_details;
+#X restore 467 540 pd some_more_details;
 #X text 97 308 'buffer <features>' message when done;
+#X obj 467 631 note_on_automatic_multiarrays;
 #X connect 0 0 1 0;
 #X connect 1 0 14 0;
 #X connect 3 0 12 0;

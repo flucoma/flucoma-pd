@@ -1,4 +1,4 @@
-#N canvas 109 98 685 521 12;
+#N canvas 109 98 685 348 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.s2f 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty Convert\\\ a\\\ symbol\\\ into\\\ a\\\ float
@@ -12,6 +12,8 @@
 #X msg 232 228 symbol "123456789.012345";
 #X text 213 270 Note that the symbol needs to be enclosed in double
 quotes for s2f to work., f 30;
+#X obj 509 60 fluid.referencelauncher fluid.s2f.html reference/s2f/
+;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
 #X connect 6 0 4 0;
