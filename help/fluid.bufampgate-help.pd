@@ -1,4 +1,4 @@
-#N canvas 10 48 768 856 12;
+#N canvas 10 48 697 770 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufampgate 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufampgate.html reference/bufampgate/
@@ -80,7 +80,7 @@ of off stats of the gate., f 24;
 #X text 39 276 2) Slice the source;
 #X obj 18 485 clone 2 fluid.multiarray help.ampgate.indices.1, f 28
 ;
-#X obj 472 687 cnv 15 218 133 empty empty More\\\ information 4 10
+#X obj 454 616 cnv 15 218 133 empty empty More\\\ information 4 10
 0 13 #e0e0e0 #404040 0;
 #N canvas 173 70 696 757 visualising 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufampgate 1 22 0 36 #4ba3fb
@@ -135,9 +135,9 @@ help.ampgate.indices.2 -rampup 110 -rampdown 2205 -onthreshold -40
 #X connect 9 1 12 0;
 #X connect 12 0 10 0;
 #X connect 13 0 11 0;
-#X restore 475 707 pd visualising;
-#X obj 475 795 note_on_multithreading;
-#X obj 475 773 note_on_automatic_multiarrays;
+#X restore 457 636 pd visualising;
+#X obj 457 724 note_on_multithreading;
+#X obj 457 702 note_on_automatic_multiarrays;
 #N canvas 132 36 694 763 removing_silence 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufampgate 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -169,7 +169,7 @@ help.ampgate.indices.4 -onthreshold -30 -offthreshold -40 -minslicelength
 4410 -minsilencelength 4410 -rampdown 441;
 #X obj 445 147 clone 2 fluid.multiarray help.ampgate.indices.4, f
 31;
-#N canvas 3 -890 803 858 copy_onsets_to_offset_slice 0;
+#N canvas 3 23 803 858 copy_onsets_to_offset_slice 0;
 #X obj 78 37 inlet;
 #X obj 81 742 outlet;
 #X obj 79 550 array get output, f 41;
@@ -194,7 +194,6 @@ help.ampgate.indices.4 -onthreshold -30 -offthreshold -40 -minslicelength
 #X obj 78 133 t b l l b, f 62;
 #X msg 496 615 0;
 #X obj 81 615 t b l l b, f 53;
-#X obj 223 736 print;
 #X obj 326 651 expr $f2-$f1;
 #X msg 133 376 0;
 #X obj 79 343 t f b, f 8;
@@ -209,7 +208,7 @@ help.ampgate.indices.4 -onthreshold -30 -offthreshold -40 -minslicelength
 #X connect 7 0 8 0;
 #X connect 8 0 10 0;
 #X connect 9 0 2 0;
-#X connect 10 0 26 0;
+#X connect 10 0 25 0;
 #X connect 11 0 12 0;
 #X connect 12 0 13 0;
 #X connect 12 0 14 0;
@@ -217,10 +216,8 @@ help.ampgate.indices.4 -onthreshold -30 -offthreshold -40 -minslicelength
 #X connect 14 0 15 0;
 #X connect 15 0 9 0;
 #X connect 17 0 1 0;
-#X connect 17 0 23 0;
 #X connect 18 0 19 0;
 #X connect 19 0 1 0;
-#X connect 19 0 23 0;
 #X connect 20 0 5 0;
 #X connect 20 1 6 1;
 #X connect 20 2 2 2;
@@ -228,14 +225,13 @@ help.ampgate.indices.4 -onthreshold -30 -offthreshold -40 -minslicelength
 #X connect 21 0 18 0;
 #X connect 22 0 1 0;
 #X connect 22 1 17 0;
-#X connect 22 2 24 0;
+#X connect 22 2 23 0;
 #X connect 22 3 18 0;
-#X connect 24 0 27 0;
-#X connect 25 0 12 1;
-#X connect 26 0 11 0;
-#X connect 26 1 25 0;
-#X connect 27 0 1 0;
-#X connect 27 0 23 0;
+#X connect 23 0 26 0;
+#X connect 24 0 12 1;
+#X connect 25 0 11 0;
+#X connect 25 1 24 0;
+#X connect 26 0 1 0;
 #X restore 18 504 pd copy_onsets_to_offset_slice;
 #X obj 18 666 fluid.waveform 440 60 1 empty empty 0;
 #X obj 445 187 array define help.ampgate.nosilence;
@@ -269,7 +265,7 @@ help.ampgate.nosilence;
 #X connect 20 0 22 0;
 #X connect 21 0 23 0;
 #X connect 22 0 23 1;
-#X restore 475 751 pd removing_silence;
+#X restore 457 680 pd removing_silence;
 #N canvas 291 45 700 785 looking_ahead_and_back 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufampgate 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -279,40 +275,33 @@ help.ampgate.nosilence;
 \, or supress state changes that are too fast;
 #X obj 491 130 clone 2 fluid.multiarray help.ampgate.slices.3, f 26
 ;
-#N canvas 1664 -804 638 490 wavemaker 0;
+#N canvas 1410 23 638 490 wavemaker 0;
 #X msg 77 74 44100;
-#X obj 77 134 until;
-#X msg 123 161 -1;
-#X msg 77 163 1;
-#X obj 77 194 +, f 7;
 #X obj 77 45 loadbang;
-#X obj 213 257 expr sin($f1 * 3.14159 * 640 / 44100) * abs(sin($f1
-* 3.14159 / 22050.)), f 16;
-#X obj 213 365 tabwrite help.ampgate.src.3, f 23;
-#X obj 506 188 f;
-#X obj 77 105 t f b, f 7;
-#X floatatom 77 363 5 0 0 0 - - - 0;
-#X obj 77 386 sel 44099;
 #X obj 77 417 outlet;
-#X obj 77 216 t f f f f, f 59;
-#X connect 0 0 9 0;
-#X connect 1 0 3 0;
-#X connect 2 0 4 1;
-#X connect 3 0 4 0;
-#X connect 4 0 13 0;
-#X connect 5 0 0 0;
-#X connect 6 0 7 0;
-#X connect 8 0 4 1;
-#X connect 9 0 1 0;
-#X connect 9 1 2 0;
-#X connect 10 0 11 0;
-#X connect 11 0 12 0;
-#X connect 13 0 10 0;
-#X connect 13 1 6 0;
-#X connect 13 2 7 1;
-#X connect 13 3 8 0;
-#X restore 138 601 pd wavemaker;
-#X msg 138 625 waveform help.ampgate.src.3;
+#X obj 95 132 until;
+#X obj 110 249 expr sin($f1 * 3.14159 * 640 / 44100) * abs(sin($f1
+* 3.14159 / 22050.)), f 16;
+#X obj 110 357 tabwrite help.ampgate.src.3, f 23;
+#X obj 77 105 t b f b;
+#X obj 95 156 f;
+#X obj 128 156 + 1;
+#X msg 140 127 0;
+#X obj 95 180 t f f, f 25;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 3 0 7 0;
+#X connect 4 0 5 0;
+#X connect 6 0 2 0;
+#X connect 6 1 3 0;
+#X connect 6 2 9 0;
+#X connect 7 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 7 1;
+#X connect 9 0 7 1;
+#X connect 10 0 4 0;
+#X connect 10 1 5 1;
+#X restore 138 583 pd wavemaker;
 #X obj 24 663 fluid.waveform 412 80 1 empty empty 0;
 #X msg 24 218 reset \, minlengthabove 441 \, bang, f 27;
 #X obj 247 226 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -322,7 +311,6 @@ onthreshold \, else ignore;
 #X obj 24 472 fluid.bufampgate -source help.ampgate.src.3 -indices
 help.ampgate.slices.3 -rampup 5 -rampdown 25 -onthreshold -12 -offthreshold
 -12;
-#X msg 24 524 indices help.ampgate.slices.3;
 #X obj 247 276 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X obj 247 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -341,16 +329,16 @@ offthreshold \, else ignore;
 #X text 248 325 3) move onset backwards to minimum within window;
 #X text 248 375 4) move offset forwards to minimum within window;
 #X text 248 425 5) set both \, e.g. to capture reverb tail;
-#X connect 4 0 5 0;
-#X connect 5 0 6 0;
-#X connect 7 0 10 0;
-#X connect 10 0 11 0;
-#X connect 11 0 6 0;
-#X connect 16 0 10 0;
-#X connect 17 0 10 0;
-#X connect 18 0 10 0;
-#X connect 19 0 10 0;
-#X restore 475 729 pd looking_ahead_and_back;
+#X msg 24 524 waveform help.ampgate.src.3 \, indices help.ampgate.slices.3
+;
+#X connect 6 0 9 0;
+#X connect 9 0 22 0;
+#X connect 14 0 9 0;
+#X connect 15 0 9 0;
+#X connect 16 0 9 0;
+#X connect 17 0 9 0;
+#X connect 22 0 5 0;
+#X restore 457 658 pd looking_ahead_and_back;
 #X connect 5 0 4 0;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
