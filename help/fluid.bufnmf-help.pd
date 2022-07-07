@@ -1,6 +1,6 @@
 #N canvas 36 26 692 884 12;
-#X obj 458 670 cnv 15 215 196 empty empty More\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 458 670 cnv 15 215 196 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
 #N canvas 299 199 689 856 fixed_bases 0;
 #X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -660,7 +660,7 @@ things., f 38;
 #X connect 36 0 38 0;
 #X connect 38 0 34 0;
 #X restore 461 712 pd bases_and_activation2;
-#N canvas 229 55 695 942 vocoder 0;
+#N canvas 229 55 695 791 vocoder 0;
 #X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 14 72 Using bases and activations to create a vododer;
@@ -777,7 +777,6 @@ spectral profile of another;
 #X obj 48 747 fluid.out~ bufnmfhelp;
 #X obj 118 752 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 119 751 2) turn sound on;
 #X msg 247 383 set help.nmf.activations.2-\$1, f 25;
 #X msg 147 342 set help.nmf.bases.2-\$1, f 19;
 #N canvas 1149 -1008 955 628 visualisation 0;
@@ -821,6 +820,10 @@ spectral profile of another;
 #X connect 15 2 11 0;
 #X coords 0 -1 1 1 260 210 1 100 100;
 #X restore 338 530 pd visualisation;
+#X obj 206 235 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 119 751 1) turn sound on;
+#X text 207 234 2) select a combination of base and activation;
 #X connect 3 0 15 0;
 #X connect 3 0 15 1;
 #X connect 4 0 5 0;
@@ -828,12 +831,12 @@ spectral profile of another;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 8 0 12 0;
-#X connect 9 0 18 0;
-#X connect 9 0 20 1;
+#X connect 9 0 17 0;
+#X connect 9 0 19 1;
+#X connect 12 0 18 0;
 #X connect 12 0 19 0;
-#X connect 12 0 20 0;
-#X connect 18 0 3 2;
-#X connect 19 0 3 1;
+#X connect 17 0 3 2;
+#X connect 18 0 3 1;
 #X restore 461 734 pd vocoder;
 #N canvas 357 162 691 770 multichannel 0;
 #X text 16 113 fluid.bufnmf will process each channel independently
@@ -866,23 +869,32 @@ input and 2 components:, f 73;
 #X text 14 221 channel 2: channel 1 \, component 2;
 #X text 14 237 channel 3: channel 2 \, component 1;
 #X text 14 253 channel 4: channel 2 \, component 2;
-#X text 262 475 2) select components to hear;
 #X obj 222 583 fluid.out~;
 #X floatatom 465 433 8 0 0 0 - - - 0;
 #X obj 21 396 fluid.bufnmf -source bufnmf_bells -resynth bufnmf_bells_resynth
 -resynthmode 1 -components 12 -blocking 0, f 64;
+#X obj 23 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 24 310 1);
+#X text 44 310 load a stereo file and decompose it;
+#X obj 294 590 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 267 473 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 266 472 3) select components to hear;
+#X text 293 589 2) audio on;
 #X connect 1 0 2 0;
-#X connect 2 0 24 0;
+#X connect 2 0 23 0;
 #X connect 6 0 1 0;
 #X connect 8 0 10 0;
 #X connect 8 0 13 0;
-#X connect 9 0 22 0;
+#X connect 9 0 21 0;
 #X connect 10 0 9 0;
-#X connect 11 0 22 1;
+#X connect 11 0 21 1;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
-#X connect 24 0 5 0;
-#X connect 24 3 23 0;
+#X connect 23 0 5 0;
+#X connect 23 3 22 0;
 #X restore 461 800 pd multichannel;
 #N canvas 288 169 696 822 updating_bases 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -1003,8 +1015,6 @@ the result on the right at each stage to see how it progresses., f
 #X text 44 602 5) incrementally update the initialised bases;
 #X obj 559 338 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 560 337 1) audio on;
-#X text 491 260 2) listen to source;
 #X obj 490 304 tabplay~ help.nmf.src.5;
 #X obj 460 533 fluid.out~ bufnmfhelp;
 #X obj 460 420 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
@@ -1015,16 +1025,18 @@ the result on the right at each stage to see how it progresses., f
 #X obj 460 444 tabplay~ help.nmf.resynth.5-0, f 21;
 #X obj 489 480 tabplay~ help.nmf.resynth.5-1, f 21;
 #X text 532 528 Left is component 1 Right is component 2;
+#X text 560 337 2) audio on;
+#X text 491 260 3) listen to source;
 #X connect 3 0 9 0;
 #X connect 7 0 8 0;
 #X connect 8 0 11 0;
-#X connect 13 0 25 0;
-#X connect 25 0 12 0;
-#X connect 25 0 12 1;
-#X connect 27 0 30 0;
-#X connect 27 0 31 0;
-#X connect 30 0 26 0;
-#X connect 31 0 26 1;
+#X connect 13 0 23 0;
+#X connect 23 0 12 0;
+#X connect 23 0 12 1;
+#X connect 25 0 28 0;
+#X connect 25 0 29 0;
+#X connect 28 0 24 0;
+#X connect 29 0 24 1;
 #X restore 461 778 pd updating_bases;
 #X obj 15 220 soundfiler;
 #X obj 15 176 loadbang;
@@ -1063,7 +1075,6 @@ This is beacuse the NMF algorithm starts from a random state., f 35
 #X obj 134 622 tabplay~ help.nmf.resynth.1-1, f 21;
 #X obj 87 749 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 88 748 2) turn sound on;
 #X obj 17 480 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #N canvas 982 260 388 477 srcselect 0;
@@ -1107,7 +1118,6 @@ This is beacuse the NMF algorithm starts from a random state., f 35
 #X obj 234 430 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 18 479 4) play the component;
-#X text 235 429 3) select a component to listen to;
 #X text 271 448 component 1;
 #X text 271 466 component 2;
 #X obj 253 452 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc
@@ -1116,14 +1126,16 @@ This is beacuse the NMF algorithm starts from a random state., f 35
 #X obj 461 823 note_on_multithreading;
 #X text 271 483 both together;
 #X obj 461 844 note_on_automatic_multiarrays;
+#X text 235 429 2) select a component to listen to;
+#X text 88 748 3) turn sound on;
 #X connect 8 0 21 0;
 #X connect 16 0 23 0;
 #X connect 21 0 7 0;
 #X connect 23 0 15 0;
-#X connect 24 0 31 0;
+#X connect 24 0 30 0;
 #X connect 26 0 27 0;
 #X connect 26 0 24 0;
-#X connect 27 0 31 1;
-#X connect 31 0 10 0;
-#X connect 31 0 10 1;
-#X connect 37 0 31 2;
+#X connect 27 0 30 1;
+#X connect 30 0 10 0;
+#X connect 30 0 10 1;
+#X connect 35 0 30 2;
