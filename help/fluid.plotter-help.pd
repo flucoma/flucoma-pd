@@ -1,11 +1,11 @@
-#N struct 19109-rectangle float x float c;
-#N struct 19109-pixel float x0 float y0 float x1 float y1;
-#N struct 19113-rectangle float x float c;
-#N struct 19113-pixel float x0 float y0 float x1 float y1;
-#N struct 19116-rectangle float x float c;
-#N struct 19116-pixel float x0 float y0 float x1 float y1;
-#N struct 19120-rectangle float x float c;
-#N struct 19120-pixel float x0 float y0 float x1 float y1;
+#N struct 1036-rectangle float x float c;
+#N struct 1036-pixel float x0 float y0 float x1 float y1;
+#N struct 1040-rectangle float x float c;
+#N struct 1040-pixel float x0 float y0 float x1 float y1;
+#N struct 1043-rectangle float x float c;
+#N struct 1043-pixel float x0 float y0 float x1 float y1;
+#N struct 1047-rectangle float x float c;
+#N struct 1047-pixel float x0 float y0 float x1 float y1;
 #N canvas 66 73 697 762 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.plotter 1 22 0 36 #4ba3fb
 #ffffff 0;
