@@ -1,2 +1,640 @@
-#N canvas 546 252 836 602 12;
-#X obj 218 247 fluid.kmeans;
+#N struct 18319-rectangle float x float c;
+#N struct 18319-pixel float x0 float y0 float x1 float y1;
+#N struct 18322-rectangle float x float c;
+#N struct 18322-pixel float x0 float y0 float x1 float y1;
+#N struct 18326-rectangle float x float c;
+#N struct 18326-pixel float x0 float y0 float x1 float y1;
+#N struct 18333-rectangle float x float c;
+#N struct 18333-pixel float x0 float y0 float x1 float y1;
+#N struct 18337-rectangle float x float c;
+#N struct 18337-pixel float x0 float y0 float x1 float y1;
+#N canvas 29 38 701 919 12;
+#X obj 319 373 fluid.kmeans;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 510 66 fluid.referencelauncher fluid.kmeans.html reference/kmeans/
+;
+#X obj 18 66 cnv 15 488 17 empty empty Cluster\\\ data\\\ points\\\ with\\\ K-Means
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 18 85 Uses the K-means algorithm to learn clusters from a fluid.dataset.
+;
+#X obj 25 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 25 155 1) Choose a dataset, f 29;
+#X obj 26 600 fluid.plotter;
+#X obj 26 366 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 510 315 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 510 313 2) Predict clusters from the selected dataset, f 24
+;
+#X msg 319 316 clear \, fitpredict help.kmeans.1.data help.kmeans.1.labels
+, f 24;
+#X obj 26 290 fluid.dataset help.kmeans.1.data, f 22;
+#X obj 26 483 fluid.ds2text help.kmeans.1.data help.kmeans.1.data.txt
+, f 35;
+#X obj 498 159 text define help.kmeans.1.data.txt;
+#X f 25;
+#X obj 319 402 route fitpredict;
+#X obj 358 461 fluid.labelset help.kmeans.1.labels, f 22;
+#X obj 483 758 cnv 15 197 137 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#N canvas 78 60 705 957 incremental_training 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 18 85 You can incrementally "fit" a dataset \, allowing you
+to iterate slowly through the learning process of the kmeans algorithm
+;
+#X obj 26 630 fluid.plotter;
+#X obj 26 356 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 496 317 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 319 432 route fitpredict;
+#X obj 26 327 route read;
+#X obj 319 461 t b b, f 6;
+#X obj 26 290 fluid.dataset help.kmeans.2.data;
+#X obj 26 513 fluid.ds2text help.kmeans.2.data help.kmeans.2.data.txt
+, f 35;
+#X msg 26 561 setpoints help.kmeans.2.data.txt, f 22;
+#X obj 498 159 text define help.kmeans.2.data.txt;
+#X f 25;
+#X obj 498 200 text define help.kmeans.2.labels.txt;
+#X f 25;
+#X obj 358 491 fluid.labelset help.kmeans.2.labels, f 22;
+#X obj 319 529 fluid.ls2text help.kmeans.2.labels help.kmeans.2.labels.txt
+, f 27;
+#X msg 319 586 setlabels help.kmeans.2.labels.txt, f 25;
+#X obj 510 265 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 510 263 2) Clear any learning of clusters, f 25;
+#X msg 319 266 clear, f 24;
+#X msg 329 306 fitpredict help.kmeans.2.data help.kmeans.2.labels,
+f 21;
+#X text 496 315 3) Click this several times while looking at the plot.
+Notice how the clustering slightly shifts each time as the algorithm
+learns a more optimal clustering., f 27;
+#X obj 319 373 fluid.kmeans -maxiter 1 -numclusters 4, f 16;
+#X text 335 735 The colour denotes which cluster the point belongs
+to., f 13;
+#X obj 25 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 25 155 1) Choose a dataset, f 29;
+#N canvas 1738 -676 594 552 choosedataset 0;
+#X msg 105 238 line;
+#X msg 105 443 read data/\$1.json;
+#X obj 105 421 symbol;
+#X msg 153 258 moon;
+#X msg 201 278 circles;
+#X msg 250 308 blobs;
+#X msg 298 338 gaussian4;
+#X obj 105 104 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 121 103 line, f 8;
+#X text 121 118 moon, f 8;
+#X text 121 133 circles, f 8;
+#X text 121 148 blobs, f 8;
+#X text 121 163 gaussian;
+#X obj 105 207 sel 0 1 2 3 4, f 35;
+#X obj 105 467 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 13 0;
+#X connect 13 0 0 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X coords 0 -1 1 1 85 85 2 100 100;
+#X restore 26 178 pd choosedataset;
+#X connect 3 0 9 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 0;
+#X connect 7 0 14 0;
+#X connect 7 1 13 0;
+#X connect 8 1 6 0;
+#X connect 9 0 10 0;
+#X connect 10 0 2 0;
+#X connect 14 0 15 0;
+#X connect 15 0 2 1;
+#X connect 18 0 21 0;
+#X connect 19 0 21 0;
+#X connect 21 0 5 0;
+#X connect 25 0 8 0;
+#X restore 490 782 pd incremental_training;
+#N canvas 403 38 696 1016 distances 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 18 85 Calculating distances between points and each learned
+mean/centroid, f 67;
+#X obj 26 695 fluid.plotter;
+#X obj 26 351 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 502 200 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 502 198 2) Predict clusters from the selected dataset, f 24
+;
+#X obj 26 322 route read;
+#X obj 394 524 t b b, f 6;
+#X obj 495 914 text define help.kmeans.5.data.txt;
+#X f 25;
+#X obj 495 955 text define help.kmeans.5.labels.txt;
+#X f 25;
+#X obj 26 285 fluid.dataset help.kmeans.5.data;
+#X obj 26 378 fluid.ds2text help.kmeans.5.data help.kmeans.5.data.txt
+, f 35;
+#X msg 26 426 setpoints help.kmeans.5.data.txt, f 22;
+#X msg 394 649 setlabels help.kmeans.5.labels.txt, f 25;
+#X obj 394 592 fluid.ls2text help.kmeans.5.labels help.kmeans.5.labels.txt
+, f 27;
+#X obj 433 554 fluid.labelset help.kmeans.5.labels, f 22;
+#X msg 311 201 clear \, fitpredict help.kmeans.5.data help.kmeans.5.labels
+, f 24;
+#X obj 25 141 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 25 140 1) Choose a dataset, f 29;
+#N canvas 1738 -676 594 552 choosedataset 0;
+#X msg 105 238 line;
+#X msg 105 443 read data/\$1.json;
+#X obj 105 421 symbol;
+#X msg 153 258 moon;
+#X msg 201 278 circles;
+#X msg 250 308 blobs;
+#X msg 298 338 gaussian4;
+#X obj 105 104 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 121 103 line, f 8;
+#X text 121 118 moon, f 8;
+#X text 121 133 circles, f 8;
+#X text 121 148 blobs, f 8;
+#X text 121 163 gaussian;
+#X obj 105 207 sel 0 1 2 3 4, f 35;
+#X obj 105 467 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 13 0;
+#X connect 13 0 0 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X coords 0 -1 1 1 85 85 2 100 100;
+#X restore 26 163 pd choosedataset;
+#X obj 503 267 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 513 328 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X msg 331 261 getmeans help.kmeans.5.means, f 20;
+#X msg 351 321 transform help.kmeans.5.data help.kmeans.5.dist, f
+20;
+#X obj 311 388 fluid.kmeans -numclusters 4;
+#X text 503 265 3) Get the centroids of the clusters, f 26;
+#X obj 495 874 fluid.labelset help.kmeans.5.labels, f 22;
+#N canvas 1347 23 701 817 scale_point_size 0;
+#X obj 19 23 inlet;
+#X obj 329 33 fluid.dataset help.kmeans.5.dist;
+#X obj 19 95 fluid.normalize;
+#X obj 263 800 outlet;
+#X obj 266 145 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 267 269 t f b;
+#X obj 267 317 f;
+#X obj 267 293 until;
+#X obj 309 317 + 1;
+#X msg 319 288 0;
+#X obj 396 96 text define help.kmeans.5.dist.txt;
+#X f 25;
+#X msg 19 71 fittransform help.kmeans.5.dist help.kmeans.5.dist;
+#X obj 266 165 fluid.ds2text help.kmeans.5.dist help.kmeans.5.dist.txt
+, f 24;
+#X obj 267 245 text size help.kmeans.5.dist.txt;
+#X obj 267 341 text get help.kmeans.5.dist.txt;
+#X msg 264 774 pointsize \$1 \$2;
+#X obj 19 47 t b;
+#X obj 19 119 route fittransform;
+#X obj 302 612 list store;
+#X msg 300 419 getlabel \$1;
+#X obj 300 458 fluid.labelset help.kmeans.5.labels;
+#X obj 300 482 route getlabel;
+#X obj 302 529 list fromsymbol;
+#X obj 300 506 symbol;
+#X obj 267 389 t s s;
+#X obj 302 553 - 48;
+#X msg 302 577 get \$1 1;
+#X obj 267 365 list split 1;
+#X obj 304 636 expr (0.15 - $f1) * 30;
+#X obj 266 702 pack s f;
+#X connect 0 0 16 0;
+#X connect 2 0 17 0;
+#X connect 4 0 12 0;
+#X connect 5 0 7 0;
+#X connect 5 1 9 0;
+#X connect 6 0 8 0;
+#X connect 6 0 14 0;
+#X connect 7 0 6 0;
+#X connect 8 0 6 1;
+#X connect 9 0 6 1;
+#X connect 11 0 2 0;
+#X connect 12 0 13 0;
+#X connect 13 0 5 0;
+#X connect 14 0 27 0;
+#X connect 15 0 3 0;
+#X connect 16 0 11 0;
+#X connect 17 0 4 0;
+#X connect 18 0 28 0;
+#X connect 19 0 20 0;
+#X connect 20 0 21 0;
+#X connect 21 0 23 0;
+#X connect 22 0 25 0;
+#X connect 23 0 22 0;
+#X connect 24 0 29 0;
+#X connect 24 1 19 0;
+#X connect 25 0 26 0;
+#X connect 26 0 18 0;
+#X connect 27 0 24 0;
+#X connect 27 1 18 1;
+#X connect 28 0 29 1;
+#X connect 29 0 15 0;
+#X restore 213 573 pd scale_point_size;
+#N canvas 1566 23 482 562 plot_means 0;
+#X obj 35 56 inlet;
+#X obj 35 137 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 36 261 t f b;
+#X obj 36 309 f;
+#X obj 36 285 until;
+#X obj 78 309 + 1;
+#X msg 88 280 0;
+#X obj 36 523 outlet;
+#X obj 137 60 fluid.dataset help.kmeans.5.means;
+#X obj 35 157 fluid.ds2text help.kmeans.5.means help.kmeans.5.means.txt
+, f 24;
+#X obj 36 237 text size help.kmeans.5.means.txt;
+#X obj 36 333 text get help.kmeans.5.means.txt;
+#X msg 36 480 setpoint \$1-mean \$2 \$3 10 0;
+#X obj 135 88 text define help.kmeans.5.means.txt;
+#X f 25;
+#X connect 0 0 1 0;
+#X connect 1 0 9 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 3 0 5 0;
+#X connect 3 0 11 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X connect 9 0 10 0;
+#X connect 10 0 2 0;
+#X connect 11 0 12 0;
+#X connect 12 0 7 0;
+#X restore 206 488 pd plot_means;
+#X obj 311 417 route getmeans transform fitpredict;
+#X text 513 326 4) Get the distances to each cluster (beware \, slow
+drawing process), f 25;
+#X text 339 765 The point size is scaled by the distance that the point
+has to the cluster it belongs to. So \, you should see that points
+further away from the centroid are smaller and ones which are closer
+are larger., f 48;
+#X connect 3 0 11 0;
+#X connect 6 0 3 0;
+#X connect 7 0 14 0;
+#X connect 7 1 15 0;
+#X connect 10 1 6 0;
+#X connect 11 0 12 0;
+#X connect 12 0 2 0;
+#X connect 13 0 2 1;
+#X connect 14 0 13 0;
+#X connect 16 0 24 0;
+#X connect 19 0 10 0;
+#X connect 22 0 24 0;
+#X connect 23 0 24 0;
+#X connect 24 0 29 0;
+#X connect 27 0 2 0;
+#X connect 28 0 2 0;
+#X connect 29 0 28 0;
+#X connect 29 1 27 0;
+#X connect 29 2 7 0;
+#X restore 490 848 pd distances;
+#X msg 26 531 setpoints help.kmeans.1.data.txt, f 22;
+#X obj 498 200 text define help.kmeans.1.labels.txt;
+#X f 25;
+#X obj 319 499 fluid.ls2text help.kmeans.1.labels help.kmeans.1.labels.txt
+, f 27;
+#X msg 319 556 setlabels help.kmeans.1.labels.txt, f 25;
+#X obj 26 337 route read;
+#X obj 319 431 t b b, f 6;
+#X text 335 707 The colour denotes which cluster the point belongs
+to., f 13;
+#N canvas 172 70 705 1042 accessing_the_means_1 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 289 463 fluid.kmeans;
+#X obj 27 712 fluid.plotter;
+#X obj 26 386 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 473 325 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 274 504 route fitpredict;
+#X obj 26 357 route read;
+#X obj 274 533 t b b, f 6;
+#X text 18 85 You can also "set" the means from which kmeans will learn
+clusters. With low iteration counts \, this allows you to bias the
+clustering process;
+#X obj 26 320 fluid.dataset help.kmeans.3.data;
+#X obj 26 418 fluid.ds2text help.kmeans.3.data help.kmeans.3.data.txt
+, f 35;
+#X msg 26 466 setpoints help.kmeans.3.data.txt, f 22;
+#X msg 274 667 setlabels help.kmeans.3.labels.txt, f 25;
+#X obj 274 610 fluid.ls2text help.kmeans.3.labels help.kmeans.3.labels.txt
+, f 27;
+#X obj 313 572 fluid.labelset help.kmeans.3.labels, f 22;
+#X obj 498 140 text define help.kmeans.3.labels.txt;
+#X f 25;
+#X obj 498 99 text define help.kmeans.3.data.txt;
+#X f 25;
+#X msg 300 339 clear \, setmeans help.kmeans.3.means, f 22;
+#X obj 477 402 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X msg 302 397 fitpredict help.kmeans.3.data help.kmeans.3.labels,
+f 22;
+#X msg 298 242 0 0.1 0.1 \, 1 0.2 0.2 \, 2 0.3 0.3 \, 3 0.4 0.4 \,
+bang;
+#X obj 25 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 25 155 1) Choose a dataset, f 29;
+#N canvas 1738 -676 594 552 choosedataset 0;
+#X msg 105 238 line;
+#X msg 105 443 read data/\$1.json;
+#X obj 105 421 symbol;
+#X msg 153 258 moon;
+#X msg 201 278 circles;
+#X msg 250 308 blobs;
+#X msg 298 338 gaussian4;
+#X obj 105 104 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 121 103 line, f 8;
+#X text 121 118 moon, f 8;
+#X text 121 133 circles, f 8;
+#X text 121 148 blobs, f 8;
+#X text 121 163 gaussian;
+#X obj 105 207 sel 0 1 2 3 4, f 35;
+#X obj 105 467 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 13 0;
+#X connect 13 0 0 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X coords 0 -1 1 1 85 85 2 100 100;
+#X restore 26 178 pd choosedataset;
+#N canvas 874 272 604 251 set_and_plot_means 0;
+#X obj 37 37 inlet;
+#X obj 37 61 route bang;
+#X obj 103 147 outlet;
+#X msg 104 118 setpoint \$1-mean \$2 \$3 10 0;
+#X obj 340 49 array define help.kmeans.entry.1 2;
+#X obj 314 114 t l l;
+#X msg 314 195 setpoint \$1-mean help.kmeans.entry.1;
+#X msg 346 138 \$2 \$3;
+#X obj 346 161 array set help.kmeans.entry.1;
+#X obj 314 219 fluid.dataset help.kmeans.3.means;
+#X connect 0 0 1 0;
+#X connect 1 1 3 0;
+#X connect 1 1 5 0;
+#X connect 3 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 6 0 9 0;
+#X connect 7 0 8 0;
+#X restore 298 292 pd set_and_plot_means;
+#X text 474 323 3) Once the means have been stored in a dataset~ we
+then "set" those means in the fluid.kmeans~ object like so, f 28;
+#X text 477 400 4) Then fitpredict to predict the cluster for each
+point based on the means we provided., f 28;
+#X obj 295 210 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 296 208 2) Instead of learning the "means" from scratch we
+can seed the algorithm with starting points to work from., f 54;
+#X text 404 497 fluid.kmeans~ can converge on similar clustering even
+with extreme means set as the seed. By keeping the iterations low it
+is more obvious how it affects the clustering process., f 38;
+#X text 345 812 You will notice that after one interation \, the space
+is roughly around the 4 means that were set in step 2 This means that
+we can "seed" kmeans to find certain clusters rather than letting it
+come to its own conclusions from a random starting point., f 47;
+#X connect 1 0 5 0;
+#X connect 3 0 10 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 0;
+#X connect 7 0 13 0;
+#X connect 7 1 14 0;
+#X connect 9 1 6 0;
+#X connect 10 0 11 0;
+#X connect 11 0 2 0;
+#X connect 12 0 2 1;
+#X connect 13 0 12 0;
+#X connect 17 0 1 0;
+#X connect 19 0 1 0;
+#X connect 20 0 24 0;
+#X connect 23 0 9 0;
+#X connect 24 0 2 0;
+#X restore 490 804 pd accessing_the_means_1;
+#N canvas 129 86 700 956 accessing_the_means_2 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 318 299 fluid.kmeans;
+#X obj 26 630 fluid.plotter;
+#X obj 26 376 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 489 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 318 328 route fitpredict;
+#X obj 26 347 route read;
+#X obj 318 357 t b b, f 6;
+#X text 18 85 You can also retrieve the "means" i.e the centres of
+each cluster either for visualisation or perhaps further analysis.
+, f 76;
+#X obj 504 851 text define help.kmeans.4.data.txt;
+#X f 25;
+#X obj 504 892 text define help.kmeans.4.labels.txt;
+#X f 25;
+#X obj 357 387 fluid.labelset help.kmeans.4.labels, f 22;
+#X obj 318 425 fluid.ls2text help.kmeans.4.labels help.kmeans.4.labels.txt
+, f 27;
+#X msg 318 482 setlabels help.kmeans.4.labels.txt, f 25;
+#X msg 26 561 setpoints help.kmeans.4.data.txt, f 22;
+#X obj 26 310 fluid.dataset help.kmeans.4.data;
+#X msg 318 178 clear \, fitpredict help.kmeans.4.data help.kmeans.4.labels
+, f 21;
+#X text 489 177 2) Predict four clusters for the dataset, f 25;
+#X obj 26 513 fluid.ds2text help.kmeans.4.data help.kmeans.4.data.txt
+, f 35;
+#X obj 489 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X msg 328 238 getmeans help.kmeans.4.means, f 19;
+#X text 489 237 3) Retrieve the means that fluid.kmeans learned and
+store in a dataset, f 25;
+#X obj 451 572 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#N canvas 1566 23 482 562 plot_means 0;
+#X obj 35 56 inlet;
+#X obj 137 60 fluid.dataset help.kmeans.4.means;
+#X obj 35 137 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 35 157 fluid.ds2text help.kmeans.4.means help.kmeans.4.means.txt
+, f 24;
+#X obj 135 88 text define help.kmeans.4.means.txt;
+#X f 25;
+#X obj 36 237 text size help.kmeans.4.means.txt;
+#X obj 36 261 t f b;
+#X obj 36 309 f;
+#X obj 36 333 text get help.kmeans.4.means.txt;
+#X obj 36 285 until;
+#X obj 78 309 + 1;
+#X msg 88 280 0;
+#X obj 36 523 outlet;
+#X obj 36 357 t l s;
+#X obj 70 386 list fromsymbol;
+#X obj 36 443 list append;
+#X msg 36 480 setpoint \$1-mean \$2 \$3 10 \$4;
+#X obj 70 410 - 47;
+#X connect 0 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 9 0;
+#X connect 6 1 11 0;
+#X connect 7 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 13 0;
+#X connect 9 0 7 0;
+#X connect 10 0 7 1;
+#X connect 11 0 7 1;
+#X connect 13 0 15 0;
+#X connect 13 1 14 0;
+#X connect 14 0 17 0;
+#X connect 15 0 16 0;
+#X connect 16 0 12 0;
+#X connect 17 0 15 1;
+#X restore 451 592 pd plot_means;
+#X obj 448 540 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 448 539 4) Plot the means that are now stored in help.kmeans.4.means
+, f 30;
+#X obj 25 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 25 155 1) Choose a dataset, f 29;
+#N canvas 1738 -676 594 552 choosedataset 0;
+#X msg 105 238 line;
+#X msg 105 443 read data/\$1.json;
+#X obj 105 421 symbol;
+#X msg 153 258 moon;
+#X msg 201 278 circles;
+#X msg 250 308 blobs;
+#X msg 298 338 gaussian4;
+#X obj 105 104 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 121 103 line, f 8;
+#X text 121 118 moon, f 8;
+#X text 121 133 circles, f 8;
+#X text 121 148 blobs, f 8;
+#X text 121 163 gaussian;
+#X obj 105 207 sel 0 1 2 3 4, f 35;
+#X obj 105 467 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 13 0;
+#X connect 13 0 0 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X coords 0 -1 1 1 85 85 2 100 100;
+#X restore 26 178 pd choosedataset;
+#X text 337 734 The larger black circles are the means of each cluster.
+, f 28;
+#X connect 1 0 5 0;
+#X connect 3 0 18 0;
+#X connect 5 0 7 0;
+#X connect 6 0 3 0;
+#X connect 7 0 12 0;
+#X connect 7 1 11 0;
+#X connect 12 0 13 0;
+#X connect 13 0 2 1;
+#X connect 14 0 2 0;
+#X connect 15 1 6 0;
+#X connect 16 0 1 0;
+#X connect 18 0 14 0;
+#X connect 20 0 1 0;
+#X connect 22 0 23 0;
+#X connect 23 0 2 0;
+#X connect 28 0 15 0;
+#X restore 490 826 pd accessing_the_means_2;
+#N canvas 1738 -676 594 552 choosedataset 0;
+#X msg 105 238 line;
+#X msg 105 443 read data/\$1.json;
+#X obj 105 421 symbol;
+#X msg 153 258 moon;
+#X msg 201 278 circles;
+#X msg 250 308 blobs;
+#X msg 298 338 gaussian4;
+#X obj 105 104 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 121 103 line, f 8;
+#X text 121 118 moon, f 8;
+#X text 121 133 circles, f 8;
+#X text 121 148 blobs, f 8;
+#X text 121 163 gaussian;
+#X obj 105 207 sel 0 1 2 3 4, f 35;
+#X obj 105 467 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 13 0;
+#X connect 13 0 0 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X coords 0 -1 1 1 85 85 2 100 100;
+#X restore 26 178 pd choosedataset;
+#X obj 490 871 note_on_automatic_datasets;
+#X connect 0 0 15 0;
+#X connect 8 0 13 0;
+#X connect 11 0 0 0;
+#X connect 12 1 24 0;
+#X connect 13 0 20 0;
+#X connect 15 0 25 0;
+#X connect 20 0 7 0;
+#X connect 22 0 23 0;
+#X connect 23 0 7 1;
+#X connect 24 0 8 0;
+#X connect 25 0 22 0;
+#X connect 25 1 16 0;
+#X connect 29 0 12 0;

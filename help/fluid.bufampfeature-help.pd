@@ -1,44 +1,202 @@
-#N canvas 0 25 701 658 12;
-#X obj 18 240 soundfiler;
-#X obj 18 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 369 233 dac~;
-#X obj 368 186 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X msg 387 185 stop;
-#X obj 18 163 fluid.demoaudiofiles;
+#N canvas 41 44 697 842 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufampfeature 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufampfeature.html reference/ampfeature/
 ;
-#X obj 515 527 cnv 15 165 110 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
 #X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Amplitude\\\ Differential\\\ Feature
 4 8 0 13 #e0e0e0 #404040 0;
-#X obj 518 591 note_on_sampling_rates;
-#X obj 518 614 note_on_multithreading;
-#X obj 518 569 note_on_multiarrays;
-#X text 366 162 2) Listen to the source;
-#X text 17 141 1) Pick a source.;
-#X msg 18 211 read -resize \$1 bufampfeature-src;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufampfeature-features 453932 float 0;
-#X coords 0 36 453931 -36 649 55 1 0 0;
-#X restore 23 437 graph;
-#X obj 96 240 array define bufampfeature-src;
-#X msg 18 337 \; bufampfeature-features xticks 0 0 0;
 #X text 17 79 Calculate the amplitude differential feature used by
 fluid.bufampslice.;
-#X obj 18 295 fluid.bufampfeature -source bufampfeature-src -features
-bufampfeature-features -fastrampup 100 -fastrampdown 100 -slowrampup
-2000 -slowrampdown 2000, f 78;
-#X obj 369 206 tabplay~ bufampfeature-src;
+#N canvas 1376 -757 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Tremblay-AaS-AcBassGuit-Melo-M.wav
+help.amp.src;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 17 151 pd loadsrc;
+#X obj 448 151 array define help.amp.src;
+#X obj 17 197 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 42 196 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 43 196 1) Trigger curve generation and slicing;
+#X obj 17 487 fluid.bufampfeature -source help.amp.src -features help.amp.curve
+-floor -48 -fastrampup 100 -fastrampdown 100 -slowrampdown 1000 -slowrampup
+1000, f 32;
+#X obj 448 175 array define help.amp.curve;
+#X obj 448 199 array define help.amp.slices;
+#N canvas 1318 -780 675 348 drawing_commands 0;
+#X obj 23 36 inlet;
+#X obj 383 36 inlet;
+#X obj 23 218 outlet;
+#X msg 23 60 features help.amp.curve, f 37;
+#X msg 383 134 waveform help.amp.src \, indices help.amp.slices;
+#X connect 0 0 3 0;
+#X connect 1 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X restore 17 605 pd drawing_commands;
+#X f 45;
+#X obj 17 629 fluid.waveform 650 117 1 empty empty 0;
+#X text 23 761 The differential envelope calculated on the fast and
+slow "ramps" is shown in red., f 29;
+#X text 234 756 Detected slices can be seen when the differential rises
+above the onthreshold \, and goes below the offthreshold., f 29;
+#X obj 443 760 cnv 15 222 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 454 802 note_on_multithreading;
+#N canvas 1180 -934 813 814 parameters 0;
+#X floatatom 201 147 8 0 0 0 - - - 0;
+#X floatatom 201 126 8 0 0 0 - - - 0;
+#X floatatom 201 168 8 0 0 0 - - - 0;
+#X obj 46 543 outlet;
+#X floatatom 201 105 8 0 4 0 - - - 0;
+#X obj 114 -119 loadbang;
+#X obj 244 -3 r help.bufampfeature.presets;
+#X msg 114 -91 \; help.bufampfeature.presets 100 100 1000 1000 -48
+0 8.5;
+#X obj 244 20 unpack 0 0 0 0 0 0 0;
+#X floatatom 201 231 8 0 0 0 - - - 0;
+#X floatatom 201 210 8 0 0 0 - - - 0;
+#X floatatom 201 189 8 0 4 0 - - - 0;
+#X text 106 105 fastrampdown, f 13;
+#X text 120 126 fastrampup, f 11;
+#X text 106 147 slowrampdown, f 13;
+#X text 120 168 slowrampup, f 11;
+#X text 155 189 floor, f 6;
+#X text 106 210 offthreshold, f 13;
+#X text 113 231 onthreshold, f 12;
+#X msg 47 284 fastrampdown \$1;
+#X msg 116 332 slowrampdown \$1;
+#X msg 139 356 slowrampup \$1;
+#X msg 157 384 floor \$1;
+#X msg 189 408 offthreshold \$1;
+#X msg 226 432 onthreshold \$1;
+#X obj 126 543 outlet;
+#X msg 79 308 fastrampup \$1;
+#X connect 0 0 20 0;
+#X connect 1 0 26 0;
+#X connect 2 0 21 0;
+#X connect 4 0 19 0;
+#X connect 5 0 7 0;
+#X connect 6 0 8 0;
+#X connect 8 0 4 0;
+#X connect 8 1 1 0;
+#X connect 8 2 0 0;
+#X connect 8 3 2 0;
+#X connect 8 4 11 0;
+#X connect 8 5 10 0;
+#X connect 8 6 9 0;
+#X connect 9 0 24 0;
+#X connect 10 0 23 0;
+#X connect 11 0 22 0;
+#X connect 19 0 3 0;
+#X connect 19 0 25 0;
+#X connect 20 0 3 0;
+#X connect 20 0 25 0;
+#X connect 21 0 3 0;
+#X connect 21 0 25 0;
+#X connect 22 0 25 0;
+#X connect 22 0 3 0;
+#X connect 23 0 25 0;
+#X connect 24 0 25 0;
+#X connect 26 0 3 0;
+#X connect 26 0 25 0;
+#X coords 0 -1 1 1 187 159 2 100 100;
+#X restore 109 239 pd parameters;
+#N canvas 139 90 883 898 parameters 0;
+#X obj 29 757 r \$0-params;
+#X obj 29 780 outlet;
+#X obj 415 201 s \$0-params;
+#X obj 415 284 s \$0-params;
+#X obj 415 366 s \$0-params;
+#X obj 415 541 s \$0-params;
+#X obj 415 458 s \$0-params;
+#X msg 415 179 source arrayname;
+#X msg 415 261 features arrayname;
+#X msg 415 343 numchans -1;
+#X msg 415 517 numframes -1;
+#X msg 415 435 startchan 0;
+#X obj 415 621 s \$0-params;
+#X msg 415 597 startframe 0;
+#X text 557 178 index of the buffer to use as the source material to
+be analysed, f 39;
+#X text 557 510 How many frames to analyse, f 39;
+#X text 28 6 Optional parameters to fluid.bufampfeature;
+#X obj 415 120 s \$0-params;
+#X obj 29 74 cnv 10 340 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X obj 415 74 cnv 10 270 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 25 516 Warnings;
+#X obj 28 616 s \$0-params;
+#X msg 28 559 warnings 1;
+#X msg 38 581 warnings 0;
+#X obj 29 120 s \$0-params;
+#X text 27 54 Ramps;
+#X msg 29 97 fastrampdown 1;
+#X obj 29 202 s \$0-params;
+#X obj 29 284 s \$0-params;
+#X obj 29 366 s \$0-params;
+#X obj 29 458 s \$0-params;
+#X msg 29 179 fastrampup 1;
+#X msg 29 261 slowrampdown 100;
+#X msg 29 343 floor -145;
+#X msg 29 435 slowrampup 100;
+#X msg 415 97 highpassfreq 85;
+#X text 155 96 number of samples the relative envelope follower will
+take to reach the next value when falling, f 30;
+#X text 155 342 level in dB the slowRamp needs to be above to consider
+a detected difference valid \, allowing to ignore the slices in the
+noise floor, f 30;
+#X obj 25 534 cnv 10 270 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 155 178 number of samples the relative envelope follower will
+take to reach the next value when rising, f 30;
+#X text 155 260 number of samples the absolute envelope follower will
+take to reach the next value when falling., f 30;
+#X text 155 434 number of samples the absolute envelope follower will
+take to reach the next value when raising., f 30;
+#X text 555 96 frequency of the fourth-order Linkwitz–Riley high-pass
+filter, f 39;
+#X text 557 260 destination buffer to write the analysis into, f 39
+;
+#X text 557 434 for a multichannel source \, which channel should be
+processed first, f 39;
+#X text 557 342 for a multichannel source \, how many channels to process
+, f 39;
+#X text 557 590 Where in the source the analysis should start \, in
+samples, f 39;
 #X connect 0 0 1 0;
-#X connect 1 0 20 0;
-#X connect 3 0 21 0;
-#X connect 4 0 21 0;
-#X connect 5 0 15 0;
-#X connect 15 0 0 0;
-#X connect 20 0 18 0;
-#X connect 21 0 2 0;
-#X connect 21 0 2 1;
+#X connect 7 0 2 0;
+#X connect 8 0 3 0;
+#X connect 9 0 4 0;
+#X connect 10 0 5 0;
+#X connect 11 0 6 0;
+#X connect 13 0 12 0;
+#X connect 22 0 21 0;
+#X connect 23 0 21 0;
+#X connect 26 0 24 0;
+#X connect 31 0 27 0;
+#X connect 32 0 28 0;
+#X connect 33 0 29 0;
+#X connect 34 0 30 0;
+#X connect 35 0 17 0;
+#X restore 193 445 pd parameters;
+#X text 179 424 more parameters;
+#X obj 17 217 t b b, f 45;
+#X obj 329 487 fluid.bufampslice -source help.amp.src -indices help.amp.slices
+-offthreshold 0 -onthreshold 8.5 -floor -48 -fastrampup 100 -fastrampdown
+100 -slowrampup 1000 -slowrampdown 1000 -minslicelength 200, f 43
+;
+#X obj 454 780 note_on_automatic_multiarrays;
+#X connect 6 0 21 0;
+#X connect 9 0 12 0;
+#X connect 12 0 13 0;
+#X connect 18 0 9 0;
+#X connect 18 1 22 0;
+#X connect 19 0 9 0;
+#X connect 21 0 9 0;
+#X connect 21 1 22 0;
+#X connect 22 0 12 1;

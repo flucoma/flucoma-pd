@@ -899,7 +899,7 @@ public:
   
   static void inletProxyBuffer(InletProxy* x, t_symbol*, int ac, t_atom* av)
   {
-    x->mOwner->doBufferInlet(x->mIndex + 1, ac, av);
+    x->mOwner->doBufferInlet(x->mIndex, ac, av);
   }
   
   static void inletProxySetup(const char* className)
@@ -1330,8 +1330,27 @@ private:
     return ss.str();
   }
 
-  ParamSetType& initParamsFromArgs(int ac, t_atom* av)
+  ParamSetType& initParamsFromArgs(int argc, t_atom* argv)
   {
+    
+    long ac = argc;
+    
+    std::vector<t_atom> av_vec = [&](){
+      bool needsNameAtom = IsThreadedShared<Client>::value &&
+                            !paramArgOffset(argc, argv);
+      ac = argc + needsNameAtom;
+      std::vector<t_atom> result(asUnsigned(ac));
+      std::copy_n(argv, argc, result.data() + needsNameAtom);
+      if(needsNameAtom)
+      {
+          t_symbol* autoName = gensym(uniqueName().c_str());
+          SETSYMBOL(result.data(), autoName);
+      }
+      return result;
+    }();
+    
+    t_atom* av = av_vec.data();
+    
     // Process arguments for instantiation parameters
     if (long numArgs = paramArgOffset(ac, av))
     {
@@ -1372,25 +1391,10 @@ private:
     }
     // process in-box attributes for mutable params
     paramArgProcess(ac, av);
-    checkName(mParams);
     // return params so this can be called in client initaliser
     return mParams;
   }
   
-  template<typename ClientType = Client>
-  std::enable_if_t<IsThreadedShared<ClientType>::value>
-  checkName(ParamSetType& params)
-  {
-    if(params.template get<0>().size() == 0)
-    {
-      params.template set<0>(uniqueName() ,nullptr);
-    }
-  }
-
-  template<typename ClientType = Client>
-  std::enable_if_t<!IsThreadedShared<ClientType>::value>
-  checkName(ParamSetType&){}
-
   template <typename CType = Client>
   static std::enable_if_t<!IsThreadedShared<CType>::value> makeReferable()
   {}

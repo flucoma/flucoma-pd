@@ -1,11 +1,11 @@
-#N canvas 376 104 703 1010 12;
+#N canvas 55 65 695 887 12;
 #X obj 18 230 soundfiler;
-#X obj 24 680 fluid.bufcompose;
+#X obj 23 622 fluid.bufcompose;
 #X obj 18 183 loadbang;
-#X obj 81 814 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 80 756 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X msg 101 813 stop;
-#X text 21 390 fluid.bufcompose copies from a source buffer/array to
+#X msg 100 755 stop;
+#X text 20 332 fluid.bufcompose copies from a source buffer/array to
 a destination buffer/array at a given gain. Use the source and destination
 attributes to set these buffers \, and bang to process, f 64;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
@@ -18,9 +18,9 @@ attributes to set these buffers \, and bang to process, f 64;
 It can be used for thing like mixing down multichannel buffers \, or
 converting from left-right stereo to mid-side. It is used extensively
 in the example code of Fluid Decomposition.;
-#X obj 101 895 fluid.out~ bufcompose-help;
-#X obj 508 810 cnv 15 169 131 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 100 837 fluid.out~ bufcompose-help;
+#X obj 458 714 cnv 15 217 153 {empty} {empty} {More\ information} 4
+10 0 13 #e0e0e0 #404040 0;
 #N canvas 107 78 690 871 mixing 0;
 #X msg 18 429 destgain \$1;
 #X floatatom 18 399 5 0 0 0 - - - 0;
@@ -91,7 +91,7 @@ bufcompose_help_src2, f 74;
 #X connect 30 0 23 0;
 #X connect 31 0 24 0;
 #X connect 32 0 25 0;
-#X restore 514 831 pd mixing;
+#X restore 464 735 pd mixing;
 #N canvas 188 135 699 900 subsections 0;
 #X text 16 103 the attributes startframe \, numframes \, startchan
 \, numchans \, deststartframe \, and deststartchan give you fine control
@@ -153,7 +153,7 @@ bufcompose_help_src6, f 74;
 #X connect 25 0 21 0;
 #X connect 26 0 22 0;
 #X connect 27 0 23 0;
-#X restore 514 853 pd subsections;
+#X restore 464 757 pd subsections;
 #N canvas 259 52 702 961 multichannel 0;
 #X obj 540 335 note_on_multiarrays;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
@@ -223,7 +223,7 @@ across each destination channel;
 #X connect 28 0 26 0;
 #X connect 29 0 20 0;
 #X connect 30 0 26 0;
-#X restore 514 875 pd multichannel;
+#X restore 464 779 pd multichannel;
 #N canvas 290 145 702 822 more_examples 0;
 #X text 15 88 by combining attributes for selection \, placement \,
 gain and channel behaviour we have a veritable swiss-army knife of
@@ -325,27 +325,28 @@ bufcompose_help_src10-0 bufcompose_help_src10-1, f 79;
 #X connect 23 0 20 0;
 #X connect 24 0 20 1;
 #X connect 26 0 17 0;
-#X restore 514 897 pd more_examples;
+#X restore 464 801 pd more_examples;
 #X obj 416 267 array define bufcompose_help_src1;
 #X msg 18 207 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
 bufcompose_help_src1, f 74;
-#X msg 80 522 destination bufcompose_dst;
-#X text 20 460 1);
-#X text 50 523 2);
-#X text 108 548 3);
-#X obj 127 550 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X msg 79 464 destination bufcompose_dst;
+#X text 19 402 1);
+#X text 49 465 2);
+#X text 107 490 3);
+#X obj 126 492 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X msg 22 480 source bufcompose_help_src1 \, gain 0.5;
+#X msg 21 422 source bufcompose_help_src1 \, gain 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufcompose_dst-0 515088 float 2;
 #X coords 0 1 515088 -1 200 140 1 0 0;
-#X restore 471 574 graph;
-#X obj 101 839 tabplay~ bufcompose_dst-0;
-#X obj 514 919 note_on_multithreading;
-#X text 145 548 process;
-#X msg 474 738 \; bufcompose_dst-0 const 0;
-#X text 63 707 'buffer <destination>' message when done;
-#X obj 24 704 print;
+#X restore 465 452 graph;
+#X obj 100 781 tabplay~ bufcompose_dst-0;
+#X obj 464 823 note_on_multithreading;
+#X text 144 490 process;
+#X msg 468 616 \; bufcompose_dst-0 const 0;
+#X text 62 649 'buffer <destination>' message when done;
+#X obj 23 646 print;
+#X obj 464 846 note_on_automatic_multiarrays;
 #X connect 1 0 30 0;
 #X connect 2 0 17 0;
 #X connect 3 0 25 0;

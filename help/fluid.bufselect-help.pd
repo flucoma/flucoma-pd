@@ -1,4 +1,4 @@
-#N canvas 9 46 700 929 12;
+#N canvas 9 46 700 897 12;
 #X obj 539 200 note_on_multiarrays;
 #X obj 17 177 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
@@ -96,8 +96,8 @@ of a list of frame indices and channel numbers.;
 #X text 251 416 3) send message to select only indices 3 and 2 from
 channels 4 and 1;
 #X text 18 675 4) get values of output channels;
-#X obj 477 808 cnv 15 199 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 461 786 cnv 15 215 92 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #N canvas 582 78 690 988 curating_descriptor_data 0;
 #X text 19 64 comment;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufselect 1 22 0 36 #4ba3fb
@@ -803,9 +803,10 @@ from a larger collection.;
 #X connect 25 0 27 0;
 #X connect 25 1 28 0;
 #X connect 25 1 4 1;
-#X restore 481 831 pd curating_descriptor_data;
-#X obj 481 853 note_on_multithreading;
+#X restore 465 809 pd curating_descriptor_data;
+#X obj 465 831 note_on_multithreading;
 #X text 16 255 2) show values in input channels 0-5;
+#X obj 465 854 note_on_automatic_multiarrays;
 #X connect 1 0 2 0;
 #X connect 4 0 3 0;
 #X connect 7 0 3 0;

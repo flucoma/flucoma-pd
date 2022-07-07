@@ -1,146 +1,93 @@
-#N canvas 72 169 955 577 10;
-#X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufsines 20 12 0 36 -262144
--66577 0;
-#X obj 33 145 loadbang;
-#X obj 424 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 133 325 dac~;
-#X msg 97 234 stop;
-#N canvas 492 406 622 601 multichannel 0;
-#X obj 49 496 loadbang;
-#X obj 49 548 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 54 424 dac~;
-#X obj 49 178 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 307 280 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 307 300 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 307 320 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X text 67 80 1) compose an artificially wide "stereo" array;
-#X text 68 177 2) process;
-#X text 306 260 3) listen to:;
-#X text 323 279 the source;
-#X obj 49 224 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X text 65 223 bang when done;
-#X text 46 11 "multichannel" arrays will yield outputs of similar dimensions
-\, respecting the order of the input "channels", f 87;
-#X obj 290 570 clone fluid.multiarray 2 bufsines_res;
-#X obj 118 549 array define bufsinesguitar;
-#X text 323 299 the extracted sinusoidal components;
-#X text 323 319 the extracted residual components;
-#X msg 65 380 set bufsines_res-0;
-#X obj 50 570 clone fluid.multiarray 2 bufsines_sin;
-#X msg 65 362 set bufsines_sin-0;
-#X msg 210 362 set bufsines_sin-1;
-#X msg 210 380 set bufsines_res-1;
-#X obj 48 100 fluid.bufcompose -source bufsinesguitar -startframe 555000
--numframes 468335 -deststartchan 1 -destination bufsines_sources,
-f 73;
-#X obj 54 403 tabplay~ bufsines_sources-0;
-#X obj 225 404 tabplay~ bufsines_sources-1;
-#X obj 290 549 clone fluid.multiarray 2 bufsines_sources;
-#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufsines_sources-0 bufsines_sources-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-bufsinesguitar, f 90;
-#X obj 49 195 fluid.bufsines -source bufsines_sources -sines bufsines_sin
--residual bufsines_res -fftsettings 2048 256 16384, f 84;
-#X msg 65 344 set bufsines_sources-0;
-#X msg 210 344 set bufsines_sources-1;
-#X connect 0 0 28 0;
-#X connect 2 0 24 0;
-#X connect 4 0 29 0;
-#X connect 5 0 31 0;
-#X connect 5 0 30 0;
-#X connect 5 0 25 0;
-#X connect 5 0 26 0;
-#X connect 6 0 22 0;
-#X connect 6 0 21 0;
-#X connect 6 0 25 0;
-#X connect 6 0 26 0;
-#X connect 7 0 23 0;
-#X connect 7 0 19 0;
-#X connect 7 0 25 0;
-#X connect 7 0 26 0;
-#X connect 19 0 25 0;
-#X connect 21 0 25 0;
-#X connect 22 0 26 0;
-#X connect 23 0 26 0;
-#X connect 25 0 3 0;
-#X connect 26 0 3 1;
-#X connect 28 0 1 0;
-#X connect 29 0 12 0;
-#X connect 30 0 25 0;
-#X connect 31 0 26 0;
-#X restore 789 317 pd multichannel;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufsines_source 515088 float 0;
-#X coords 0 0.5 515087 -0.5 887 53 1 0 0;
-#X restore 34 369 graph;
-#X obj 133 304 tabplay~;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufsines_sines 515088 float 0;
-#X coords 0 0.5 515087 -0.5 887 53 1 0 0;
-#X restore 34 437 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufsines_residual 515088 float 0;
-#X coords 0 0.5 515087 -0.5 887 53 1 0 0;
-#X restore 34 505 graph;
-#X text 451 215 1) process;
-#X text 37 52 Buffer-Based Sinusoidal Modelling and Resynthesis, f
-50;
-#X text 40 91 This class triggers a Sinusoidal Modelling process on
-buffers in non-real-time \, It implements a mix and match algorithms
-taken from classic papers., f 80;
-#X msg 153 254 set bufsines_sines \, bang;
-#X msg 165 274 set bufsines_residual \, bang;
-#X msg 424 268 \; bufsines_sines xticks 0 0 0 \; bufsines_residual
-xticks 0 0 0;
-#X floatatom 565 188 8 0 0 0 - - -;
-#X floatatom 747 188 8 0 0 0 - - -;
-#X text 563 151 change the threshold and bandwidth;
-#X msg 747 169 76;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.bufsines.html;
-#X msg 143 89 browse \$1;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 862 80 pd;
-#X text 731 61 launch the HTML doc->;
-#X obj 863 63 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 749 343 note_on_multithreading;
-#X msg 33 165 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufsines_source;
-#X msg 133 213 set bufsines_source \, bang;
-#X obj 424 237 fluid.bufsines -source bufsines_source -sines bufsines_sines
--residual bufsines_residual -fftsettings 2048 256 16384, f 75;
-#X msg 565 169 -96;
-#X msg 565 207 -detectionthreshold \$1;
-#X msg 747 207 bandwidth \$1;
-#X connect 2 0 25 0;
-#X connect 3 0 27 0;
-#X connect 5 0 8 0;
-#X connect 8 0 4 0;
-#X connect 8 0 4 1;
-#X connect 14 0 8 0;
-#X connect 15 0 8 0;
-#X connect 17 0 29 0;
-#X connect 18 0 30 0;
-#X connect 20 0 18 0;
-#X connect 23 0 21 0;
-#X connect 25 0 0 0;
-#X connect 26 0 8 0;
-#X connect 27 0 16 0;
-#X connect 28 0 17 0;
-#X connect 29 0 27 0;
-#X connect 30 0 27 0;
+#N canvas 38 49 700 978 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufsines 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufsines.html reference/bufsines/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Sinusoidal\\\ Modelling\\\ and\\\ Resynthesis
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Sinusoidal modelling on buffers;
+#X obj 35 257 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 434 175 array define help.bufsines.1.sines;
+#X obj 35 501 fluid.bufsines -source help.bufsines.1.src -sines help.bufsines.1.sines
+-residual help.bufsines.1.residual -numchans 1;
+#X obj 413 199 array define help.bufsines.1.residual;
+#X obj 47 621 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 47 822 *~;
+#X obj 65 799 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X text 82 795 sinusoid;
+#X obj 47 866 fluid.out~ bufsineshelp;
+#X obj 147 822 *~;
+#X obj 165 799 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X text 179 797 residual;
+#X obj 47 691 tabplay~ help.bufsines.1.sines, f 22;
+#X obj 147 651 tabplay~ help.bufsines.1.residual, f 25;
+#X obj 448 151 array define help.bufsines.1.src;
+#X obj 60 256 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 122 871 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 248 787 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 36 552 -numchans 1 makes it so that only the left channel is
+processed in case we load a stereo file.;
+#X msg 69 307 detectionthreshold -40 \, mintracklen 1 \, bang;
+#X obj 76 620 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#N canvas 150 188 219 215 load 0;
+#X obj 44 36 loadbang;
+#X msg 44 67 1;
+#X obj 44 93 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 65 728 pd load;
+#X msg 79 352 detectionthreshold -40 \, mintracklen 15 \, bang;
+#X msg 89 397 detectionthreshold -80 \, mintracklen 50 \, bang;
+#X msg 109 443 detectionthreshold -24 \, mintracklen 1 \, bang;
+#X text 396 306 Tracks can be short but the detection threshold is
+higher than default., f 39;
+#X text 406 351 Increase the minimum track length., f 38;
+#X text 416 396 Lower the threshold but increase the track length drastically.
+, f 37;
+#X text 426 442 Increase the threshold drastically but lower the minimum
+track length., f 36;
+#X obj 455 897 cnv 15 222 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 466 939 note_on_multithreading;
+#N canvas 1955 -858 567 271 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 115 outlet;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.bufsines.1.src;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 18 180 fluid.demoaudiofiles;
+#X text 19 161 1) select a source;
+#X text 123 871 2) Start audio;
+#X text 61 256 3) Decompose the source buffer;
+#X text 77 620 4) play the result, f 30;
+#X text 249 787 5) Select which component you want to hear. Selecting
+both sums to the original input., f 46;
+#X obj 466 917 note_on_automatic_multiarrays;
+#X connect 4 0 6 0;
+#X connect 8 0 16 0;
+#X connect 8 0 17 0;
+#X connect 9 0 12 0;
+#X connect 10 0 9 1;
+#X connect 13 0 12 1;
+#X connect 14 0 13 1;
+#X connect 16 0 9 0;
+#X connect 17 0 13 0;
+#X connect 23 0 6 0;
+#X connect 25 0 10 0;
+#X connect 26 0 6 0;
+#X connect 27 0 6 0;
+#X connect 28 0 6 0;
+#X connect 37 0 35 0;

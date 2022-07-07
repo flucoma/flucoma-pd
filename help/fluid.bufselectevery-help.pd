@@ -140,8 +140,8 @@ described in terms of independent hop sizes for frames and channels
 #X msg 298 562 startframe 0 \, numframes -1 \, framehop 3 \, startchan
 0 \, numchans -1 \, chanhop 1 \, bang;
 #X text 296 543 ... or every third frame, f 46;
-#X obj 477 808 cnv 15 199 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 452 885 cnv 15 217 93 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
 #N canvas 209 78 703 901 curating_descriptor_data 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufselectevery 1 22 0
 36 #4ba3fb #ffffff 0;
@@ -348,8 +348,9 @@ of 7) of each derivative.;
 #X connect 14 0 2 0;
 #X connect 16 0 18 0;
 #X connect 19 0 13 0;
-#X restore 481 831 pd curating_descriptor_data;
-#X obj 481 853 note_on_multithreading;
+#X restore 456 908 pd curating_descriptor_data;
+#X obj 456 930 note_on_multithreading;
+#X obj 456 953 note_on_automatic_multiarrays;
 #X connect 5 0 6 0;
 #X connect 8 0 9 0;
 #X connect 8 0 12 0;

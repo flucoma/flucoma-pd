@@ -1,14 +1,14 @@
-#N canvas 60 44 946 934 10;
-#X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufmfcc 20 12 0 36 #fcfcfc
+#N canvas 37 74 706 910 12;
+#X obj 983 195 soundfiler;
+#X obj 962 19 cnv 15 100 10 empty empty fluid.bufmfcc 20 12 0 36 #fcfcfc
 #404040 0;
-#X obj 34 156 loadbang;
-#X obj 379 98 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 134 257 dac~;
-#X obj 133 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 984 156 loadbang;
+#X obj 1329 98 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X msg 152 215 stop;
+#X obj 1084 257 dac~;
+#X obj 1083 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 1102 215 stop;
 #N canvas 805 51 707 604 multichannel 0;
 #X obj 46 510 loadbang;
 #X obj 46 559 soundfiler;
@@ -59,75 +59,75 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X connect 13 0 3 1;
 #X connect 14 0 19 0;
 #X connect 17 0 1 0;
-#X restore 824 161 pd multichannel;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav bufmfcc_drums;
-#X obj 134 236 tabplay~ bufmfcc_drums;
-#X msg 379 136 \; bufmfcc_feats-0 xticks 0 0 0 \; bufmfcc_feats-1 xticks
-0 0 0 \; bufmfcc_feats-2 xticks 0 0 0 \; bufmfcc_feats-3 xticks 0 0
-0 \; bufmfcc_feats-4 xticks 0 0 0 \; bufmfcc_feats-5 xticks 0 0 0 \;
-bufmfcc_feats-6 xticks 0 0 0 \; bufmfcc_feats-7 xticks 0 0 0 \; bufmfcc_feats-8
-xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
-0 0 0 \; bufmfcc_feats-11 xticks 0 0 0 \; bufmfcc_feats-12 xticks 0
-0 0;
+#X restore 1774 161 pd multichannel;
+#X msg 984 176 read -resize media/Nicol-LoopE-M.wav bufmfcc_drums;
+#X obj 1084 236 tabplay~ bufmfcc_drums;
+#X msg 1329 136 \; bufmfcc_feats-0 xticks 0 0 0 \; bufmfcc_feats-1
+xticks 0 0 0 \; bufmfcc_feats-2 xticks 0 0 0 \; bufmfcc_feats-3 xticks
+0 0 0 \; bufmfcc_feats-4 xticks 0 0 0 \; bufmfcc_feats-5 xticks 0 0
+0 \; bufmfcc_feats-6 xticks 0 0 0 \; bufmfcc_feats-7 xticks 0 0 0 \;
+bufmfcc_feats-8 xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10
+xticks 0 0 0 \; bufmfcc_feats-11 xticks 0 0 0 \; bufmfcc_feats-12 xticks
+0 0 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-0 915 float 0;
 #X coords 0 300 914 -300 887 30 1 0 0;
-#X restore 31 367 graph;
+#X restore 981 367 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_drums 453932 float 0;
 #X coords 0 0.5 453931 -0.5 887 53 1 0 0;
-#X restore 31 299 graph;
-#X obj 379 117 fluid.bufmfcc 13 -source bufmfcc_drums -features bufmfcc_feats
+#X restore 981 299 graph;
+#X obj 1329 117 fluid.bufmfcc 13 -source bufmfcc_drums -features bufmfcc_feats
 , f 63;
-#X obj 782 185 note_on_sampling_rates;
+#X obj 1732 185 note_on_sampling_rates;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-1 915 float 0;
 #X coords 0 200 914 -200 887 30 1 0 0;
-#X restore 31 410 graph;
+#X restore 981 410 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-2 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 453 graph;
+#X restore 981 453 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-3 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 496 graph;
+#X restore 981 496 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-4 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 539 graph;
+#X restore 981 539 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-5 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 582 graph;
+#X restore 981 582 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-6 915 float 0;
 #X coords 0 300 914 -300 887 30 1 0 0;
-#X restore 31 625 graph;
+#X restore 981 625 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-7 915 float 0;
 #X coords 0 200 914 -200 887 30 1 0 0;
-#X restore 31 668 graph;
+#X restore 981 668 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-8 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 711 graph;
+#X restore 981 711 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-9 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 754 graph;
+#X restore 981 754 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-10 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 797 graph;
+#X restore 981 797 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-11 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 840 graph;
+#X restore 981 840 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufmfcc_feats-12 915 float 0;
 #X coords 0 100 914 -100 887 30 1 0 0;
-#X restore 31 883 graph;
+#X restore 981 883 graph;
 #N canvas 0 23 450 300 (subpatch) 0;
 #X obj 83 51 inlet;
 #X obj 83 89 pdcontrol;
@@ -137,11 +137,233 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
-#X restore 891 258 pd;
-#X text 760 239 launch the HTML doc->;
-#X obj 892 241 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X restore 1841 258 pd;
+#X text 1710 239 launch the HTML doc->;
+#X obj 1842 241 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X obj 782 209 note_on_multithreading;
+#X obj 1732 209 note_on_multithreading;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmfcc 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 435 478 cnv 15 235 90 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufmfcc.html reference/bufmfcc/
+;
+#X obj 17 60 cnv 15 488 17 empty empty Mel-Frequency\\\ Cepstral\\\ Coefficients\\\ as\\\ Spectral
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 109 A classic timbral spectral descriptor \, the Mel-Frequency
+Cepstral Coefficients (MFCCs).;
+#N canvas 1376 -757 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X obj 16 115 outlet;
+#X msg 16 41 read -resize media/Nicol-LoopE-M.wav help.mfcc.src;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 3 0 0 0;
+#X restore 21 201 pd loadsrc;
+#X obj 21 573 fluid.waveform 650 300 1 empty empty 0;
+#X obj 60 306 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 84 306 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#N canvas 1493 23 535 646 parameters 0;
+#X floatatom 185 146 8 0 0 0 - - - 0;
+#X floatatom 185 125 8 0 0 0 - - - 0;
+#X floatatom 185 167 8 0 0 0 - - - 0;
+#X obj 30 362 outlet;
+#X floatatom 185 104 8 0 4 0 - - - 0;
+#X obj 228 19 unpack 0 0 0 0;
+#X obj 98 -120 loadbang;
+#X text 111 104 numcoeffs, f 10;
+#X text 118 125 numbands, f 9;
+#X text 125 146 minfreq, f 8;
+#X text 125 167 maxfreq, f 8;
+#X obj 228 -4 r help.bufmfcc.presets;
+#X msg 98 -92 \; help.bufmfcc.presets 13 40 20 20000, f 45;
+#X msg 31 233 numcoeffs \$1;
+#X msg 63 257 numbands \$1;
+#X msg 100 281 minfreq \$1;
+#X msg 123 305 maxfreq \$1;
+#X obj 115 357 t b;
+#X msg 115 381 \; help.mfcc.features const;
+#X connect 0 0 15 0;
+#X connect 1 0 14 0;
+#X connect 2 0 16 0;
+#X connect 4 0 13 0;
+#X connect 5 0 4 0;
+#X connect 5 1 1 0;
+#X connect 5 2 0 0;
+#X connect 5 3 2 0;
+#X connect 6 0 12 0;
+#X connect 11 0 5 0;
+#X connect 13 0 3 0;
+#X connect 13 0 17 0;
+#X connect 14 0 3 0;
+#X connect 14 0 17 0;
+#X connect 15 0 3 0;
+#X connect 15 0 17 0;
+#X connect 16 0 3 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X coords 0 -1 1 1 150 90 2 100 100;
+#X restore 270 326 pd parameters;
+#X text 373 443 <-- more parameters;
+#N canvas 1151 -1080 1375 1009 parameters 0;
+#X obj 29 927 r \$0-params;
+#X obj 29 950 outlet;
+#X obj 29 145 s \$0-params;
+#X text 152 148 for hopsize \, -1 = windowsize/2, f 26;
+#X text 153 100 window size (1024) \, hop size (-1) \, fft size (-1)
+, f 26;
+#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power
+of 2, f 26;
+#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 27 54 FFT settings;
+#X obj 27 565 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X msg 29 102 fftsettings 1024 -1 1, f 12;
+#X text 25 545 Warnings;
+#X obj 28 644 s \$0-params;
+#X msg 28 587 warnings 1;
+#X msg 38 609 warnings 0;
+#X text 117 586 warnings;
+#X text 117 608 or no warnings;
+#X obj 29 285 s \$0-params;
+#X msg 29 262 maxfftsize -1;
+#X text 28 6 Optional parameters to fluid.noveltyfeature~;
+#X obj 417 75 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X obj 415 131 s \$0-params;
+#X obj 415 201 s \$0-params;
+#X obj 415 271 s \$0-params;
+#X obj 415 341 s \$0-params;
+#X obj 415 471 s \$0-params;
+#X obj 415 541 s \$0-params;
+#X obj 415 611 s \$0-params;
+#X obj 415 681 s \$0-params;
+#X obj 415 831 s \$0-params;
+#X obj 415 901 s \$0-params;
+#X obj 415 751 s \$0-params;
+#X obj 415 410 s \$0-params;
+#X msg 415 107 source arrayname;
+#X msg 415 177 features arrayname;
+#X msg 415 247 numcoeffs 13;
+#X msg 415 317 maxnumcoeffs -1;
+#X msg 415 447 minfreq 20;
+#X msg 415 517 maxfreq 20000;
+#X msg 415 587 numbands 40;
+#X msg 415 657 numchans -1;
+#X msg 415 807 numframes -1;
+#X msg 415 877 padding 1;
+#X msg 415 727 startchan 0;
+#X msg 415 386 startcoeff 0;
+#X obj 415 971 s \$0-params;
+#X msg 415 947 startframe 0;
+#X text 557 170 destination buffer to write the MFCC analysis into
+, f 38;
+#X text 557 100 index of the buffer to use as the source material to
+be analysed, f 38;
+#X text 557 240 number of cepstral coefficients to return, f 38;
+#X text 557 310 maximum value for numcoeffs, f 38;
+#X text 554 379 lowest index of the output cepstral coefficients to
+return \, zero-counting, f 39;
+#X text 557 440 lower bound of the frequency band to use in analysis
+\, in Hz, f 39;
+#X text 557 510 upper bound of the frequency band to use in analysis
+\, in Hz, f 39;
+#X text 557 580 number of bands that will be perceptually equally distributed
+between minfreq and maxfreq, f 39;
+#X text 557 650 for a multichannel srcbuf \, how many channels to process
+, f 39;
+#X text 557 720 for a multichannel srcbuf \, which channel should be
+processed first, f 39;
+#X text 557 800 How many frames to analyse, f 39;
+#X text 557 870 controls the zero-padding added to either end of the
+source buffer or segment, f 39;
+#X text 557 940 Where in the srcbuf the analysis should start \, in
+samples, f 39;
+#X connect 0 0 1 0;
+#X connect 9 0 2 0;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 17 0 16 0;
+#X connect 32 0 20 0;
+#X connect 33 0 21 0;
+#X connect 34 0 22 0;
+#X connect 35 0 23 0;
+#X connect 36 0 24 0;
+#X connect 37 0 25 0;
+#X connect 38 0 26 0;
+#X connect 39 0 27 0;
+#X connect 40 0 28 0;
+#X connect 41 0 29 0;
+#X connect 42 0 30 0;
+#X connect 43 0 31 0;
+#X connect 45 0 44 0;
+#X restore 270 442 pd parameters;
+#X obj 490 201 array define help.mfcc.src;
+#X obj 60 486 fluid.bufmfcc 13 -source help.mfcc.src -features help.mfcc.features
+;
+#X obj 483 222 clone fluid.multiarray 13 help.mfcc.features, f 27
+;
+#X text 85 305 1) start MFCC analysis;
+#N canvas 88 48 705 855 multichannel 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmfcc 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 19 83 multichannel processing with fluid.bufmfcc~;
+#X obj 490 181 clone fluid.multiarray 2 help.mfcc.src.2, f 26;
+#N canvas 1376 23 447 162 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+help.mfcc.src.2-0 help.mfcc.src.2-1;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 21 127 pd loadsrc;
+#X obj 26 306 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 50 306 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 51 305 1) start analysis;
+#X obj 26 326 fluid.bufmfcc 3 -source help.mfcc.src.2 -features help.mfcc.features.2
+;
+#X obj 26 444 fluid.waveform 510 243 1 empty empty 0;
+#X text 406 290 The fluid.bufmfcc~ object above only returns 3 MFCC
+coefficients. The buffer~ with the analysis is 6 channels \, because
+it calculates 3 channels per channel in the input buffer \, which in
+this case is stereo., f 38;
+#X text 498 400 The layout is as follows:;
+#X text 568 441 MFCC 0 - L;
+#X text 568 461 MFCC 1 - L;
+#X text 568 481 MFCC 2 - L;
+#X text 568 501 MFCC 0 - R;
+#X text 568 521 MFCC 1 - R;
+#X text 568 541 MFCC 2 - R;
+#X obj 513 706 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
+#000000 #000000;
+#X obj 358 733 tabplay~ help.mfcc.src.2-0, f 20;
+#X obj 485 780 fluid.out~ bufmfcchelp;
+#X obj 514 735 tabplay~ help.mfcc.src.2-0, f 20;
+#X text 534 702 Listen to the source if you want, f 18;
+#X obj 483 222 clone fluid.multiarray 6 help.mfcc.features.2, f 27
+;
+#X msg 26 364 waveformcolor #aaaaaa \, waveform help.mfcc.src.2 \,
+features help.mfcc.features.2, f 48;
+#X connect 4 0 7 0;
+#X connect 7 0 23 0;
+#X connect 17 0 18 0;
+#X connect 17 0 20 0;
+#X connect 18 0 19 0;
+#X connect 20 0 19 1;
+#X connect 23 0 8 0;
+#X restore 448 498 pd multichannel;
+#X obj 448 542 note_on_multithreading;
+#X obj 17 78 cnv 15 488 17 empty empty Descriptors\\\ on\\\ a\\\ Buffer
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 448 520 note_on_automatic_multiarrays;
+#X msg 60 524 features help.mfcc.features;
+#X msg 21 225 waveformcolor #666666 \, waveform help.mfcc.src;
 #X connect 2 0 8 0;
 #X connect 3 0 13 0;
 #X connect 5 0 9 0;
@@ -151,3 +373,10 @@ xticks 0 0 0 \; bufmfcc_feats-9 xticks 0 0 0 \; bufmfcc_feats-10 xticks
 #X connect 9 0 4 1;
 #X connect 13 0 10 0;
 #X connect 29 0 27 0;
+#X connect 36 0 52 0;
+#X connect 38 0 44 0;
+#X connect 40 0 44 0;
+#X connect 42 0 44 0;
+#X connect 44 0 51 0;
+#X connect 51 0 37 0;
+#X connect 52 0 37 0;

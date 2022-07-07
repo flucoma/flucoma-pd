@@ -1,6 +1,6 @@
-#N canvas 151 184 692 632 12;
-#X floatatom 17 285 5 0 0 0 - - - 0;
-#X msg 17 305 threshold \$1 \, bang;
+#N canvas 151 184 692 598 12;
+#X floatatom 23 181 5 0 0 0 - - - 0;
+#X msg 23 201 threshold \$1 \, bang;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufthresh 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.bufthresh.html reference/bufthresh/
@@ -9,33 +9,37 @@
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Replace all values of a buffer under the given threshold
 with 0 and copy the result to a destination buffer.;
-#N canvas 1094 -826 554 314 fillarrays 0;
+#N canvas 1094 23 554 314 fillarrays 1;
 #X obj 15 17 loadbang;
 #X msg 15 124 \; stereoinput-1 sinesum 256 1 0 0.33 0 0.2 0 0.14 0
 0.11 0 0.09;
 #X msg 46 82 \; stereoinput-0 sinesum 256 0 0 0 0 0 0 0 0 1;
 #X connect 0 0 2 0;
 #X connect 0 0 1 0;
-#X restore 581 237 pd fillarrays;
-#X obj 17 366 fluid.bufthresh -source stereoinput -destination stereooutput
+#X restore 574 162 pd fillarrays;
+#X obj 23 262 fluid.bufthresh -source stereoinput -destination stereooutput
 -threshold 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array stereooutput-0 259 float 2;
 #X coords 0 1 259 -1 258 66 1 0 0;
-#X restore 17 538 graph;
+#X restore 23 434 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array stereooutput-1 259 float 2;
 #X coords 0 1 259 -1 258 66 1 0 0;
-#X restore 300 538 graph;
+#X restore 306 434 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array stereoinput-0 259 float 0;
 #X coords 0 1 258 -1 258 66 1 0 0;
-#X restore 17 438 graph;
+#X restore 23 334 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array stereoinput-1 259 float 0;
 #X coords 0 1 258 -1 258 66 1 0 0;
-#X restore 300 438 graph;
-#X obj 31 341 loadbang;
+#X restore 306 334 graph;
+#X obj 37 237 loadbang;
+#X obj 458 526 cnv 15 215 50 empty empty More\ information 4 10 0 13
+#e0e0e0 #404040 0;
+#X obj 463 550 note_on_automatic_multiarrays;
+#X text 64 179 1) change the threshold and observe the output.;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
 #X connect 12 0 7 0;

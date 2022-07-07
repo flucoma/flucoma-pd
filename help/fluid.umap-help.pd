@@ -1,2 +1,341 @@
-#N canvas 546 252 836 602 12;
-#X obj 149 192 fluid.umap;
+#N struct 1009-rectangle float x float c;
+#N struct 1009-pixel float x0 float y0 float x1 float y1;
+#N struct 1028-rectangle float x float c;
+#N struct 1028-pixel float x0 float y0 float x1 float y1;
+#N canvas 0 23 697 800 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.umap 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 460 717 cnv 15 217 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.umap.html reference/umap/
+;
+#X text 17 79 Dimensionality Reduction with Uniform Manifold Approximation
+and Projection;
+#X text 17 129 Reduce the dimensions of a fluid.dataset using the Uniform
+Manifold Approximation and Projection (UMAP) algorithm.;
+#X obj 365 309 fluid.plotter;
+#X obj 463 759 note_on_automatic_datasets;
+#X obj 23 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 0 23 830 534 load_data 0;
+#X obj 37 44 inlet;
+#X obj 458 485 outlet;
+#X obj 37 90 fluid.labelset corpus_files;
+#X obj 406 292 route getlabel;
+#X msg 37 67 read data/flucoma_corpus_files.json \, size;
+#X obj 223 111 route size;
+#X obj 246 176 until;
+#X obj 246 200 f;
+#X obj 279 200 + 1;
+#X obj 246 269 fluid.labelset corpus_files;
+#X msg 287 176 0;
+#X obj 246 224 makefilename %d;
+#X msg 246 247 getlabel \$1;
+#X obj 223 135 t b f b;
+#X obj 223 387 list store;
+#X obj 406 336 makefilename media/%s;
+#X obj 406 314 symbol;
+#X obj 341 90 soundfiler;
+#X obj 406 381 t l l;
+#X obj 406 358 list prepend;
+#X msg 341 66 read -resize data/flucoma_corpus_slices.wav help.umap.1.idx
+;
+#X obj 433 198 array define help.umap.1.idx 1;
+#X obj 433 174 text define help.umap.1.files;
+#X obj 432 149 clone fluid.multiarray 2 help.umap.1.audio;
+#X obj 223 409 fluid.concataudiofiles help.umap.1.audio help.umap.1.files
+;
+#X obj 223 455 fluid.dataset help.umap.1.analysis;
+#X msg 169 425 print;
+#X msg 223 431 read data/flucoma_corpus_mfcc.json;
+#X connect 0 0 4 0;
+#X connect 0 0 20 0;
+#X connect 2 0 5 0;
+#X connect 3 0 16 0;
+#X connect 4 0 2 0;
+#X connect 5 0 13 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 7 0 11 0;
+#X connect 8 0 7 1;
+#X connect 9 0 3 0;
+#X connect 10 0 7 1;
+#X connect 11 0 12 0;
+#X connect 12 0 9 0;
+#X connect 13 0 14 0;
+#X connect 13 1 6 0;
+#X connect 13 2 10 0;
+#X connect 13 2 19 1;
+#X connect 14 0 24 0;
+#X connect 15 0 19 0;
+#X connect 16 0 15 0;
+#X connect 18 0 14 1;
+#X connect 18 1 19 1;
+#X connect 19 0 18 0;
+#X connect 20 0 17 0;
+#X connect 24 0 27 0;
+#X connect 25 1 1 0;
+#X connect 26 0 25 0;
+#X connect 27 0 25 0;
+#X restore 23 236 pd load_data;
+#X obj 23 260 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 324 230 fittransform help.umap.1.analysis help.umap.1.2d;
+#N canvas 764 429 741 300 normalisation_plotting_and_kdtree 0;
+#X obj 37 37 inlet;
+#X msg 37 84 fittransform help.umap.1.2d help.umap.1.2d.n;
+#X obj 37 109 fluid.normalize;
+#X obj 37 133 route fittransform;
+#X obj 42 157 fluid.ds2text help.umap.1.2d.n help.umap.1.2d.txt;
+#X obj 42 205 outlet;
+#X obj 382 89 fluid.dataset help.umap.1.2d.n;
+#X obj 400 154 text define help.umap.1.2d.txt;
+#X obj 37 61 route fittransform;
+#X obj 389 61 fluid.dataset help.umap.1.2d;
+#X msg 42 181 setpoints help.umap.1.2d.txt;
+#X obj 9 254 fluid.kdtree help.umap.1.tree;
+#X msg 11 231 fit help.umap.1.2d.n;
+#X connect 0 0 8 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 12 0;
+#X connect 4 0 10 0;
+#X connect 8 0 1 0;
+#X connect 10 0 5 0;
+#X connect 12 0 11 0;
+#X restore 352 281 pd normalisation_plotting_and_kdtree;
+#X obj 352 257 fluid.umap -numdimensions 2;
+#X obj 23 280 fluid.ds2text help.umap.1.analysis help.umap.1.analysis.view
+, f 26;
+#X obj 22 341 text define help.umap.1.analysis.view;
+#X f 26;
+#N canvas 892 268 786 777 query_and_playback 0;
+#X obj 43 70 t b l;
+#X obj 259 250 route knearest;
+#X obj 259 272 symbol;
+#X msg 259 295 highlight \$1;
+#X floatatom 87 364 5 0 0 0 - - - 0;
+#X obj 87 343 fluid.s2f;
+#X obj 39 31 inlet;
+#X obj 87 424 outlet~;
+#X obj 7 342 outlet;
+#X obj 274 93 array define help.umap.query.1 2;
+#X obj 74 94 array set help.umap.query.1;
+#X msg 42 117 knearest help.umap.query.1;
+#X obj 42 141 fluid.kdtree help.umap.1.tree;
+#N canvas 739 591 308 296 player 0;
+#X obj 37 15 inlet;
+#X obj 51 145 phasor~;
+#X obj 51 169 *~, f 18;
+#X obj 18 200 +~;
+#X obj 37 69 t f l;
+#X obj 175 96 expr $f2 - $f1;
+#X obj 18 247 outlet~;
+#X obj 51 121 expr 44100 / $f1;
+#X obj 37 45 array get help.umap.1.idx 0 2;
+#X obj 18 223 tabread~ help.umap.1.audio-0;
+#X connect 0 0 8 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 1;
+#X connect 4 1 5 0;
+#X connect 5 0 2 1;
+#X connect 5 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 4 0;
+#X connect 9 0 6 0;
+#X restore 86 394 pd player;
+#X connect 0 0 11 0;
+#X connect 0 1 10 0;
+#X connect 1 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 8 0;
+#X connect 4 0 13 0;
+#X connect 5 0 4 0;
+#X connect 6 0 0 0;
+#X connect 11 0 12 0;
+#X connect 12 0 1 0;
+#X connect 13 0 7 0;
+#X restore 354 622 pd query_and_playback;
+#X obj 438 656 fluid.out~;
+#X obj 511 620 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 47 215 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 327 202 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 48 214 1) Start by loading some data;
+#X obj 211 352 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 212 351 2) look in text, f 19;
+#X text 328 201 3) Reduce 26 dimensions to 2 for every identifier;
+#X text 512 619 4) switch on audio and browse the plotter, f 19;
+#N canvas 88 118 699 853 numneighbourgs_and_mindist 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.umap 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 42 327 fluid.plotter;
+#N canvas 764 429 741 300 normalisation_plotting_and_kdtree 0;
+#X obj 37 37 inlet;
+#X obj 37 109 fluid.normalize;
+#X obj 37 133 route fittransform;
+#X obj 42 205 outlet;
+#X obj 37 61 route fittransform;
+#X msg 37 84 fittransform help.umap.2.2d help.umap.2.2d.n;
+#X obj 389 61 fluid.dataset help.umap.2.2d;
+#X obj 382 89 fluid.dataset help.umap.2.2d.n;
+#X obj 42 157 fluid.ds2text help.umap.2.2d.n help.umap.2.2d.txt;
+#X obj 400 154 text define help.umap.2.2d.txt;
+#X msg 42 181 setpoints help.umap.2.2d.txt;
+#X msg 11 231 fit help.umap.2.2d.n;
+#X obj 9 254 fluid.kdtree help.umap.2.tree;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 11 0;
+#X connect 2 0 8 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X connect 8 0 10 0;
+#X connect 10 0 3 0;
+#X connect 11 0 12 0;
+#X restore 29 299 pd normalisation_plotting_and_kdtree;
+#X obj 29 275 fluid.umap -numdimensions 2;
+#N canvas 892 268 786 777 query_and_playback 0;
+#X obj 43 70 t b l;
+#X obj 259 250 route knearest;
+#X obj 259 272 symbol;
+#X msg 259 295 highlight \$1;
+#X floatatom 87 364 5 0 0 0 - - - 0;
+#X obj 87 343 fluid.s2f;
+#X obj 39 31 inlet;
+#X obj 87 424 outlet~;
+#X obj 7 342 outlet;
+#N canvas 739 591 308 296 player 0;
+#X obj 37 15 inlet;
+#X obj 51 145 phasor~;
+#X obj 51 169 *~, f 18;
+#X obj 18 200 +~;
+#X obj 37 69 t f l;
+#X obj 175 96 expr $f2 - $f1;
+#X obj 18 247 outlet~;
+#X obj 51 121 expr 44100 / $f1;
+#X obj 37 45 array get help.umap.1.idx 0 2;
+#X obj 18 223 tabread~ help.umap.1.audio-0;
+#X connect 0 0 8 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 1;
+#X connect 4 1 5 0;
+#X connect 5 0 2 1;
+#X connect 5 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 4 0;
+#X connect 9 0 6 0;
+#X restore 86 394 pd player;
+#X obj 42 141 fluid.kdtree help.umap.2.tree;
+#X obj 274 93 array define help.umap.query.2 2;
+#X obj 74 94 array set help.umap.query.2;
+#X msg 42 117 knearest help.umap.query.2;
+#X connect 0 0 13 0;
+#X connect 0 1 12 0;
+#X connect 1 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 8 0;
+#X connect 4 0 9 0;
+#X connect 5 0 4 0;
+#X connect 6 0 0 0;
+#X connect 9 0 7 0;
+#X connect 10 0 1 0;
+#X connect 13 0 10 0;
+#X restore 31 640 pd query_and_playback;
+#X obj 115 674 fluid.out~;
+#X obj 370 258 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 19 158 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 17 79 Adjusting the parameters to affect the "embedding" or
+"projection" of data into a lower dimensional space.;
+#X msg 371 217 fittransform help.umap.1.analysis help.umap.2.2d, f
+34;
+#X text 20 157 1) Reduce the dataset from the first tab with 26 values
+per identifier. Experiment with the numneighbours and mindist values
+to see how it affects the characteristics of the output., f 48;
+#N canvas 1172 274 450 300 settings 0;
+#X msg 104 214 numneighbours \$1;
+#X floatatom 105 130 5 0 0 0 - - - 0;
+#X floatatom 105 155 5 0 0 0 - - - 0;
+#X msg 238 214 mindist \$1;
+#X msg 93 102 15;
+#X msg 61 136 0.1;
+#X obj 92 77 loadbang;
+#X obj 100 260 outlet;
+#X text 147 131 numneighbours;
+#X text 148 155 mindist;
+#X connect 0 0 7 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 2 0;
+#X connect 6 0 4 0;
+#X connect 6 0 5 0;
+#X coords 0 0 1 1 150 60 2 100 120;
+#X restore 369 154 pd settings;
+#X text 371 257 2) re-fit-transform - it is cpu-heavy;
+#X text 346 324 The UMAP algorithm can be nudged to favour the global
+or local structure of the original data. In essence \, this is about
+whether or not you care about the overall shape of the data \, or smaller
+clusters of points when it is reduced., f 47;
+#X text 346 407 The numneighbours attribute dictates how many points
+from the original data are considered together when it is determining
+a transform for the data. These are related to the size of your data.
+For example \, imagine that you have a dataset with 100 points and
+wanted the whole space to be considered as "one thing" \, setting numneighbours
+to 100 might be an interesting place to start., f 47;
+#X text 346 551 The minimum distance attribute dictates how close points
+can be represented in the output dataset. Small values tending towards
+0 let UMAP pack the points in tightly while larger values cause the
+data to be more spread out., f 47;
+#X text 348 639 Musically speaking \, this decision making will be
+bound up in lots of different attentions \, like what kind of sounds
+are being analysed and how those sounds will be used in conjunction
+with the UMAP representation. If you want tight perceptually meaningful
+clusters then lowering the number of neighbours (relative to your total
+dataset) and increasing the minimum distance could be a tool for creating
+more stark separations between points. Likewise \, lowering the mindist
+and increasing the numneighbours might create a flatter and more spread
+out space for exploring more widely., f 47;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 4 1 5 0;
+#X connect 4 1 5 1;
+#X connect 9 0 3 0;
+#X connect 11 0 3 0;
+#X restore 463 737 pd numneighbourgs_and_mindist;
+#X text 20 401 Each identifier is a segment of sound from a corpus
+of all the media files in the Fluid Corpus Manipulation Toolkit package.
+, f 45;
+#X text 19 464 For each identifier \, there are 26 values derived from
+MFCC analysis.We're going to use fluid.umap~ to reduce the data \,
+so that each identifier only has two variables., f 45;
+#X text 20 537 Ideally \, these new values that fluid.umap~ calculates
+will be able to preserve much of the intrinsic characteristics of the
+higher dimension data and in theory \, we should get a two dimensional
+representation that has some kind of perceptually meaningful shape
+to it., f 46;
+#X connect 5 0 15 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 13 0;
+#X connect 10 0 12 0;
+#X connect 11 0 5 0;
+#X connect 12 0 11 0;
+#X connect 15 0 5 0;
+#X connect 15 1 16 0;
+#X connect 15 1 16 1;

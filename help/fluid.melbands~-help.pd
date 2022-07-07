@@ -1,313 +1,83 @@
-#N canvas 50 72 917 635 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.melbands~ 20 12 0 36 -262144
--66577 0;
-#X obj 45 373 dac~;
-#X obj 57 287 *~;
-#X obj 71 269 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 149 282 *~;
-#X obj 163 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 205 282 *~;
-#X obj 219 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 279 282 *~;
-#X obj 293 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 149 245 osc~ 220;
-#X obj 149 314 *~ 0.1;
-#X obj 353 282 *~;
-#X obj 368 264 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 81 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X msg 140 349 0.1;
-#X msg 169 349 0.8;
-#X floatatom 253 213 5 0 0 0 - - -;
-#X msg 253 192 220;
-#X msg 285 191 333;
-#X msg 316 192 555;
-#X msg 348 193 789;
-#N canvas 765 239 363 247 drums_players 0;
-#X obj 94 59 r pd-dsp-started;
-#X obj 27 17 loadbang;
-#X obj 27 59 soundfiler;
-#X obj 28 180 *~, f 10;
-#X obj 28 140 /~;
-#X msg 28 121 1;
-#X obj 28 161 phasor~;
-#X obj 125 100 samplerate~;
-#X obj 98 121 / 1;
-#X obj 27 77 t b f b;
-#X obj 95 77 t b b b;
-#X msg 27 37 read -resize media/Nicol-LoopE-M.wav mfcc_drums;
-#X obj 124 154 array define mfcc_drums;
-#X obj 28 200 tabread4~ mfcc_drums;
-#X obj 28 221 outlet~;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 9 0;
-#X connect 3 0 13 0;
-#X connect 4 0 6 0;
-#X connect 5 0 4 0;
-#X connect 6 0 3 0;
-#X connect 7 0 8 1;
-#X connect 8 0 4 1;
-#X connect 9 0 5 0;
-#X connect 9 1 3 1;
-#X connect 9 1 8 0;
-#X connect 9 2 7 0;
-#X connect 10 0 5 0;
-#X connect 10 1 8 0;
-#X connect 10 2 7 0;
-#X connect 11 0 2 0;
-#X connect 13 0 14 0;
-#X restore 44 245 pd drums_players;
-#X obj 81 372 *~ 1;
-#N canvas 0 23 450 300 triangle 0;
-#X obj 37 47 inlet;
-#X obj 37 67 phasor~ 220;
-#X obj 37 85 -~ 0.5;
-#X obj 37 103 abs~;
-#X obj 37 121 *~ 4;
-#X obj 37 139 -~ 1;
-#X obj 37 160 outlet~;
-#X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 5 0;
-#X connect 5 0 6 0;
-#X restore 205 245 pd triangle;
-#N canvas 0 23 450 300 sawtooth 0;
-#X obj 37 37 inlet;
-#X obj 37 79 phasor~ 220;
-#X obj 37 115 -~ 1;
-#X obj 37 97 *~ 2;
-#X obj 37 136 outlet~;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
-#X restore 279 245 pd sawtooth;
-#N canvas 0 23 450 300 square 0;
-#X obj 37 37 inlet;
-#X obj 37 64 phasor~ 220;
-#X obj 37 119 -~;
-#X obj 51 83 -~ 0.5;
-#X obj 51 101 wrap~;
-#X obj 37 137 *~ 2;
-#X obj 37 158 outlet~;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 1 0 2 0;
+#N canvas 46 60 694 797 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.melbands~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ perceptually\\\ spread\\\ spectral\\\ contour\\\ descriptor
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 15 84 Magnitudes for a number of perceptually evenly spread
+bands.;
+#X obj 509 60 fluid.referencelauncher fluid.melbands~.html reference/melbands/
+;
+#X obj 17 149 fluid.demosound~;
+#X obj 87 747 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 16 742 fluid.out~ nmffilterhelp;
+#N canvas 1622 -867 388 477 srcselect 0;
+#X obj 60 71 inlet~;
+#X obj 140 71 inlet~;
+#X obj 221 71 inlet;
+#X obj 62 371 +~;
+#X obj 62 395 outlet~;
+#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X msg 219 266 \$1 10;
+#X obj 219 292 line~;
+#X obj 273 71 loadbang;
+#X msg 273 96 0;
+#X msg 78 266 \$1 10;
+#X obj 78 294 line~;
+#X obj 60 330 *~;
+#X obj 140 330 *~;
+#X obj 78 197 == 0;
+#X obj 78 223 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X connect 0 0 12 0;
+#X connect 1 0 13 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
-#X connect 4 0 2 1;
+#X connect 5 0 14 0;
 #X connect 5 0 6 0;
-#X restore 353 245 pd square;
-#X obj 416 245 noise~;
-#X obj 461 246 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 416 282 *~;
-#X obj 461 264 * 0.2;
-#X text 36 57 A Perceptually Spread Spectral Contour Descriptor in
-Real-Time, f 63;
-#X text 34 100 Amplitude for a number of equally spread perceptual
-bands., f 59;
-#X text 41 163 1) select a source - change the frequency \, observe
-the spectroscope below and the mel bands on the bottomw left, f 111
-;
-#X obj 81 408 unpack f f f f f f f f f f f f f f f f f f f f f f f
-f f f f f f f f f f f f f f f f f, f 86;
-#X obj 94 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 107 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 120 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 133 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 146 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 159 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 172 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 185 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 198 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 211 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 224 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 237 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 250 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 263 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 276 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 289 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 302 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 315 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 328 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 341 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 354 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 367 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 380 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 393 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 406 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 419 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 432 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 445 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 458 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 471 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 484 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 497 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 510 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 523 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 536 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 549 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 562 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 575 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 588 429 vsl 13 128 0 1 0 0 empty empty empty 0 -9 0 5 -262144
--1 -1 0 1;
-#X obj 81 390 fluid.melbands~ 40;
-#N canvas 228 148 252 544 fft-analysis 0;
-#X obj 15 164 *~;
-#X obj 14 99 inlet~;
-#X obj 15 218 rfft~;
-#X obj 14 306 *~;
-#X obj 56 306 *~;
-#X obj 15 356 sqrt~;
-#X obj 23 427 loadbang;
-#X obj 23 449 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
-;
-#X obj 15 332 +~;
-#X obj 14 498 tabwrite~ melbands-magnitude;
-#X obj 36 141 tabreceive~ melbands-hann;
-#X obj 13 76 block~ 1024;
-#X obj 23 470 metro 11;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
-#X connect 2 0 3 0;
-#X connect 2 0 3 1;
-#X connect 2 1 4 0;
-#X connect 2 1 4 1;
-#X connect 3 0 8 0;
-#X connect 4 0 8 1;
-#X connect 5 0 9 0;
 #X connect 6 0 7 0;
-#X connect 7 0 12 0;
-#X connect 8 0 5 0;
-#X connect 10 0 0 1;
-#X connect 12 0 9 0;
-#X restore 27 570 pd fft-analysis;
-#N canvas 0 0 450 300 (subpatch) 0;
-#X array melbands-magnitude 256 float 0;
-#X coords 0 32 255 0 256 100 1 0 0;
-#X restore 647 439 graph;
-#X text 644 542 0;
-#X text 882 542 255;
-#X text 633 528 0;
-#N canvas 556 77 450 468 make.hann.window 0;
-#X obj 107 94 t f b;
-#X obj 107 136 until;
-#X msg 107 157 1;
-#X obj 107 178 +;
-#X msg 148 156 -1;
-#X obj 107 197 t f f f;
-#X obj 107 218 / 1024;
-#X obj 107 260 sin;
-#X obj 107 281 *;
-#X obj 234 134 expr 4*atan(1);
-#X obj 107 239 * 3.1;
-#X obj 107 47 t b b;
-#X obj 107 26 loadbang;
-#X obj 106 324 tabwrite melbands-hann;
-#X obj 107 348 array define melbands-hann 1024;
-#X msg 107 71 1024;
-#X connect 0 0 1 0;
-#X connect 0 1 4 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 3 0 5 0;
-#X connect 4 0 3 1;
-#X connect 5 0 6 0;
-#X connect 5 1 3 1;
-#X connect 5 2 13 1;
-#X connect 6 0 10 0;
-#X connect 7 0 8 0;
-#X connect 7 0 8 1;
-#X connect 8 0 13 0;
-#X connect 9 0 10 1;
-#X connect 10 0 7 0;
-#X connect 11 0 15 0;
-#X connect 11 1 9 0;
-#X connect 12 0 11 0;
-#X connect 15 0 0 0;
-#X restore 126 571 pd make.hann.window;
-#X text 614 434 32;
-#X text 615 483 16;
-#X text 200 350 2) the spectral shape is proportional to amplitude
-change;
-#X text 588 236 3) change numbands - it fixes the precision of the
-model \, but will never go higher than the first argument (maxNumBands)
-\, and will always output that number. Changing the lowest and highest
-frequency modelled is helpful to focus the descriptor on a useful range
-, f 46;
-#X msg 590 373 numbands \$1;
-#X msg 670 373 minfreq \$1;
-#X msg 744 373 maxfreq \$1;
-#X floatatom 590 356 8 0 0 0 - - -;
-#X floatatom 670 356 8 0 0 0 - - -;
-#X floatatom 744 356 8 0 0 0 - - -;
-#X obj 743 317 loadbang;
-#X msg 670 335 20;
-#X msg 743 335 20000;
-#X msg 590 335 40;
-#N canvas 469 93 547 536 musical_example 0;
-#X obj 21 90 inlet~;
-#X text 18 17 mel-band vocoder;
-#X text 64 91 takes the drum loop as input;
-#X obj 58 242 fluid.melbands~ 40;
-#X msg 174 215 numbands \$1;
-#X msg 254 215 minfreq \$1;
-#X msg 328 215 maxfreq \$1;
-#X floatatom 174 191 8 1 40 0 - - -;
-#X floatatom 254 191 8 0 0 0 - - -;
-#X floatatom 328 191 8 0 0 0 - - -;
-#X obj 327 152 loadbang;
-#X msg 254 170 20;
-#X msg 327 170 20000;
-#X msg 174 170 40;
-#N canvas 1044 232 662 502 melbandcalculator 0;
+#X connect 7 0 13 1;
+#X connect 8 0 9 0;
+#X connect 9 0 5 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 1;
+#X connect 12 0 3 0;
+#X connect 13 0 3 1;
+#X connect 14 0 15 0;
+#X connect 15 0 10 0;
+#X restore 16 708 pd srcselect;
+#X f 53;
+#X obj 223 670 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 383 668 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 401 664 source;
+#X text 401 682 oscillator resynth;
+#X text 223 668 2) select what to listen to source/synth, f 22;
+#X obj 16 610 delread~ \$0-latencycomp 1, f 19;
+#X obj 16 583 expr $f1*1000/samplerate;
+#X msg 38 403 getlatency;
+#X obj 200 450 fluid.melbands~ 120;
+#X floatatom 330 476 5 0 0 0 - - - 0;
+#X obj 16 497 delwrite~ \$0-latencycomp 3000, f 20;
+#X msg 309 418 numbands \$1;
+#X msg 411 418 minfreq \$1;
+#X msg 513 418 maxfreq \$1;
+#X floatatom 301 391 8 1 120 0 - - - 0;
+#X floatatom 403 391 8 0 0 0 - - - 0;
+#X floatatom 505 391 8 0 0 0 - - - 0;
+#X obj 403 343 loadbang;
+#X msg 403 368 20;
+#X msg 505 368 20000;
+#X msg 301 368 40;
+#X text 502 283 experiment with the number of bands \, minimum and
+maximum frequencies, f 16;
+#N canvas 0 23 797 885 oscillators 0;
+#X floatatom 242 122 8 1 40 0 - - - 0;
+#X floatatom 322 122 8 0 0 0 - - - 0;
+#X floatatom 396 122 8 0 0 0 - - - 0;
+#N canvas 1386 23 662 502 melbandcalculator 0;
 #X obj 35 52 inlet;
 #X obj 245 51 inlet;
 #X obj 180 48 inlet;
@@ -363,20 +133,10 @@ mel \, then converts them all back in Hz;
 #X connect 25 0 13 0;
 #X connect 25 1 21 0;
 #X connect 25 2 11 0;
-#X restore 404 215 pd melbandcalculator;
-#X obj 62 312 clone fluid.melbands.polyoscil 40;
-#X obj 62 269 list prepend all;
-#X obj 62 290 list trim;
-#X obj 20 496 dac~;
-#X obj 22 411 *~;
-#X obj 36 393 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
-#X obj 72 371 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 58 411 *~;
-#X text 135 393 select what to listen to source / resynth;
-#X text 186 130 experiment with parameters;
-#N canvas 0 23 450 300 modulator 0;
+#X restore 286 232 pd melbandcalculator;
+#X obj 58 265 list prepend all;
+#X obj 58 288 list trim;
+#N canvas 0 38 629 365 modulator 0;
 #X obj 77 81 osc~ 0.21;
 #X obj 77 102 snapshot~;
 #X obj 295 103 snapshot~;
@@ -386,8 +146,8 @@ mel \, then converts them all back in Hz;
 #X obj 295 124 expr 5000 * pow(4 \, (($f1 + 1.) / 2.));
 #X obj 77 142 outlet;
 #X obj 295 145 outlet;
-#X obj 359 63 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 359 63 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X text 296 43 switch on the mod;
 #X connect 0 0 1 0;
 #X connect 1 0 5 0;
@@ -398,141 +158,217 @@ mel \, then converts them all back in Hz;
 #X connect 5 0 7 0;
 #X connect 6 0 8 0;
 #X connect 9 0 4 0;
-#X restore 403 171 pd modulator;
-#X obj 72 391 * 0.5;
+#X restore 577 35 pd modulator;
+#X obj 58 334 outlet~;
+#X text 113 65 from melbands;
+#X obj 59 66 inlet;
+#X obj 242 66 inlet;
+#X obj 322 66 inlet;
+#X obj 396 66 inlet;
+#X floatatom 313 269 5 0 0 0 - - - 0;
+#X obj 58 311 clone fluid.melbands.polyoscil 120;
 #X connect 0 0 3 0;
-#X connect 0 0 19 0;
-#X connect 3 0 16 0;
-#X connect 4 0 3 0;
-#X connect 5 0 3 0;
-#X connect 6 0 3 0;
-#X connect 7 0 4 0;
-#X connect 7 0 14 0;
-#X connect 8 0 5 0;
-#X connect 8 0 14 2;
-#X connect 9 0 6 0;
-#X connect 9 0 14 1;
-#X connect 10 0 13 0;
-#X connect 10 0 11 0;
-#X connect 10 0 12 0;
-#X connect 11 0 8 0;
-#X connect 12 0 9 0;
-#X connect 13 0 7 0;
-#X connect 14 0 15 1;
-#X connect 15 0 22 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 0;
-#X connect 19 0 18 0;
-#X connect 19 0 18 1;
-#X connect 20 0 19 1;
-#X connect 21 0 26 0;
-#X connect 22 0 18 0;
-#X connect 22 0 18 1;
-#X connect 25 0 8 0;
-#X connect 25 1 9 0;
-#X connect 26 0 22 1;
-#X restore 15 600 pd musical_example;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.melbands~.html;
-#X msg 143 89 browse \$1;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 839 127 pd;
-#X text 708 108 launch the HTML doc->;
-#X obj 840 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X connect 2 0 1 0;
-#X connect 2 0 1 1;
-#X connect 2 0 23 0;
-#X connect 3 0 2 1;
-#X connect 4 0 11 0;
-#X connect 5 0 4 1;
-#X connect 6 0 11 0;
-#X connect 7 0 6 1;
-#X connect 8 0 11 0;
-#X connect 9 0 8 1;
-#X connect 10 0 4 0;
+#X connect 1 0 3 2;
+#X connect 2 0 3 1;
+#X connect 3 0 13 0;
+#X connect 3 0 14 1;
+#X connect 4 0 5 0;
+#X connect 5 0 14 0;
+#X connect 6 0 1 0;
+#X connect 6 1 2 0;
+#X connect 9 0 4 0;
+#X connect 10 0 0 0;
 #X connect 11 0 1 0;
-#X connect 11 0 1 1;
-#X connect 11 0 23 0;
-#X connect 12 0 11 0;
-#X connect 13 0 12 1;
-#X connect 15 0 23 1;
-#X connect 16 0 23 1;
-#X connect 17 0 10 0;
-#X connect 17 0 24 0;
-#X connect 17 0 25 0;
-#X connect 17 0 26 0;
-#X connect 18 0 17 0;
-#X connect 19 0 17 0;
-#X connect 20 0 17 0;
-#X connect 21 0 17 0;
-#X connect 22 0 2 0;
-#X connect 22 0 95 0;
-#X connect 23 0 74 0;
-#X connect 23 0 75 0;
-#X connect 24 0 6 0;
-#X connect 25 0 8 0;
-#X connect 26 0 12 0;
-#X connect 27 0 29 0;
-#X connect 28 0 30 0;
-#X connect 29 0 11 0;
-#X connect 30 0 29 1;
-#X connect 34 0 14 0;
-#X connect 34 1 35 0;
-#X connect 34 2 36 0;
-#X connect 34 3 37 0;
-#X connect 34 4 38 0;
-#X connect 34 5 39 0;
-#X connect 34 6 40 0;
-#X connect 34 7 41 0;
-#X connect 34 8 42 0;
-#X connect 34 9 43 0;
-#X connect 34 10 44 0;
-#X connect 34 11 45 0;
-#X connect 34 12 46 0;
-#X connect 34 13 47 0;
-#X connect 34 14 48 0;
-#X connect 34 15 49 0;
-#X connect 34 16 50 0;
-#X connect 34 17 51 0;
-#X connect 34 18 52 0;
-#X connect 34 19 53 0;
-#X connect 34 20 54 0;
-#X connect 34 21 55 0;
-#X connect 34 22 56 0;
-#X connect 34 23 57 0;
-#X connect 34 24 58 0;
-#X connect 34 25 59 0;
-#X connect 34 26 60 0;
-#X connect 34 27 61 0;
-#X connect 34 28 62 0;
-#X connect 34 29 63 0;
-#X connect 34 30 64 0;
-#X connect 34 31 65 0;
-#X connect 34 32 66 0;
-#X connect 34 33 67 0;
-#X connect 34 34 68 0;
-#X connect 34 35 69 0;
-#X connect 34 36 70 0;
-#X connect 34 37 71 0;
-#X connect 34 38 72 0;
-#X connect 34 39 73 0;
-#X connect 74 0 34 0;
-#X connect 85 0 74 0;
-#X connect 86 0 74 0;
-#X connect 87 0 74 0;
-#X connect 88 0 85 0;
-#X connect 89 0 86 0;
-#X connect 90 0 87 0;
-#X connect 91 0 94 0;
-#X connect 91 0 92 0;
-#X connect 91 0 93 0;
-#X connect 92 0 89 0;
-#X connect 93 0 90 0;
-#X connect 94 0 88 0;
-#X connect 98 0 96 0;
+#X connect 12 0 2 0;
+#X connect 14 0 7 0;
+#X restore 200 543 pd oscillators;
+#X f 44;
+#X obj 501 733 cnv 15 177 42 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 354 179 691 894 visualising_mel_bands 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.melbands~ 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 15 84 Visualising mel bands;
+#X obj 15 176 fluid.demosound~;
+#X obj 15 131 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 17 130 1) select a source;
+#X obj 107 299 fluid.out~ nmffilterhelp;
+#X obj 17 499 fluid.melbands~ 80;
+#X obj 17 709 array set help.melbands.vis;
+#N canvas 1165 342 450 278 (subpatch) 0;
+#X array help.melbands.vis 80 float 2;
+#X coords 0 0.05 80 0 300 100 1 0 0;
+#X restore 19 777 graph;
+#X text 218 655 Smoothing the mel bands output makes it a bit easier
+to visualise it, f 42;
+#X text 236 512 More mel bands increases the precision of the model
+\, but will never go higher than the first argument (maxnumbands) \,
+and will always output that number of elementsin a list. Changing the
+lowest and highest frequency modelled is helpful to focus the descriptor
+on a useful range.;
+#N canvas 1114 23 857 601 parameters 0;
+#X obj 186 331 outlet;
+#X obj 34 -62 loadbang;
+#X obj 186 4 r help.melbands.presets;
+#X msg 34 -37 \; help.melbands.presets 80 1024 -1 -1 20 20000;
+#X obj 186 27 unpack 0 0 0 0 0 0;
+#X floatatom 245 127 8 -1 0 0 - - - 0;
+#X floatatom 185 126 8 0 0 0 - - - 0;
+#X floatatom 185 105 8 1 80 0 - - - 0;
+#X floatatom 305 127 8 -1 0 0 - - - 0;
+#X text 104 126 fftsettings;
+#X obj 286 218 pack 0 0 0;
+#X msg 286 241 fftsettings \$1 \$2 \$3;
+#X text 111 105 numbands, f 10;
+#X msg 81 240 numbands \$1;
+#X msg 456 241 minfreq \$1;
+#X msg 556 241 maxfreq \$1;
+#X floatatom 185 147 8 -20 0 0 - - - 0;
+#X floatatom 185 168 8 20 20000 0 - - - 0;
+#X text 111 147 minfreq, f 10;
+#X text 111 168 maxfreq, f 10;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 4 0 7 0;
+#X connect 4 1 6 0;
+#X connect 4 2 5 0;
+#X connect 4 3 8 0;
+#X connect 4 4 16 0;
+#X connect 4 5 17 0;
+#X connect 5 0 10 1;
+#X connect 6 0 10 0;
+#X connect 7 0 13 0;
+#X connect 8 0 10 2;
+#X connect 10 0 11 0;
+#X connect 11 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 14 0;
+#X connect 17 0 15 0;
+#X coords 0 -1 1 1 294 90 2 100 100;
+#X restore 224 343 pd parameters;
+#X text 369 456 <-- more parameters;
+#N canvas 1216 23 832 913 parameters 0;
+#X obj 439 307 s \$0-params;
+#X obj 29 757 r \$0-params;
+#X obj 29 780 outlet;
+#X text 28 6 Optional parameters to fluid.bufaudiotransport;
+#X obj 29 125 s \$0-params;
+#X text 192 158 for hopsize \, -1 = windowsize/2, f 24;
+#X text 193 100 window size (1024) \, hop size (-1) \, fft size (-1)
+, f 24;
+#X text 192 199 for fftsize \, -1 = windowsize snapped to nearest power
+of 2, f 24;
+#X obj 439 119 s \$0-params;
+#X obj 29 323 s \$0-params;
+#X obj 29 285 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 27 54 FFT settings;
+#X obj 441 424 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X obj 439 257 cnv 10 280 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X obj 439 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X msg 29 102 fftsettings 1024 -1 1;
+#X text 27 265 Max FFT size;
+#X text 439 404 Warnings;
+#X obj 442 503 s \$0-params;
+#X msg 442 446 warnings 1;
+#X msg 452 468 warnings 0;
+#X text 531 445 warnings;
+#X text 531 467 or no warnings;
+#X msg 29 300 maxfftsize -1;
+#X text 138 295 Set an explicit upper bound on the FFT size at object
+instantiation. The default of -1 sets this to whatever the initial
+FFT size is, f 33;
+#X text 437 54 Filter Min and Max frequencies;
+#X msg 439 96 maxfreq 20000;
+#X text 549 94 upper bound of the frequency band to use in analysis
+\, in Hz., f 33;
+#X obj 439 179 s \$0-params;
+#X msg 439 156 minfreq 20000;
+#X text 549 154 lower bound of the frequency band to use in analysis
+\, in Hz., f 33;
+#X text 437 238 Maxnumbands;
+#X msg 439 284 maxnumbands -1;
+#X text 551 283 maximum value for numbands. Can only be set at object
+instantiation. The default of -1 sets this equal to the initial value
+of numbands, f 33;
+#X obj 29 478 s \$0-params;
+#X obj 29 428 cnv 10 280 2 empty empty empty 20 12 0 14 #bbbbbb #404040
+0;
+#X text 27 409 Scaling;
+#X msg 29 455 normalize 1;
+#X text 141 454 flag to use normalized triangle filters. When normalization
+is off \, the higher MelBands tend to be disproportionately large because
+they are summing more FFT magnitudes. Default is on (1)., f 33;
+#X obj 29 588 s \$0-params;
+#X msg 29 565 scale 0;
+#X text 141 564 scaling of the output value \, linear (0 \, by default)
+or in dB (1)., f 33;
+#X connect 1 0 2 0;
+#X connect 16 0 4 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 0;
+#X connect 24 0 9 0;
+#X connect 27 0 8 0;
+#X connect 30 0 29 0;
+#X connect 33 0 0 0;
+#X connect 38 0 35 0;
+#X connect 41 0 40 0;
+#X restore 266 453 pd parameters;
+#X obj 17 657 fluid.stats 80 -history 5;
+#X connect 2 0 5 0;
+#X connect 2 0 5 1;
+#X connect 2 0 6 0;
+#X connect 6 0 14 0;
+#X connect 11 0 6 0;
+#X connect 13 0 6 0;
+#X connect 14 0 7 0;
+#X restore 503 753 pd visualising_mel_bands;
+#X text 87 745 1) audio on;
+#N canvas 68 97 450 300 getsr 0;
+#X obj 35 71 r pd-dsp-started;
+#X obj 45 96 samplerate~;
+#X obj 126 146 value samplerate;
+#X obj 160 70 loadbang;
+#X obj 45 120 t b f;
+#X obj 45 144 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 4 1 2 0;
+#X restore 37 378 pd getsr;
+#X connect 4 0 18 0;
+#X connect 4 0 16 0;
+#X connect 7 0 6 0;
+#X connect 7 0 6 1;
+#X connect 9 0 7 2;
+#X connect 13 0 7 0;
+#X connect 14 0 13 0;
+#X connect 15 0 16 0;
+#X connect 16 0 30 0;
+#X connect 16 1 17 0;
+#X connect 17 0 14 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 16 0;
+#X connect 22 0 19 0;
+#X connect 22 0 30 1;
+#X connect 23 0 20 0;
+#X connect 23 0 30 2;
+#X connect 24 0 21 0;
+#X connect 24 0 30 3;
+#X connect 25 0 28 0;
+#X connect 25 0 26 0;
+#X connect 25 0 27 0;
+#X connect 26 0 23 0;
+#X connect 27 0 24 0;
+#X connect 28 0 22 0;
+#X connect 30 0 7 1;

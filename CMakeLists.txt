@@ -42,7 +42,7 @@ if (APPLE)
   string(APPEND CMAKE_CXX_FLAGS " -stdlib=libc++")
 endif()
 
-project (flucoma-pd LANGUAGES CXX)
+project (flucoma-pd LANGUAGES CXX C)
 
 set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY ON)
 
@@ -153,6 +153,7 @@ generate_pd_source(
 )
 
 add_pd_external(fluid.bufinfo "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.bufinfo/fluid.bufinfo.cpp")
+add_pd_external(fluid.waveform "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.waveform/fluid.waveform.c")
 
 target_include_directories(fluid.bufinfo PRIVATE 
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
@@ -186,6 +187,8 @@ install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic
         RENAME LICENSE.md)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/FluidCorpusManipulationOverview.pd 
         DESTINATION ${PD_PACKAGE_ROOT})
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/local_docs/"
+        DESTINATION "${PD_PACKAGE_ROOT}/docs")
 if(DOCS)
   install(DIRECTORY "${PD_DOC_OUT}/" 
           DESTINATION "${PD_PACKAGE_ROOT}/docs" 

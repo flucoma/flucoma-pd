@@ -1,145 +1,405 @@
-#N canvas 72 75 955 577 10;
-#X obj 33 195 soundfiler;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.buftransients 20 12 0
-36 -262144 -66577 0;
-#X obj 34 156 loadbang;
-#X obj 424 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 133 325 dac~;
-#X msg 97 234 stop;
-#N canvas 495 405 626 619 multichannel 0;
-#X obj 49 496 loadbang;
-#X obj 49 548 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 54 424 dac~;
-#X obj 49 178 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 307 280 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 307 300 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 307 320 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X text 67 80 1) compose an artificially wide "stereo" array;
-#X text 68 177 2) process;
-#X text 306 260 3) listen to:;
-#X text 323 279 the source;
-#X obj 49 224 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X text 65 223 bang when done;
-#X text 46 11 "multichannel" arrays will yield outputs of similar dimensions
-\, respecting the order of the input "channels", f 87;
-#X text 323 319 the extracted residual components;
-#X text 323 299 the extracted transient components;
-#X obj 48 100 fluid.bufcompose -source buftransguitar -startframe 555000
--numframes 468335 -deststartchan 1 -destination buftrans_source, f
-73;
-#X msg 49 517 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-buftrans_source-0 buftrans_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-buftransguitar, f 90;
-#X obj 118 549 array define buftransguitar;
-#X obj 290 549 clone fluid.multiarray 2 buftrans_source;
-#X obj 290 571 clone fluid.multiarray 2 buftrans_res;
-#X obj 50 570 clone fluid.multiarray 2 buftrans_tra;
-#X msg 65 344 set buftrans_source-0;
-#X msg 198 344 set buftrans_source-1;
-#X msg 65 362 set buftrans_tra-0;
-#X msg 198 362 set buftrans_tra-1;
-#X msg 65 380 set buftrans_res-0;
-#X msg 198 380 set buftrans_res-1;
-#X obj 54 403 tabplay~ buftrans_source-0;
-#X obj 217 404 tabplay~ buftrans_source-1;
-#X obj 49 195 fluid.buftransients -source buftrans_source -transients
-buftrans_tra -residual buftrans_res -threshfwd 1.2, f 84;
-#X connect 0 0 18 0;
-#X connect 2 0 17 0;
-#X connect 4 0 31 0;
-#X connect 5 0 24 0;
-#X connect 5 0 23 0;
-#X connect 5 0 29 0;
-#X connect 5 0 30 0;
-#X connect 6 0 26 0;
-#X connect 6 0 25 0;
-#X connect 6 0 29 0;
-#X connect 6 0 30 0;
-#X connect 7 0 28 0;
-#X connect 7 0 27 0;
-#X connect 7 0 29 0;
-#X connect 7 0 30 0;
-#X connect 18 0 1 0;
-#X connect 23 0 29 0;
-#X connect 24 0 30 0;
-#X connect 25 0 29 0;
-#X connect 26 0 30 0;
-#X connect 27 0 29 0;
-#X connect 28 0 30 0;
-#X connect 29 0 3 0;
-#X connect 30 0 3 1;
-#X connect 31 0 12 0;
-#X restore 789 317 pd multichannel;
-#N canvas 0 23 450 278 (subpatch) 0;
-#X array buftransients_drums 453932 float 0;
-#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
-#X restore 34 369 graph;
-#X obj 133 304 tabplay~;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array buftransients_transients 453932 float 2;
-#X coords 0 0.5 453932 -0.5 887 53 1 0 0;
-#X restore 34 437 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array buftransients_residual 453932 float 0;
-#X coords 0 0.5 453931 -0.5 887 53 1 0 0;
-#X restore 34 505 graph;
-#X text 451 215 1) process;
-#X text 40 91 This class triggers a Sinusoidal Modelling process on
-buffers in non-real-time \, It implements a mix and match algorithms
-taken from classic papers., f 79;
-#X msg 34 176 read -resize media/Nicol-LoopE-M.wav buftransients_drums
+#N canvas 13 38 695 976 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.buftransients 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.buftransients.html reference/buftransients/
 ;
-#X msg 133 213 set buftransients_drums \, bang;
-#X msg 165 274 set buftransients_residual \, bang;
-#X msg 424 268 \; buftransients_transients xticks 0 0 0 \; buftransients_residual
-xticks 0 0 0;
-#X msg 153 254 set buftransients_transients \, bang;
-#X obj 424 237 fluid.buftransients -source buftransients_drums -transients
-buftransients_transients -residual buftransients_residual, f 75;
-#X floatatom 614 190 8 0 0 0 - - -;
-#X floatatom 754 190 8 0 0 0 - - -;
-#X text 612 153 change the thresholds;
-#X msg 754 171 1.1;
-#X msg 614 171 2;
-#X msg 614 209 threshfwd \$1 \, bang;
-#X msg 754 209 threshback \$1 \, bang;
-#X text 37 52 Buffer-Based Transient Extractor, f 50;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.buftransients.html;
-#X msg 143 89 browse \$1;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 860 80 pd;
-#X text 729 61 launch the HTML doc->;
-#X obj 861 63 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 745 103 note_on_multithreading;
-#X connect 2 0 13 0;
-#X connect 3 0 18 0;
-#X connect 5 0 8 0;
-#X connect 8 0 4 0;
-#X connect 8 0 4 1;
-#X connect 13 0 0 0;
-#X connect 14 0 8 0;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Transient\\\ Extractor
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 This class triggers a Sinusoidal Modelling process on
+buffers in non-real-time \, It implements a mix and match algorithms
+taken from classic papers.;
+#N canvas 1600 23 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 115 outlet;
+#X obj 16 19 inlet;
+#X msg 16 41 read \$1 help.transients.src.1;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X restore 18 228 pd loadsrc;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 18 180 fluid.demoaudiofiles;
+#X obj 146 898 array define help.transients.transients.1;
+#X obj 146 923 array define help.transients.residual.1;
+#N canvas 1114 -944 544 712 parameters 0;
+#X obj 186 548 outlet;
+#X obj 34 -62 loadbang;
+#X obj 186 27 unpack 0 0 0 0 0 0;
+#X floatatom 185 105 8 0 0 0 - - - 0;
+#X text 111 105 order, f 10;
+#X floatatom 185 125 8 0 0 0 - - - 0;
+#X floatatom 185 145 8 0 0 0 - - - 0;
+#X floatatom 185 165 8 0 0 0 - - - 0;
+#X floatatom 185 185 8 0 0 0 - - - 0;
+#X floatatom 185 205 8 0 0 0 - - - 0;
+#X text 111 125 blocksize, f 10;
+#X text 111 145 padsize, f 10;
+#X text 111 165 skew, f 10;
+#X text 111 205 threshback;
+#X msg 186 271 order \$1;
+#X msg 206 301 blocksize \$1;
+#X msg 236 331 padsize \$1;
+#X msg 266 361 skew \$1;
+#X msg 336 421 threshback \$1;
+#X obj 186 4 r help.buftransients.presets;
+#X msg 34 -37 \; help.buftransients.presets 20 256 128 0 2 1.1;
+#X text 111 185 threshfwd, f 10;
+#X msg 296 391 threshfwd \$1;
+#X connect 1 0 20 0;
+#X connect 2 0 3 0;
+#X connect 2 1 5 0;
+#X connect 2 2 6 0;
+#X connect 2 3 7 0;
+#X connect 2 4 8 0;
+#X connect 2 5 9 0;
+#X connect 3 0 14 0;
+#X connect 5 0 15 0;
+#X connect 6 0 16 0;
+#X connect 7 0 17 0;
+#X connect 8 0 22 0;
+#X connect 9 0 18 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X connect 19 0 2 0;
+#X connect 22 0 0 0;
+#X coords 0 -1 1 1 150 129 2 100 100;
+#X restore 156 576 pd parameters;
+#X text 294 727 <-- more parameters;
+#N canvas 1465 -1080 946 855 parameters 0;
+#X obj 29 747 r \$0-params;
+#X obj 29 770 outlet;
+#X obj 29 125 s \$0-params;
+#X msg 29 102 blocksize 256;
+#X text 163 101 size of audio block (in samples) on which the process
+is operating, f 32;
+#X obj 29 195 s \$0-params;
+#X obj 29 405 s \$0-params;
+#X obj 29 475 s \$0-params;
+#X obj 29 545 s \$0-params;
+#X obj 479 265 s \$0-params;
+#X obj 479 335 s \$0-params;
+#X msg 29 172 clumplength 25;
+#X text 163 171 window size in samples within which anomalous samples
+will be clumped together to avoid over-detecting in time, f 32;
+#X msg 29 382 order 20;
+#X msg 29 452 padsize 128;
+#X msg 29 522 skew 0;
+#X msg 479 242 threshback 1.1;
+#X msg 479 312 threshfwd 2;
+#X text 163 381 number of previous samples used by the algorithm to
+create the model of the signal within the blocksize window of analysis
+, f 32;
+#X text 163 451 size (in samples) of analysis on each side of blocksize
+, f 32;
+#X text 163 521 nervousness of the bespoke detection function, f 32
+;
+#X text 613 241 threshold applied to the smoothed backward prediction
+error for determining an offset, f 31;
+#X text 613 311 threshold applied to the smoothed forward prediction
+error for determining an onset, f 32;
+#X obj 479 475 s \$0-params;
+#X obj 479 545 s \$0-params;
+#X obj 479 615 s \$0-params;
+#X msg 479 452 warnings 0;
+#X msg 479 522 windowsize 14;
+#X msg 479 592 reset;
+#X text 613 591 Calling reset will change parameter values back to
+those the object was created with, f 33;
+#X text 613 521 averaging window of the error detection function,
+f 33;
+#X text 613 451 enable warnings to be issued whenever a parameter value
+is constrained, f 33;
+#X text 28 6 Optional parameters to fluid.buftransients;
+#X obj 29 265 s \$0-params;
+#X obj 29 335 s \$0-params;
+#X msg 29 242 numchans -1;
+#X text 163 241 for multichannel source \, how many channels to process
+, f 32;
+#X msg 29 312 numframes -1;
+#X text 163 311 how many frames of source should be process, f 32
+;
+#X obj 479 405 s \$0-params;
+#X msg 479 382 transients symbol;
+#X text 613 381 buffer where the extracted transients component will
+written., f 33;
+#X obj 479 125 s \$0-params;
+#X obj 479 195 s \$0-params;
+#X msg 479 102 startchan 0;
+#X msg 479 172 startframe 0;
+#X text 613 171 where in source the process should begin \, in samples
+, f 31;
+#X text 613 101 for multichannel source \, which channel to begin processing
+from, f 31;
+#X obj 29 615 s \$0-params;
+#X msg 29 592 source symbol;
+#X text 163 591 array to use as the source material to detect transients
+in, f 32;
+#X connect 0 0 1 0;
+#X connect 3 0 2 0;
+#X connect 11 0 5 0;
+#X connect 13 0 6 0;
+#X connect 14 0 7 0;
 #X connect 15 0 8 0;
-#X connect 17 0 8 0;
-#X connect 18 0 16 0;
-#X connect 19 0 24 0;
-#X connect 20 0 25 0;
+#X connect 16 0 9 0;
+#X connect 17 0 10 0;
+#X connect 26 0 23 0;
+#X connect 27 0 24 0;
+#X connect 28 0 25 0;
+#X connect 35 0 33 0;
+#X connect 37 0 34 0;
+#X connect 40 0 39 0;
+#X connect 44 0 42 0;
+#X connect 45 0 43 0;
+#X connect 49 0 48 0;
+#X restore 191 724 pd parameters;
+#X obj 27 774 fluid.buftransients -source help.transients.src.1 -transients
+help.transients.transients.1 -residual help.transients.residual.1;
+#X obj 28 576 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 48 576 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 49 576 2) decompose;
+#X obj 27 838 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 44 835 bang when done;
+#X obj 18 343 fluid.waveform 215 64 0 empty empty 0;
+#X msg 18 285 waveform help.transients.src.1, f 22;
+#X obj 236 343 fluid.waveform 215 64 1 empty empty 0;
+#X obj 454 343 fluid.waveform 215 64 1 empty empty 0;
+#X msg 236 285 waveform help.transients.transients.1, f 29;
+#X msg 454 285 waveform help.transients.residual.1, f 27;
+#X obj 27 858 s done;
+#X obj 236 260 r done;
+#X obj 454 260 r done;
+#X obj 18 443 fluid.waveform 452 120 0 empty empty 0;
+#N canvas 1043 195 450 300 draw 0;
+#X obj 32 20 r done;
+#X obj 32 134 outlet;
+#X msg 31 67 features help.transients.transients.1 \, featurescolor
+#FF0022 \, waveformcolor #55cc55 \, waveform help.transients.residual.1
+;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 18 419 pd draw;
+#X obj 477 642 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 496 641 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 497 641 4) audition results, f 23;
+#N canvas 944 -1066 953 592 playresults 0;
+#X obj -299 31 inlet;
+#X obj -299 65 t b b b, f 22;
+#X obj -299 219 tabplay~ help.transients.src.1;
+#X obj -224 194 tabplay~ help.transients.transients.1;
+#X obj -148 164 tabplay~ help.transients.residual.1;
+#X obj -299 255 *~;
+#X obj -224 255 *~;
+#X obj -148 255 *~;
+#X obj -299 292 +~, f 11;
+#X obj -299 316 +~, f 22;
+#X obj -299 340 outlet~;
+#X obj 104 123 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 104 140 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 104 106 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X text 119 102 source;
+#X text 119 120 transients;
+#X text 121 138 residual;
+#X text 99 69 select components:, f 20;
+#X obj 312 36 loadbang;
+#X msg 312 61 1;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 2 0 5 0;
+#X connect 3 0 6 0;
+#X connect 4 0 7 0;
+#X connect 5 0 8 0;
+#X connect 6 0 8 1;
+#X connect 7 0 9 1;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 11 0 6 1;
+#X connect 12 0 7 1;
+#X connect 13 0 5 1;
+#X connect 18 0 19 0;
+#X connect 19 0 13 0;
+#X coords 0 -1 1 1 96 60 2 100 100;
+#X restore 478 717 pd playresults;
+#X f 15;
+#X obj 478 792 fluid.out~ buftransientshelp;
+#X obj 549 797 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 550 797 3) audio on, f 16;
+#X obj 449 856 cnv 15 228 90 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 456 921 note_on_multithreading;
+#X obj 456 899 note_on_automatic_multiarrays;
+#N canvas 155 102 713 880 multichannel 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.buftransients 1 22 0 36
+#4ba3fb #ffffff 0;
+#N canvas 1687 -826 550 256 loadsrc 0;
+#X obj 16 173 soundfiler;
+#X obj 16 205 outlet;
+#X obj 96 173 soundfiler;
+#X obj 16 36 t b b, f 12;
+#X msg 16 71 read -resize media/Nicol-LoopE-M.wav help.mc.src.1, f
+39;
+#X msg 96 115 read -resize media/Tremblay-AaS-VoiceQC-B2K-M.wav help.mc.src.2
+, f 38;
+#X obj 16 9 inlet;
+#X connect 0 0 1 0;
+#X connect 3 0 4 0;
+#X connect 3 1 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 3 0;
+#X restore 18 232 pd loadsrc;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 18 556 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 38 556 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 555 2) decompose;
+#X obj 18 652 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X text 18 673 bang when done;
+#X obj 450 375 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 469 374 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 470 374 4) audition results, f 23;
+#N canvas 1366 -907 1108 745 playresults 0;
+#X obj -189 171 inlet;
+#X obj -189 505 *~;
+#X obj -51 505 *~;
+#X obj 87 505 *~;
+#X obj -189 532 +~, f 20;
+#X obj -189 556 +~, f 40;
+#X obj -189 580 outlet~;
+#X obj 104 123 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 104 140 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 104 106 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X text 119 102 source;
+#X text 119 120 transients;
+#X text 121 138 residual;
+#X text 99 69 select components:, f 20;
+#X obj 312 36 loadbang;
+#X msg 312 61 1;
+#X obj -189 241 tabplay~ help.mc.src.3-0, f 16;
+#X obj -51 281 tabplay~ help.mc.transients-0, f 21;
+#X obj 87 340 tabplay~ help.mc.residual-0, f 19;
+#X obj 224 505 *~;
+#X obj 363 505 *~;
+#X obj 508 505 *~;
+#X obj 224 532 +~, f 20;
+#X obj 224 556 +~, f 42;
+#X obj 224 580 outlet~;
+#X obj 225 240 tabplay~ help.mc.src.3-1, f 18;
+#X obj 363 284 tabplay~ help.mc.transients-1, f 21;
+#X obj 501 334 tabplay~ help.mc.residual-1, f 20;
+#X obj -189 205 t b b b b b b, f 99;
+#X connect 0 0 28 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 5 1;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 7 0 2 1;
+#X connect 7 0 20 1;
+#X connect 8 0 3 1;
+#X connect 8 0 21 1;
+#X connect 9 0 1 1;
+#X connect 9 0 19 1;
+#X connect 14 0 15 0;
+#X connect 15 0 9 0;
+#X connect 16 0 1 0;
+#X connect 17 0 2 0;
+#X connect 18 0 3 0;
+#X connect 19 0 22 0;
+#X connect 20 0 22 1;
+#X connect 21 0 23 1;
+#X connect 22 0 23 0;
+#X connect 23 0 24 0;
+#X connect 25 0 19 0;
+#X connect 26 0 20 0;
+#X connect 27 0 21 0;
+#X connect 28 0 16 0;
+#X connect 28 1 17 0;
+#X connect 28 2 18 0;
+#X connect 28 3 25 0;
+#X connect 28 4 26 0;
+#X connect 28 5 27 0;
+#X coords 0 -1 1 1 96 60 2 100 100;
+#X restore 450 420 pd playresults;
+#X f 15;
+#X obj 521 500 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 522 498 3) audio on, f 16;
+#X text 17 79 Processing multichannel inputs;
+#X text 19 161 1) compose a radical stereo source;
+#X obj 449 156 array define help.mc.src.1;
+#X obj 449 179 array define help.mc.src.2;
+#N canvas 1729 -1023 495 381 stereo_source 0;
+#X obj 31 29 inlet;
+#X msg 31 53 reset \, source help.mc.src.1 \, bang \, source help.mc.src.2
+\, deststartchan 1 \, bang;
+#X obj 31 91 fluid.bufcompose -destination help.mc.src.3;
+#X obj 31 115 outlet;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X restore 18 268 pd stereo_source;
+#X obj 18 588 fluid.buftransients -source help.mc.src.3 -transients
+help.mc.transients -residual help.mc.residual -order 14 -skew 10;
+#X obj 449 202 clone 2 fluid.multiarray help.mc.src.3, f 26;
+#X msg 18 304 waveform help.mc.src.3;
+#X obj 18 328 fluid.waveform 280 130 0 empty empty 0;
+#X obj 449 242 clone 2 fluid.multiarray help.mc.transients, f 26;
+#X obj 449 282 clone 2 fluid.multiarray help.mc.residual, f 26;
+#X obj 18 200 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 450 496 fluid.out~ buftransientshelp;
+#X connect 1 0 18 0;
+#X connect 3 0 19 0;
+#X connect 8 0 11 0;
+#X connect 11 0 26 0;
+#X connect 11 1 26 1;
+#X connect 18 0 21 0;
+#X connect 19 0 6 0;
+#X connect 21 0 22 0;
+#X connect 25 0 1 0;
+#X restore 456 877 pd multichannel;
+#X obj 146 874 array define help.transients.src.1 88200;
+#X text 480 447 This is the first two seconsds of the sound file. You
+can see where the transients (rust coloured) are detected and how they
+have been extracted from the original sound and "inpainted" (green).
+, f 30;
+#X text 19 161 1) select a source - it will load just 2 seconds;
+#X connect 4 0 19 0;
+#X connect 6 0 4 0;
+#X connect 9 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 16 0;
+#X connect 13 0 12 0;
+#X connect 16 0 24 0;
+#X connect 19 0 18 0;
 #X connect 22 0 20 0;
-#X connect 23 0 19 0;
-#X connect 24 0 18 0;
-#X connect 25 0 18 0;
-#X connect 29 0 27 0;
+#X connect 23 0 21 0;
+#X connect 25 0 22 0;
+#X connect 26 0 23 0;
+#X connect 28 0 27 0;
+#X connect 29 0 32 0;
+#X connect 32 0 33 0;
+#X connect 32 0 33 1;

@@ -1,0 +1,47 @@
+#N canvas 68 97 590 364 12;
+#N canvas 82 492 450 300 (subpatch) 0;
+#X obj 83 48 inlet;
+#X obj 83 93 pdcontrol;
+#X msg 153 93 browse \$1;
+#X msg 83 71 dir 0 tutorial_on_automatic_multiarrays_and_datasets.pd
+;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X restore 409 320 pd;
+#X obj 409 303 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 14 19 Instead of always having to supply [clone multiarray]
+for FluCoMa buffer processing objects \, you can have those objects
+automatically managed their own internal \, resizable multiarrays.
+, f 75;
+#X listbox 47 216 28 0 0 0 - - - 0;
+#X obj 47 185 list;
+#X obj 234 106 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 235 106 1) click me;
+#X text 48 235 name of the "internal" array output by fluid object.
+, f 30;
+#X obj 47 150 fluid.bufmfcc;
+#X obj 312 190 fluid.bufinfo;
+#X listbox 312 214 20 0 0 0 - - - 0;
+#X text 40 301 To learn more about these \, see the tutorial here ->
+;
+#X msg 47 106 buffer help.automatic.src;
+#N canvas 776 224 450 300 loading 0;
+#X obj 16 83 soundfiler;
+#X obj 16 19 loadbang;
+#X msg 16 41 read -resize media/Nicol-LoopE-M.wav help.automatic.src
+;
+#X obj 115 84 array define help.automatic.src;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X restore 390 104 pd loading;
+#X text 311 239 # of frames / # of channels;
+#X connect 1 0 0 0;
+#X connect 4 0 3 0;
+#X connect 8 0 4 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 12 0 8 0;

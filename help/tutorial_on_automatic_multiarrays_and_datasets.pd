@@ -1,0 +1,362 @@
+#N struct 19488-draw-item float x float y float c float a float b;
+#N struct 19489-rectangle float x float c;
+#N struct 19489-pixel float x0 float y0 float x1 float y1;
+#N struct 19491-draw-item float x float y float c float a float b;
+#N struct 19492-rectangle float x float c;
+#N struct 19492-pixel float x0 float y0 float x1 float y1;
+#N canvas 0 23 788 1132 12;
+#X obj 17 13 cnv 15 750 42 empty empty Automatic\\\ multiarrays\\\ and\\\ datasets
+1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ tutorial\\\ on\\\ internal\\\ memory\\\ structures
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 90 The basics of multiarray management;
+#X obj 17 152 cnv 15 750 280 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 23 157 Ths is a typical scenario \, where you want to chain
+together various buffer processing objects so that they each process
+each others outputs as inputs., f 105;
+#X text 23 195 In this case \, we would be calculating some statistics
+for each MFCC coefficient and then flattening that two-dimensional
+buffer to a single channel buffer., f 105;
+#X obj 23 247 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 23 295 fluid.bufstats -source mfcc -stats mfccstats;
+#X obj 23 319 fluid.bufflatten -source mfccstats -destination flat
+;
+#X obj 136 372 array get flat;
+#X listbox 136 396 86 0 0 0 - - - 0;
+#X obj 400 271 array define input;
+#X obj 400 338 array define flat;
+#N canvas 404 465 450 300 loadinput 0;
+#X obj 57 43 loadbang;
+#X obj 57 91 soundfiler;
+#X msg 57 67 read -resize media/Nicol-LoopE-M.wav input;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 539 270 pd loadinput;
+#X obj 23 271 fluid.bufmfcc 13 -source input -feature mfcc;
+#X obj 400 293 clone 13 fluid.multiarray mfcc;
+#X obj 400 316 clone 13 fluid.multiarray mfccstats;
+#X obj 23 343 t b;
+#X obj 23 374 array size flat;
+#X floatatom 23 398 5 0 0 0 - - - 0;
+#X obj 18 446 cnv 15 750 400 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 23 455 Because each object is directly connected to the next
+one \, you might not be aware that they report the buffer that they
+output ther data to whenever you ask it to process., f 102;
+#X text 25 599 The reason they output this message is that the "buffer"
+message is special for FluCoMa buffer~ processing objects. If an object
+that can process a buffer receives this message \, it set the @source
+attribute to that buffer name and triggers processing. It is the equivalent
+of this:, f 103;
+#X text 25 718 So \, another way of patching what we had above is this.
+Notice how the @source is omitted?, f 90;
+#X obj 545 73 note_on_multiarrays;
+#X obj 26 499 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 26 523 fluid.bufmfcc -source input -features mfcc;
+#X obj 26 547 list;
+#X listbox 26 571 20 0 0 0 - - - 0;
+#X msg 27 665 source input \, bang;
+#X obj 27 689 fluid.bufmfcc -features mfcc;
+#X msg 26 747 buffer input;
+#X obj 26 771 fluid.bufmfcc -features mfcc;
+#X obj 26 795 list;
+#X listbox 26 819 20 0 0 0 - - - 0;
+#X obj 17 860 cnv 15 750 250 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 26 872 So we might actually write the first patch as below.
+At each stage \, the output buffer is passed along as the input of
+the next buffer and triggers processing., f 102;
+#X obj 30 921 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 30 945 fluid.bufmfcc -source input -features mfcc;
+#X obj 30 971 fluid.bufstats -stats mfccstats;
+#X obj 30 997 fluid.bufflatten -destination flat;
+#X obj 143 1050 array get flat;
+#X listbox 143 1074 86 0 0 0 - - - 0;
+#X obj 30 1021 t b;
+#X obj 30 1052 array size flat;
+#X floatatom 30 1076 5 0 0 0 - - - 0;
+#X obj 362 994 list;
+#X listbox 397 995 17 0 0 0 - - - 0;
+#X obj 362 968 list;
+#X listbox 397 968 17 0 0 0 - - - 0;
+#X obj 362 1020 list;
+#X listbox 397 1020 17 0 0 0 - - - 0;
+#N canvas 128 23 789 786 multiarray_2 0;
+#X obj 17 13 cnv 15 750 42 empty empty Automatic\\\ multiarrays\\\ and\\\ datasets
+1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ tutorial\\\ on\\\ internal\\\ memory\\\ structures
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 152 cnv 15 750 320 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 17 90 Automatic output buffers;
+#X text 23 157 We can go one step further than this. Let's see what
+happens if we omit attributes such as @destination \, @features and
+@stats (attributes that denote output for buffer processing objects).
+We'll also keep using the "buffer" message to set and trigger the processing.
+, f 105;
+#X msg 28 221 buffer input;
+#X obj 28 245 fluid.bufmfcc;
+#X obj 28 269 list;
+#X listbox 28 293 24 0 0 0 - - - 0;
+#X text 29 317 So what actually happens here?;
+#X text 29 348 1) The object is asked to process some input.;
+#X text 30 365 2) It knows that it has no @features output set;
+#X text 30 384 3) The object uses an internal buffer as the output
+instead!;
+#X text 30 403 4) it then processes the input and copies the output
+into this hidden \, internal buffer., f 93;
+#X text 30 423 5) It reports the name of the internal buffer that it
+processed., f 66;
+#X text 32 449 We could pass this special message to other objects.
+;
+#X obj 18 485 cnv 15 750 280 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 28 493 See how in the below patching only the first object
+has a source specfied? This is how we start the processing \, using
+the passing of "buffer" messages to automatically pass along the output
+of one object as input to the next and trigger processing., f 103
+;
+#X obj 31 569 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 31 593 fluid.bufmfcc -source input;
+#X obj 31 617 fluid.bufstats;
+#X obj 31 641 fluid.bufflatten;
+#X obj 197 686 fluid.bufinfo;
+#X obj 31 712 array get;
+#X msg 90 689 symbol \$1-0;
+#X listbox 31 735 101 0 0 0 - - - 0;
+#X obj 31 665 t b a;
+#X listbox 197 710 5 0 0 0 - - - 0;
+#X obj 332 647 list;
+#X listbox 367 648 23 0 0 0 - - - 0;
+#X obj 332 621 list;
+#X listbox 367 621 23 0 0 0 - - - 0;
+#X obj 332 673 list;
+#X listbox 367 673 23 0 0 0 - - - 0;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;
+#X connect 19 0 30 0;
+#X connect 20 0 21 0;
+#X connect 20 0 28 0;
+#X connect 21 0 26 0;
+#X connect 21 0 32 0;
+#X connect 22 0 27 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 2;
+#X connect 26 0 23 0;
+#X connect 26 1 24 0;
+#X connect 26 1 22 0;
+#X connect 28 0 29 0;
+#X connect 30 0 31 0;
+#X connect 32 0 33 0;
+#X restore 545 97 pd multiarray_2;
+#N canvas 146 23 786 812 multiarray_3 0;
+#X obj 17 13 cnv 15 750 42 empty empty Automatic\\\ multiarrays\\\ and\\\ datasets
+1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ tutorial\\\ on\\\ internal\\\ memory\\\ structures
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 152 cnv 15 750 140 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 17 90 Caveats and things to be aware of;
+#X obj 18 305 cnv 15 750 200 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X msg 26 237 buffer B;
+#X obj 26 261 fluid.bufspectralshape -source A;
+#X obj 278 261 array define A;
+#X obj 392 261 array define B;
+#X text 23 157 It is important to be aware of one golden rule when
+using automatic buffers., f 105;
+#X text 21 182 The "buffer" message will OVERRIDE any @source attributes
+in objects that receive them. In the example below \, the @source attribute
+is set to a buffer~ called "A". However \, because we provide the message
+"buffer B" \, the new source will be buffer~ B., f 104;
+#X text 29 343 On the surface \, it seems like the fluid.bufspectralshape~
+object will process "A" and then fluid.bufloudness~ will process "B".
+This is partially correct: the fluid.bufspectralshape~ will process
+"A" \, however \, it will output the "buffer" message with an automatically
+managed internal buffer~. This will change the source of fluid.bufloudness~
+to that buffer \, rather than the specificed @source B., f 104;
+#X text 28 317 Why is this important? Well...;
+#X obj 33 427 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 33 451 fluid.bufspectralshape -source A;
+#X obj 33 475 fluid.bufloudness -source B;
+#X obj 16 525 cnv 15 750 260 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 26 537 One way to solve this is to structure process in parallel
+, f 87;
+#X obj 32 573 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 32 597 t b b;
+#X obj 32 621 fluid.bufspectralshape -source A;
+#X obj 275 621 fluid.bufloudness -source B;
+#X text 32 657 or insert a bang between:;
+#X obj 35 686 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 35 710 fluid.bufspectralshape -source A;
+#X obj 35 758 fluid.bufloudness -source B;
+#X obj 35 734 t b;
+#X connect 5 0 6 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;
+#X connect 19 1 21 0;
+#X connect 23 0 24 0;
+#X connect 24 0 26 0;
+#X connect 26 0 25 0;
+#X restore 657 97 pd multiarray_3;
+#N canvas 0 23 792 1013 dataset_1 0;
+#X obj 17 13 cnv 15 750 42 empty empty Automatic\\\ multiarrays\\\ and\\\ datasets
+1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ tutorial\\\ on\\\ internal\\\ memory\\\ structures
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 134 cnv 15 750 230 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 17 90 Getting to grip with the basics of fluid.dataset usage
+;
+#X text 23 139 The same principles of automatic management can be used
+with objects that use the fluid.dataset~ as inputs and outputs., f
+105;
+#X text 25 184 Let's start by creating a simple synthetic dataset mde
+out of MFCC analysis., f 76;
+#X obj 27 217 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 27 241 fluid.bufmfcc -source input;
+#X msg 27 265 frombuffer \$1 \, cols;
+#X obj 27 289 fluid.dataset data;
+#X obj 27 313 list;
+#X listbox 27 337 8 0 0 0 - - - 0;
+#X obj 96 313 fluid.ds2text data data.txt;
+#X obj 96 337 text define data.txt;
+#X obj 17 384 cnv 15 750 610 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 28 397 If we wanted to reduce the dimensionality of this we
+might create a pipeline that first standardises the data \, reduces
+the dimensions and then normalises those new dimensions., f 103;
+#X msg 32 441 fittransform data std;
+#X obj 32 465 fluid.standardize;
+#X msg 32 489 fittransform std reduc;
+#X obj 32 513 fluid.mds;
+#X msg 32 537 fittransform reduc normal;
+#X obj 32 561 fluid.normalize;
+#X msg 32 585 cols;
+#X obj 32 609 fluid.dataset normal;
+#X obj 32 633 list;
+#X listbox 32 657 20 0 0 0 - - - 0;
+#X obj 224 463 fluid.dataset std;
+#X obj 224 510 fluid.dataset reduc;
+#X obj 184 637 fluid.ds2text normal normal.txt;
+#X obj 414 636 text define normal.txt;
+#X msg 184 661 setpoints normal.txt;
+#X obj 184 685 fluid.plotter;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 9 0 12 0;
+#X connect 10 0 11 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 19 0 20 0;
+#X connect 20 0 21 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 24 0;
+#X connect 23 0 28 0;
+#X connect 24 0 25 0;
+#X connect 28 0 30 0;
+#X connect 30 0 31 0;
+#X restore 545 120 pd dataset_1;
+#N canvas 106 23 791 1071 dataset_2 0;
+#X obj 17 13 cnv 15 750 42 empty empty Automatic\\\ multiarrays\\\ and\\\ datasets
+1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\\\ tutorial\\\ on\\\ internal\\\ memory\\\ structures
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 90 The basics of multiarray management;
+#X obj 17 152 cnv 15 750 325 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 23 157 if you aren't looking at the output of each of these
+objects you might not notice that they report via a message the type
+of work they did (fittransform \, fitpredict) and the output fluid.dataset~
+that they used., f 105;
+#X msg 27 219 fittransform data std;
+#X obj 27 243 fluid.standardize;
+#X obj 27 267 list;
+#X listbox 27 291 20 0 0 0 - - - 0;
+#X text 29 336 Similar to the buffer~ interface \, if you omit the
+output fluid.dataset~ it will use a hidden internal one instead!,
+f 101;
+#X msg 32 377 fittransform data;
+#X obj 32 401 fluid.standardize;
+#X obj 32 425 list;
+#X listbox 32 449 30 0 0 0 - - - 0;
+#X obj 17 496 cnv 15 750 550 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#X text 29 507 These two things together \, we might rewrite the long
+processing chain like this:, f 81;
+#X msg 33 542 fittransform data;
+#X obj 33 566 fluid.standardize;
+#X obj 33 590 fluid.mds;
+#X obj 33 614 fluid.normalize;
+#X obj 33 686 fluid.ds2text dummy normal.text;
+#X msg 33 710 setpoints normal.text;
+#X obj 33 734 fluid.plotter;
+#X obj 33 638 t b a;
+#X msg 94 658 refer \$1;
+#X obj 221 573 text define normal.text;
+#X text 272 661 At the end here we "refer" an unnamed fluid.dataset
+to the output of fluid.normalize in order to dump its contents.;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 19 0 23 0;
+#X connect 20 0 21 0;
+#X connect 21 0 22 0;
+#X connect 23 0 20 0;
+#X connect 23 1 24 0;
+#X connect 24 0 20 1;
+#X restore 637 120 pd dataset_2;
+#X connect 6 0 14 0;
+#X connect 7 0 8 0;
+#X connect 8 0 17 0;
+#X connect 9 0 10 0;
+#X connect 14 0 7 0;
+#X connect 17 0 9 0;
+#X connect 17 0 18 0;
+#X connect 18 0 19 0;
+#X connect 25 0 26 0;
+#X connect 26 0 27 0;
+#X connect 27 0 28 0;
+#X connect 29 0 30 0;
+#X connect 31 0 32 0;
+#X connect 32 0 33 0;
+#X connect 33 0 34 0;
+#X connect 37 0 38 0;
+#X connect 38 0 39 0;
+#X connect 38 0 48 0;
+#X connect 39 0 40 0;
+#X connect 39 0 46 0;
+#X connect 40 0 43 0;
+#X connect 40 0 50 0;
+#X connect 41 0 42 0;
+#X connect 43 0 41 0;
+#X connect 43 0 44 0;
+#X connect 44 0 45 0;
+#X connect 46 0 47 0;
+#X connect 48 0 49 0;
+#X connect 50 0 51 0;

@@ -65,8 +65,6 @@ text object myText, f 36;
 #X text 19 651 Click on Text object to see its content;
 #X obj 571 679 fluid.ls2text;
 #X text 495 679 see also:;
-#X obj 449 63 cnv 15 200 30 empty empty 1\\\ and\\\ 2\\\ not\\\ working\\\ because\\\ missing
-20 12 0 9 #faff00 #404040 0;
 #X connect 2 0 11 0;
 #X connect 3 0 7 0;
 #X connect 4 0 7 0;

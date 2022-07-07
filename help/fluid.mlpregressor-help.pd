@@ -1,2 +1,269 @@
-#N canvas 546 252 836 602 12;
-#X obj 149 192 fluid.mlpregressor;
+#N canvas 43 70 698 1048 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.mlpregressor 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.mlpregressor.html reference/mlpregressor/
+;
+#X text 17 79 Regression with a multi-layer perceptron;
+#X text 17 119 Perform regression between fluid.datasets using a Multi-Layer
+Perception neural network.;
+#X obj 19 240 loadbang;
+#X obj 59 323 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 39 513 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 19 703 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#N canvas 0 38 637 563 linear_ramp 0;
+#X obj 37 11 inlet;
+#X obj 37 397 outlet;
+#X obj 37 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 37 205 f;
+#X obj 76 204 + 1;
+#X obj 76 228 % 100;
+#X msg 76 155 0;
+#X floatatom 47 269 5 0 0 0 - - - 0;
+#X obj 168 317 / 100;
+#X msg 37 69 100;
+#X obj 37 101 until;
+#X obj 37 291 t f f f, f 20;
+#X obj 37 349 sel 99;
+#X obj 37 40 t b b, f 6;
+#X obj 168 345 tabwrite help.mlpreg.shape.1;
+#X msg 37 373 frombuffer help.mlpreg.shape.1;
+#X connect 0 0 13 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 0 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X connect 8 0 14 0;
+#X connect 9 0 10 0;
+#X connect 10 0 2 0;
+#X connect 11 0 12 0;
+#X connect 11 1 8 0;
+#X connect 11 2 14 1;
+#X connect 12 0 15 0;
+#X connect 13 0 9 0;
+#X connect 13 1 6 0;
+#X connect 15 0 1 0;
+#X restore 59 343 pd linear_ramp;
+#N canvas 967 174 652 714 sinusoid 0;
+#X obj 67 11 inlet;
+#X obj 37 487 outlet;
+#X obj 67 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 67 205 f;
+#X obj 106 204 + 1;
+#X obj 106 228 % 100;
+#X msg 106 155 0;
+#X floatatom 77 269 5 0 0 0 - - - 0;
+#X msg 67 69 100;
+#X obj 67 101 until;
+#X obj 67 291 t f f f, f 20;
+#X obj 37 439 sel 99;
+#X obj 67 40 t b b, f 6;
+#X floatatom 191 385 5 0 0 0 - - - 0;
+#X obj 145 350 expr sin(2 * 3.14159 * $f1 / 100);
+#X obj 168 435 tabwrite help.mlpreg.shape.2;
+#X msg 37 463 frombuffer help.mlpreg.shape.2;
+#X msg 359 232 \; help.mlpreg.shape.2 const 0.5;
+#X connect 0 0 12 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 0 10 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X connect 8 0 9 0;
+#X connect 9 0 2 0;
+#X connect 10 0 11 0;
+#X connect 10 1 14 0;
+#X connect 10 2 15 1;
+#X connect 11 0 16 0;
+#X connect 12 0 8 0;
+#X connect 12 1 6 0;
+#X connect 14 0 13 0;
+#X connect 14 0 15 0;
+#X connect 16 0 1 0;
+#X restore 59 533 pd sinusoid;
+#N canvas 913 -853 733 734 exponential_ramp 0;
+#X obj 187 11 inlet;
+#X obj 187 427 outlet;
+#X obj 187 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 187 205 f;
+#X obj 226 204 + 1;
+#X obj 226 228 % 100;
+#X msg 226 155 0;
+#X floatatom 197 269 5 0 0 0 - - - 0;
+#X obj 255 317 / 100;
+#X msg 187 69 100;
+#X obj 187 101 until;
+#X obj 187 291 t f f f, f 20;
+#X obj 187 379 sel 99;
+#X obj 187 40 t b b, f 6;
+#X obj 255 345 expr pow($f1 \, 2);
+#X obj 255 375 tabwrite help.mlpreg.shape.3;
+#X msg 187 403 frombuffer help.mlpreg.shape.3;
+#X connect 0 0 13 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 3 0 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 3 1;
+#X connect 8 0 14 0;
+#X connect 9 0 10 0;
+#X connect 10 0 2 0;
+#X connect 11 0 12 0;
+#X connect 11 1 8 0;
+#X connect 11 2 15 1;
+#X connect 12 0 16 0;
+#X connect 13 0 9 0;
+#X connect 13 1 6 0;
+#X connect 14 0 15 0;
+#X connect 16 0 1 0;
+#X restore 59 723 pd exponential_ramp;
+#N canvas 469 507 450 278 (subpatch) 0;
+#X array help.mlpreg.shape.1 100 float 2;
+#X coords 0 1 100 -1 146 40 1 0 0;
+#X restore 69 444 graph;
+#X obj 59 387 fluid.dataset help.mlpreg.in, f 18;
+#X obj 59 577 fluid.dataset help.mlpreg.out, f 18;
+#N canvas 469 507 450 278 (subpatch) 0;
+#X array help.mlpreg.shape.2 100 float 2;
+#X coords 0 1 100 -1 146 40 1 0 0;
+#X restore 69 634 graph;
+#N canvas 469 507 450 278 (subpatch) 0;
+#X array help.mlpreg.shape.3 100 float 2;
+#X coords 0 1 100 -1 146 40 1 0 0;
+#X restore 69 824 graph;
+#X obj 59 767 fluid.dataset help.mlpreg.query, f 21;
+#X text 97 236 Each of these arrays is representative of a dataset.
+, f 20;
+#X text 97 286 Look inside the sub patchers to see how that works.
+, f 20;
+#X msg 340 240 clear;
+#X msg 362 331 fit help.mlpreg.in help.mlpreg.out, f 21;
+#X obj 405 648 fluid.dataset help.mlpreg.predict;
+#X obj 326 855 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X text 346 852 store dataset into a text object;
+#X text 514 917 <- double-click 'text' to see data, f 17;
+#X obj 326 880 fluid.ds2text help.mlpreg.predict help.mlpreg.predict.text
+, f 33;
+#X msg 470 422 predict help.mlpreg.query help.mlpreg.predict, f 29
+;
+#X obj 326 922 text define help.mlpreg.predict.text;
+#X f 24;
+#X obj 394 240 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 395 239 1) start by resetting the neural network;
+#X obj 369 294 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 473 385 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 474 384 3) Predict the output for the given input dataset,
+f 26;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array help.mlpreg.display 100 float 2;
+#X coords 0 1 100 -1 260 40 1 0 0;
+#X restore 405 695 graph;
+#X msg 405 619 tobuffer help.mlpreg.display;
+#X text 322 752 Predicting the outputs for an exponential ramp shows
+how the mapping works., f 24;
+#X text 511 751 We have a quasi-exponential sine wave here as a result
+of predicting based on the curved ramp of help.mlpreg.query, f 24
+;
+#X obj 340 589 route fit predict, f 19;
+#X floatatom 340 619 5 0 0 0 - - - 0;
+#X text 370 293 2) now fit two fluid.datasets against each other,
+f 31;
+#X obj 406 149 array define help.mlpr.pointprediction 1;
+#X obj 469 125 array define help.mlpr.datum 1;
+#N canvas 782 434 627 606 predicting_points 0;
+#X obj 109 -1 hsl 190 28 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 106 34 t b f;
+#X obj 138 59 array set help.mlpr.datum, f 17;
+#X msg 106 108 predictpoint help.mlpr.datum help.mlpr.pointprediction
+, f 31;
+#X obj 106 224 route predictpoint, f 23;
+#X obj 106 253 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#N canvas 1558 -1015 700 433 scrollarray 0;
+#X obj 49 37 inlet;
+#X obj 543 138 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 543 158 f;
+#X obj 585 148 + 1;
+#X obj 585 172 % 100;
+#X obj 48 190 list prepend 0, f 24;
+#X floatatom 49 74 5 0 0 0 - - - 0;
+#X obj 213 138 f;
+#X obj 49 102 t b f f b, f 71;
+#X obj 296 13 array define static-\$0;
+#X obj 378 216 tabwrite static-\$0, f 24;
+#X obj 48 256 array set help.mlpr.prediction.display, f 29;
+#X msg 359 43 \; help.mlpr.prediction.display const;
+#X obj 471 13 loadbang;
+#X obj 48 138 array get help.mlpr.prediction.display, f 21;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 0 10 1;
+#X connect 3 0 4 0;
+#X connect 4 0 2 1;
+#X connect 5 0 11 0;
+#X connect 6 0 8 0;
+#X connect 7 0 5 1;
+#X connect 8 0 14 0;
+#X connect 8 1 7 0;
+#X connect 8 2 10 0;
+#X connect 8 3 1 0;
+#X connect 13 0 12 0;
+#X connect 14 0 5 0;
+#X restore 106 333 pd scrollarray;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array help.mlpr.prediction.display 100 float 2;
+#X coords 0 1 100 -1 200 140 1 0 0;
+#X restore 106 387 graph;
+#X obj 106 283 array get help.mlpr.pointprediction, f 26;
+#X obj 105 167 fluid.mlpregressor help.mlp, f 29;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 1 1 2 0;
+#X connect 3 0 9 0;
+#X connect 4 0 5 0;
+#X connect 5 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 4 0;
+#X restore 536 559 pd predicting_points;
+#X obj 340 470 fluid.mlpregressor help.mlp -hiddenlayers 2 -activation
+3 -outputactivation 3 -learnrate 0.1 -batchsize 1 -validation 0, f
+29;
+#X obj 481 976 cnv 15 192 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 483 1003 note_on_automatic_datasets;
+#X connect 4 0 5 0;
+#X connect 4 0 6 0;
+#X connect 4 0 7 0;
+#X connect 5 0 8 0;
+#X connect 6 0 9 0;
+#X connect 7 0 10 0;
+#X connect 8 0 12 0;
+#X connect 9 0 13 0;
+#X connect 10 0 16 0;
+#X connect 19 0 43 0;
+#X connect 20 0 43 0;
+#X connect 22 0 25 0;
+#X connect 26 0 43 0;
+#X connect 34 0 21 0;
+#X connect 37 0 38 0;
+#X connect 37 1 34 0;
+#X connect 43 0 37 0;

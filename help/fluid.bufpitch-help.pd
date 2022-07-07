@@ -1,109 +1,104 @@
-#N canvas 40 41 580 968 10;
-#X obj 12 19 cnv 15 100 10 empty empty fluid.bufpitch 20 12 0 36 #fcfcfc
-#404040 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array pitch-source 44100 float 0;
-#X coords 0 1 44099 -1 516 141 1 0 0;
-#X restore 35 160 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats-0 87 float 2;
-#X coords 0 2205 87 0 513 70 1 0 0;
-#X restore 38 526 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats-1 87 float 2;
-#X coords 0 1 87 0 513 70 1 0 0;
-#X restore 38 611 graph;
-#X obj 37 380 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#N canvas 47 27 692 847 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufpitch.html reference/pitch/
+;
+#X obj 458 715 cnv 15 215 115 empty empty More\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 115 outlet;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.bufpitch.1.src;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X restore 17 218 pd loadsrc;
+#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 170 fluid.demoaudiofiles;
+#X obj 17 60 cnv 15 488 17 empty empty Pitch\\\ Descriptor 4 8 0 13
+#e0e0e0 #404040 0;
+#X text 17 79 Three popular pitch descriptors \, all of which compute
+frequency and the confidence that a pitch is present.;
+#X obj 448 195 array define help.bufpitch.1.src;
+#N canvas 116 67 693 714 select 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 17 79 You can also select which outputs should even be copied
+to the destination buffer. This removes the need for a fluid.bufselect~
+to capture descriptors you care about.;
+#N canvas 1955 -858 448 179 loadsrc 0;
+#X obj 16 83 soundfiler;
+#X obj 16 135 outlet;
+#X obj 16 19 inlet;
+#X msg 16 41 read -resize \$1 help.bufpitch.2.src;
+#X msg 16 110 waveform help.bufpitch.2.src;
+#X connect 0 0 4 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X restore 17 218 pd loadsrc;
+#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 170 fluid.demoaudiofiles;
+#X text 19 151 1) Pick a source;
+#X obj 448 145 array define help.bufpitch.2.src;
+#X text 268 511 Think of this parameter like a filter \, rather than
+a reordering of the outputs.;
+#X msg 30 312 select pitch \, bang, f 14;
+#X obj 30 466 fluid.bufpitch -source help.bufpitch.2.src -features
+help.bufpitch.2.pitch, f 30;
+#X obj 448 175 clone 2 fluid.multiarray help.bufpitch.2.pitch, f 32
+;
+#X msg 30 538 features help.bufpitch.2.pitch;
+#X obj 30 582 fluid.waveform 480 110 1 empty empty 0;
+#X msg 40 362 select confidence \, bang, f 18;
+#X obj 158 312 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 159 312 2) Only return the pitch;
+#X obj 189 362 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 190 362 3) Only return the confidence;
+#X obj 270 458 cnv 15 170 17 empty empty order:\\\ pitch\\\ confidence
+3 12 0 12 #c6ffc7 #404040 0;
+#X text 268 411 No matter what order you specify the selection in \,
+the order that those choices are returned will follow the same order
+as if you didn't select any., f 52;
+#X obj 122 243 fluid.waveform 280 40 1 empty empty 0;
+#X connect 2 0 20 0;
+#X connect 4 0 2 0;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 11 0 12 0;
+#X connect 13 0 9 0;
+#X restore 461 735 pd select;
+#N canvas 201 101 698 909 musical_example 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 17 79 Grains from just the piched portions of a sound;
+#X obj 458 670 array define help.bufpitch.3.src;
+#X f 27;
+#X obj 458 708 clone fluid.multiarray 2 help.bufpitch.3.pitches, f
+27;
+#N canvas 1309 -979 419 469 make_grain_env 0;
+#X obj 107 118 t f b, f 7;
+#X msg 107 89 1024;
+#X obj 107 147 until;
+#X msg 107 176 1;
+#X obj 107 205 +;
+#X msg 153 175 -1;
+#X obj 107 234 t f f f, f 21;
+#X obj 107 263 / 1024;
+#X obj 107 321 sin;
+#X obj 107 350 *;
+#X obj 209 147 expr 4*atan(1);
+#X obj 107 292 * 3.1, f 15;
+#X obj 107 60 t b b, f 15;
+#X obj 107 379 tabwrite help.bufpitch.3.env;
+#X obj 107 6 loadbang;
+#X obj 107 35 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X text 36 57 A Selection of Pitch Descriptors on a Buffer, f 61;
-#X text 35 100 Implements three pitch descriptors \, computed as frequency
-and the confidence in its value., f 45;
-#N canvas 731 210 424 490 make_burst 0;
-#X msg 38 172 44100;
-#X obj 57 220 until;
-#X msg 125 241 -1;
-#X msg 57 241 1;
-#X obj 57 262 +;
-#X obj 38 193 t b f b;
-#X obj 38 153 loadbang;
-#X obj 39 81 array define sine 44100;
-#X obj 57 329 tabwrite sine;
-#X obj 57 283 t f f f, f 40;
-#X obj 57 308 expr sin($f1 / 22050 * 3.14159 * 220);
-#X msg 38 422 \; pitch-source xticks 0 0 0;
-#X obj 38 381 fluid.bufcompose -source sine -destination pitch-source
--deststartframe 8192 -numframes 1024 -gain 0.2;
-#X connect 0 0 5 0;
-#X connect 1 0 3 0;
-#X connect 2 0 4 1;
-#X connect 3 0 4 0;
-#X connect 4 0 9 0;
-#X connect 5 0 12 0;
-#X connect 5 1 1 0;
-#X connect 5 2 2 0;
-#X connect 6 0 0 0;
-#X connect 9 0 10 0;
-#X connect 9 1 8 1;
-#X connect 9 2 4 1;
-#X connect 10 0 8 0;
-#X connect 12 0 11 0;
-#X restore 35 313 pd make_burst;
-#X text 65 379 1) process;
-#X msg 37 417 \; bufpitch-feats-1 xticks 0 0 0 \; bufpitch-feats-0
-xticks 0 0 0;
-#X floatatom 37 788 5 0 0 0 - - - 0;
-#X obj 37 808 tabread bufpitch-feats-0;
-#X floatatom 37 829 5 0 0 0 - - - 0;
-#X floatatom 195 831 5 0 0 0 - - - 0;
-#X obj 195 810 tabread bufpitch-feats-1;
-#X obj 37 398 fluid.bufpitch -source pitch-source -features bufpitch-feats
-, f 61;
-#X obj 413 436 note_on_sampling_rates;
-#X text 35 495 2) observe the pitch estimate (top) and the confidence
-in this value (bottom), f 82;
-#X floatatom 37 750 5 0 0 0 - - - 0;
-#X text 37 699 3) here you can enter the numFrame from SRC you know
-signal should be at (starting at 8192) - notice the confidence and
-the graph: the analysis padded by (windowsize - hopsize) to make sure
-we have all the samples computed, f 85;
-#X obj 37 769 expr int($f1 / 512);
-#X text 157 768 dividing by the hopsize to see in which frame we have
-audio;
-#X text 70 751 sample index to query;
-#X text 69 788 frame index to query;
-#X text 73 830 pitch (Hz);
-#X text 230 832 confidence;
-#X obj 40 868 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X floatatom 40 909 5 0 0 0 - - - 0;
-#X text 73 909 total number of frames= ((source #frames + windowsize)
-/ hopSize) - 1, f 69;
-#X obj 40 888 array size bufpitch-feats-0;
-#N canvas 384 23 561 739 musical_example 0;
-#X msg 26 62 read -resize media/Tremblay-ASWINE-ScratchySynth-M.wav
-bufpitch_synthsource, f 78;
-#X obj 26 83 soundfiler;
-#X obj 26 104 t b;
-#X obj 26 125 fluid.bufpitch -source bufpitch_synthsource -features
-bufpitch_synth-pitches, f 77;
-#X obj 32 649 array define bufpitch_synthsource;
-#X obj 32 669 clone fluid.multiarray 2 bufpitch_synth-pitches;
-#N canvas 0 23 409 370 make_grain_env 0;
-#X obj 107 94 t f b;
-#X msg 107 71 1024;
-#X obj 107 136 until;
-#X msg 107 157 1;
-#X obj 107 178 +;
-#X msg 148 156 -1;
-#X obj 107 197 t f f f;
-#X obj 107 218 / 1024;
-#X obj 107 260 sin;
-#X obj 107 281 *;
-#X obj 234 134 expr 4*atan(1);
-#X obj 107 239 * 3.1;
-#X obj 107 47 t b b;
-#X obj 107 299 tabwrite bufpitch_env;
-#X obj 107 26 loadbang;
 #X connect 0 0 2 0;
 #X connect 0 1 5 0;
 #X connect 1 0 0 0;
@@ -122,36 +117,43 @@ bufpitch_synth-pitches, f 77;
 #X connect 11 0 8 0;
 #X connect 12 0 1 0;
 #X connect 12 1 10 0;
-#X connect 14 0 12 0;
-#X restore 219 691 pd make_grain_env;
-#X obj 32 689 array define bufpitch_env 1024;
-#X obj 32 710 array define acceptable_grains;
-#X obj 26 166 array size bufpitch_synth-pitches-0;
-#N canvas 902 248 400 536 filter_acceptable_grains 0;
+#X connect 14 0 15 0;
+#X connect 15 0 12 0;
+#X restore 545 631 pd make_grain_env;
+#X f 14;
+#X obj 458 746 array define help.bufpitch.3.env 1024;
+#X f 27;
+#X obj 458 784 array define help.bufpitch.3.acceptablegrains;
+#X f 27;
+#X obj 22 313 array size help.bufpitch.3.pitches-0;
+#N canvas 1271 -783 587 755 filter_help.bufpitch.3.acceptablegrains
+0;
 #X obj 40 38 inlet;
 #X obj 79 152 until;
 #X msg 79 173 1;
 #X obj 79 194 +;
 #X msg 120 172 -1;
 #X obj 40 96 int;
-#X msg 156 146 \; acceptable_grains resize \$1 \, const;
+#X msg 156 146 \; help.bufpitch.3.acceptablegrains resize \$1 \, const
+;
 #X obj 40 121 t b f b f, f 20;
 #X obj 79 213 t f f f f;
-#X obj 96 242 tabread bufpitch_synth-pitches-0;
-#X obj 113 263 tabread bufpitch_synth-pitches-1;
+#X obj 96 242 tabread help.bufpitch.3.pitches-0;
+#X obj 113 263 tabread help.bufpitch.3.pitches-1;
 #X obj 66 312 spigot;
 #X obj 66 333 t f b;
 #X msg 93 363 1;
 #X obj 93 384 +;
 #X obj 93 403 t f f f;
 #X obj 41 481 int;
-#X obj 66 439 tabwrite acceptable_grains;
+#X obj 66 439 tabwrite help.bufpitch.3.acceptablegrains;
 #X obj 41 502 outlet;
 #X obj 214 44 inlet;
 #X obj 268 44 inlet;
 #X obj 96 287 expr $f1 >= $f3 && $f2 >= $f4;
 #X obj 214 65 t b f;
 #X obj 267 65 t b f;
+#X floatatom 193 334 5 0 0 0 - - - 0;
 #X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
@@ -181,150 +183,192 @@ bufpitch_synth-pitches, f 77;
 #X connect 19 0 22 0;
 #X connect 20 0 23 0;
 #X connect 21 0 11 1;
+#X connect 21 0 24 0;
 #X connect 22 0 5 0;
 #X connect 22 1 21 2;
 #X connect 23 0 5 0;
 #X connect 23 1 21 3;
-#X restore 26 292 pd filter_acceptable_grains;
-#X floatatom 105 252 5 0 0 0 - - - 0;
-#X floatatom 184 275 5 0 0 0 - - - 0;
-#X text 141 251 minimum frequency;
-#X text 219 275 minimum confidence;
-#X msg 105 229 500;
-#X obj 104 207 loadbang;
-#X floatatom 26 313 5 0 0 0 - - - 0;
-#X msg 184 229 0.99;
-#X obj 32 570 clone fluid.bufpitch.grain 5;
-#X obj 32 592 *~ 0.1;
-#X obj 32 613 dac~;
-#X floatatom 32 473 5 0 0 0 - - - 0;
-#X obj 32 490 tabread acceptable_grains;
-#X floatatom 32 511 5 0 0 0 - - - 0;
-#X obj 32 531 * 512;
-#X msg 32 551 next \$1;
-#X obj 31 412 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X restore 22 461 pd filter_help.bufpitch.3.acceptablegrains;
+#X floatatom 283 484 5 0 0 0 - - - 0;
+#X obj 27 791 clone fluid.bufpitch.grain 5;
+#X obj 27 820 *~ 0.1;
+#X floatatom 47 648 5 0 0 0 - - - 0;
+#X obj 27 676 tabread help.bufpitch.3.acceptablegrains;
+#X floatatom 47 705 5 0 0 0 - - - 0;
+#X obj 27 733 * 512;
+#X msg 27 762 next \$1;
+#X obj 27 549 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X obj 31 453 random 300;
-#X text 76 413 2)start the pitched material granulator on the selected
-grains only, f 67;
-#X floatatom 42 189 5 0 0 0 - - - 0;
-#X text 80 188 number of frames;
-#X text 63 313 number of acceptable grains;
-#X text 162 208 minimum freq and pitch detection confidence to accept
-a grain, f 61;
-#X text 28 16 grains from just the piched portions of a sound;
-#X obj 31 433 metro 5;
-#X obj 26 146 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 27 619 random 300, f 37;
+#X floatatom 38 336 5 0 0 0 - - - 0;
+#X text 76 335 number of frames;
+#X text 82 485 number of acceptable grains;
+#X text 329 402 minimum freq and pitch detection confidence to accept
+a grain, f 33;
+#X obj 27 590 metro 5;
+#X obj 22 293 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 3 0 36 0;
-#X connect 9 0 10 0;
-#X connect 9 0 30 0;
-#X connect 10 0 17 0;
-#X connect 11 0 10 1;
-#X connect 12 0 10 2;
-#X connect 15 0 11 0;
-#X connect 16 0 15 0;
-#X connect 16 0 18 0;
-#X connect 17 0 28 1;
+#X obj 22 272 fluid.bufpitch -source help.bufpitch.3.src -features
+help.bufpitch.3.pitches, f 77;
+#X obj 22 230 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 27 849 fluid.out~ bufpitchhelp;
+#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 47 230 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 48 230 2) Trigger pitch analyss of source buffer;
+#X obj 95 854 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 96 854 3) Audio on;
+#X obj 53 547 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 53 547 4) Trigger small grains of the source, f 21;
+#N canvas 1687 -858 521 442 selectacceptablegrains 0;
+#X obj 49 178 outlet;
+#X obj 269 178 outlet;
+#X floatatom 105 106 5 0 0 0 - - - 0;
+#X floatatom 105 129 5 0 0 0 - - - 0;
+#X msg 105 83 500;
+#X obj 56 -40 loadbang;
+#X msg 198 83 0.99;
+#X text 121 -39 minimum freq and pitch detection confidence to accept
+a grain, f 61;
+#X text 146 107 min frequency;
+#X text 144 129 min confidence;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X coords 0 -1 1 1 153 51 2 100 100;
+#X restore 167 403 pd selectacceptablegrains;
+#X text 19 151 1) Load a sound;
+#N canvas 89 120 450 300 loadsrc 0;
+#X obj 30 16 inlet;
+#X obj 114 115 fluid.demoaudiofiles;
+#X obj 24 218 soundfiler;
+#X msg 24 176 read -resize \$1 help.bufpitch.3.src;
+#X text 139 65 or pick your own;
+#X msg 26 44 symbol media/Tremblay-ASWINE-ScratchySynth-M.wav;
+#X connect 0 0 5 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
+#X connect 5 0 3 0;
+#X restore 21 192 pd loadsrc;
+#X obj 20 174 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X connect 7 0 8 0;
+#X connect 7 0 19 0;
+#X connect 8 0 9 0;
+#X connect 9 0 18 1;
+#X connect 10 0 11 0;
+#X connect 11 0 27 0;
+#X connect 11 0 27 1;
+#X connect 13 0 14 0;
+#X connect 13 0 15 0;
+#X connect 15 0 16 0;
+#X connect 16 0 10 0;
+#X connect 17 0 23 0;
 #X connect 18 0 12 0;
-#X connect 19 0 20 0;
-#X connect 20 0 21 0;
-#X connect 20 0 21 1;
-#X connect 22 0 23 0;
+#X connect 18 0 13 0;
+#X connect 23 0 18 0;
+#X connect 24 0 7 0;
+#X connect 25 0 24 0;
+#X connect 26 0 25 0;
+#X connect 35 0 8 1;
+#X connect 35 1 8 2;
+#X connect 38 0 37 0;
+#X restore 461 757 pd musical_example;
+#N canvas 281 140 724 868 multichannel 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb
+#ffffff 0;
+#X text 17 79 Multichannel buffers are processed channel by channel
+;
+#N canvas 1396 -858 597 286 loadsrc 0;
+#X obj 16 113 soundfiler;
+#X obj 16 19 inlet;
+#X msg 15 65 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
+help.bufpitch.4.src-0 help.bufpitch.4.src-1;
+#X msg 16 160 waveform help.bufpitch.4.src;
+#X obj 16 184 outlet;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X restore 19 190 pd loadsrc;
+#X obj 20 123 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 21 123 1) Pick a source;
+#X obj 498 165 clone fluid.multiarray 4 help.bufpitch.4.features,
+f 25;
+#X obj 498 125 clone fluid.multiarray 2 help.bufpitch.4.src, f 25
+;
+#X text 441 367 The result has 4 channels:;
+#X text 455 437 4) Confidence - Right, f 24;
+#X text 455 421 3) Pitch (Hz) - Right, f 24;
+#X text 455 389 1) Pitch (Hz) - Left, f 24;
+#X text 455 405 2) Confidence - Left, f 24;
+#X obj 17 286 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X obj 38 286 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 286 2) Trigger analysis;
+#X obj 17 306 fluid.bufpitch -source help.bufpitch.4.src -features
+help.bufpitch.4.features;
+#X obj 17 458 fluid.waveform 610 300 1 empty empty 0;
+#X obj 19 166 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
+#X msg 17 344 features help.bufpitch.4.features;
+#X obj 130 166 fluid.waveform 300 100 0 empty empty 0;
+#X connect 2 0 19 0;
+#X connect 12 0 15 0;
+#X connect 15 0 18 0;
+#X connect 17 0 2 0;
+#X connect 18 0 16 0;
+#X restore 461 779 pd multichannel;
+#X obj 17 261 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 17 286 tabplay~ help.bufpitch.1.src;
+#X obj 17 334 fluid.out~ bufpitchhelp;
+#X text 19 151 1) Pick a source;
+#X obj 88 339 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 89 339 2) Audio on;
+#X obj 38 259 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 259 3) Play source;
+#X obj 17 411 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
+#000000;
+#X obj 38 409 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 39 409 4) Analyse the source;
+#X obj 17 431 fluid.bufpitch -source help.bufpitch.1.src -features
+help.bufpitch.1.pitch;
+#N canvas 1531 -815 794 505 drawing_commands 0;
+#X obj 37 37 inlet;
+#X obj 37 117 outlet;
+#X msg 37 61 waveform help.bufpitch.1.src \, features help.bufpitch.1.pitch
+\, featurescolor #ff99ff;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X restore 17 469 pd drawing_commands;
+#X obj 17 493 fluid.waveform 660 90 0 empty empty 0;
+#X obj 448 224 clone 2 fluid.multiarray help.bufpitch.1.pitch, f 32
+;
+#X text 17 605 The original audio is in black There are two channels
+of audio features (the same structure as the buffer) in fuschia.,
+f 72;
+#X text 17 645 The first channel is the pitch in hertz and the second
+channel is pitch confidence between 0 and1.0., f 72;
+#X text 17 685 See the next tab for how we might use this information
+musically., f 72;
+#X obj 461 802 note_on_automatic_multiarrays;
+#X connect 5 0 3 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 13 0 14 1;
+#X connect 20 0 23 0;
 #X connect 23 0 24 0;
 #X connect 24 0 25 0;
-#X connect 25 0 26 0;
-#X connect 26 0 19 0;
-#X connect 27 0 35 0;
-#X connect 28 0 22 0;
-#X connect 35 0 28 0;
-#X connect 36 0 9 0;
-#X restore 395 324 pd musical_example;
-#N canvas 440 41 683 958 multichannel 0;
-#X obj 43 773 loadbang;
-#X obj 43 825 soundfiler;
-#X obj 48 80 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 48 195 dac~;
-#X obj 45 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 122 153 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X text 67 80 1) compose an artificially wide "stereo" array;
-#X text 46 11 "multichannel" arrays will process each channel in turn
-\, and output 'channels' will be consecutive \, i.e. all features of
-"channel" 1 \, then all features of "channel" 2 \, etc, f 87;
-#X obj 48 100 fluid.bufcompose -source bufpitchguitar -startframe 555000
--numframes 468335 -deststartchan 1 -destination bufpitch_source, f
-73;
-#X obj 48 174 tabplay~ bufpitch_source-0;
-#X obj 211 175 tabplay~ bufpitch_source-1;
-#X text 146 152 2) listen to the source;
-#X msg 48 152 stop;
-#X obj 112 825 array define bufpitchguitar;
-#X obj 284 825 clone fluid.multiarray 2 bufpitch_source;
-#X msg 43 794 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufpitch_source-0 bufpitch_source-1 \, read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-bufpitchguitar, f 90;
-#X text 64 241 3) process;
-#X msg 45 277 \; bufpitch-feats2-3 xticks 0 0 0 \; bufpitch-feats2-2
-xticks 0 0 0 \; bufpitch-feats2-1 xticks 0 0 0 \; bufpitch-feats2-0
-xticks 0 0 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats2-0 915 float 2;
-#X coords 0 127 915 0 513 70 1 0 0;
-#X restore 43 381 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats2-1 915 float 2;
-#X coords 0 1 915 0 513 70 1 0 0;
-#X restore 43 466 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats2-2 915 float 2;
-#X coords 0 127 915 0 513 70 1 0 0;
-#X restore 43 552 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array bufpitch-feats2-3 915 float 2;
-#X coords 0 1 915 0 513 70 1 0 0;
-#X restore 43 637 graph;
-#X obj 45 259 fluid.bufpitch -source bufpitch_source -features bufpitch-feats2
--unit 1, f 73;
-#X connect 0 0 15 0;
-#X connect 2 0 8 0;
-#X connect 4 0 22 0;
-#X connect 5 0 9 0;
-#X connect 5 0 10 0;
-#X connect 9 0 3 0;
-#X connect 10 0 3 1;
-#X connect 12 0 9 0;
-#X connect 12 0 10 0;
-#X connect 15 0 1 0;
-#X connect 22 0 17 0;
-#X restore 395 343 pd multichannel;
-#N canvas 0 23 450 300 (subpatch) 0;
-#X obj 83 51 inlet;
-#X obj 83 89 pdcontrol;
-#X msg 83 71 dir 0 docs/fluid.bufpitch.html;
-#X msg 143 89 browse \$1;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X restore 528 122 pd;
-#X text 397 103 launch the HTML doc->;
-#X obj 529 105 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 413 459 note_on_multithreading;
-#X connect 4 0 15 0;
-#X connect 10 0 11 0;
-#X connect 10 0 14 0;
-#X connect 11 0 12 0;
-#X connect 14 0 13 0;
-#X connect 15 0 9 0;
-#X connect 18 0 20 0;
-#X connect 20 0 10 0;
-#X connect 26 0 29 0;
-#X connect 29 0 27 0;
-#X connect 34 0 32 0;

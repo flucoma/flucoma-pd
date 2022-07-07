@@ -40,6 +40,19 @@ function(make_external_name client header var)
 endfunction()
 
 function (add_pd_external external source)
+
+  # Define the supported set of keywords
+  set(noValues NOINSTALL)
+  set(singleValues "")
+  set(multiValues "")
+  # Process the arguments passed in
+  include(CMakeParseArguments)
+  cmake_parse_arguments(ARG
+  "${noValues}"
+  "${singleValues}"
+  "${multiValues}"
+  ${ARGN})  
+
   string(REPLACE "~" "_tilde" safe_name ${external})
   
   add_library(${safe_name} SHARED ${source})
@@ -183,6 +196,16 @@ function(generate_pd_source)
   set(CCE_WRAPPER "#include \"FluidPDWrapper.hpp\"")
   generate_source(${ARGN} EXTERNALS_OUT external FILE_OUT outfile)
   
+
+  set(INSTALLFLAG "")
+  if(ARG_CLIENTS AND NOT ARG_FILENAME)
+    list(GET ARG_CLIENTS 0 client)    
+    get_property(no_install GLOBAL PROPERTY FLUID_CORE_CLIENTS_${client}_INSTALL)
+    if(no_install) 
+      set(INSTALLFLAG NOINSTALL)
+    endif()
+  endif()
+
   message(STATUS "Generating: ${external_name}")
-  add_pd_external(${external_name} ${outfile})
+  add_pd_external(${external_name} ${outfile} ${INSTALLFLAG})
 endfunction()

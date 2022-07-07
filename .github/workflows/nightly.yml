@@ -1,34 +1,47 @@
-name: Nightly Releases
+name: nightly
 
 on:
   workflow_dispatch:
   push:
     branches: [ dev, ci/** ]
 
+concurrency:
+  group: environment-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   macbuild:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: flucoma/actions/env@v5 
+      - uses: actions/checkout@v3
+      - uses: flucoma/actions/env@main 
       - uses: flucoma/actions/pd@v5
         with:
           branch: origin/dev
 
-      - name: compress archive
-        run: zip -r FluCoMa-PD-Mac-nightly.zip FluidCorpusManipulation
-        working-directory: release-packaging
+      - name: sign binaries
+        uses: flucoma/actions/distribution@main
+        with:
+          glob: '-e pd_darwin'
+          package: 'release-packaging'
+          output_type: 'dmg'
+          output: FluCoMa-PD-Mac-nightly
+          cert: ${{ secrets.CERT }}
+          certpwd: ${{ secrets.CERTPWD }}
+          teamid: ${{ secrets.WWDRTEAMID }}
+          apppwd: ${{ secrets.APPSTORECONNECTPWD }}
+          appusr: ${{ secrets.APPSTORECONNECTUSERNAME }}
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: macbuild
-          path: release-packaging/FluCoMa-PD-Mac-nightly.zip
+          path: release-packaging/FluCoMa-PD-Mac-nightly.dmg
 
   winbuild:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: flucoma/actions/env@v5         
+      - uses: actions/checkout@v3
+      - uses: flucoma/actions/env@main         
       - uses: flucoma/actions/pd@v5
         with:
           branch: origin/dev
@@ -37,16 +50,16 @@ jobs:
         run: 7z a FluCoMa-PD-Windows-nightly.zip FluidCorpusManipulation
         working-directory: release-packaging
 
-      - uses: actions/upload-artifact@v2 
+      - uses: actions/upload-artifact@v3 
         with:
           name: winbuild
           path: release-packaging/FluCoMa-PD-Windows-nightly.zip
 
   linuxbuild:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: flucoma/actions/env@v5 
+      - uses: actions/checkout@v3
+      - uses: flucoma/actions/env@main 
       - uses: flucoma/actions/pd@v5
         with:
           branch: origin/dev
@@ -55,7 +68,7 @@ jobs:
         run: tar -zcvf FluCoMa-PD-Linux-nightly.tar.gz FluidCorpusManipulation
         working-directory: release-packaging
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: linuxbuild 
           path: release-packaging/FluCoMa-PD-Linux-nightly.tar.gz
@@ -94,7 +107,7 @@ jobs:
         with:
           name: FluCoMa PureData Nightly Release
           body: "This is a nightly build of the FluCoMa PureData package. As such, be warned there may be bugs or other unexpected behaviour. The build hash is ${{ github.sha }}"
-          files: FluCoMa-PD-*
+          files: FluCoMa*
           prerelease: true
           tag_name: nightly
           draft: false

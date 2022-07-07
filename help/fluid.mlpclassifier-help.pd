@@ -1,2 +1,308 @@
-#N canvas 546 252 836 602 12;
-#X obj 149 192 fluid.mlpclassifier;
+#N struct 1005-draw-item float x float y float c float a float b;
+#N struct 1006-rectangle float x float c;
+#N struct 1006-pixel float x0 float y0 float x1 float y1;
+#N struct 1011-draw-item float x float y float c float a float b;
+#N struct 1012-rectangle float x float c;
+#N struct 1012-pixel float x0 float y0 float x1 float y1;
+#N canvas 0 23 696 1025 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.mlpclassifier 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 463 838 cnv 15 212 68 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.mlpclassifier.html reference/mlpclassifier/
+;
+#X text 17 79 Classification with a multi-layer perceptron;
+#X text 17 117 Perform classification between a fluid.dataset and a
+fluid.labelset using a Multi-Layer Perception neural network., f 68
+;
+#N canvas 377 68 692 769 predicting_across_datasets 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.mlpclassifier 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 25 449 fluid.plotter;
+#X obj 20 135 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 17 79 Predict the classification of one dataset based on the
+training of another., f 75;
+#X obj 23 188 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 24 347 route read;
+#N canvas 1738 -676 594 552 choosedataset 0;
+#X msg 105 238 line;
+#X msg 105 443 read data/\$1.json;
+#X obj 105 421 symbol;
+#X msg 153 258 moon;
+#X msg 201 278 circles;
+#X msg 250 308 blobs;
+#X msg 298 338 gaussian4;
+#X obj 105 104 vradio 15 1 0 5 empty empty empty 0 -8 0 10 #fcfcfc
+#000000 #000000 0;
+#X text 121 103 line, f 8;
+#X text 121 118 moon, f 8;
+#X text 121 133 circles, f 8;
+#X text 121 148 blobs, f 8;
+#X text 121 163 gaussian;
+#X obj 105 207 sel 0 1 2 3 4, f 35;
+#X obj 105 467 outlet;
+#X connect 0 0 2 0;
+#X connect 1 0 14 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 13 0;
+#X connect 13 0 0 0;
+#X connect 13 1 3 0;
+#X connect 13 2 4 0;
+#X connect 13 3 5 0;
+#X connect 13 4 6 0;
+#X coords 0 -1 1 1 85 85 2 100 100;
+#X restore 24 210 pd choosedataset;
+#X obj 24 300 fluid.dataset help.mlpc.ds.2;
+#X obj 461 727 fluid.labelset help.mlpc.ls.2;
+#X text 20 134 1) run the example in the top level patch \, as to see
+the reference labelled dataset and train the classifier;
+#X obj 371 281 fluid.mlpclassifier mlpc.help.nn;
+#X msg 371 254 predict help.mlpc.ds.2 help.mlpc.ls.2;
+#X obj 371 305 route predict;
+#X obj 24 377 fluid.ds2text help.mlpc.ds.2 help.mlpc.ds.2.txt;
+#X obj 370 342 fluid.ls2text help.mlpc.ls.2 help.mlpc.ls.2.txt, f
+29;
+#X obj 461 702 text define help.mlpc.ds.2.txt;
+#X msg 24 401 setpoints help.mlpc.ds.2.txt;
+#N canvas 1212 577 569 617 decode_labels_to_colour 0;
+#X obj 37 37 inlet;
+#X obj 37 61 text size help.mlpc.ls.2.txt;
+#X obj 45 139 until;
+#X obj 45 163 f;
+#X obj 80 164 + 1;
+#X msg 89 127 0;
+#X obj 42 226 text get help.mlpc.ls.2.txt;
+#X obj 45 187 t f f;
+#X obj 66 511 text set help.mlpc.ls.2.txt2;
+#X obj 42 250 unpack s s;
+#X obj 40 429 pack s s;
+#X obj 143 299 sel bottom_left_red bottom_right_green top_left_blue
+top_right_fushia;
+#X msg 144 353 0;
+#X msg 185 352 1;
+#X msg 230 353 2;
+#X msg 271 352 3;
+#X obj 146 388 makefilename %d;
+#X obj 323 497 text define help.mlpc.ls.2.txt2;
+#X obj 37 85 t b f b;
+#X obj 20 550 outlet;
+#X obj 308 116 text define help.mlpc.ls.2.txt;
+#X connect 0 0 1 0;
+#X connect 1 0 18 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 7 0;
+#X connect 4 0 3 1;
+#X connect 5 0 3 1;
+#X connect 6 0 9 0;
+#X connect 7 0 6 0;
+#X connect 7 1 8 1;
+#X connect 9 0 10 0;
+#X connect 9 1 11 0;
+#X connect 10 0 8 0;
+#X connect 11 0 12 0;
+#X connect 11 1 13 0;
+#X connect 11 2 14 0;
+#X connect 11 3 15 0;
+#X connect 12 0 16 0;
+#X connect 13 0 16 0;
+#X connect 14 0 16 0;
+#X connect 15 0 16 0;
+#X connect 16 0 10 1;
+#X connect 18 0 19 0;
+#X connect 18 1 2 0;
+#X connect 18 2 5 0;
+#X restore 370 385 pd decode_labels_to_colour;
+#X msg 371 418 setlabels help.mlpc.ls.2.txt2;
+#X text 23 187 2) Choose a second dataset, f 29;
+#X text 345 471 Every point in the dataset has a prediction made for
+it and is coloured accordingly., f 44;
+#X text 346 512 We should see the quadrant separation learned from
+the first dataset mapped on to the second dataset here., f 45;
+#X obj 370 229 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 370 228 3) Predict the full dataset in one pass;
+#X connect 5 0 13 0;
+#X connect 6 0 7 0;
+#X connect 7 1 5 0;
+#X connect 10 0 12 0;
+#X connect 11 0 10 0;
+#X connect 12 0 14 0;
+#X connect 13 0 16 0;
+#X connect 14 0 17 0;
+#X connect 16 0 1 0;
+#X connect 17 0 18 0;
+#X connect 18 0 1 1;
+#X restore 465 858 pd predicting_across_datasets;
+#X obj 465 882 note_on_automatic_datasets;
+#X msg 22 202 read data/gaussian4.json;
+#X obj 22 226 fluid.dataset help.mlpc.data.1;
+#N canvas 68 97 450 300 dump 0;
+#X obj 22 29 inlet;
+#X obj 24 62 route read;
+#X obj 24 86 fluid.ds2text help.mlpc.data.1 help.mlpc.data.1.txt;
+#X msg 24 110 setpoints help.mlpc.data.1.txt;
+#X obj 24 134 outlet;
+#X obj 175 149 text define help.mlpc.data.1.txt;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X restore 60 311 pd dump;
+#X obj 58 335 fluid.plotter;
+#X obj 228 268 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#N canvas 873 80 937 640 create_labels_for_quadrants 0;
+#X obj 37 37 inlet;
+#X obj 37 61 text size help.mlpc.data.1.txt;
+#X obj 62 122 until;
+#X obj 62 146 f;
+#X obj 104 147 + 1;
+#X msg 108 122 0;
+#X obj 63 234 text get help.mlpc.data.1.txt;
+#X obj 331 65 text define help.mlpc.classes.1.txt;
+#X obj 76 453 text set help.mlpc.classes.1.txt;
+#X obj 62 184 t f f;
+#X obj 63 258 unpack s f f;
+#X obj 168 288 expr ($f1 > 0.5) + (2 * ($f2 > 0.5));
+#X obj 167 319 makefilename %d;
+#X obj 64 376 pack s s;
+#X obj 38 538 outlet;
+#X msg 41 509 setlabels help.mlpc.classes.1.txt;
+#X obj 349 546 fluid.labelset help.mlpc.labels.1;
+#X obj 37 85 t b f b b;
+#X msg 454 206 clear;
+#X msg 387 514 setlabel \$1 \$2;
+#X obj 386 488 pack s s;
+#X msg 433 346 symbol bottom_left_red;
+#X msg 443 371 symbol bottom_right_green;
+#X msg 456 393 symbol top_left_blue;
+#X msg 469 424 symbol top_right_fushia;
+#X obj 434 316 sel 0 1 2 3;
+#X connect 0 0 1 0;
+#X connect 1 0 17 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 3 0 9 0;
+#X connect 4 0 3 1;
+#X connect 5 0 3 1;
+#X connect 6 0 10 0;
+#X connect 9 0 6 0;
+#X connect 9 1 8 1;
+#X connect 10 0 13 0;
+#X connect 10 0 20 0;
+#X connect 10 1 11 0;
+#X connect 10 2 11 1;
+#X connect 11 0 12 0;
+#X connect 11 0 25 0;
+#X connect 12 0 13 1;
+#X connect 13 0 8 0;
+#X connect 15 0 14 0;
+#X connect 17 0 15 0;
+#X connect 17 1 2 0;
+#X connect 17 2 5 0;
+#X connect 17 3 18 0;
+#X connect 18 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 19 0;
+#X connect 21 0 20 1;
+#X connect 22 0 20 1;
+#X connect 23 0 20 1;
+#X connect 24 0 20 1;
+#X connect 25 0 21 0;
+#X connect 25 1 22 0;
+#X connect 25 2 23 0;
+#X connect 25 3 24 0;
+#X restore 228 292 pd create_labels_for_quadrants;
+#X msg 111 750 clear;
+#X obj 85 897 route fit predictpoint;
+#X floatatom 159 967 8 0 0 0 - - - 0;
+#X msg 213 779 fit help.mlpc.data.1 help.mlpc.labels.1;
+#X symbolatom 159 944 25 0 0 0 - - - 0;
+#X obj 101 639 array set help.mlpc.data.1;
+#X obj 456 202 array define help.mlpc.data.1 2;
+#X msg 73 682 predictpoint help.mlpc.data.1;
+#X obj 159 920 symbol;
+#X obj 58 640 t b l;
+#N canvas 488 557 450 300 set_cursor_colour 0;
+#X obj 18 84 sel bottom_left_red bottom_right_green top_left_blue top_right_fushia
+;
+#X obj 20 51 inlet;
+#X msg 18 189 pointcolor cursor \$1;
+#X msg 19 138 1;
+#X msg 60 137 2;
+#X msg 105 138 3;
+#X msg 146 137 4;
+#X obj 18 213 outlet;
+#X text 14 240 updates the colour of the cursor as you move around
+the space;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
+#X connect 0 2 5 0;
+#X connect 0 3 6 0;
+#X connect 1 0 0 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X restore 24 990 pd set_cursor_colour;
+#X msg 17 723 setpoint cursor \$1 \$2 10 0;
+#X text 445 288 provide a label for each point based on its position
+, f 28;
+#X text 289 681 The predictpoint message here tells the neural network
+that new data (in the buffer) needs to have a label predicted for it.
+, f 57;
+#X text 223 970 The "error" after fitting the data and the labels;
+#X text 342 944 This is the predicted label.;
+#X obj 24 180 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 250 266 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 158 752 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 218 805 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 369 468 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 370 467 5) Click and drag around this space to trigger predictions
+, f 29;
+#X text 372 510 A prediction will be made based on the position of
+your mouse., f 31;
+#X text 444 324 Labels are assigned like so:;
+#X text 450 343 bottom_left_red;
+#X text 450 359 bottom_right_green;
+#X text 449 376 top_left_blue;
+#X text 448 394 top_right_fushia;
+#X text 24 179 1) load the gaussian clusters data;
+#X text 251 265 2) Give each cluster a label;
+#X text 156 750 3) Clear the neural network to reset it;
+#X text 218 801 4) Train the network using data and labels provided
+in help.mlpc.data.1 and help.mlpc.labels.1, f 36;
+#X obj 85 847 fluid.mlpclassifier mlpc.help.nn -hiddenlayers 6 -activation
+1 -learnrate 0.1 -momentum 0.1 -validation 0, f 49;
+#X connect 7 0 8 0;
+#X connect 8 1 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 22 0;
+#X connect 11 0 12 0;
+#X connect 12 0 10 1;
+#X connect 13 0 45 0;
+#X connect 14 0 15 0;
+#X connect 14 1 21 0;
+#X connect 16 0 45 0;
+#X connect 20 0 45 0;
+#X connect 21 0 17 0;
+#X connect 21 0 23 0;
+#X connect 22 0 20 0;
+#X connect 22 1 18 0;
+#X connect 22 1 24 0;
+#X connect 23 0 10 0;
+#X connect 24 0 10 0;
+#X connect 45 0 14 0;
