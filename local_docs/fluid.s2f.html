@@ -53,14 +53,32 @@ under the European Union’s Horizon 2020 research and innovation programme
   	<div class="digest">Convert a symbol into a float</div>
   	<section class="object_description">
 		<h2>Description</h2> 
-	<p>Convert a floating point value expressed as a symbol ('string') and output it as a float.</p>
+		<p>Convert a floating point value expressed as a symbol ('string') and output it as a float.</p>
   	</section> 
-  		<section class="object_discussion"> 
+	<section class="object_discussion"> 
     	<h2>Discussion</h2> 
-    	<p>Note that the symbol needs to be enclosed in double quotes for s2f to work.
+    	<p>This object does the opposite of sending a float into [makefilename %f]. Note that the symbol needs to be enclosed in double quotes for s2f to work.
 </p>
     	<p>fluid.s2f is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
   	</section>
+	<section class="inlets">
+		<h2>Inlets</h2>
+		<ul>
+			<li>
+      		<h3 class="inlet_name">1<span class="type"> [symbol]</span></h3> 
+			<p>The symbol to convert to a float.</p>
+			</li>
+		</ul>
+	</section>
+	<section class="outlets">
+		<h2>Outlets</h2>
+		<ul>
+			<li>
+      		<h3 class="outlet_name">1<span class="type"> [float]</span></h3> 
+			<p>The converted input as float.</p>
+			</li>
+		</ul>
+	</section>
   	<section class="argument_section">
     	<h2>Arguments</h2>
  	 </section> 
@@ -70,7 +88,7 @@ under the European Union’s Horizon 2020 research and innovation programme
   	<section class="method_section"> 
     <h2>Messages</h2>
 	<div class='method_group'>
-		<h3 class='method_name' name='xrange'>xrange</h3>
+		<h3 class='method_name' name='symbol'>symbol</h3>
 		<span class='arglist'>Arguments: </span>
 		<div class='description'>
 		<p>Convert the symbol into a float</p>

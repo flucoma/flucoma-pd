@@ -53,21 +53,45 @@ under the European Union’s Horizon 2020 research and innovation programme
   	<div class="digest">Convert FluCoMa LabelSet into text</div>
   	<section class="object_description">
 		<h2>Description</h2> 
-	<p>A utility object to convert a fluid.labelset into text.</p>
+		<p>A utility object to convert a fluid.labelset into text.</p>
   	</section> 
-  		<section class="object_discussion"> 
+	<section class="object_discussion"> 
     	<h2>Discussion</h2> 
     	<p>This is an object for conveniently converting a <a href='fluid.labelset.html'>fluid.labelset</a> into text.
 </p>
     	<p>fluid.ls2text is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
   	</section>
+	<section class="inlets">
+		<h2>Inlets</h2>
+		<ul>
+			<li>
+      		<h3 class="inlet_name">1<span class="type"> [bang]</span></h3> 
+			<p>Bang triggers the process.</p>
+			</li>
+		</ul>
+		<ul>
+			<li>
+      		<h3 class="inlet_name">2<span class="type"> [symbol]</span></h3> 
+			<p>Change the <a href='fluid.labelset.html'>fluid.labelset</a> that is converted to text.</p>
+			</li>
+		</ul>
+	</section>
+	<section class="outlets">
+		<h2>Outlets</h2>
+		<ul>
+			<li>
+      		<h3 class="outlet_name">1<span class="type"> [bang]</span></h3> 
+			<p>Bang when done.</p>
+			</li>
+		</ul>
+	</section>
   	<section class="argument_section">
     	<h2>Arguments</h2>
       	<h3 class="argument_name">labelset<span class="type"> [symbol]</span></h3> 
-      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: none)</span>
     	<div class="description">A source labelset</div>
       	<h3 class="argument_name">text<span class="type"> [symbol]</span></h3> 
-      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: none)</span>
     	<div class="description">A destination text object</div>
  	 </section> 
   	<section class="attribute_section">
@@ -89,6 +113,10 @@ under the European Union’s Horizon 2020 research and innovation programme
   </section> 
   <section class="seealso"> 
     <h2>See Also</h2> 
+    <h3 class="seealso_name">
+		<a href='fluid.labelset.html'>
+		fluid.labelset
+		</a></h3>    
   </section> 
 </body>
 </html>

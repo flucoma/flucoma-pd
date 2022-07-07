@@ -53,25 +53,32 @@ under the European Union’s Horizon 2020 research and innovation programme
   	<div class="digest">Multichannel arrays</div>
   	<section class="object_description">
 		<h2>Description</h2> 
-	<p>An abstraction that assists in the management and creation of multichannel arrays.</p>
+		<p>An abstraction that assists in the management and creation of multichannel arrays.</p>
   	</section> 
-  		<section class="object_discussion"> 
+	<section class="object_discussion"> 
     	<h2>Discussion</h2> 
-    	<p>This abstraction allows the creation of multichannel arrays. Note that it requires invoking with the clone object to work.
+    	<p>This abstraction allows the creation of multichannel arrays. Note that it requires invoking via the [clone] object to work, where the number of instances is the number of 'channels'.
 </p>
     	<p>fluid.multiarray is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
   	</section>
+	<section class="inlets">
+		<h2>Inlets</h2>
+		<ul>
+			<li>
+      		<h3 class="inlet_name">1<span class="type"> [anything]</span></h3> 
+			<p>Messages to all the underlying instances of arrays in the 'multiarray'.</p>
+			</li>
+		</ul>
+	</section>
+	<section class="outlets">
+		<h2>Outlets</h2>
+	</section>
   	<section class="argument_section">
     	<h2>Arguments</h2>
-      	<h3 class="argument_name">channels<span class="type"> [int]</span></h3> 
-      	<div class="optional">Optional</div> 
-    	<div class="description">The number of channels for the multiarray</div>
       	<h3 class="argument_name">name<span class="type"> [symbol]</span></h3> 
-      	<div class="optional">Optional</div> 
-    	<div class="description">The name of the multiarray</div>
+    	<div class="description">The name of the multiarray. Each component array is using this name, followed by the 'channe' number. For instance, <b>name-0</b> is the zeroth channel of <b>name</b>. The usual send-to-array syntax via <b>;name</b> will address all the channels at once.</div>
       	<h3 class="argument_name">size<span class="type"> [int]</span></h3> 
-      	<div class="optional">Optional</div> 
-    	<div class="description">The number of elements that the array should store</div>
+    	<div class="description">The number of elements in each channel array.</div>
  	 </section> 
   	<section class="attribute_section">
     <h2>Attributes</h2>
@@ -81,6 +88,10 @@ under the European Union’s Horizon 2020 research and innovation programme
   </section> 
   <section class="seealso"> 
     <h2>See Also</h2> 
+    <h3 class="seealso_name">
+		<a href='fluid.bufcompose.html'>
+		fluid.bufcompose
+		</a></h3>    
   </section> 
 </body>
 </html>

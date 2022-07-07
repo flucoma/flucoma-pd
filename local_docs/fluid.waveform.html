@@ -11,7 +11,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title> Reference</title>
+<title>fluid.waveform Reference</title>
 <style>
 	* {
 		font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -49,28 +49,239 @@ under the European Union’s Horizon 2020 research and innovation programme
 </style> 
 </head>
 <body>
-  	<h1 class="ref_title"></h1>
-  	<div class="digest"></div>
+  	<h1 class="ref_title">fluid.waveform</h1>
+  	<div class="digest">Plot fluid.multiarrays in various ways.</div>
   	<section class="object_description">
 		<h2>Description</h2> 
-	<p></p>
+		<p>A GUI object that plots data from fluid.multiarrays of audio, features, images and indices.</p>
   	</section> 
-  		<section class="object_discussion"> 
+	<section class="object_discussion"> 
     	<h2>Discussion</h2> 
-    	<p></p>
-    	<p> is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
+    	<p>The fluid.waveform object can be used as a versatile solution for plotting arrays and multiarrays.
+
+It plots multichannel audio as waveform.
+It plots time-series of features as lines.
+It plots images of 2D matrices, i.e. spectrograms.
+It plots indices as markers.
+
+See the helpfile for various examples.
+
+</p>
+    	<p>fluid.waveform is part of the Fluid Decomposition Toolkit of the FluCoMa project. For more explanations, learning material, and discussions on its musicianly uses, visit <a href="http://www.flucoma.org/">flucoma.org</a>.</p>
   	</section>
+	<section class="inlets">
+		<h2>Inlets</h2>
+		<ul>
+			<li>
+      		<h3 class="inlet_name">1<span class="type"> [anything]</span></h3> 
+			<p>See below for the various messages.</p>
+			</li>
+		</ul>
+	</section>
+	<section class="outlets">
+		<h2>Outlets</h2>
+		<ul>
+			<li>
+      		<h3 class="outlet_name">1<span class="type"> [list]</span></h3> 
+			<p>A list of the x-y coordinates where the mouse is clicked and dragged.</p>
+			</li>
+		</ul>
+	</section>
   	<section class="argument_section">
     	<h2>Arguments</h2>
+      	<h3 class="argument_name">width<span class="type"> [int]</span></h3> 
+		<span class="defaultval"> (default: 10)</span>
+    	<div class="description">The width of the object.</div>
+      	<h3 class="argument_name">heigth<span class="type"> [int]</span></h3> 
+		<span class="defaultval"> (default: 10)</span>
+    	<div class="description">The height of the object.</div>
+      	<h3 class="argument_name">outline<span class="type"> [int]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: 0)</span>
+    	<div class="description">A flag to draw the frame around the object.</div>
+      	<h3 class="argument_name">send<span class="type"> [symbol]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: empty)</span>
+    	<div class="description">The name of the object for receiving messages.</div>
+      	<h3 class="argument_name">receive<span class="type"> [symbol]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: empty)</span>
+    	<div class="description">The name of the object on which it will send its mousing values.</div>
+      	<h3 class="argument_name">latch<span class="type"> [int]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: 0)</span>
+    	<div class="description">A flag to send a value on mouse up.</div>
  	 </section> 
   	<section class="attribute_section">
     <h2>Attributes</h2>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">outline
+        <span class="type"> [int]</span>
+        <span class="defaultval"> (default: 0)</span>
+      	</h3>
+      	<div class="description">A flag to draw the frame around the object.</div>       
+		</div>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">send
+        <span class="type"> [symbol]</span>
+        <span class="defaultval"> (default: empty)</span>
+      	</h3>
+      	<div class="description">The name of the object for receiving messages.</div>       
+		</div>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">receive
+        <span class="type"> [symbol]</span>
+        <span class="defaultval"> (default: empty)</span>
+      	</h3>
+      	<div class="description">The name of the object on which it will send its mousing values.</div>       
+		</div>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">latch
+        <span class="type"> [int]</span>
+        <span class="defaultval"> (default: 0)</span>
+      	</h3>
+      	<div class="description">A flag to send a value on mouse up.</div>       
+		</div>
   	</section> 
   	<section class="method_section"> 
     <h2>Messages</h2>
+	<div class='method_group'>
+		<h3 class='method_name' name='waveform'>waveform</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>buffer (symbol)</span>
+		<div class='description'>
+		<p>Set the source 'buffer' for the waveform to draw. This can be a multichannel audiofile and will be normalised across channels.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>buffer: <p>The name of the "fluid.multiarray" to draw as a waveform.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='features'>features</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>buffer (symbol)</span>
+		<div class='description'>
+		<p>Set the source 'buffer' for the features to draw. Each feature is normalised individually.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>buffer: <p>The name of the "fluid.multiarray" to draw as lines of features.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='image'>image</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>buffer (symbol)</span>
+		<div class='description'>
+		<p>Set the source 'buffer' for the image matrix to draw. The minimum is mapped to dark and the maximum is mapped to bright. This is sometimes referred to as a heat map.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>buffer: <p>The name of the "fluid.multiarray" to draw as a 2d matrix.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='indices'>indices</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>buffer (symbol)</span>
+		<div class='description'>
+		<p>Set the source 'buffer' for the indices to draw. This needs to happen after the waveform is set in order to define the timeframe of the markers.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>buffer: <p>The name of the array, or multiarray, containing indices to draw as markers.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='imagelogflag'>imagelogflag</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>flag (int)</span>
+		<div class='description'>
+		<p>Set how the full range of values in the 2d matrix is mapped to color. 0 is linear, 1 is logarithmic.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>flag: <p>The flag: 0 is linear, 1 is logarithmic.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='linewidth'>linewidth</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>width (int)</span>
+		<div class='description'>
+		<p>Set the line width for both the markers of indices and the lines of features.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>width: <p>The width of the line.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='waveformcolor'>waveformcolor</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>colour (symbol)</span>
+		<div class='description'>
+		<p>Set the colour of the waveform. This is the new Pd colour format #rrggbb where rr,gg,bb are hexadecimal for each RGB component.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>colour: <p>The colour in #RRGGBB format.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='featurescolor'>featurescolor</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>colour (symbol)</span>
+		<div class='description'>
+		<p>Set the colour of the features lines. This is the new Pd colour format #rrggbb where rr,gg,bb are hexadecimal for each RGB component.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>colour: <p>The colour in #RRGGBB format.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='imagecolorscheme'>imagecolorscheme</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>scheme (int)</span>
+		<div class='description'>
+		<p>Set the perceptually linear color scheme used to draw the matrix values. See the <a href='https://colorcet.com/'>ColorCET website</a> for more information.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>scheme: <p>The colour scheme. 0 is CET-L02, 1 is CET-L16.</p></li>
+		</ul>
+	</div>
+	<div class='method_group'>
+		<h3 class='method_name' name='indicescolor'>indicescolor</h3>
+		<span class='arglist'>Arguments: </span>
+		<span class='arg'>colour (symbol)</span>
+		<div class='description'>
+		<p>Set the colour of the marker line drawn for indices. This is the new Pd colour format #rrggbb where rr,gg,bb are hexadecimal for each RGB component.</p>
+		</div>
+
+		<h5>Argument details:</h5>
+		<ul>
+			<li>colour: <p>The colour in #RRGGBB format.</p></li>
+		</ul>
+	</div>
   </section> 
   <section class="seealso"> 
     <h2>See Also</h2> 
+    <h3 class="seealso_name">
+		<a href='fluid.multiarray.html'>
+		fluid.multiarray
+		</a></h3>    
   </section> 
 </body>
 </html>
