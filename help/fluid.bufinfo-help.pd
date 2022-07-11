@@ -14,8 +14,6 @@ generated 'buffers'., f 68;
 #X text 18 346 nbFrames / nbChannels;
 #X obj 250 378 array define bufinfo2 111;
 #X msg 31 238 buffer bufinfo2;
-#X text 144 236 works on native arrays too...;
-#X text 152 267 ... and on constructed stereo;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufinfo3-0 100 float 2;
 #X coords 0 1 100 -1 100 70 1 0 0;
@@ -48,20 +46,25 @@ bufinfo_source, f 68;
 #X obj 20 271 fluid.bufmfcc 26 -source bufinfo_source;
 #X floatatom 122 222 5 0 0 0 - - - 0;
 #X msg 122 244 numcoeffs \$1;
-#X text 262 223 load different files \, and change the number of coeffcients
-;
-#X obj 299 374 array get;
+#X obj 293 380 array get;
 #X msg 359 317 symbol \$1-0;
-#X obj 299 354 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 293 360 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X listbox 299 397 51 0 0 0 - - - 0;
-#X text 298 419 retrieve a channel's content with native objects;
+#X listbox 293 403 51 0 0 0 - - - 0;
 #X obj 29 469 note_on_automatic_multiarrays;
+#X obj 229 219 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 228 218 1) load different files \, and change the number of
+coeffcients, f 62;
+#X obj 336 359 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 310 357 <-- 2) retrieve a channel's content with pd objects
+;
 #X connect 3 0 4 0;
 #X connect 4 0 12 0;
 #X connect 5 0 6 0;
 #X connect 5 1 9 1;
-#X connect 5 1 17 0;
+#X connect 5 1 16 0;
 #X connect 6 0 9 0;
 #X connect 7 0 3 0;
 #X connect 9 0 10 0;
@@ -69,13 +72,22 @@ bufinfo_source, f 68;
 #X connect 12 0 5 0;
 #X connect 13 0 14 0;
 #X connect 14 0 12 0;
-#X connect 16 0 19 0;
-#X connect 17 0 16 2;
-#X connect 18 0 16 0;
+#X connect 15 0 18 0;
+#X connect 16 0 15 2;
+#X connect 17 0 15 0;
 #X restore 498 207 pd auto_managed_buffers;
 #X obj 509 60 fluid.referencelauncher fluid.bufinfo.html reference/bufinfo/
 ;
+#X obj 23 179 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 24 179 1) try on a fluid.multiarray;
+#X obj 149 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 157 268 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 150 236 2) works on native arrays too...c;
+#X text 157 267 3) ... and on constructed stereo;
 #X connect 3 0 6 0;
 #X connect 5 0 3 0;
 #X connect 9 0 3 0;
-#X connect 14 0 3 0;
+#X connect 12 0 3 0;

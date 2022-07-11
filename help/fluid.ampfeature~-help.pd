@@ -1,14 +1,13 @@
 #N canvas 51 50 692 774 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.ampfeature~ 1 22 0 36
 #4ba3fb #ffffff 0;
-#X obj 23 141 fluid.demosound~;
+#X obj 23 142 fluid.demosound~;
 #X obj 509 60 fluid.referencelauncher fluid.ampfeature~.html reference/ampfeature/
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Realtime\\\ Amplitude\\\ Differential\\\ Feature
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Calculate the amplitude differential feature used by
 fluid.ampslice~, f 68;
-#X text 22 121 1) Select a source., f 66;
 #X obj 214 537 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
 #X obj 214 512 loadbang;
@@ -67,7 +66,6 @@ fluid.ampslice~, f 68;
 #X connect 26 0 16 0;
 #X coords 0 -1 1 1 162 90 2 100 100;
 #X restore 208 262 pd parameters;
-#X text 328 393 <-- more parameters;
 #N canvas 492 171 717 633 parameters 0;
 #X obj 29 577 r \$0-params;
 #X obj 29 600 outlet;
@@ -121,14 +119,23 @@ take to reach the next value when raising., f 30;
 #X connect 22 0 18 0;
 #X connect 24 0 2 0;
 #X restore 225 392 pd parameters;
-#X connect 1 0 9 0;
-#X connect 1 0 10 0;
+#X obj 24 121 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 94 626 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 328 395 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 94 626 2) audio on!;
+#X text 22 121 1) Select a source., f 66;
+#X text 328 393 <-- more parameters;
 #X connect 1 0 8 0;
-#X connect 6 0 13 0;
-#X connect 7 0 6 0;
-#X connect 9 0 8 1;
-#X connect 10 0 12 0;
-#X connect 13 0 12 0;
+#X connect 1 0 9 0;
+#X connect 1 0 7 0;
+#X connect 5 0 12 0;
+#X connect 6 0 5 0;
+#X connect 8 0 7 1;
+#X connect 9 0 11 0;
+#X connect 12 0 11 0;
+#X connect 13 0 8 0;
+#X connect 13 0 9 0;
 #X connect 14 0 9 0;
-#X connect 14 0 10 0;
-#X connect 16 0 10 0;

@@ -113,8 +113,8 @@ can be useful to structure an array to added to a DataSet.;
 #X restore 25 601 pd showresult;
 #X obj 25 575 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 471 732 cnv 15 213 68 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 471 732 cnv 15 213 68 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 172 77 725 956 real_use_case 0;
 #X obj 17 23 cnv 15 660 42 empty empty fluid.bufflatten 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -181,7 +181,6 @@ as there are analysis windows, f 29;
 #X obj 37 709 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X text 57 706 store dataset into a text object;
-#X text 244 788 <- double-click 'text' to see data, f 18;
 #X obj 37 734 fluid.ds2text help.chroma.stats help.bufflatten.text.1
 , f 27;
 #X obj 42 788 text define help.bufflatten.text.1;
@@ -192,6 +191,12 @@ frame is a statistical measurement of the chroma values, f 40;
 isolates the "mean" amplitude of each chroma., f 51;
 #X text 259 531 Flattens the 12 channels with a single frame in each
 \, to a single channel of 12 values., f 48;
+#X obj 57 275 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 58 274 1) start the process;
+#X obj 262 790 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 244 788 <- 2 double-click 'text' to see data, f 18;
 #X connect 2 0 4 0;
 #X connect 4 0 6 0;
 #X connect 6 0 12 0;
@@ -199,7 +204,7 @@ isolates the "mean" amplitude of each chroma., f 51;
 #X connect 13 0 14 0;
 #X connect 14 0 15 0;
 #X connect 15 0 18 0;
-#X connect 18 0 21 0;
+#X connect 18 0 20 0;
 #X restore 473 752 pd real_use_case;
 #X obj 45 162 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
@@ -221,6 +226,9 @@ samples, f 22;
 ;
 #X text 177 221 -> samples/frames;
 #X obj 472 777 note_on_automatic_multiarrays;
+#X obj 395 471 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 396 470 3) change the axis and reprocess;
 #X connect 2 0 12 0;
 #X connect 3 0 11 0;
 #X connect 4 0 5 0;

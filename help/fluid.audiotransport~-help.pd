@@ -1,4 +1,4 @@
-#N canvas 282 252 695 776 12;
+#N canvas 112 45 695 776 12;
 #X msg 268 516 interpolation \$1;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.audiotransport~ 1 22 0
 36 #4ba3fb #ffffff 0;
@@ -16,8 +16,6 @@ optimal transport.;
 1024 64 8192, f 31;
 #X obj 271 471 hsl 200 35 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X text 20 147 1) load sounds in both players;
-#X text 304 446 interpolate between the two different sounds;
 #X obj 532 690 cnv 15 145 50 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
 #N canvas 693 102 692 820 more_info 0;
@@ -34,44 +32,60 @@ optimal transport.;
 1024 64 8192, f 32;
 #X obj 32 505 hsl 200 35 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X text 20 147 1) load sounds in both players;
 #X msg 260 477 fftsettings 256 16 256;
 #X msg 260 499 fftsettings 1024 16 1024;
 #X msg 260 521 fftsettings 1024 -1 -1;
 #X msg 260 543 fftsettings 2048 -1 -1;
 #X msg 260 565 fftsettings 4096 -1 -1;
 #X msg 260 587 fftsettings 16384 -1 -1;
-#X text 256 430 Try these different fftsettings to see how they affect
-the results of the audiotransport~ algorithm.;
 #X text 256 622 The larger the fft size the better it blends the spectral
 qualities at the expense of smearing attacks. This will have a drastic
 impact on the characteristic of the interpolation.;
 #X obj 21 741 fluid.out~ audiotransporthelp;
+#X obj 20 148 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 91 745 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 257 433 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 90 744 2) switch audio on;
+#X text 20 147 1) load sounds in both players;
+#X text 256 430 3) Try these different fftsettings to see how they
+affect the results of the audiotransport~ algorithm.;
 #X connect 0 0 7 0;
 #X connect 3 0 7 0;
 #X connect 4 0 5 0;
 #X connect 5 0 8 0;
 #X connect 6 0 7 1;
-#X connect 7 0 18 0;
-#X connect 7 0 18 1;
+#X connect 7 0 16 0;
+#X connect 7 0 16 1;
 #X connect 8 0 0 0;
+#X connect 9 0 7 0;
 #X connect 10 0 7 0;
 #X connect 11 0 7 0;
 #X connect 12 0 7 0;
 #X connect 13 0 7 0;
 #X connect 14 0 7 0;
-#X connect 15 0 7 0;
 #X restore 574 713 pd more_info;
 #X obj 21 739 fluid.out~ audiotransporthelp;
 #X obj 79 693 loadbang;
 #X msg 79 715 1;
+#X obj 20 149 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 93 744 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 20 148 1) load sounds in both players;
+#X text 93 743 2) switch audio on;
+#X obj 291 448 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 291 447 3) interpolate between the two different sounds;
 #X connect 0 0 9 0;
 #X connect 5 0 9 0;
 #X connect 6 0 7 0;
 #X connect 7 0 10 0;
 #X connect 8 0 9 1;
-#X connect 9 0 15 1;
-#X connect 9 0 15 0;
+#X connect 9 0 13 1;
+#X connect 9 0 13 0;
 #X connect 10 0 0 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 2;
+#X connect 14 0 15 0;
+#X connect 15 0 13 2;

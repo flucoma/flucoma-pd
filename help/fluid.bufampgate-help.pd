@@ -75,7 +75,6 @@ of off stats of the gate., f 24;
 #X obj 467 367 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 541 501 3) Audio on, f 17;
-#X text 468 367 3) Play back onset/offset pairs, f 18;
 #X text 19 161 1) Select a source;
 #X text 39 276 2) Slice the source;
 #X obj 18 485 clone 2 fluid.multiarray help.ampgate.indices.1, f 28
@@ -339,6 +338,7 @@ offthreshold \, else ignore;
 #X connect 17 0 9 0;
 #X connect 22 0 5 0;
 #X restore 457 658 pd looking_ahead_and_back;
+#X text 468 367 4) Play back onset/offset pairs, f 18;
 #X connect 5 0 4 0;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
