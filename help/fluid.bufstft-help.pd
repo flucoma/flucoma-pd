@@ -38,7 +38,7 @@ Transform (STFT) on a single channel source array.;
 #000000;
 #X obj 462 813 cnv 15 212 88 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 162 143 749 909 musical_example 0;
+#N canvas 162 143 692 671 musical_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 99 Performs either a forward or inverse Short-Time Fourier

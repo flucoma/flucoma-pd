@@ -74,15 +74,15 @@ fluid.nmfcross.src, f 47;
 #X obj 42 455 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 42 454 3) listen to source \, target or processed sound;
-#X obj 459 592 cnv 15 215 65 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
-#N canvas 40 182 692 864 parameters 0;
+#X obj 459 592 cnv 15 215 65 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
+#N canvas 40 182 692 636 parameters 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmfcross 1 22 0 36
 #4ba3fb #ffffff 0;
 #X text 18 88 The result of the cross synthesis is a hybrid of the
 source and target sounds. The algorithm tries to match the target spectrum
 over time using components learned from the source. These parameters
-affect the reconstruction:, f 69;
+affect the reconstruction:, f 84;
 #X obj 42 480 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 42 500 tabplay~ fluid.nmfcross.src, f 20;
@@ -109,7 +109,6 @@ affect the reconstruction:, f 69;
 #X obj 354 500 tabplay~ fluid.nmfcross.result, f 22;
 #X obj 42 455 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 42 454 3) listen to source \, target or processed sound;
 #X floatatom 403 415 5 0 0 0 - - - 0;
 #X obj 42 417 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
@@ -153,7 +152,16 @@ consecutive frames from the source, f 60;
 #X restore 42 169 pd parameters;
 #X obj 82 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X text 100 321 process;
+#X obj 49 148 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 113 593 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 115 592 3) Audio on;
+#X obj 104 322 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 51 147 1) Adjust the parameters;
+#X text 106 321 2) Bang to start the process;
+#X text 42 454 4) Listen to source \, target or processed sound;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 7 0;
@@ -162,10 +170,10 @@ consecutive frames from the source, f 60;
 #X connect 6 0 9 0;
 #X connect 8 0 4 1;
 #X connect 9 0 4 2;
-#X connect 14 0 13 0;
-#X connect 14 1 12 0;
-#X connect 16 0 14 0;
-#X connect 17 0 14 0;
+#X connect 13 0 12 0;
+#X connect 13 1 11 0;
+#X connect 15 0 13 0;
+#X connect 16 0 13 0;
 #X restore 462 612 pd parameters;
 #X text 58 358 bang when done;
 #X obj 40 299 fluid.bufnmfcross -source fluid.nmfcross.src -target

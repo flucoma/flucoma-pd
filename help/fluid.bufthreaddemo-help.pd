@@ -5,15 +5,10 @@
 #X obj 172 444 array define result 3;
 #X obj 22 442 expr result[0];
 #X floatatom 22 463 10 0 0 0 - - - 0;
-#X text 48 363 This will wait for 3 seconds \, and then write 3000
-into the array 'result', f 38;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufthreaddemo 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty Fluid\\\ Decomposition:\\\ Thread
 4 8 0 13 #e0e0e0 #404040 0;
-#X text 16 85 The Fluid Decomposition Toolkit has some different options
-for threading \, depending on the type of processing you're doing.
-, f 63;
 #X obj 509 60 fluid.referencelauncher fluid.bufthreaddemo.html reference/butthreaddemo/
 ;
 #X text 17 292 The object's processing consists simply of waiting for
@@ -28,90 +23,117 @@ non-realtime objects., f 73;
 #X text 19 240 Arguments:, f 11;
 #X obj 484 393 cnv 15 199 65 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 343 216 578 480 blocking_behaviour 0;
-#X text 13 13 Choosing a thread with the 'blocking' attribute;
-#X text 14 50 The default for all Fluid Decomposition Toolkit non-realtime
-objects is to process in Pd's main thread.;
-#X text 13 89 For more intensive jobs \, this might cause audio to
+#N canvas 343 216 703 549 blocking_behaviour 0;
+#X text 17 92 Choosing a thread with the 'blocking' attribute;
+#X text 18 129 The default for all Fluid Decomposition Toolkit non-realtime
+objects is to process in Pd's main thread., f 94;
+#X text 17 168 For more intensive jobs \, this might cause audio to
 drop. In these circumstances you can opt to use a custom thread instead
-\, to avoid locking up Pd \, by setting 'blocking' to 0;
-#X obj 50 253 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+\, to avoid locking up Pd \, by setting 'blocking' to 0, f 94;
+#X obj 54 332 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 33 373 expr result[0];
-#X floatatom 33 394 10 0 0 0 - - - 0;
-#X obj 34 187 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 37 452 expr result[0];
+#X floatatom 37 473 10 0 0 0 - - - 0;
+#X obj 38 266 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X msg 34 207 blocking \$1;
-#X obj 35 166 loadbang;
-#X text 54 188 1) choose your blocking mode;
-#X obj 326 180 osc~ 110;
-#X obj 326 221 dac~;
-#X obj 390 163 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X msg 38 286 blocking \$1;
+#X obj 39 245 loadbang;
+#X obj 330 259 osc~ 110;
+#X obj 330 300 dac~;
+#X obj 394 242 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X obj 390 180 * 0.1;
-#X obj 326 200 *~;
-#X text 323 147 2) play a sound;
-#X text 67 253 3) start the process;
-#X msg 71 299 cancel;
-#X text 119 299 You can abort a threaded job using the 'cancel' message
+#X obj 394 259 * 0.1;
+#X obj 330 279 *~;
+#X msg 75 378 cancel;
+#X text 125 378 You can abort a threaded job using the 'cancel' message
 ;
-#X obj 33 355 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 37 434 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X text 113 398 When blocking = 0 \, the right outlet of the object
+#X text 117 477 When blocking = 0 \, the right outlet of the object
 will report approximate job progress. The left outlet will still bang
 when finished \, which you can use to trigger your next round of processing
-;
-#X floatatom 344 357 5 0 0 0 - - - 0;
-#X obj 33 333 fluid.bufthreaddemo -result result -time 1000;
-#X connect 3 0 22 0;
+, f 80;
+#X floatatom 348 436 5 0 0 0 - - - 0;
+#X obj 37 412 fluid.bufthreaddemo -result result -time 1000;
+#X obj 58 267 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 328 226 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 72 333 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufthreaddemo 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Fluid\\\ Decomposition:\\\ Thread
+4 8 0 13 #e0e0e0 #404040 0;
+#X text 59 265 1) choose your blocking mode;
+#X text 328 224 2) play a sound;
+#X text 73 331 3) start the process;
+#X connect 3 0 19 0;
 #X connect 4 0 5 0;
 #X connect 6 0 7 0;
-#X connect 7 0 22 0;
+#X connect 7 0 19 0;
 #X connect 8 0 6 0;
-#X connect 10 0 14 0;
-#X connect 12 0 13 0;
-#X connect 13 0 14 1;
-#X connect 14 0 11 0;
-#X connect 14 0 11 1;
-#X connect 17 0 22 0;
-#X connect 19 0 4 0;
-#X connect 22 0 19 0;
-#X connect 22 1 21 0;
+#X connect 9 0 13 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 1;
+#X connect 13 0 10 0;
+#X connect 13 0 10 1;
+#X connect 14 0 19 0;
+#X connect 16 0 4 0;
+#X connect 19 0 16 0;
+#X connect 19 1 18 0;
 #X restore 488 414 pd blocking_behaviour;
-#N canvas 271 84 510 356 queue_flag 0;
-#X text 15 10 Controlling Queuing;
-#X text 16 44 In blocking mode \, you can queue calls like this (check
-the console for output):;
-#X msg 20 83 blocking 1 \, time 1500 \, bang \, time 1000 \, bang \,
-time 500 \, bang;
-#X obj 19 303 expr result[0];
-#X obj 19 324 print;
-#X obj 19 263 fluid.bufthreaddemo -result result;
-#X msg 39 144 blocking 0 \, time 1500 \, bang \, time 1000 \, bang
+#N canvas 271 84 698 455 queue_flag 0;
+#X text 17 100 Controlling Queuing;
+#X msg 22 156 blocking 1 \, time 1500 \, bang \, time 1000 \, bang
 \, time 500 \, bang;
-#X text 37 109 In non-blocking mode \, this will give an error for
-the second and third jobs that the object is busy;
-#X obj 258 288 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#X obj 21 393 expr result[0];
+#X obj 21 414 print;
+#X obj 21 353 fluid.bufthreaddemo -result result;
+#X msg 41 234 blocking 0 \, time 1500 \, bang \, time 1000 \, bang
+\, time 500 \, bang;
+#X obj 260 378 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X text 57 181 If you want to enable this sort of idiom with custom
-threads \, you can turn the queue attribute on;
-#X obj 61 212 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 62 302 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X msg 61 232 queue \$1;
-#X obj 19 284 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X msg 62 322 queue \$1;
+#X obj 21 374 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X connect 2 0 5 0;
-#X connect 3 0 4 0;
-#X connect 5 0 12 0;
-#X connect 5 1 8 0;
-#X connect 6 0 5 0;
-#X connect 10 0 11 0;
-#X connect 11 0 5 0;
-#X connect 12 0 3 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufthreaddemo 1 22 0 36
+#4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Fluid\\\ Decomposition:\\\ Thread
+4 8 0 13 #e0e0e0 #404040 0;
+#X obj 20 136 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 38 198 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 58 274 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 20 135 1) In blocking mode \, you can queue calls like this
+(check the console for output):, f 86;
+#X text 39 198 2) In non-blocking mode \, this will give an error for
+the second and third jobs that the object is busy, f 80;
+#X text 59 271 3) If you want to enable this sort of idiom with custom
+threads \, you can turn the queue attribute on, f 82;
+#X connect 1 0 4 0;
+#X connect 2 0 3 0;
+#X connect 4 0 9 0;
+#X connect 4 1 6 0;
+#X connect 5 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 4 0;
+#X connect 9 0 2 0;
 #X restore 488 435 pd queue_flag;
 #X obj 22 424 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
+#X obj 48 364 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 49 362 1) This will wait for 3 seconds \, and then write 3000
+into the array 'result', f 49;
+#X text 16 85 The Fluid Corpus Manipulation Toolkit has different options
+for threading \, depending on the type of processing you are doing.
+, f 63;
 #X connect 0 0 1 0;
-#X connect 1 0 18 0;
+#X connect 1 0 16 0;
 #X connect 3 0 4 0;
-#X connect 18 0 3 0;
+#X connect 16 0 3 0;

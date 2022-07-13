@@ -76,9 +76,9 @@
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Statistically\\\ summarise\\\ a\\\ time\\\ series\\\ in\\\ an\\\ array
 4 8 0 13 #e0e0e0 #404040 0;
-#X obj 465 545 cnv 15 215 152 empty empty More\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 880 94 698 745 musical_example 0;
+#X obj 465 545 cnv 15 215 152 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#N canvas 155 91 698 745 musical_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 19 230 soundfiler;
@@ -313,7 +313,10 @@ and retrieve the ordinal.;
 the segments by their pitch value;
 #X obj 80 563 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 80 562 4) Playback slices sorted by pitch;
+#X text 80 562 5) Playback slices sorted by pitch;
+#X obj 103 714 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 103 713 4) audio on;
 #X connect 5 0 9 0;
 #X connect 6 0 7 0;
 #X connect 7 0 8 0;
@@ -618,9 +621,6 @@ help.bufstats.src.3, f 32;
 #X obj 16 800 fluid.out~ bufstatshelp;
 #X obj 209 639 vradio 30 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc
 #000000 #000000 0;
-#X text 442 632 Play back the section of the source that was analysed
-alongside a sine tone at the detected frequency. Decide which one is
-the closest for yourself!, f 27;
 #X text 242 698 weighted by confidence and outliers cutoff, f 23;
 #X text 421 670 <-, f 30;
 #X text 242 643 just the mean, f 23;
@@ -631,6 +631,11 @@ the closest for yourself!, f 27;
 #X floatatom 356 566 5 0 0 0 - - - 0;
 #X obj 16 493 t a a a, f 49;
 #X text 409 226 2) listen to the source (an acoustic bass), f 23;
+#X obj 443 632 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 443 631 4) Play back the section of the source that was analysed
+alongside a sine tone at the detected frequency. Decide which one is
+the closest for yourself!, f 27;
 #X connect 5 0 13 0;
 #X connect 6 0 14 0;
 #X connect 10 0 21 0;
@@ -638,21 +643,21 @@ the closest for yourself!, f 27;
 #X connect 14 0 7 0;
 #X connect 14 0 7 1;
 #X connect 17 0 16 0;
-#X connect 18 0 31 0;
-#X connect 19 0 32 0;
-#X connect 20 0 33 0;
+#X connect 18 0 30 0;
+#X connect 19 0 31 0;
+#X connect 20 0 32 0;
 #X connect 21 0 17 0;
-#X connect 21 0 34 0;
+#X connect 21 0 33 0;
 #X connect 22 0 23 0;
 #X connect 22 1 23 1;
 #X connect 24 0 22 1;
-#X connect 30 0 22 0;
-#X connect 31 0 30 0;
-#X connect 32 0 30 1;
-#X connect 33 0 30 2;
-#X connect 34 0 18 0;
-#X connect 34 1 19 0;
-#X connect 34 2 20 0;
+#X connect 29 0 22 0;
+#X connect 30 0 29 0;
+#X connect 31 0 29 1;
+#X connect 32 0 29 2;
+#X connect 33 0 18 0;
+#X connect 33 1 19 0;
+#X connect 33 2 20 0;
 #X restore 468 631 pd weighted_statistics;
 #N canvas 134 49 693 684 multichannel 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
@@ -695,8 +700,6 @@ const;
 #X connect 9 0 13 0;
 #X connect 10 0 11 0;
 #X restore 22 117 pd composer;
-#X text 44 82 1) compose an artificially wide "stereo" array - a line
-on the left channel \, and noise on the right channel, f 76;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.bufstats.src-0 101 float 2;
 #X coords 0 1 101 0 202 140 1 0 0;
@@ -705,7 +708,6 @@ on the left channel \, and noise on the right channel, f 76;
 #X array help.bufstats.src-1 101 float 2;
 #X coords 0 1 101 0 202 140 1 0 0;
 #X restore 377 159 graph;
-#X text 41 309 2) process;
 #X msg 22 393 0;
 #X obj 22 444 list split 7;
 #N canvas 1539 -672 450 300 stats 0;
@@ -822,20 +824,29 @@ on the left channel \, and noise on the right channel, f 76;
 #X obj 352 422 array get help.bufstats.dst-1 0;
 #X obj 22 420 array get help.bufstats.dst-0 0;
 #X obj 353 657 clone 2 fluid.multiarray help.bufstats.dst;
+#X obj 44 85 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 41 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 64 392 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 44 83 1) compose an artificially wide "stereo" array - a line
+on the left channel \, and noise on the right channel, f 76;
+#X text 41 309 2) process;
 #X text 65 391 3) retrieves the stats of channel 0 and channel 1 separately
 ;
 #X connect 1 0 3 0;
-#X connect 2 0 15 0;
+#X connect 2 0 13 0;
 #X connect 3 0 2 0;
-#X connect 8 0 17 0;
-#X connect 8 0 16 0;
-#X connect 9 0 11 0;
-#X connect 9 1 10 0;
-#X connect 12 0 14 0;
-#X connect 12 1 13 0;
-#X connect 15 0 8 0;
-#X connect 16 0 12 0;
-#X connect 17 0 9 0;
+#X connect 6 0 15 0;
+#X connect 6 0 14 0;
+#X connect 7 0 9 0;
+#X connect 7 1 8 0;
+#X connect 10 0 12 0;
+#X connect 10 1 11 0;
+#X connect 13 0 6 0;
+#X connect 14 0 10 0;
+#X connect 15 0 7 0;
 #X restore 468 653 pd multichannel;
 #X text 17 79 Statistical analysis on array channels.;
 #X obj 17 174 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000
@@ -871,10 +882,6 @@ help.bufstats.select.src;
 help.bufstats.select.dst, f 47;
 #X obj 23 479 array get help.bufstats.select.dst;
 #X listbox 23 502 71 0 0 0 - - - 0;
-#X text 19 127 1) Load a soundfile;
-#X text 191 249 2) Only returns the mean and skew;
-#X text 403 282 3) Back to default;
-#X text 248 310 4) same as above;
 #X obj 93 341 cnv 15 580 75 empty empty empty 4 10 0 13 #e0e0e0 #404040
 0;
 #X text 98 343 No matter what order you specify the selection in \,
@@ -883,6 +890,18 @@ as if you didn't select any. A good trick for getting the order is
 to see the attributes listed out in the object when no -select is chosen.
 Think of this parameter like a filter \, rather than a reordering of
 the outputs., f 81;
+#X obj 20 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 191 250 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 247 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 405 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 19 127 1) Load a soundfile;
+#X text 191 249 2) Only returns the mean and skew;
+#X text 403 282 3) Back to default;
+#X text 248 310 4) same as above;
 #X connect 5 0 4 0;
 #X connect 6 0 11 0;
 #X connect 7 0 11 0;
@@ -894,8 +913,6 @@ the outputs., f 81;
 #X obj 251 307 array get help.bufstats.stats.1 0;
 #X msg 251 280 0;
 #X obj 251 331 list split 7;
-#X text 13 146 1) Select a source;
-#X text 273 166 2) Process the statistics;
 #N canvas 1539 -672 450 300 stats 0;
 #X obj 102 57 inlet;
 #X text 185 128 mean;
@@ -972,11 +989,17 @@ the outputs., f 81;
 #X connect 9 0 3 0;
 #X restore 281 208 pd changing_the_centiles;
 #X obj 468 675 note_on_automatic_multiarrays;
+#X obj 14 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 273 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 13 146 1) Select a source;
+#X text 273 166 2) Process the statistics;
 #X connect 12 0 0 0;
 #X connect 18 0 19 0;
 #X connect 19 0 22 0;
 #X connect 21 0 23 0;
 #X connect 22 0 21 0;
-#X connect 23 0 27 0;
-#X connect 23 1 26 0;
-#X connect 28 0 19 0;
+#X connect 23 0 25 0;
+#X connect 23 1 24 0;
+#X connect 26 0 19 0;

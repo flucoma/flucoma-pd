@@ -33,6 +33,9 @@ bands.;
 ;
 #X text 407 271 Because no -features are set \, an output buffer is
 automatically assigned for us that we can then visualise, f 44;
+#X obj 19 146 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 21 145 1) Load a buffer;
 #X connect 2 0 6 0;
 #X connect 3 0 2 0;
 #X connect 6 0 8 0;

@@ -48,13 +48,6 @@
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 This object computes a histogram of the energy contained
 in each pitch class across the analysis frequency range, f 56;
-#X text 19 159 1) Select a source. It works well with polyphonic piano.
-, f 66;
-#X text 275 335 3) Consecutive frames of analysis are smoothed to make
-the visualisation easier to follow., f 46;
-#X text 332 405 2) Each index of the list is a pitch class. The strength
-of that pitch class is determined by the corresponding element.comment
-, f 46;
 #N canvas 257 304 1382 293 oscillator_bank 0;
 #X obj 49 30 inlet;
 #X obj 51 240 outlet~;
@@ -215,17 +208,9 @@ of that pitch class is determined by the corresponding element.comment
 #000000 #000000 0 1;
 #X obj 461 433 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X text 121 568 3) The list is now 19 elements long: each element in
-the list is a chroma bin., f 42;
-#X text 238 282 2) The number of chroma can be changed. Note \, the
-maximum number of chroma is always returned and so the maximum chroma
-has to be set also. This is the first argument of the object., f 61
-;
 #X obj 120 333 fluid.chroma~ 19 -fftsettings 4096 512 -normalize 1
 -numchroma 19, f 65;
 #X obj 67 332 s #0-n;
-#X text 36 101 1) Select a source. It works well with oboe multiphonic.
-;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.chroma~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ histogram\\\ of\\\ pitch\\\ classes\\\ in\\\ real-time.
@@ -454,13 +439,27 @@ has to be set also. This is the first argument of the object., f 61
 #X restore 67 615 pd oscillator_bank;
 #X obj 120 364 fluid.stats -history 40;
 #X obj 38 645 fluid.out~;
-#X connect 12 0 27 0;
-#X connect 12 0 34 0;
+#X obj 37 103 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 241 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 121 569 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 121 568 3) The list is now 19 elements long: each element in
+the list is a chroma bin., f 42;
+#X text 241 282 2) The number of chroma can be changed. Note \, the
+maximum number of chroma is always returned and so the maximum chroma
+has to be set also. This is the first argument of the object., f 61
+;
+#X text 36 101 1) Select a source. It works well with oboe multiphonic.
+;
+#X connect 12 0 25 0;
+#X connect 12 0 31 0;
 #X connect 13 0 16 0;
-#X connect 13 0 28 0;
+#X connect 13 0 26 0;
 #X connect 14 0 15 0;
 #X connect 15 0 13 0;
-#X connect 16 0 27 0;
+#X connect 16 0 25 0;
 #X connect 17 0 0 0;
 #X connect 17 1 1 0;
 #X connect 17 2 2 0;
@@ -480,13 +479,26 @@ has to be set also. This is the first argument of the object., f 61
 #X connect 17 16 22 0;
 #X connect 17 17 23 0;
 #X connect 17 18 24 0;
-#X connect 27 0 33 0;
-#X connect 32 0 34 1;
-#X connect 33 0 32 0;
-#X connect 33 0 17 0;
+#X connect 25 0 30 0;
+#X connect 29 0 31 1;
+#X connect 30 0 29 0;
+#X connect 30 0 17 0;
 #X restore 514 616 pd some_more_details;
 #X obj 102 340 fluid.stats -history 40;
 #X obj 20 620 fluid.out~;
+#X obj 18 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 275 336 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 333 405 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 19 159 1) Select a source. It works well with polyphonic piano.
+, f 66;
+#X text 275 335 3) Consecutive frames of analysis are smoothed to make
+the visualisation easier to follow., f 46;
+#X text 332 405 2) Each index of the list is a pitch class. The strength
+of that pitch class is determined by the corresponding element.comment
+, f 46;
 #X connect 13 0 1 0;
 #X connect 13 1 2 0;
 #X connect 13 2 3 0;
@@ -500,8 +512,8 @@ has to be set also. This is the first argument of the object., f 61
 #X connect 13 10 11 0;
 #X connect 13 11 12 0;
 #X connect 14 0 27 0;
-#X connect 14 0 38 0;
-#X connect 27 0 37 0;
-#X connect 35 0 38 1;
-#X connect 37 0 13 0;
-#X connect 37 0 35 0;
+#X connect 14 0 35 0;
+#X connect 27 0 34 0;
+#X connect 32 0 35 1;
+#X connect 34 0 13 0;
+#X connect 34 0 32 0;

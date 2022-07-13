@@ -92,12 +92,8 @@ of a list of frame indices and channel numbers.;
 #X msg 351 575 indices 0 3 1 \, channels 1 2 2 \, bang;
 #X listbox 17 858 25 0 0 0 - - - 0;
 #X obj 72 763 array get output-2;
-#X text 16 160 1) fill the input arrays;
-#X text 251 416 3) send message to select only indices 3 and 2 from
-channels 4 and 1;
-#X text 18 675 4) get values of output channels;
-#X obj 461 786 cnv 15 215 92 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 461 786 cnv 15 215 92 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 582 78 690 988 curating_descriptor_data 0;
 #X text 19 64 comment;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufselect 1 22 0 36 #4ba3fb
@@ -379,9 +375,6 @@ bufselect.help.isolated-stat;
 #X text 15 161 bufselect~ is useful in an analytical context \, because
 it allows you to extract and isolate specific descriptors and analyses
 from a larger collection.;
-#X text 15 258 1) Select some speactral features to analyse:, f 18
-;
-#X text 147 256 2) Select desired statistical analyses, f 17;
 #N canvas 908 181 679 786 interface 0;
 #N canvas 1199 -947 966 758 choices 0;
 #X obj 46 587 list store;
@@ -781,9 +774,18 @@ from a larger collection.;
 #X connect 22 1 19 0;
 #X coords 0 -1 1 1 244 230 1 100 100;
 #X restore 17 312 pd interface;
-#X text 15 632 3) Display the dataset;
 #X listbox 26 549 20 0 0 0 - - - 0;
 #X listbox 266 547 20 0 0 0 - - - 0;
+#X obj 15 259 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 155 260 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 21 635 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 15 257 1) Select some speactral features to analyse:, f 18
+;
+#X text 155 257 2) Select desired statistical analyses, f 17;
+#X text 21 633 3) Display the dataset;
 #X connect 4 0 5 0;
 #X connect 6 0 15 0;
 #X connect 6 0 16 0;
@@ -799,14 +801,26 @@ from a larger collection.;
 #X connect 19 0 11 0;
 #X connect 20 0 12 0;
 #X connect 21 0 13 0;
-#X connect 25 0 4 0;
-#X connect 25 0 27 0;
-#X connect 25 1 28 0;
-#X connect 25 1 4 1;
+#X connect 23 0 4 0;
+#X connect 23 0 24 0;
+#X connect 23 1 25 0;
+#X connect 23 1 4 1;
 #X restore 465 809 pd curating_descriptor_data;
 #X obj 465 831 note_on_multithreading;
-#X text 16 255 2) show values in input channels 0-5;
 #X obj 465 854 note_on_automatic_multiarrays;
+#X obj 17 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 253 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 252 416 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 675 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 17 158 1) fill the input arrays;
+#X text 18 675 4) get values of output channels;
+#X text 17 253 2) show values in input channels 0-5;
+#X text 252 414 3) send message to select only indices 3 and 2 from
+channels 4 and 1;
 #X connect 1 0 2 0;
 #X connect 4 0 3 0;
 #X connect 7 0 3 0;

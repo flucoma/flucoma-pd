@@ -134,8 +134,8 @@ chosen., f 63;
 #X text 105 355 Think of this parameter like a filter \, rather than
 a reordering of the outputs., f 63;
 #X msg 39 450 select centroid skew \, bang;
-#X obj 18 409 cnv 15 420 17 empty empty order:\\\ centroid\\\ spread\\\ skew\\\ kurtosis\\\ rolloff\\\ flatness\\\ crest
-3 12 0 12 #c6ffc7 #404040 0;
+#X obj 18 409 cnv 15 500 20 empty empty order:\ centroid\ /\ spread\ /\ skew\ /\ kurtosis\ /\ rolloff\ /\ flatness\ /\ crest
+3 10 0 12 #c6ffc7 #404040 0;
 #X msg 59 490 select skew centroid \, bang;
 #X msg 79 530 select skew kurtosis centroid \, bang;
 #X text 250 448 only return the centroid and skew;
@@ -184,7 +184,7 @@ help.specshape.features -numchans 1;
 #X obj 17 408 fluid.waveform 490 100 0 empty empty 0;
 #X obj 38 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 39 326 2) Do spectral shape analysis;
+#X text 38 325 2) Do spectral shape analysis;
 #X text 515 422 Use the mouse to scrub through different parts of the
 audio file and retrieve the analysis, f 24;
 #N canvas 998 -1001 1511 939 feature_lookup 0;
