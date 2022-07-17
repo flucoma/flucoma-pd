@@ -1,4 +1,4 @@
-#N canvas 162 69 701 699 12;
+#N canvas 162 69 694 699 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.onsetfeature~ 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 20 149 fluid.demosound~;
@@ -19,8 +19,6 @@
 #X obj 278 435 t f b, f 16;
 #X obj 20 458 fluid.out~ onsetfeaturehelp;
 #X obj 278 489 array set help.onsetfeature.view;
-#X text 491 529 This represents the change in the underlying feature
-of fluid.onsetslice~ in realtime., f 21;
 #N canvas 1001 23 854 529 parameters 0;
 #X floatatom 185 148 8 0 0 0 - - - 0;
 #X floatatom 185 127 8 0 0 0 - - - 0;
@@ -161,6 +159,19 @@ FFT size is, f 25;
 #X connect 45 0 34 0;
 #X connect 46 0 0 0;
 #X restore 413 367 pd parameters;
+#X obj 27 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 27 127 1) pick a sound source and start playing.;
+#X obj 91 463 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 91 462 2) Audio on.;
+#X obj 487 258 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 487 257 4) Explore the parameters;
+#X obj 492 541 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 491 539 3) This represents the change in the underlying feature
+of fluid.onsetslice~ in realtime., f 20;
 #X connect 1 0 5 0;
 #X connect 1 0 6 0;
 #X connect 1 0 11 0;
@@ -171,6 +182,6 @@ FFT size is, f 25;
 #X connect 9 0 8 1;
 #X connect 10 0 12 0;
 #X connect 10 1 8 0;
-#X connect 14 0 5 0;
-#X connect 14 1 6 0;
-#X connect 16 0 6 0;
+#X connect 13 0 5 0;
+#X connect 13 1 6 0;
+#X connect 15 0 6 0;

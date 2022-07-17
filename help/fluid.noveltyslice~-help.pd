@@ -28,9 +28,6 @@
 in the signal to estimate the slicing points.;
 #X obj 259 367 fluid.noveltyslice~ -threshold 0.01 -fftsettings 128
 -kernelsize 31, f 23;
-#X text 26 798 Once latency compensated with the delay~ above the detection
-is always at the beginning of the spectral frame in which it appears.
-Change the window size above to explore the changes., f 62;
 #N canvas 1257 -1048 732 932 parameters 0;
 #X floatatom 499 191 8 0 0 0 - - - 0;
 #X floatatom 29 549 8 0 0 0 - - - 0;
@@ -138,9 +135,7 @@ Change the window size above to explore the changes., f 62;
 #X connect 56 0 53 0;
 #X connect 57 0 52 0;
 #X restore 453 310 pd parameters;
-#X text 452 260 2) experiment with parameters, f 15;
 #X msg 259 158 \; pd dsp 1;
-#X text 333 156 1) turn DSP on;
 #X obj 18 367 delwrite~ \$0-latencycomp 200;
 #X obj 527 799 cnv 15 149 50 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
@@ -254,7 +249,6 @@ Change the window size above to explore the changes., f 62;
 #X connect 56 0 53 0;
 #X connect 57 0 52 0;
 #X restore 229 385 pd parameters;
-#X text 228 367 2) experiment with parameters;
 #X obj 195 422 fluid.noveltyslice~ -threshold 0.2 -kernelsize 31 -filtersize
 3, f 21;
 #X obj 357 423 r pd-dsp-started;
@@ -272,23 +266,44 @@ Change the window size above to explore the changes., f 62;
 #X obj 208 576 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
 #000000 #000000;
 #X obj 208 545 threshold~ 0.5 1 0.1 1;
-#X connect 0 0 9 0;
+#X obj 17 127 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 19 125 1) select a source and start playing;
+#X obj 228 367 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 229 365 3) experiment with parameters;
+#X obj 92 650 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 93 648 2) Audio on.;
+#X connect 0 0 8 0;
 #X connect 1 0 0 0;
-#X connect 2 0 4 0;
-#X connect 4 0 10 1;
-#X connect 4 0 16 0;
-#X connect 4 1 1 0;
-#X connect 4 1 14 0;
-#X connect 5 0 6 0;
-#X connect 6 0 1 1;
-#X connect 7 0 4 0;
-#X connect 7 0 8 0;
-#X connect 9 0 10 0;
-#X connect 16 0 15 0;
+#X connect 2 0 3 0;
+#X connect 3 0 9 1;
+#X connect 3 0 15 0;
+#X connect 3 1 1 0;
+#X connect 3 1 13 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 1;
+#X connect 6 0 3 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 15 0 14 0;
 #X restore 535 824 pd musical_example;
+#X obj 332 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 453 262 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 333 156 1) turn DSP on;
+#X text 452 260 3) experiment with parameters, f 15;
+#X obj 25 805 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 26 804 2) Once latency compensated with the delay~ above the
+detection is always at the beginning of the spectral frame in which
+it appears. Change the window size above to explore the changes.,
+f 62;
 #X connect 0 0 2 0;
 #X connect 1 0 23 0;
-#X connect 1 0 29 0;
+#X connect 1 0 26 0;
 #X connect 2 0 1 0;
 #X connect 3 0 16 1;
 #X connect 4 0 6 0;
@@ -308,4 +323,4 @@ Change the window size above to explore the changes., f 62;
 #X connect 17 0 14 0;
 #X connect 23 0 14 1;
 #X connect 23 1 8 0;
-#X connect 25 0 23 0;
+#X connect 24 0 23 0;

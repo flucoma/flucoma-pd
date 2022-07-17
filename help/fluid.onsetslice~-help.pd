@@ -340,13 +340,13 @@ src5;
 #X connect 162 0 149 0;
 #X connect 163 0 149 0;
 #X coords 0 -1 1 1 470 170 1 100 100;
-#X restore 19 163 pd guts;
+#X restore 19 175 pd guts;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.onsetslice~ 1 22 0 36
 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty Try\\\ different\\\ combinations\\\ of\\\ algorithms
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 19 98 Different onset detection metrics will be more or less
-effective on different types of material;
+effective on different types of material, f 86;
 #X text 498 185 Some curated options from the fluid decomposition example
 files \, and metrics for which we got acceptable results., f 25;
 #N canvas 291 -981 1698 892 parameters 0;
@@ -422,6 +422,12 @@ files \, and metrics for which we got acceptable results., f 25;
 #X obj 234 762 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
 #000000 #000000;
 #X obj 234 731 threshold~ 0.5 1 0.1 1;
+#X obj 21 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 22 145 1) pick a preset and observe the changes below;
+#X obj 97 848 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 98 846 2) Audio on.;
 #X connect 0 0 13 0;
 #X connect 1 0 0 0;
 #X connect 2 0 5 1;

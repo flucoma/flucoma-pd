@@ -1,6 +1,6 @@
-#N canvas 71 46 695 857 12;
-#X obj 134 579 noise~;
-#X obj 138 716 *~;
+#N canvas 74 88 695 857 12;
+#X obj 175 616 noise~;
+#X obj 174 716 *~;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.spectralshape~ 1 22 0
 36 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.spectralshape~.html reference/spectralshape/
@@ -14,7 +14,7 @@ a linear scale for both amplitude and frequency.;
 20000 -fftsettings 1024 128;
 #X obj 523 697 cnv 15 152 65 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 278 170 785 861 logarithmic_scale 0;
+#N canvas 204 145 697 705 logarithmic_scale 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.spectralshape~ 1 22 0
 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty Seven\\\ Spectral\\\ Shape\\\ Descriptors\\\ in\\\ Real-Time
@@ -24,7 +24,7 @@ done considering a logarithmic pitch scale as well as the power of
 the magnitudes. This yields values that are generally considered to
 be more in line with perception \, for instance where the shape is
 often drawn and described in logairhmic terms \, i.e. dB per octave.
-;
+, f 94;
 #X obj 172 225 loadbang;
 #X floatatom 172 276 5 0 0 0 - - - 0;
 #X obj 328 225 loadbang;
@@ -71,7 +71,7 @@ unit is in semitones. To convert \, either divide by 12 to get the
 octave of one standard deviation \, or divide by 6 to get the width
 of the filter in octaves. One clear observation is that the width is
 now in a range that scales with what we hear \, growing fourfold as
-the filter goes from resonating to more broadband., f 109;
+the filter goes from resonating to more broadband., f 94;
 #X msg 328 249 0.5;
 #X obj 306 337 fluid.out~ spectralshapehelp;
 #N canvas 111 114 1362 961 biquad_filter_with_vcf_parameters 0;
@@ -686,6 +686,13 @@ dirty 0;
 #X text 260 795 flatness(dB):;
 #X text 260 816 crest(dB):;
 #X obj 18 621 fluid.stats -history 50;
+#X obj 16 99 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 17 96 1) Pick one source at a time \, and follow the tutorial
+in the box, f 65;
+#X obj 93 462 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 94 459 2) Audio on., f 65;
 #X connect 3 0 9 0;
 #X connect 4 0 2 0;
 #X connect 9 0 25 0;
@@ -700,7 +707,7 @@ dirty 0;
 #X restore 526 739 pd more_detail;
 #X obj 231 532 line~;
 #X obj 231 556 mtof~;
-#X obj 134 601 vcf~ 330 0.6, f 28;
+#X obj 175 638 vcf~ 330 0.6, f 28;
 #X msg 327 508 \$1 5;
 #N canvas 374 491 450 300 semitones2Q 0;
 #X obj 37 37 inlet;
@@ -733,13 +740,17 @@ dirty 0;
 #X connect 6 0 7 0;
 #X connect 7 0 8 0;
 #X connect 9 0 5 0;
-#X restore 156 692 pd envelopefollower;
-#X obj 17 692 delwrite~ lat 1000;
-#X obj 17 716 delread4~ lat 43;
+#X restore 88 587 pd envelopefollower;
+#X obj 17 708 delwrite~ lat 1000;
+#X obj 17 732 delread4~ lat 43;
 #X obj 231 430 unpack 0 0 0 0 0 0 0;
 #X obj 17 815 fluid.out~ spectralshapehelp;
-#X obj 141 769 loadbang;
-#X msg 141 790 1;
+#X obj 19 171 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 21 169 1) Select a sound source and start playing.;
+#X obj 89 819 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 91 817 2) Audio on.;
 #X connect 0 0 13 0;
 #X connect 1 0 22 1;
 #X connect 6 0 7 0;
@@ -748,14 +759,12 @@ dirty 0;
 #X connect 7 0 21 0;
 #X connect 11 0 12 0;
 #X connect 12 0 13 1;
-#X connect 13 0 1 0;
+#X connect 13 0 1 1;
 #X connect 14 0 16 0;
 #X connect 15 0 14 0;
 #X connect 16 0 13 2;
 #X connect 17 0 11 0;
-#X connect 18 0 1 1;
+#X connect 18 0 1 0;
 #X connect 20 0 22 0;
 #X connect 21 0 17 0;
 #X connect 21 1 15 0;
-#X connect 23 0 24 0;
-#X connect 24 0 22 2;

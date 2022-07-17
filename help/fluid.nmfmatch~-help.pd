@@ -74,7 +74,7 @@ component, f 33;
 #X obj 19 705 fluid.out~ nmfmatchhelp;
 #X obj 470 805 cnv 15 207 88 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 187 74 695 855 detecting_knowns 0;
+#N canvas 187 74 695 841 detecting_knowns 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 18 88 Helping fluid.nmfmatch~ discover known "features" by
@@ -151,7 +151,7 @@ state \, the contents of the decomposition will be vaguely similar
 #X connect 26 0 27 0;
 #X connect 26 1 28 0;
 #X restore 473 825 pd detecting_knowns;
-#N canvas 283 88 703 816 controlling_a_comb_filter 0;
+#N canvas 283 88 703 810 controlling_a_comb_filter 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 18 88 control a compressor based on learned components, f
@@ -331,7 +331,7 @@ is being used to drive the delay time of the comb filter, f 41;
 #X connect 26 0 27 1;
 #X connect 28 0 25 0;
 #X restore 473 847 pd controlling_a_comb_filter;
-#N canvas 876 23 785 861 resonant_filters 0;
+#N canvas 157 84 693 798 resonant_filters 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 18 88 Make a filter bank from learned components, f 69;
@@ -350,7 +350,6 @@ is being used to drive the delay time of the comb filter, f 41;
 #X obj 17 743 fluid.out~ nmfmatchhelp;
 #X obj 36 433 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 36 432 2) play the source;
 #X msg 16 197 read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav
 help.nmfmatch.src.4, f 37;
 #X obj 17 453 tabplay~ help.nmfmatch.src.4;
@@ -375,8 +374,8 @@ help.nmfmatch.src.4, f 37;
 #X obj 96 384 s help.nmfmatch.componentcentroids;
 #X obj 446 514 s help.nmfmatch.componentcentroids;
 #X obj 107 497 fluid.nmfmatch~ 8 -bases help.nmfmatch.bases.4;
-#X obj 383 118 clone fluid.multiarray 2 help.nmfmatch.resynth.4;
-#X obj 383 140 clone fluid.multiarray 2 help.nmfmatch.bases.4;
+#X obj 331 726 clone fluid.multiarray 2 help.nmfmatch.resynth.4;
+#X obj 331 748 clone fluid.multiarray 2 help.nmfmatch.bases.4;
 #X obj 101 587 clone fluid.nmfmatch.polyfilter 8;
 #N canvas 63 101 338 195 sum 0;
 #X obj 54 39 inlet~;
@@ -389,19 +388,20 @@ help.nmfmatch.src.4, f 37;
 #X restore 17 687 pd sum;
 #X f 12;
 #X obj 107 521 fluid.stats 8 -history 5;
-#X connect 6 0 11 0;
-#X connect 7 0 12 0;
-#X connect 11 0 3 0;
-#X connect 12 0 20 0;
-#X connect 12 0 23 0;
-#X connect 12 0 24 0;
-#X connect 14 0 16 0;
+#X text 36 432 3) play the source;
+#X connect 6 0 10 0;
+#X connect 7 0 11 0;
+#X connect 10 0 3 0;
+#X connect 11 0 19 0;
+#X connect 11 0 22 0;
+#X connect 11 0 23 0;
+#X connect 13 0 15 0;
+#X connect 15 0 16 0;
 #X connect 16 0 17 0;
-#X connect 17 0 18 0;
-#X connect 20 0 25 0;
-#X connect 23 0 24 1;
-#X connect 24 0 8 0;
-#X connect 24 0 8 1;
+#X connect 19 0 24 0;
+#X connect 22 0 23 1;
+#X connect 23 0 8 0;
+#X connect 23 0 8 1;
 #X restore 473 869 pd resonant_filters;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.nmfmatch.src.1 88200 float 0;
@@ -492,6 +492,9 @@ with bufnmf~, f 74;
 #X obj 19 367 fluid.bufnmf -source help.nmfmatch.src.1 -bases nmfmatch_bases
 -components 2, f 72;
 #X obj 144 624 fluid.nmfmatch~ 2 -bases nmfmatch_bases;
+#X obj 128 543 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 129 542 3) pick the audio source to identify, f 24;
 #X connect 3 0 35 0;
 #X connect 4 0 6 0;
 #X connect 5 0 8 0;

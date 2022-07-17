@@ -1,5 +1,5 @@
-#N canvas 94 132 702 810 12;
-#X obj 342 371 osc~ 220;
+#N canvas 51 57 694 728 12;
+#X obj 118 187 osc~ 220;
 #N canvas 0 38 450 300 triangle 0;
 #X obj 37 47 inlet;
 #X obj 37 67 phasor~ 220;
@@ -14,7 +14,7 @@
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
-#X restore 375 393 pd triangle;
+#X restore 151 209 pd triangle;
 #N canvas 0 38 450 300 sawtooth 0;
 #X obj 37 37 inlet;
 #X obj 37 79 phasor~ 220;
@@ -25,7 +25,7 @@
 #X connect 1 0 3 0;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
-#X restore 407 415 pd sawtooth;
+#X restore 183 231 pd sawtooth;
 #N canvas 0 38 450 300 square 0;
 #X obj 37 37 inlet;
 #X obj 37 64 phasor~ 220;
@@ -41,14 +41,14 @@
 #X connect 3 0 4 0;
 #X connect 4 0 2 1;
 #X connect 5 0 6 0;
-#X restore 440 437 pd square;
-#X floatatom 180 263 5 0 0 0 - - - 0;
-#X obj 155 660 unpack f f;
-#X floatatom 155 696 8 0 0 0 - - - 0;
-#X floatatom 222 722 5 0 0 0 - - - 0;
-#X text 109 696 pitch, f 6;
-#X text 141 722 confidence, f 11;
-#X obj 155 636 fluid.pitch~;
+#X restore 216 253 pd square;
+#X floatatom 340 341 5 0 0 0 - - - 0;
+#X obj 127 529 unpack f f;
+#X floatatom 127 565 8 0 0 0 - - - 0;
+#X floatatom 194 591 5 0 0 0 - - - 0;
+#X text 81 565 pitch, f 6;
+#X text 113 591 confidence, f 11;
+#X obj 127 505 fluid.pitch~;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.pitch~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.pitch~.html reference/pitch/
@@ -57,13 +57,13 @@
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Three popular monophonic pitch descriptors \, all of
 which compute frequency and confidence.;
-#X obj 63 660 fluid.out~ fluid.pitchhelp;
-#X obj 310 372 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
-#X text 243 385 triangle, f 9;
-#X text 271 370 sine, f 5;
-#X text 243 400 sawtooth, f 9;
-#X text 236 415 rectangle, f 10;
+#X obj 28 691 fluid.out~ fluid.pitchhelp;
+#X obj 86 188 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000
+#000000 0;
+#X text 19 201 triangle, f 9;
+#X text 47 186 sine, f 5;
+#X text 19 216 sawtooth, f 9;
+#X text 12 231 rectangle, f 10;
 #N canvas 925 -954 652 467 select4 0;
 #X obj 94 49 inlet~;
 #X obj 34 192 == 0;
@@ -121,12 +121,11 @@ which compute frequency and confidence.;
 #X connect 24 0 6 0;
 #X connect 25 0 10 0;
 #X connect 26 0 14 0;
-#X restore 310 459 pd select4;
+#X restore 86 275 pd select4;
 #X f 19;
-#X text 19 186 All algorithms use harmonic structure to fine-tune the
-pitch \, so will not be as effective on sines as on \, say \, sawtooth
-waves \, with triangle inbetween.;
-#X obj 85 292 *~ 0.1, f 14;
+#X text 417 480 All algorithms use harmonic structure to fine-tune
+the pitch \, so will not be as effective on sines as on \, say \, sawtooth
+waves \, with triangle inbetween., f 30;
 #N canvas 897 -937 461 267 pinknoise 0;
 #X obj 24 145 outlet~;
 #X obj 24 43 noise~;
@@ -142,15 +141,15 @@ accurate than ~pink but more expensive too!, f 65;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
 #X connect 5 0 0 0;
-#X restore 85 263 pd pinknoise;
-#X obj 85 515 +~;
-#X obj 92 636 *~ 0.1;
-#X obj 265 636 fiddle~;
-#X floatatom 295 721 8 0 0 0 - - - 0;
-#X obj 295 685 mtof;
-#X text 291 738 compare with PD's fiddle object in noisy contexts.
+#X restore 245 341 pd pinknoise;
+#X obj 57 433 +~;
+#X obj 57 667 *~ 0.1;
+#X obj 237 505 fiddle~;
+#X floatatom 267 590 8 0 0 0 - - - 0;
+#X obj 267 554 mtof;
+#X text 263 607 compare with PD's fiddle object in noisy contexts.
 , f 21;
-#X obj 295 661 unpack 0 0;
+#X obj 267 530 unpack 0 0;
 #N canvas 423 215 550 822 parameters 0;
 #X floatatom 29 499 8 0 0 0 - - - 0;
 #X floatatom 29 259 8 0 0 0 - - - 0;
@@ -234,11 +233,11 @@ more precise results., f 37;
 #X connect 43 0 27 0;
 #X connect 44 0 43 0;
 #X connect 47 0 44 0;
-#X restore 249 523 pd parameters;
-#X text 351 522 see fluid.pitch~ parameters;
-#X obj 523 738 cnv 15 149 50 empty empty More\\\ information 4 10 0
+#X restore 221 441 pd parameters;
+#X text 323 440 see fluid.pitch~ parameters;
+#X obj 524 653 cnv 15 149 50 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 393 43 695 975 confidence 0;
+#N canvas 230 112 695 931 confidence 0;
 #X obj 20 398 readsf~;
 #X obj 20 537 delwrite~ \$0-latencycomp 1000, f 20;
 #X obj 373 387 r pd-dsp-started;
@@ -330,7 +329,6 @@ gets sent to a delay effect, f 64;
 #X floatatom 362 513 5 0 0 0 - - - 0;
 #X obj 556 188 loadbang;
 #X floatatom 236 604 5 0 0 0 - - - 0;
-#X text 20 163 1)click to start playing a file;
 #X text 355 594 only on when pitch confidence is above thresh, f 24
 ;
 #X floatatom 432 535 5 0 0 0 - - - 0;
@@ -347,6 +345,13 @@ threshold 0.98, f 52;
 threshold 0.8, f 52;
 #X obj 432 510 r threshold;
 #X msg 556 210 \; threshold 0.98;
+#X obj 18 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 18 155 1) click any of these 'presets' to start playing a file
+with an associated threshold of confidence to send to the delays;
+#X obj 92 890 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 94 889 2) Audio on.;
 #X connect 0 0 1 0;
 #X connect 0 0 5 0;
 #X connect 2 0 3 0;
@@ -355,7 +360,7 @@ threshold 0.8, f 52;
 #X connect 4 0 15 0;
 #X connect 4 0 15 1;
 #X connect 4 0 7 0;
-#X connect 5 0 24 0;
+#X connect 5 0 23 0;
 #X connect 5 1 18 0;
 #X connect 6 0 7 1;
 #X connect 7 0 8 0;
@@ -366,35 +371,46 @@ threshold 0.8, f 52;
 #X connect 12 0 6 0;
 #X connect 17 0 4 0;
 #X connect 18 0 17 0;
-#X connect 19 0 31 0;
-#X connect 23 0 24 2;
-#X connect 24 0 9 0;
-#X connect 24 0 20 0;
+#X connect 19 0 30 0;
+#X connect 22 0 23 2;
+#X connect 23 0 9 0;
+#X connect 23 0 20 0;
+#X connect 24 0 0 0;
 #X connect 25 0 0 0;
 #X connect 26 0 0 0;
 #X connect 27 0 0 0;
 #X connect 28 0 0 0;
-#X connect 29 0 0 0;
-#X connect 30 0 23 0;
-#X restore 536 763 pd confidence;
+#X connect 29 0 22 0;
+#X restore 537 678 pd confidence;
+#X obj 87 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 89 166 1) Pick a source;
+#X obj 384 342 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 245 370 *~ 0, f 14;
+#X text 386 341 3) Add noise to test the sturdiness of the detection
+, f 27;
+#X obj 97 699 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 99 698 2) Audio on.;
 #X connect 0 0 21 1;
 #X connect 1 0 21 2;
 #X connect 2 0 21 3;
 #X connect 3 0 21 4;
-#X connect 4 0 23 1;
+#X connect 4 0 38 1;
 #X connect 5 0 6 0;
 #X connect 5 1 7 0;
 #X connect 10 0 5 0;
 #X connect 16 0 21 0;
-#X connect 21 0 25 1;
-#X connect 23 0 25 0;
-#X connect 24 0 23 0;
-#X connect 25 0 26 0;
-#X connect 25 0 27 0;
-#X connect 25 0 10 0;
-#X connect 26 0 15 0;
-#X connect 26 0 15 1;
-#X connect 27 2 31 0;
-#X connect 29 0 28 0;
-#X connect 31 0 29 0;
-#X connect 32 0 10 0;
+#X connect 21 0 24 0;
+#X connect 23 0 38 0;
+#X connect 24 0 25 0;
+#X connect 24 0 26 0;
+#X connect 24 0 10 0;
+#X connect 25 0 15 0;
+#X connect 25 0 15 1;
+#X connect 26 2 30 0;
+#X connect 28 0 27 0;
+#X connect 30 0 28 0;
+#X connect 31 0 10 0;
+#X connect 38 0 24 1;
