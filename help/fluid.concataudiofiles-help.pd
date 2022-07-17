@@ -1,4 +1,4 @@
-#N canvas 52 80 700 650 12;
+#N canvas 30 42 704 649 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.concataudiofiles 1 22
 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ utility\\\ to\\\ concatenate\\\ audio\\\ files.
@@ -131,13 +131,17 @@ count., f 65;
 #X connect 26 0 10 0;
 #X connect 27 0 23 0;
 #X restore 43 288 pd drawdisplay;
-#X text 18 166 1) Click here to load all the FluCoMa demo audio files
-in one 'multiarray', f 74;
-#X text 183 350 2) open the text to see the items in order. Each line
-is a file with its path / sampling_rate / nbChans / startFrame / endframe
-, f 63;
 #X text 22 429 See the concatenated files:;
 #X obj 539 221 note_on_multiarrays;
+#X obj 18 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 185 351 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 18 166 1) Click here to load all the FluCoMa demo audio files
+in one 'multiarray', f 74;
+#X text 184 349 2) open the text to see the items in order. Each line
+is a file with its path / sampling_rate / nbChans / startFrame / endframe
+, f 63;
 #X connect 2 0 6 0;
 #X connect 5 0 2 0;
 #X connect 6 0 13 0;

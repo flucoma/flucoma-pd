@@ -73,8 +73,8 @@ to an array., f 26;
 #X text 136 265 1) Store a list of numbers in an array. These numbers
 could be anything \, including audio-descriptor data \, synthesiser
 parameters or anything!, f 54;
-#X obj 475 687 cnv 15 202 156 empty empty More\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 475 687 cnv 15 202 156 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
 #N canvas 312 64 693 961 audio-descriptor_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -156,7 +156,7 @@ and stored in the dataset with the identity "scratch-synth", f 42
 #X connect 30 0 16 0;
 #X connect 31 0 30 0;
 #X restore 478 707 pd audio-descriptor_example;
-#N canvas 183 157 703 609 other_messages 0;
+#N canvas 110 98 703 609 other_messages 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 79 Other useful messages that can be used with fluid.dataset~
@@ -187,36 +187,49 @@ and stored in the dataset with the identity "scratch-synth", f 42
 #X connect 7 0 1 0;
 #X connect 10 0 2 1;
 #X restore 57 154 pd make_dummy_dataset;
-#X text 193 187 write a fluid.dataset to disk;
-#X text 213 217 Read a fluid.dataset~ from disk;
 #X msg 94 248 size;
 #X msg 114 288 cols;
 #X msg 134 358 print;
-#X text 203 387 Completely empty and reset a fluid.dataset~;
 #X msg 154 388 clear;
-#X text 143 247 Get the size (the number of <identifier> <data> pairs
-in the dataset) \, which is reported out the left outlet.;
-#X text 163 287 Get the number of columns \, or dimensions of the data
-points. Since all points must have the same number of dimensions \,
-this is just a single number. It is reported out the left outlet.;
 #X msg 74 218 read myfile.json;
 #X msg 54 188 write myfile.json;
-#X text 183 357 Dump the contents of the fluid.dataset~ to the console
-;
 #X obj 51 490 fluid.dataset help.other;
 #X obj 51 514 print left;
 #X obj 215 514 print right;
+#X obj 195 190 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 213 218 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 144 248 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 163 288 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 184 358 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 204 390 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 195 188 1) write a fluid.dataset to disk;
+#X text 212 217 2) Read a fluid.dataset~ from disk;
+#X text 143 246 3) Get the size (the number of <identifier> <data>
+pairs in the dataset) \, which is reported out the left outlet.;
+#X text 162 286 4) Get the number of columns \, or dimensions of the
+data points. Since all points must have the same number of dimensions
+\, this is just a single number. It is reported out the left outlet.
+;
+#X text 183 357 5) Dump the contents of the fluid.dataset~ to the console
+;
+#X text 204 388 6) Completely empty and reset a fluid.dataset~;
 #X connect 2 0 3 0;
-#X connect 6 0 16 0;
-#X connect 7 0 16 0;
-#X connect 8 0 16 0;
-#X connect 10 0 16 0;
-#X connect 13 0 16 0;
-#X connect 14 0 16 0;
-#X connect 16 0 17 0;
-#X connect 16 1 18 0;
+#X connect 4 0 10 0;
+#X connect 5 0 10 0;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
 #X restore 478 729 pd other_messages;
-#N canvas 899 23 692 549 merging 0;
+#N canvas 131 150 695 549 merging 0;
 #X obj 401 199 cnv 15 218 42 empty empty empty 20 12 0 14 #faad8b #404040
 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
@@ -305,6 +318,14 @@ not found in the dataset to merge will be added to the caller., f
 #X obj 291 486 text define help.dataset.merge.text.2;
 #X f 27;
 #X obj 51 210 t b b;
+#X obj 490 492 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 384 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 385 165 2) click the message to merge and inspect again the
+text below to see the effect, f 41;
+#X text 490 491 1) open the text objects to see the sources, f 25
+;
 #X connect 3 0 16 0;
 #X connect 4 0 6 0;
 #X connect 5 0 7 0;
@@ -443,7 +464,7 @@ across all channels as the columns of a given identifier.;
 ;
 #X obj 19 784 text define help.dataset.text.1;
 #X text 41 678 8) store dataset into a text object;
-#N canvas 1009 23 691 591 using_text 0;
+#N canvas 126 91 691 591 using_text 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 27 542 fluid.dataset help.dataset.4;

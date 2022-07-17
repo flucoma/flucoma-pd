@@ -1,4 +1,4 @@
-#N canvas 205 135 693 724 12;
+#N canvas 103 77 693 724 12;
 #X obj 309 289 array define input 10;
 #X obj 53 313 array set input;
 #X msg 40 389 print;
@@ -52,19 +52,27 @@
 #X obj 17 60 cnv 15 488 17 empty empty Convert\\\ FluCoMa\\\ DataSet\\\ into\\\ text
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 A utility object to convert a dataset into text.;
-#X text 18 134 1) Click these to populate an array with values and
-save those in dataset myDS.;
 #X text 19 194 Message '-1' will store a dataset point with an identifier
 'entry--1' and data which is the list of values in the array., f 61
 ;
 #X text 169 285 create values in array 'input', f 16;
-#X text 87 388 2) Click to see the DataSet printed in the console,
-f 28;
-#X text 42 535 3) Click to convert the myDS dataset and save it in
-text object myText, f 36;
-#X text 19 651 Click on Text object to see its content;
 #X obj 571 679 fluid.ls2text;
 #X text 495 679 see also:;
+#X obj 19 135 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 87 387 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 42 535 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 18 134 1) Click these to populate an array with values and
+save those in dataset myDS.;
+#X text 42 535 3) Click to convert the myDS dataset and save it in
+text object myText, f 36;
+#X text 87 388 2) Click to see the DataSet printed in the Pd window
+, f 28;
+#X obj 19 651 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 20 650 4) Click on Text object to see its content;
 #X connect 2 0 11 0;
 #X connect 3 0 7 0;
 #X connect 4 0 7 0;

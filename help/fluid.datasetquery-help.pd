@@ -2,8 +2,8 @@
 #X obj 245 621 fluid.datasetquery;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
 #4ba3fb #ffffff 0;
-#X obj 457 867 cnv 15 222 132 empty empty More\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 457 867 cnv 15 222 132 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.datasetquery.html reference/datasetquery/
 ;
 #X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -12,7 +12,7 @@
 #X text 17 129 A selection of columns and a set of conditions that
 match rows of a FluidDataSet. Use to filter and search in a database
 of descriptors.;
-#N canvas 376 244 705 845 operators 0;
+#N canvas 376 244 697 802 operators 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
 #4ba3fb #ffffff 0;
 #X text 17 79 We can also combine multiple operators to refine the
@@ -150,8 +150,6 @@ filter for the query.;
 0;
 #X obj 157 739 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 158 738 6) double-click text object to see the data, f 16
-;
 #X text 277 751 ->;
 #X obj 349 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
@@ -173,22 +171,24 @@ to constrain the search, f 21;
 #X obj 295 664 fluid.ds2text dsq.help.dest.2 dsq.help.dest.text.2,
 f 20;
 #X msg 370 419 addcolumn 3, f 13;
+#X text 158 738 7) double-click text object to see the data, f 16
+;
 #X connect 4 0 5 0;
 #X connect 5 0 7 0;
 #X connect 5 1 8 0;
 #X connect 7 0 6 0;
-#X connect 9 0 31 0;
+#X connect 9 0 30 0;
 #X connect 10 0 9 0;
 #X connect 13 0 9 0;
+#X connect 25 0 9 0;
 #X connect 26 0 9 0;
 #X connect 27 0 9 0;
 #X connect 28 0 9 0;
-#X connect 29 0 9 0;
-#X connect 30 0 32 0;
-#X connect 31 0 30 0;
-#X connect 33 0 9 0;
+#X connect 29 0 31 0;
+#X connect 30 0 29 0;
+#X connect 32 0 9 0;
 #X restore 472 887 pd operators;
-#N canvas 228 57 712 946 column_ranges 0;
+#N canvas 228 57 698 808 column_ranges 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
 #4ba3fb #ffffff 0;
 #X text 17 79 Only copy a range of columns using addrange;
@@ -356,7 +356,7 @@ f 30;
 #X connect 23 0 8 0;
 #X connect 27 0 8 0;
 #X restore 472 909 pd column_ranges;
-#N canvas 363 72 688 840 combining_columns 0;
+#N canvas 363 72 693 787 combining_columns 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
 #4ba3fb #ffffff 0;
 #X text 17 79 The transformjoin message allows filtering the contents
@@ -838,12 +838,12 @@ the filter is satisfied copy THIS column to our destination., f 25
 #X obj 245 698 fluid.ds2text dsq.help.dest dsq.help.dest.text, f 20
 ;
 #X obj 245 650 route transform;
-#N canvas 899 23 964 917 transformjoin_in_practice 0;
+#N canvas 230 35 694 988 transformjoin_in_practice 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36
 #4ba3fb #ffffff 0;
 #X text 17 79 The transformjoin message allows filtering the contents
 of a dataset based on the contents found in another.;
-#X obj 502 665 cnv 15 243 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
+#X obj 311 933 cnv 15 243 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #X obj 51 675 cnv 15 179 33 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -859,7 +859,7 @@ dsq.help.src.5;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 38 162 pd loadsrc;
-#X obj 484 162 array define dsq.help.src.5;
+#X obj 477 154 array define dsq.help.src.5;
 #X obj 38 212 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #N canvas 1814 -956 687 668 analysis 0;
@@ -886,10 +886,10 @@ dsq.help.src.5;
 #X obj 247 306 fluid.datasetquery;
 #X obj 247 335 route transform;
 #X obj 247 393 fluid.dataset dsq.help.pitch.filtered, f 25;
-#X obj 497 442 fluid.datasetquery;
-#X msg 497 385 clear \, filter 1 > 0.9 \, transformjoin dsq.help.pitch
+#X obj 306 710 fluid.datasetquery;
+#X msg 306 653 clear \, filter 1 > 0.9 \, transformjoin dsq.help.pitch
 dsq.help.specshape dsq.help.specshape.filtered, f 37;
-#X obj 497 472 route transformjoin;
+#X obj 306 740 route transformjoin;
 #X obj 38 360 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 38 388 fluid.ds2text dsq.help.pitch dsq.help.pitch.text, f
@@ -901,12 +901,12 @@ dsq.help.specshape dsq.help.specshape.filtered, f 37;
 , f 30;
 #X obj 252 542 text define dsq.help.pitch.filtered.text;
 #X f 29;
-#X obj 497 588 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 306 856 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X obj 497 530 fluid.dataset dsq.help.specshape.filtered;
-#X obj 497 613 fluid.ds2text dsq.help.specshape.filtered dsq.help.specshape.filtered.text
+#X obj 306 798 fluid.dataset dsq.help.specshape.filtered;
+#X obj 306 881 fluid.ds2text dsq.help.specshape.filtered dsq.help.specshape.filtered.text
 , f 32;
-#X obj 502 665 text define dsq.help.specshape.filtered.text;
+#X obj 311 933 text define dsq.help.specshape.filtered.text;
 #X f 34;
 #X obj 45 526 fluid.dataset dsq.help.specshape, f 20;
 #X obj 45 598 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
@@ -922,7 +922,7 @@ dsq.help.specshape dsq.help.specshape.filtered, f 37;
 #X msg 247 249 clear \, filter 1 > 0.9 \, addrange 0 2 \, transform
 dsq.help.pitch dsq.help.pitch.filtered, f 37;
 #X floatatom 301 465 5 0 0 0 - - - 0;
-#X floatatom 551 588 5 0 0 0 - - - 0;
+#X floatatom 360 856 5 0 0 0 - - - 0;
 #X obj 56 212 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 57 211 1) Generate some pitch and spectral analyses, f 23
@@ -930,26 +930,26 @@ dsq.help.pitch dsq.help.pitch.filtered, f 37;
 #X obj 356 212 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 357 211 2) Filter the pitch analyses by confidence, f 22;
-#X obj 526 329 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 302 619 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 527 328 3) Filter the spectral shape analyses by the pitch
-confidence values of the pitch dataset., f 33;
+#X text 303 618 3) Filter the spectral shape analyses by the pitch
+confidence values of the pitch dataset.;
 #X obj 47 741 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 48 740 4) Double click the text objects to see the data.,
 f 26;
 #X text 48 780 Note the size (number of rows) in each dataset., f
 26;
-#X text 313 595 Once we filter the data based on pitch confidence there
+#X text 470 431 Once we filter the data based on pitch confidence there
 are fewer rows in the dataset. Any identifier where the confidence
 was lower than 0.9 in the pitch dataset is removed from both., f 20
 ;
 #X obj 38 331 route size;
 #X obj 45 569 route size;
 #X obj 247 436 route size;
-#X obj 497 559 route size;
+#X obj 306 827 route size;
 #X msg 247 364 size;
-#X msg 497 501 size;
+#X msg 306 769 size;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
 #X connect 9 1 32 0;
