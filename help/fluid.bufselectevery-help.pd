@@ -62,7 +62,6 @@ described in terms of independent hop sizes for frames and channels
 #X connect 18 0 3 0;
 #X connect 19 0 7 0;
 #X restore 17 197 pd array-filler;
-#X text 16 160 1) fill the input arrays;
 #X obj 17 272 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 59 297 array get input-0;
@@ -77,7 +76,6 @@ described in terms of independent hop sizes for frames and channels
 #X obj 90 381 array get input-4;
 #X listbox 17 528 25 0 0 0 - - - 0;
 #X obj 100 402 array get input-5;
-#X text 16 255 2) show values in input channels 0-4;
 #X obj 539 200 note_on_multiarrays;
 #X obj 448 228 clone fluid.multiarray 6 input 6;
 #X obj 17 694 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
@@ -88,7 +86,6 @@ described in terms of independent hop sizes for frames and channels
 #X obj 65 741 array get output-1;
 #X listbox 17 898 25 0 0 0 - - - 0;
 #X obj 72 762 array get output-2;
-#X text 18 675 4) get values of output channels;
 #X msg 277 382 startframe 0 \, numframes -1 \, framehop 2 \, startchan
 0 \, numchans -1 \, chanhop 1 \, bang;
 #X obj 441 250 clone fluid.multiarray 6 output 6;
@@ -98,7 +95,6 @@ described in terms of independent hop sizes for frames and channels
 #X obj 80 783 array get output-3;
 #X obj 87 804 array get output-4;
 #X obj 94 825 array get output-5;
-#X text 251 356 3) select every other frame in all channels;
 #N canvas 1701 -604 740 385 clear 0;
 #X obj 59 9 inlet;
 #X msg 59 76 0;
@@ -140,15 +136,14 @@ described in terms of independent hop sizes for frames and channels
 #X msg 298 562 startframe 0 \, numframes -1 \, framehop 3 \, startchan
 0 \, numchans -1 \, chanhop 1 \, bang;
 #X text 296 543 ... or every third frame, f 46;
-#X obj 452 885 cnv 15 217 93 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 452 885 cnv 15 217 93 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #N canvas 209 78 703 901 curating_descriptor_data 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufselectevery 1 22 0
 36 #4ba3fb #ffffff 0;
 #X obj 16 472 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X listbox 16 526 185 0 0 0 - - - 0;
-#X text 35 470 3) Display the dataset;
 #X obj 17 60 cnv 15 488 17 empty empty Extract\\\ every\\\ N\\\ samples\\\ /\\\ channels\\\ from\\\ a\\\ buffer
 4 8 0 13 #e0e0e0 #404040 0;
 #N canvas 257 92 648 610 buffers 0;
@@ -195,7 +190,6 @@ single derivative.;
 #000000;
 #X listbox 16 796 58 0 0 0 - - - 0;
 #X obj 16 496 array get descriptordata1-0;
-#X text 43 204 1) Trigger some descriptor analysis;
 #X obj 16 626 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #N canvas 2185 -531 448 387 analysis_to_dataset1 0;
@@ -329,55 +323,79 @@ single derivative.;
 #X connect 11 0 1 0;
 #X restore 16 657 pd analysis_to_dataset2;
 #X obj 16 766 array get descriptordata2-0;
-#X text 39 739 5) Display the dataset;
-#X text 39 390 2) Copy the bufselect.help.stats buffer to a fluid.dataset~
-;
-#X text 39 624 4) Copy the output of bufselectevery~ to a fluid.dataset~
-;
 #X obj 387 98 clone fluid.multiarray 7 descriptordata 7;
 #X text 269 732 bufselectevery~ extracts every seventh value. Because
 bufstats~ returns 7 statistics for each derivative (21 values) using
 bufselect~ in this way extracts the mean (the first item in every group
 of 7) of each derivative.;
-#X connect 1 0 14 0;
+#X obj 43 204 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 39 393 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 34 472 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 34 626 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 34 742 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 35 470 3) Display the dataset;
+#X text 43 203 1) Trigger some descriptor analysis;
+#X text 36 741 5) Display the dataset;
+#X text 39 391 2) Copy the bufselect.help.stats buffer to a fluid.dataset~
+;
+#X text 35 625 4) Copy the output of bufselectevery~ to a fluid.dataset~
+;
+#X connect 1 0 13 0;
+#X connect 6 0 5 0;
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
-#X connect 9 0 8 0;
-#X connect 10 0 17 0;
-#X connect 12 0 19 0;
-#X connect 14 0 2 0;
-#X connect 16 0 18 0;
-#X connect 19 0 13 0;
+#X connect 9 0 15 0;
+#X connect 11 0 17 0;
+#X connect 13 0 2 0;
+#X connect 14 0 16 0;
+#X connect 17 0 12 0;
 #X restore 456 908 pd curating_descriptor_data;
 #X obj 456 930 note_on_multithreading;
 #X obj 456 953 note_on_automatic_multiarrays;
+#X obj 17 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 255 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 278 363 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 17 676 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 18 158 1) fill the input arrays;
+#X text 18 254 2) show values in input channels 0-4;
+#X text 18 675 4) get values of output channels;
+#X text 279 362 3) select every other frame in all channels;
 #X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 7 0 11 0;
+#X connect 7 0 14 0;
+#X connect 7 0 15 0;
+#X connect 7 0 17 0;
+#X connect 7 0 19 0;
 #X connect 8 0 9 0;
-#X connect 8 0 12 0;
-#X connect 8 0 15 0;
-#X connect 8 0 16 0;
-#X connect 8 0 18 0;
-#X connect 8 0 20 0;
-#X connect 9 0 10 0;
-#X connect 12 0 11 0;
+#X connect 11 0 10 0;
+#X connect 14 0 12 0;
 #X connect 15 0 13 0;
-#X connect 16 0 14 0;
-#X connect 18 0 17 0;
-#X connect 20 0 19 0;
-#X connect 24 0 27 0;
-#X connect 24 0 28 0;
-#X connect 24 0 30 0;
-#X connect 24 0 37 0;
-#X connect 24 0 38 0;
-#X connect 24 0 39 0;
-#X connect 27 0 25 0;
-#X connect 28 0 26 0;
-#X connect 30 0 29 0;
-#X connect 32 0 42 0;
-#X connect 37 0 34 0;
-#X connect 38 0 35 0;
-#X connect 39 0 36 0;
-#X connect 42 0 0 0;
-#X connect 42 1 41 0;
-#X connect 44 0 42 0;
-#X connect 45 0 42 0;
+#X connect 17 0 16 0;
+#X connect 19 0 18 0;
+#X connect 22 0 25 0;
+#X connect 22 0 26 0;
+#X connect 22 0 28 0;
+#X connect 22 0 34 0;
+#X connect 22 0 35 0;
+#X connect 22 0 36 0;
+#X connect 25 0 23 0;
+#X connect 26 0 24 0;
+#X connect 28 0 27 0;
+#X connect 29 0 38 0;
+#X connect 34 0 31 0;
+#X connect 35 0 32 0;
+#X connect 36 0 33 0;
+#X connect 38 0 0 0;
+#X connect 38 1 37 0;
+#X connect 40 0 38 0;
+#X connect 41 0 38 0;

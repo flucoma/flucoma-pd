@@ -15,10 +15,10 @@ Cepstral Coefficients (MFCCs).;
 #X obj 353 282 fluid.out~ mfcchelp;
 #X obj 475 692 cnv 15 192 68 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 229 91 691 855 first_MFCC_coefficient 0;
+#N canvas 200 54 691 855 first_MFCC_coefficient 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.mfcc~ 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X text 19 108 Understanding the role of the first MFCC coefficient
+#X text 18 82 Understanding the role of the first MFCC coefficient
 ;
 #X obj 64 384 fluid.out~ nmffilterhelp;
 #N canvas 1770 -861 716 580 srcselect3 0;
@@ -112,11 +112,6 @@ Cepstral Coefficients (MFCCs).;
 #X connect 3 0 2 0;
 #X restore 41 268 pd sawtooth;
 #X floatatom 234 276 5 0 1 0 - - - 0;
-#X text 318 192 The first coefficient (the first index) is essentally
-a value that represents the loudness., f 46;
-#X text 318 262 Try modulating the volume here on any of the sources
-\, and watch that it doesn't really effect the "shape" of the coefficients.
-, f 46;
 #X text 318 332 Removing the first coefficient is a common practice
 if you only care about the timbre of the measured sound., f 46;
 #X text 282 276 <---;
@@ -136,24 +131,31 @@ if you only care about the timbre of the measured sound., f 46;
 #X text 20 151 2) select a source;
 #X msg 39 438 startcoeff 1;
 #X msg 48 476 startcoeff 0;
-#X text 142 433 ask the object for 13 MFCCs starting from the second
+#X obj 317 263 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 318 262 3) Try modulating the volume here on any of the sources
+\, and watch that it doesn't really effect the "shape" of the coefficients.
+, f 46;
+#X text 142 433 ask the object for 13 MFCCs starting from the 'first'
 (it counts starting at 0);
 #X text 146 473 or just have the default behaviour of counting from
-the first;
+the zeroth., f 63;
+#X text 17 109 The zeroth coefficient (the first index) is essentally
+a value that represents the energy., f 92;
 #X connect 3 0 9 0;
 #X connect 4 0 3 3;
 #X connect 5 0 3 0;
 #X connect 9 0 2 1;
 #X connect 9 0 2 0;
-#X connect 9 0 17 0;
+#X connect 9 0 15 0;
 #X connect 10 0 3 2;
 #X connect 11 0 3 1;
 #X connect 12 0 9 1;
-#X connect 17 0 19 0;
-#X connect 24 0 17 0;
-#X connect 25 0 17 0;
+#X connect 15 0 17 0;
+#X connect 22 0 15 0;
+#X connect 23 0 15 0;
 #X restore 484 712 pd first_MFCC_coefficient;
-#N canvas 474 107 693 767 timbral_matching 0;
+#N canvas 144 83 693 767 timbral_matching 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.mfcc~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 19 108 A real-time timbral matching example;
@@ -578,7 +580,7 @@ the first;
 #X text 271 557 Inside this subpatch a Euclidian distance is calculated
 on the current MFCC analysis to the one stored against either the first
 or second template. The lower the number \, the more similar it is.
-, f 39;
+, f 56;
 #X obj 120 520 bng 20 250 50 0 empty empty empty 17 7 0 10 #00ff04
 #000000 #000000;
 #X obj 224 520 bng 20 250 50 0 empty empty empty 17 7 0 10 #00faff
@@ -603,13 +605,16 @@ define a 2nd template., f 27;
 #A 0 104.169 -21.8773 -29.2162 -41.9118 3.29888 -17.1992 -9.68277 -10.0256
 -12.7667 -13.0661 -10.964 -9.6955 -12.0402;
 #X coords 0 150 13 -150 240 63 1 0 0;
-#X restore 273 669 graph;
+#X restore 428 675 graph;
 #X obj 47 429 array set help.mfcc.timbral.display;
 #X obj 89 657 hradio 25 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000
 #000000 0;
 #X obj 17 602 >, f 30;
 #X msg 79 275 stop;
 #X msg 275 274 stop;
+#X obj 85 700 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 85 698 3) see which is the nearest;
 #X connect 2 0 6 0;
 #X connect 3 0 7 0;
 #X connect 4 0 6 1;

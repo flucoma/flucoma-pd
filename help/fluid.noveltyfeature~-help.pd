@@ -1,4 +1,4 @@
-#N canvas 126 23 700 777 12;
+#N canvas 126 23 693 777 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyfeature~ 1 22 0
 36 #4ba3fb #ffffff 0;
 #X obj 23 149 fluid.demosound~;
@@ -154,10 +154,21 @@ curve, f 29;
 #X text 601 374 <-- more;
 #X obj 53 400 fluid.noveltyslice~ 21 5;
 #X obj 315 425 fluid.noveltyfeature~ 21 5 -warnings 1;
-#X text 23 734 This represents the change in the underlying feature
-of fluid.noveltyslice~ in realtime., f 44;
 #X text 373 447 arguments (optional) set the maxkernelsize and maxfiltersize
 , f 31;
+#X obj 27 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 28 127 1) pick a source and start playing;
+#X obj 96 525 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 97 524 2) Audio on.;
+#X obj 563 266 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 564 265 4) explore the parameters, f 14;
+#X obj 30 731 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 31 730 3) This represents the change in the underlying feature
+of fluid.noveltyslice~ in realtime.;
 #X connect 1 0 10 0;
 #X connect 1 0 14 0;
 #X connect 1 0 15 0;

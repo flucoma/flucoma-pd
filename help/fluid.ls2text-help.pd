@@ -1,4 +1,4 @@
-#N canvas 22 53 694 668 12;
+#N canvas 72 64 694 668 12;
 #X msg 39 343 print;
 #X msg 22 249 0;
 #X msg 58 249 1;
@@ -16,20 +16,26 @@
 #X text 17 79 A utility object to convert a labelset into text.;
 #X text 490 614 see also:;
 #X obj 566 614 fluid.ds2text;
-#X text 19 157 1) Click these to populate an array with values and
-save those in dataset myDS.;
 #X text 22 211 Message '-1' will store a label entry--1 and a corresponding
 identifier 'input-1', f 56;
-#X text 94 342 2) Click to see the DataSet printed in the console,
-f 28;
 #X obj 22 471 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X text 43 469 3) Click to convert the myDS dataset and save it in
-text object myText, f 36;
 #X text 25 585 Click on Text object to see its content;
+#X obj 19 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 96 342 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 45 470 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 19 157 1) Click these to populate an array with values and
+save those in dataset myDS.;
+#X text 96 341 2) Click to see the DataSet printed in the console,
+f 28;
+#X text 45 468 3) Click to convert the myDS dataset and save it in
+text object myText, f 36;
 #X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 2 0 5 0;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
-#X connect 17 0 7 0;
+#X connect 15 0 7 0;

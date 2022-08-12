@@ -1,4 +1,4 @@
-#N canvas 136 57 697 935 12;
+#N canvas 71 54 697 935 12;
 #X obj 17 658 *~;
 #X obj 31 640 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
@@ -28,8 +28,8 @@ sources are enabled, f 21;
 #X text 17 79 Sinusoidal Modelling process on its audio input, f 56
 ;
 #X obj 17 160 fluid.demosound~;
-#X text 29 608 resynthesised sinusoids, f 13;
-#X text 201 617 residual;
+#X text 49 639 resynthesised sinusoids, f 13;
+#X text 217 638 residual;
 #X text 388 634 latency;
 #X msg 360 305 detectionthreshold -40 \, mintracklen 1;
 #X msg 360 335 detectionthreshold -40 \, mintracklen 15;
@@ -37,8 +37,8 @@ sources are enabled, f 21;
 #X msg 360 395 detectionthreshold -24 \, mintracklen 1;
 #X obj 473 874 cnv 15 210 42 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 1054 278 690 714 a_little_more_explanation 0;
-#X obj 171 533 *~;
+#N canvas 179 136 690 602 a_little_more_explanation 0;
+#X obj 236 428 *~;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.sines~ 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty Sinusoidal\\\ Modelling\\\ and\\\ Resynthesis
@@ -76,8 +76,8 @@ sources are enabled, f 21;
 #X connect 11 0 9 0;
 #X connect 11 0 15 0;
 #X coords 0 -1 1 1 200 98 2 100 100;
-#X restore 17 178 pd switch;
-#X floatatom 211 451 5 0 0 0 - - - 0;
+#X restore 20 147 pd switch;
+#X floatatom 467 350 5 0 0 0 - - - 0;
 #N canvas 1075 -678 740 379 fade 0;
 #X obj 37 37 inlet;
 #X obj 37 102 dbtorms;
@@ -101,62 +101,76 @@ sources are enabled, f 21;
 #X connect 7 2 9 0;
 #X connect 8 0 5 0;
 #X connect 9 0 8 1;
-#X restore 211 471 pd fade;
-#X text 126 461 residual;
-#X text 20 490 resynthesised sinusoids, f 13;
-#X text 231 247 The fluid.sines~ object attempts to reconstruct the
-input signal as a bank of sinusoids. We might expect that for a pure
-sine tone \, the algorithm has no problems. With these settings everything
-in the sound is considered a sinusoid \, even short and quiet peaks.
-Because the decomposition is a windowed process \, the detected sinusoidal
-peaks are located in time based on the window of analysis. When the
-oscillator changes even slowly over time we hear the artefact and failure
-of the algorithm emerging in the residual output.;
-#X obj 17 340 fluid.sines~ -detectionthreshold -144 -birthhighthreshold
+#X restore 467 370 pd fade;
+#X text 240 360 residual;
+#X text 26 363 resynthesised sinusoids, f 13;
+#X obj 20 309 fluid.sines~ -detectionthreshold -144 -birthhighthreshold
 -144 -birthlowthreshold -144 -mintracklen 1 -trackmagrange 200 -trackfreqrange
-1000 -trackprob 0, f 25;
-#X obj 16 598 fluid.out~ sineshelp;
-#X obj 211 403 * 20;
-#X connect 0 0 10 1;
-#X connect 3 0 9 0;
-#X connect 3 1 11 0;
+1000 -trackprob 0, f 62;
+#X obj 19 467 fluid.out~ sineshelp;
+#X obj 467 307 * 20;
+#X obj 21 125 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 22 124 1) Select the source;
+#X obj 90 471 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 89 470 2) Audio on. The fluid.sines~ object attempts to reconstruct
+the input signal as a bank of sinusoids. We might expect that for a
+pure sine tone \, the algorithm has no problems. With these settings
+everything in the sound is considered a sinusoid \, even short and
+quiet peaks. Because the decomposition is a windowed process \, the
+detected sinusoidal peaks are located in time based on the window of
+analysis. When the oscillator changes even slowly over time we hear
+the artefact and failure of the algorithm emerging in the residual
+output., f 80;
+#X connect 0 0 9 1;
+#X connect 3 0 8 0;
+#X connect 3 1 10 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 1;
-#X connect 9 0 10 0;
-#X connect 9 1 0 0;
-#X connect 11 0 4 0;
+#X connect 8 0 9 0;
+#X connect 8 1 0 0;
+#X connect 10 0 4 0;
 #X restore 476 894 pd a_little_more_explanation;
 #X obj 103 887 fluid.out~ sineshelp;
-#X obj 161 845 loadbang;
-#X msg 161 866 1;
 #X obj 103 765 +~;
 #X obj 103 830 +~;
 #X obj 17 556 fluid.sines~ -fftsettings 2048 -1 8192, f 49;
-#X connect 0 0 33 0;
+#X obj 18 140 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 20 139 1) Pick a sound source and start playing.;
+#X obj 31 603 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 33 602 3) pick the component to monitor, f 21;
+#X obj 171 891 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 173 890 2) Audio on.;
+#X obj 361 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 363 282 4) try different settings;
+#X connect 0 0 31 0;
 #X connect 1 0 0 1;
-#X connect 2 0 33 1;
+#X connect 2 0 31 1;
 #X connect 3 0 2 1;
 #X connect 4 0 10 0;
 #X connect 5 0 12 0;
 #X connect 6 0 5 0;
-#X connect 7 0 34 1;
+#X connect 7 0 32 1;
 #X connect 8 0 9 0;
 #X connect 9 0 7 1;
 #X connect 10 0 5 1;
 #X connect 12 0 7 0;
 #X connect 13 0 15 0;
-#X connect 15 0 35 0;
+#X connect 15 0 33 0;
 #X connect 20 0 11 0;
-#X connect 20 0 35 0;
-#X connect 24 0 35 0;
-#X connect 25 0 35 0;
-#X connect 26 0 35 0;
-#X connect 27 0 35 0;
+#X connect 20 0 33 0;
+#X connect 24 0 33 0;
+#X connect 25 0 33 0;
+#X connect 26 0 33 0;
+#X connect 27 0 33 0;
 #X connect 31 0 32 0;
-#X connect 32 0 30 2;
-#X connect 33 0 34 0;
-#X connect 34 0 30 1;
-#X connect 34 0 30 0;
-#X connect 35 0 0 0;
-#X connect 35 1 2 0;
-#X connect 35 2 6 0;
+#X connect 32 0 30 1;
+#X connect 32 0 30 0;
+#X connect 33 0 0 0;
+#X connect 33 1 2 0;
+#X connect 33 2 6 0;

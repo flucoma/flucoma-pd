@@ -14,7 +14,7 @@ with labels.;
 0;
 #X text 252 174 1) Add labels with the addlabel <identifier><label>
 strctured message, f 29;
-#X obj 141 237 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 142 237 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 142 236 2) print the labelset to inspect the internal state
 , f 29;
@@ -27,17 +27,17 @@ The setlabel message will create the label if it doesn note exist \,
 while updatelabel message assumes it already exists and will not make
 it., f 44;
 #X msg 165 397 print;
-#X obj 221 397 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 219 397 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 218 396 4) print again to see how the labels have changed;
 #X msg 163 439 deletelabel huddersfield \, print, f 26;
-#X obj 362 446 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+#X obj 359 446 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
 #X text 359 445 5) Delete the label with the identifier huddersfield
 \, and print the labelset to the console again., f 41;
-#X obj 474 616 cnv 15 200 110 empty empty More\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 22 23 709 993 audio-descriptor_example 0;
+#X obj 474 616 cnv 15 200 110 empty empty More\\\ information 4 10
+0 13 #e0e0e0 #404040 0;
+#N canvas 22 23 696 926 audio-descriptor_example 0;
 #X obj 37 296 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 58 296 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
@@ -54,13 +54,13 @@ help.labelset.src;
 #ffffff 0;
 #X text 17 79 Create associations between identifiers shared across
 fluid.dataset~ objects and fluid.labelset~ objects.;
-#X obj 471 116 array define help.labelset.src;
+#X obj 460 128 array define help.labelset.src;
 #X text 59 295 1) Calculate the MFCCs across a source buffer. Calculate
 the statistics across each coefficient per spectral frame and flatten
 the data to a single dimension. This is a common workflow for storing
 a large number of descriptors in a dataset, f 84;
 #X obj 37 394 fluid.bufstats;
-#X obj 359 139 array define help.labelset.features.stats.flat;
+#X obj 348 151 array define help.labelset.features.stats.flat;
 #X obj 37 356 fluid.bufmfcc 13 -source help.labelset.src;
 #X obj 37 432 fluid.bufflatten -destination help.labelset.features.stats.flat
 ;
@@ -72,7 +72,6 @@ a large number of descriptors in a dataset, f 84;
 #000000;
 #X obj 58 486 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 59 485 2);
 #X text 381 587 setlabel message is sent to the fluid.labelset~ below
 associating the identifier "scratch-synth" with the label "noisy".
 Both the fluid.dataset~ and fluid.labelset~ have the identifier "scratch-synth".
@@ -90,26 +89,25 @@ the dataset with that identifier., f 41;
 27;
 #X text 59 740 3) store dataset into a text object;
 #X text 39 861 4) double-click 'text' to see data;
-#X obj 367 742 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
 #X obj 368 862 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 369 861 4) double-click 'text' to see data;
 #X obj 367 886 text define help.labelset.text.1b;
 #X obj 367 767 fluid.ls2text sound-labels help.labelset.text.1b, f
 27;
 #X obj 37 886 text define help.labelset.text.1;
+#X text 59 485 2) Click here to set a point and a label;
+#X text 369 861 5) double-click 'text' to see data;
 #X connect 0 0 9 0;
 #X connect 7 0 10 0;
 #X connect 9 0 7 0;
 #X connect 12 0 11 0;
-#X connect 13 0 18 0;
+#X connect 13 0 17 0;
 #X connect 14 0 12 0;
 #X connect 14 0 13 0;
-#X connect 19 0 22 0;
-#X connect 25 0 29 0;
+#X connect 18 0 21 0;
+#X connect 18 0 26 0;
 #X restore 477 636 pd audio-descriptor_example;
-#N canvas 0 23 701 994 other_messages 0;
+#N canvas 149 122 701 570 other_messages 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 79 Other useful messages that can be used with fluid.dataset~
@@ -181,30 +179,39 @@ the dataset with that identifier., f 41;
 #X msg 137 248 size;
 #X msg 157 278 print;
 #X msg 197 308 clear;
-#X text 277 219 Read a fluid.labelset~ from disk;
-#X text 186 247 Get the size (number of identifiers with associated
-labels).;
-#X text 206 277 Dump the contents of the fluid.labelset~ to the left?
-outlet;
-#X text 246 307 Completely empty and reset a fluid.labelset~;
-#X obj 51 787 text define help.labelset.text.2;
-#X text 53 762 double-click 'text' to see data;
-#X text 72 619 store dataset into a text object;
-#X msg 51 658 bang;
+#X obj 307 527 text define help.labelset.text.2;
+#X text 309 502 double-click 'text' to see data;
+#X text 72 424 store dataset into a text object;
+#X msg 51 463 bang;
 #X msg 97 188 write /tmp/myfile.json;
 #X msg 117 218 read /tmp/myfile.json;
-#X text 262 187 Write a fluid.labelset to disk;
-#X obj 51 698 fluid.ls2text help.labelset.2 help.labelset.text.2,
+#X obj 51 503 fluid.ls2text help.labelset.2 help.labelset.text.2,
 f 27;
-#X obj 51 590 fluid.labelset help.labelset.2;
+#X obj 51 395 fluid.labelset help.labelset.2;
+#X obj 263 188 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 278 220 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 179 250 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 204 281 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 242 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 263 187 1) Write a fluid.labelset to disk;
+#X text 278 219 2) Read a fluid.labelset~ from disk;
+#X text 180 249 3) Get the size (number of identifiers with associated
+labels)., f 63;
+#X text 243 309 5) Completely empty and reset a fluid.labelset~;
+#X text 204 280 4) Prints the content in the Pd window, f 63;
 #X connect 2 0 3 0;
-#X connect 4 0 19 0;
-#X connect 5 0 19 0;
-#X connect 6 0 19 0;
-#X connect 14 0 18 0;
-#X connect 15 0 19 0;
-#X connect 16 0 19 0;
-#X connect 19 0 14 0;
+#X connect 4 0 14 0;
+#X connect 5 0 14 0;
+#X connect 6 0 14 0;
+#X connect 10 0 13 0;
+#X connect 11 0 14 0;
+#X connect 12 0 14 0;
+#X connect 14 0 10 0;
 #X restore 477 658 pd other_messages;
 #X obj 36 596 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;

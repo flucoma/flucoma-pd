@@ -1,4 +1,4 @@
-#N canvas 264 140 693 766 12;
+#N canvas 50 60 693 766 12;
 #X obj 143 379 fluid.loudness~;
 #X obj 143 481 unpack f f, f 19;
 #X floatatom 143 502 5 0 0 0 - - - 0;
@@ -14,7 +14,6 @@ f 56;
 #X obj 509 60 fluid.referencelauncher fluid.loudness~.html reference/loudness/
 ;
 #X obj 20 179 fluid.demosound~;
-#X text 19 159 1) Select a source., f 66;
 #X obj 20 339 *~ 1;
 #X obj 51 567 noise~;
 #X obj 50 675 *~;
@@ -73,13 +72,10 @@ f 56;
 #X connect 24 0 12 0;
 #X connect 25 0 13 0;
 #X restore 237 325 pd parameters;
-#X text 116 563 Turn toggle on to hear the noise shaped by the loudness
-value converted from dB to amplitude;
 #X text 148 433 loudness and peak as a list;
-#X text 234 306 open to see parameter messages;
 #X obj 524 702 cnv 15 150 50 empty empty More\\\ information 4 10 0
 13 #e0e0e0 #404040 0;
-#N canvas 416 56 689 1001 some_more_details 0;
+#N canvas 121 47 689 1001 some_more_details 0;
 #X obj 20 759 unpack f f, f 17;
 #X floatatom 20 782 5 0 0 0 - - - 0;
 #X floatatom 135 781 5 0 0 0 - - - 0;
@@ -90,7 +86,6 @@ value converted from dB to amplitude;
 #X obj 17 60 cnv 15 488 17 empty empty A\\\ Loudness\\\ and\\\ True-Peak\\\ Descriptor\\\ in\\\ Real-Time
 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 20 219 fluid.demosound~;
-#X text 19 199 1) Select a source., f 66;
 #X msg 55 650 windowsize 17640 \, hopsize 4410 \, kweighting 1 \, truepeak
 1;
 #X obj 55 626 loadbang;
@@ -143,7 +138,6 @@ f 62;
 #X restore 92 412 graph;
 #X obj 179 350 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X text 196 348 plot;
 #N canvas 991 -793 337 224 windowSize 0;
 #X obj 40 33 r pd-dsp-started;
 #X obj 40 51 samplerate~;
@@ -166,20 +160,29 @@ for momentary loudness, f 25;
 #X obj 20 720 fluid.loudness~ 19200;
 #X obj 374 343 *~ 1;
 #X obj 374 388 fluid.out~ loudnesshelp;
+#X obj 20 200 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 445 393 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 20 199 1) Select a source., f 66;
+#X text 446 391 2) Audio on.;
+#X obj 198 351 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 199 349 3) Spectrogram on.;
 #X connect 0 0 1 0;
 #X connect 0 1 2 0;
-#X connect 1 0 11 0;
-#X connect 2 0 11 1;
-#X connect 7 0 12 0;
-#X connect 7 0 20 0;
-#X connect 7 0 21 0;
-#X connect 9 0 20 0;
-#X connect 10 0 9 0;
-#X connect 16 0 12 1;
-#X connect 18 0 20 0;
-#X connect 20 0 0 0;
-#X connect 21 0 22 0;
-#X connect 21 0 22 1;
+#X connect 1 0 10 0;
+#X connect 2 0 10 1;
+#X connect 7 0 11 0;
+#X connect 7 0 18 0;
+#X connect 7 0 19 0;
+#X connect 8 0 18 0;
+#X connect 9 0 8 0;
+#X connect 15 0 11 1;
+#X connect 16 0 18 0;
+#X connect 18 0 0 0;
+#X connect 19 0 20 0;
+#X connect 19 0 20 1;
 #X restore 527 728 pd some_more_details;
 #X obj 79 681 loadbang;
 #X msg 79 703 1, f 2;
@@ -187,20 +190,30 @@ for momentary loudness, f 25;
 #X obj 51 602 *~;
 #X obj 100 571 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
+#X obj 19 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 118 566 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 20 157 1) Select a source., f 66;
+#X text 117 565 2) Turn toggle on to hear the noise shaped by the loudness
+value converted from dB to amplitude;
+#X obj 237 307 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 237 306 3) open to see parameter messages;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 1 3 0;
-#X connect 2 0 17 0;
-#X connect 10 0 12 0;
-#X connect 12 0 0 0;
-#X connect 12 0 26 0;
-#X connect 13 0 27 0;
-#X connect 14 0 26 1;
-#X connect 15 0 16 0;
-#X connect 16 0 14 1;
-#X connect 17 0 15 0;
-#X connect 18 0 0 0;
-#X connect 24 0 25 0;
-#X connect 25 0 26 2;
-#X connect 27 0 14 0;
-#X connect 28 0 27 1;
+#X connect 2 0 16 0;
+#X connect 10 0 11 0;
+#X connect 11 0 0 0;
+#X connect 11 0 23 0;
+#X connect 12 0 24 0;
+#X connect 13 0 23 1;
+#X connect 14 0 15 0;
+#X connect 15 0 13 1;
+#X connect 16 0 14 0;
+#X connect 17 0 0 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 2;
+#X connect 24 0 13 0;
+#X connect 25 0 24 1;

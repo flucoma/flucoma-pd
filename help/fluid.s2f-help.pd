@@ -1,4 +1,4 @@
-#N canvas 109 98 685 348 12;
+#N canvas 109 126 692 348 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.s2f 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty Convert\\\ a\\\ symbol\\\ into\\\ a\\\ float
@@ -10,7 +10,7 @@
 ("string") and output it as a float.;
 #X msg 147 228 symbol "1";
 #X msg 232 228 symbol "123456789.012345";
-#X text 213 270 Note that the symbol needs to be enclosed in double
+#X text 94 264 Note that the symbol needs to be enclosed in double
 quotes for s2f to work., f 30;
 #X obj 509 60 fluid.referencelauncher fluid.s2f.html reference/s2f/
 ;
@@ -23,6 +23,13 @@ quotes for s2f to work., f 30;
 #X obj 558 274 fluid.s2f;
 #X floatatom 558 298 9 0 0 0 - - - 0;
 #X obj 558 227 makefilename %d;
+#X obj 18 205 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 445 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 18 205 1) try various symbols spelling out floats.;
+#X text 445 165 2) another example: we convert to symbol then back
+to float, f 33;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
 #X connect 6 0 4 0;

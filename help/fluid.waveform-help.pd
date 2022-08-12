@@ -17,10 +17,6 @@ help.wf.src.M;
 #X obj 455 265 array define help.wf.src.M;
 #X msg 16 414 waveform help.wf.src.M;
 #X msg 183 414 waveform help.wf.src.S;
-#X text 14 203 1) Load a mono file in a normal array \, and a stereo
-file in a 'fluid.multiarray', f 80;
-#X text 14 393 2) Choose a waverform to visualise \, group normalised
-around zero, f 64;
 #N canvas 683 23 694 522 features 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -28,21 +24,27 @@ around zero, f 64;
 #X msg 17 113 waveform help.wf.src.M;
 #X obj 86 167 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X text 187 111 1) what are we describing?;
-#X text 108 164 2) describe!;
 #X obj 18 473 clone fluid.multiarray 2 help.wf.features;
 #X obj 87 185 fluid.bufloudness -source help.wf.src.M -features help.wf.features
 , f 66;
 #X msg 87 241 features help.wf.features;
-#X text 277 240 3) draw each feature stacked \, each individually normalised
-for a better view, f 47;
 #X text 17 63 Display features as stacked lines;
+#X obj 188 111 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 109 165 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 279 241 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 188 110 1) what are we describing?;
+#X text 108 164 2) describe!;
+#X text 279 239 3) draw each feature stacked \, each individually normalised
+for a better view, f 47;
 #X connect 2 0 1 0;
-#X connect 3 0 7 0;
-#X connect 7 0 8 0;
-#X connect 8 0 1 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 1 0;
 #X restore 467 677 pd features;
-#N canvas 683 24 705 547 markers_for_indices 0;
+#N canvas 683 24 696 513 markers_for_indices 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 63 Display markers for slice indices;
@@ -51,20 +53,26 @@ for a better view, f 47;
 #X msg 87 241 indices help.wf.indices;
 #X obj 86 167 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
+#X obj 18 473 array define help.wf.indices;
+#X obj 87 185 fluid.bufonsetslice -source help.wf.src.M -indices help.wf.indices
+-metric 9 -threshold 0.3;
+#X obj 187 112 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 108 165 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 263 242 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
 #X text 187 111 1) what are we segmenting? Needed to establish a timeframe
 for the slices;
 #X text 108 164 2) slice;
 #X text 262 241 3) draw the slices with the timeframe of waveform as
 reference;
-#X obj 18 473 array define help.wf.indices;
-#X obj 87 185 fluid.bufonsetslice -source help.wf.src.M -indices help.wf.indices
--metric 9 -threshold 0.3;
 #X connect 3 0 2 0;
 #X connect 4 0 2 0;
-#X connect 5 0 10 0;
-#X connect 10 0 4 0;
+#X connect 5 0 7 0;
+#X connect 7 0 4 0;
 #X restore 467 655 pd markers_for_indices;
-#N canvas 683 23 696 772 spectrograms 0;
+#N canvas 683 23 696 746 spectrograms 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 63 Plot 3D data as colored 2D images;
@@ -72,29 +80,37 @@ reference;
 #000000;
 #X obj 22 134 fluid.bufstft -source help.wf.src.M;
 #X obj 22 274 fluid.waveform 650 400 0 empty empty 0;
-#X text 43 111 1) trigger the spectral analysis;
 #X msg 22 187 imagelogflag 1 \, imagecolorscheme 1 \, image \$1;
 #X msg 45 245 waveform help.wf.src.M;
 #X obj 342 113 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X text 341 183 2) make use of the automatically managed multichannel
-buffers here for dynamic channel count, f 42;
-#X text 364 110 4) a spectrogram in melbands instead;
-#X text 220 245 3) drawing the wave form above;
 #X obj 342 133 fluid.bufmelbands 40 -source help.wf.src.M -features
 help.wf.mels, f 42;
 #X obj 20 703 clone fluid.multiarray 40 help.wf.mels;
+#X obj 45 112 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 364 112 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 342 186 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 223 247 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 43 111 1) trigger the spectral analysis;
+#X text 342 184 2) make use of the automatically managed multichannel
+buffers here for dynamic channel count, f 42;
+#X text 364 110 4) a spectrogram in melbands instead;
+#X text 223 245 3) drawing the wave form above;
 #X connect 2 0 3 0;
-#X connect 3 0 6 0;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
 #X connect 6 0 4 0;
-#X connect 7 0 4 0;
-#X connect 8 0 12 0;
-#X connect 12 0 6 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;
 #X restore 467 699 pd spectrograms;
-#N canvas 683 23 696 796 customisation 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
+#N canvas 683 23 696 922 customisation 0;
+#X obj 18 -32 cnv 15 660 42 empty empty fluid.waveform 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X text 17 63 Customisation of colors \, dimensions \, send \, receive
+#X text 18 18 Customisation of colors \, dimensions \, send \, receive
 ;
 #N canvas 170 280 390 482 label 0;
 #X obj 102 62 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 #0800fc
@@ -134,7 +150,7 @@ help.wf.mels, f 42;
 #X connect 12 0 6 0;
 #X connect 13 0 9 0;
 #X coords 0 -1 1 1 77 151 2 50 50;
-#X restore 25 282 pd label;
+#X restore 26 237 pd label;
 #N canvas 170 280 390 482 label 0;
 #X obj 102 62 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 #0800fc
 #fcfcfc #000000 0 1;
@@ -173,7 +189,7 @@ help.wf.mels, f 42;
 #X connect 12 0 6 0;
 #X connect 13 0 9 0;
 #X coords 0 -1 1 1 77 151 2 50 50;
-#X restore 153 282 pd label;
+#X restore 154 237 pd label;
 #N canvas 170 280 390 482 label 0;
 #X obj 102 62 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 #0800fc
 #fcfcfc #000000 0 1;
@@ -212,28 +228,41 @@ help.wf.mels, f 42;
 #X connect 12 0 6 0;
 #X connect 13 0 9 0;
 #X coords 0 -1 1 1 77 151 2 50 50;
-#X restore 280 281 pd label;
-#X msg 25 438 waveformcolor \$1;
-#X msg 153 438 indicescolor \$1;
-#X msg 280 437 featurescolor \$1;
-#X floatatom 414 415 5 1 300 0 - - - 0;
-#X msg 414 437 linewidth \$1;
-#X text 22 108 arguments can be one list (width height outline send
+#X restore 281 236 pd label;
+#X msg 26 393 waveformcolor \$1;
+#X msg 154 393 indicescolor \$1;
+#X msg 281 392 featurescolor \$1;
+#X floatatom 415 370 5 1 300 0 - - - 0;
+#X msg 415 392 linewidth \$1;
+#X text 23 63 arguments can be one list (width height outline send
 receive latch) -outline - flag if the frame is drawn -latch - send
 a message on mouse up -send -receive They can all be edited in the
 'property' window and are saved as state of the object, f 86;
-#X obj 415 467 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 416 422 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X msg 415 487 outline \$1;
-#X obj 532 416 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X msg 416 442 outline \$1;
+#X obj 533 371 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X msg 532 436 imagelogflag \$1;
-#X obj 532 465 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X msg 533 391 imagelogflag \$1;
+#X obj 533 420 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
-#X msg 532 485 imagecolorscheme \$1;
-#X obj 24 566 fluid.waveform 650 200 1 empty empty 0;
-#X msg 305 520 waveform help.wf.src.M \, features help.wf.features
+#X msg 533 440 imagecolorscheme \$1;
+#X obj 26 590 fluid.waveform 650 200 1 empty empty 0;
+#X msg 307 544 waveform help.wf.src.M \, features help.wf.features
 \, image help.wf.mels \, indices help.wf.indices, f 51;
+#X obj 27 207 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 27 148 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 28 145 1) Make sure to run the other patchers to have all the
+data at hand., f 68;
+#X obj 414 345 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 28 204 2) Experiment with custom colour settings...;
+#X text 415 342 ... and other graphic parameters;
+#X obj 310 523 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 311 520 3) To see the impact \, redraw by clicking here.;
 #X connect 2 0 5 0;
 #X connect 3 0 6 0;
 #X connect 4 0 7 0;
@@ -280,9 +309,13 @@ length;
 #X connect 6 0 1 0;
 #X restore 20 367 pd playback;
 #X obj 20 391 fluid.out~;
-#X text 192 136 1) draw the waveform;
-#X text 177 341 relative pixel of the click and drag position (0 0
-is bottom left), f 66;
+#X obj 193 137 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 177 342 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 193 136 1) draw the waveform;
+#X text 177 341 2) relative pixel of the click and drag position (0
+0 is bottom left), f 69;
 #X connect 1 0 4 0;
 #X connect 2 0 1 0;
 #X connect 4 0 5 0;
@@ -290,7 +323,15 @@ is bottom left), f 66;
 #X connect 5 0 6 1;
 #X restore 467 743 pd mousing;
 #X listbox 16 623 20 0 0 0 - - - 0;
-#X connect 5 0 20 0;
+#X obj 15 204 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 15 394 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 15 203 1) Load a mono file in a normal array \, and a stereo
+file in a 'fluid.multiarray', f 80;
+#X text 15 393 2) Choose a waverform to visualise \, group normalised
+around zero, f 64;
+#X connect 5 0 18 0;
 #X connect 8 0 6 0;
 #X connect 10 0 5 0;
 #X connect 11 0 5 0;

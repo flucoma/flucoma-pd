@@ -34,9 +34,9 @@ help.morph.src.2, f 37;
 #X obj 37 177 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X text 57 176 1) load sounds;
-#X obj 126 612 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
+#X obj 70 570 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
 #000000 #000000 0 1;
-#X obj 123 586 cnv 15 75 17 empty empty Interpolate 3 12 1 14 #dfdfdf
+#X obj 67 544 cnv 15 75 17 empty empty Interpolate 3 12 1 14 #dfdfdf
 #0400ff 0;
 #X floatatom 370 313 5 0 0 0 - - - 0;
 #X floatatom 370 392 5 0 0 0 - - - 0;
@@ -59,16 +59,26 @@ sounds decompose their material into a selectable number of components
 -activations help.morph.act.2 -components 5 -blocking 0, f 48;
 #X obj 37 681 fluid.nmfmorph~ -source help.morph.bases.1 -target help.morph.bases.2
 -activations help.morph.act.1;
-#X msg 123 634 interpolation \$1;
+#X msg 67 592 interpolation \$1;
 #X text 404 680 note: to trigger mapping changes \, change autoassign.
 , f 29;
-#X msg 51 553 activations help.morph.act.2 \, interpolation 0 \, autoassign
+#X msg 126 650 activations help.morph.act.2 \, interpolation 0 \, autoassign
 0;
-#X text 39 471 set the temporal shape to the drums;
-#X text 53 531 set temporal shape to the piano;
-#X obj 526 793 cnv 15 149 50 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 526 793 cnv 15 149 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #X obj 534 817 note_on_multiarrays;
+#X obj 59 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 38 472 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X obj 147 545 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 59 238 2) decompose each sound in 2 bases via bufnmf;
+#X text 148 544 5) play with the interpolation ratio;
+#X text 39 471 3) set the temporal shape to the drums;
+#X obj 130 629 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 131 628 6) try setting the temporal shape to the piano's;
 #X connect 3 0 24 0;
 #X connect 4 0 26 0;
 #X connect 5 0 7 0;

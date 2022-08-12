@@ -9,7 +9,7 @@
 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Replace all values of a buffer under the given threshold
 with 0 and copy the result to a destination buffer.;
-#N canvas 1094 23 554 314 fillarrays 1;
+#N canvas 1094 23 554 314 fillarrays 0;
 #X obj 15 17 loadbang;
 #X msg 15 124 \; stereoinput-1 sinesum 256 1 0 0.33 0 0.2 0 0.14 0
 0.11 0 0.09;
@@ -36,9 +36,11 @@ with 0 and copy the result to a destination buffer.;
 #X coords 0 1 258 -1 258 66 1 0 0;
 #X restore 306 334 graph;
 #X obj 37 237 loadbang;
-#X obj 458 526 cnv 15 215 50 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 458 526 cnv 15 215 50 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #X obj 463 550 note_on_automatic_multiarrays;
+#X obj 64 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
 #X text 64 179 1) change the threshold and observe the output.;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;

@@ -1,28 +1,28 @@
-#N struct 1344-rectangle float x float c;
-#N struct 1344-pixel float x0 float y0 float x1 float y1;
-#N struct 1347-rectangle float x float c;
-#N struct 1347-pixel float x0 float y0 float x1 float y1;
-#N struct 1350-rectangle float x float c;
-#N struct 1350-pixel float x0 float y0 float x1 float y1;
-#N struct 1353-rectangle float x float c;
-#N struct 1353-pixel float x0 float y0 float x1 float y1;
-#N struct 1356-rectangle float x float c;
-#N struct 1356-pixel float x0 float y0 float x1 float y1;
-#N struct 1359-rectangle float x float c;
-#N struct 1359-pixel float x0 float y0 float x1 float y1;
-#N struct 1377-rectangle float x float c;
-#N struct 1377-pixel float x0 float y0 float x1 float y1;
-#N canvas 41 62 701 1005 12;
+#N struct 1143-rectangle float x float c;
+#N struct 1143-pixel float x0 float y0 float x1 float y1;
+#N struct 1146-rectangle float x float c;
+#N struct 1146-pixel float x0 float y0 float x1 float y1;
+#N struct 1149-rectangle float x float c;
+#N struct 1149-pixel float x0 float y0 float x1 float y1;
+#N struct 1152-rectangle float x float c;
+#N struct 1152-pixel float x0 float y0 float x1 float y1;
+#N struct 1155-rectangle float x float c;
+#N struct 1155-pixel float x0 float y0 float x1 float y1;
+#N struct 1158-rectangle float x float c;
+#N struct 1158-pixel float x0 float y0 float x1 float y1;
+#N struct 1176-rectangle float x float c;
+#N struct 1176-pixel float x0 float y0 float x1 float y1;
+#N canvas 64 112 697 1009 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.mds 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 455 920 cnv 15 222 68 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 455 920 cnv 15 222 68 empty empty More\\\ information 4 10 0
+13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.mds.html reference/mds/
 ;
 #X text 17 79 Multidimensional Scaling;
 #X text 17 119 Dimensionality Reduction of a fluid.dataset Using Multidimensional
 Scaling;
-#N canvas 564 84 702 1052 comparing_distance_metrics 0;
+#N canvas 678 -1077 702 1052 comparing_distance_metrics 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.mds 1 22 0 36 #4ba3fb
 #ffffff 0;
 #X text 17 79 comparing distance metrics (-distancemetric parameter)
@@ -33,8 +33,8 @@ Scaling;
 #X msg 16 41 read -resize media/Nicol-LoopE-M.wav help.mds.src.2;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
-#X restore 23 152 pd loadsrc;
-#X obj 483 152 array define help.mds.src.2;
+#X restore 20 133 pd loadsrc;
+#X obj 478 152 array define help.mds.src.2;
 #X obj 24 199 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
 #X obj 24 229 fluid.bufmfcc -source help.mds.src.2 -numframes 176400
@@ -258,13 +258,12 @@ Scaling;
 #0400ff 0;
 #X obj 444 199 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
 0;
-#X text 445 198 2) plot all six metrics below, f 17;
+#X text 444 197 2) plot all six metrics below, f 17;
 #X obj 24 359 route frombuffer;
 #X obj 30 466 cnv 15 145 32 empty empty empty 20 12 0 14 #dfdfdf #404040
 0;
 #X obj 30 465 text define help.mds.mfccs.text;
 #X f 20;
-#X text 182 462 click text to see data, f 12;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
@@ -334,8 +333,13 @@ Scaling;
 0;
 #X obj 44 482 text define help.mds.data.in.text;
 #X f 25;
-#X text 232 482 open text to see data, f 11;
 #X obj 466 965 note_on_automatic_datasets;
+#X obj 232 483 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 232 482 2) open text to see data, f 12;
+#X obj 372 307 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
+0;
+#X text 372 306 3) Click to reduce dimensions and draw.;
 #X connect 8 0 9 0;
 #X connect 9 0 18 0;
 #X connect 12 0 15 0;
