@@ -1,6 +1,5 @@
-#N struct 1383-draw-item float x float y float c float a float b;
-#N struct 1384-rectangle float x float c;
-#N struct 1384-pixel float x0 float y0 float x1 float y1;
+#N struct 1021-rectangle float x float c;
+#N struct 1021-pixel float x0 float y0 float x1 float y1;
 #N canvas 31 42 695 748 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.stats 1 22 0 36 #4ba3fb
 #ffffff 0;
@@ -148,7 +147,7 @@ data is over time., f 57;
 #X connect 10 0 1 0;
 #X restore 22 387 pd addpoint;
 #X obj 22 274 t l l;
-#N canvas 255 -480 652 300 addrange 1;
+#N canvas 429 335 652 321 addrange 0;
 #X obj 38 45 inlet;
 #X obj 40 267 outlet;
 #X obj 297 43 inlet;
