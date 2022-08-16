@@ -111,9 +111,9 @@ help.ampgate.indices.2 -rampup 110 -rampdown 2205 -onthreshold -40
 #X obj 37 267 outlet;
 #X obj 300 267 outlet;
 #X obj 37 177 t b b, f 38;
-#X msg 37 217 waveform help.ampgate.src.2 \, indices help.ampgate.indices.2-0
+#X msg 37 217 waveform help.ampgate.src.2 \, indices help.ampgate.indices.2-1
 , f 32;
-#X msg 300 217 waveform help.ampgate.src.2 \, indices help.ampgate.indices.2-1
+#X msg 300 217 waveform help.ampgate.src.2 \, indices help.ampgate.indices.2-0
 , f 33;
 #X connect 0 0 2 0;
 #X connect 2 0 5 0;
