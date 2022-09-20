@@ -132,11 +132,11 @@ public:
     static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t),
                   "size of pointer int type is wrongwrongwrong");
 
-    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
-      wrapper->mClient = typename Wrapper::ClientType{
-          wrapper->mParams,
-          FluidContext(sp[0]->s_vecsize, FluidDefaultAllocator())};
+    mContext = FluidContext(sp[0]->s_vecsize, FluidDefaultAllocator());
 
+    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
+      wrapper->mClient =
+          typename Wrapper::ClientType{wrapper->mParams, mContext};
 
     auto& client = wrapper->client();
     client.sampleRate(sp[0]->s_sr);
