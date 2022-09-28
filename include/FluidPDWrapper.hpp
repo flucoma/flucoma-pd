@@ -21,6 +21,8 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <clients/common/ParameterTypes.hpp>
 #include <clients/nrt/FluidSharedInstanceAdaptor.hpp>
 
+#include <data/FluidMemory.hpp>
+
 #include <m_pd.h>
 
 #include <cctype>
@@ -130,9 +132,11 @@ public:
     static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t),
                   "size of pointer int type is wrongwrongwrong");
 
-    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
-      wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
+    mContext = FluidContext(sp[0]->s_vecsize, FluidDefaultAllocator());
 
+    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
+      wrapper->mClient =
+          typename Wrapper::ClientType{wrapper->mParams, mContext};
 
     auto& client = wrapper->client();
     client.sampleRate(sp[0]->s_sr);
@@ -583,7 +587,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   template <size_t N>
   struct Fetcher<N, StringT>
   {
-    std::string operator()(const long ac, t_atom* av, long& currentCount)
+    rt::string operator()(const long ac, t_atom* av, long& currentCount)
     {
       auto defaultValue = paramDescriptor<N>().defaultValue;
       return {currentCount < ac ? atom_getsymbol(av + currentCount++)->s_name
@@ -610,11 +614,11 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       (atom)->a_w.w_float = v;
     }
 
-    static std::string getString(t_atom* a)
+    static rt::string getString(t_atom* a)
     {
       switch (atom_gettype(a))
       {
-      case A_FLOAT: return std::to_string(atom_getfloat(a));
+      case A_FLOAT: return rt::string{std::to_string(atom_getfloat(a))};
       default: {
         char result[MAXPDSTRING];
         atom_string(a, &result[0], MAXPDSTRING);
@@ -649,10 +653,13 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
           new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(FluidPDWrapper*, t_atom* a, const StringT::type&)
+    template <typename Alloc>
+    static auto
+    fromAtom(FluidPDWrapper*, t_atom* a,
+             std::basic_string<char, std::char_traits<char>, Alloc> const&)
     {
-      auto s = getString(a);
-      return s;
+      return std::basic_string<char, std::char_traits<char>, Alloc>{
+          getString(a)};
     }
 
     template <typename T>
@@ -693,12 +700,19 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       atom_setsym(a, b ? b->name() : nullptr);
     }
 
-    static auto toAtom(t_atom* a, StringT::type v)
+    template <typename Alloc>
+    static auto
+    toAtom(t_atom*                                                       a,
+           std::basic_string<char, std::char_traits<char>, Alloc> const& v)
     {
       atom_setsym(a, gensym(v.c_str()));
     }
 
-    static auto toAtom(t_atom* a, FluidTensor<std::string, 1> v)
+    template <typename Alloc>
+    static auto toAtom(
+        t_atom* a,
+        FluidTensor<std::basic_string<char, std::char_traits<char>, Alloc>, 1>
+            v)
     {
       for (auto& s : v) atom_setsym(a++, gensym(s.c_str()));
     }
@@ -724,7 +738,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     }
 
     template <typename... Ts, size_t... Is>
-    static void toAtom(t_atom* a, std::tuple<Ts...>&& x,
+    static void toAtom(t_atom* a, std::tuple<Ts...> const& x,
                        std::index_sequence<Is...>,
                        std::array<size_t, sizeof...(Ts)> offsets)
     {
@@ -744,7 +758,8 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
     {
       ParamLiteralConvertor<T, argSize> a;
-      a.set(Client::getParameterDescriptors().template makeValue<N>());
+      a.set(Client::getParameterDescriptors().template makeValue<N>(
+          FluidDefaultAllocator()));
 
       x->messages().reset();
 
@@ -908,14 +923,13 @@ public:
     getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), CLASS_PD | CLASS_NOINLET, A_GIMME,0));
     class_addmethod(getInletProxyClass(), (t_method) inletProxyBuffer, gensym("buffer"), A_GIMME, 0);
   }
-  
+
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mListSize{32},
-        mDumpOutlet{nullptr},
-        mControlOutlet(nullptr),
-        mParams(Client::getParameterDescriptors()),
-        mParamSnapshot(mParams.toTuple()),
-        mClient{initParamsFromArgs(ac, av)},mCanvas{canvas_getcurrent()}
+      : mListSize{32}, mDumpOutlet{nullptr}, mControlOutlet(nullptr),
+        mParams(Client::getParameterDescriptors(), FluidDefaultAllocator()),
+        mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av),
+                                                   FluidContext()},
+        mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
@@ -1333,7 +1347,7 @@ private:
   ParamSetType& initParamsFromArgs(int argc, t_atom* argv)
   {
     
-    long ac = argc;
+    int ac = argc;
     
     std::vector<t_atom> av_vec = [&](){
       bool needsNameAtom = IsThreadedShared<Client>::value &&
@@ -1408,14 +1422,14 @@ private:
 
   static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
   {
-    std::string name(newName->s_name);
-    if (std::string(name) != x->mParams.template get<0>())
+    rt::string name(newName->s_name);
+    if (name != x->mParams.template get<0>())
     {
       Result r = x->mParams.lookup(name);
       if (r.ok())
       {
         x->mParams.refer(name);
-        x->mClient = Client(x->mParams);
+        x->mClient = Client(x->mParams, FluidContext());
       }
       else
         printResult(x, r);
@@ -1500,14 +1514,14 @@ private:
   }
 
   template <template <typename, size_t> class Tensor, typename T>
-  static size_t ResultSize(Tensor<T, 1>&& x)
+  static size_t ResultSize(Tensor<T, 1> const& x)
   {
     return asUnsigned(static_cast<FluidTensor<T, 1>>(x).size());
   }
 
   template <typename... Ts, size_t... Is>
   static std::tuple<std::array<size_t, sizeof...(Ts)>, size_t>
-  ResultSize(std::tuple<Ts...>&& x, std::index_sequence<Is...>)
+  ResultSize(std::tuple<Ts...> const& x, std::index_sequence<Is...>)
   {
     size_t                            size = 0;
     std::array<size_t, sizeof...(Ts)> offsets;
@@ -1531,22 +1545,24 @@ private:
                     out.data());
   }
 
-  template <typename... Ts>
-  static void messageOutput(FluidPDWrapper* x, t_symbol* s,std::vector<t_atom>& outputTokens,
-                            MessageResult<std::tuple<Ts...>> r)
+  template <typename Tuple>
+  static std::enable_if_t<isSpecialization<Tuple, std::tuple>::value>
+  messageOutput(FluidPDWrapper* x, t_symbol* s,
+                std::vector<t_atom>& outputTokens, MessageResult<Tuple> r)
   {
-    auto   indices = std::index_sequence_for<Ts...>();
-    size_t resultSize;
-    std::array<size_t, sizeof...(Ts)> offsets;
-    std::tie(offsets, resultSize) =
-        ResultSize(static_cast<std::tuple<Ts...>>(r), indices);
-    
+
+    constexpr auto        N = std::tuple_size_v<Tuple>;
+    auto                  indices = std::make_index_sequence<N>();
+    size_t                resultSize;
+    std::array<size_t, N> offsets;
+    std::tie(offsets, resultSize) = ResultSize(r.value(), indices);
+
     resultSize += outputTokens.size();
     std::vector<t_atom> out(resultSize);
     std::copy_n(outputTokens.begin(), outputTokens.size(), out.begin());
-    ParamAtomConverter::toAtom(out.data() + outputTokens.size(), static_cast<std::tuple<Ts...>>(r),
+    ParamAtomConverter::toAtom(out.data() + outputTokens.size(), r.value(),
                                indices, offsets);
-                               
+
     outlet_anything(x->mDataOutlets[0], s, static_cast<int>(resultSize),
                     out.data());
   }
