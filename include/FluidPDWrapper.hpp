@@ -157,9 +157,15 @@ public:
       mControlClock = mControlClock ? mControlClock
                                     : clock_new((t_object*) wrapper,
                                                 (t_method) doControlOut);
-      mControlOutputs.resize(asUnsigned(client.maxControlChannelsOut()));
-      mControlAtoms.resize(asUnsigned(client.maxControlChannelsOut()));
-      mOutputs.emplace_back(mControlOutputs.data(), 0, mControlOutputs.size()); 
+
+      index outputCount = client.controlChannelsOut().count;
+      index maxFeatures = client.maxControlChannelsOut();
+      mControlOutputs.resize(outputCount, maxFeatures);
+      mControlAtoms.resize(outputCount, maxFeatures);
+      for (index i = 0; i < outputCount; ++i)
+      {
+        mOutputs.emplace_back(mControlOutputs.row(i));
+      }
     }
 
     for (index i = 0; i < asSigned(mSigIns.size()); i++)
@@ -194,13 +200,17 @@ public:
   {
     Wrapper* w = static_cast<Wrapper*>(this);
     auto&    client = w->client();
-
-    for (index i = 0; i < client.controlChannelsOut().size; i++)
-      SETFLOAT(mControlAtoms.data() + i, mControlOutputs[asUnsigned(i)]);
-
-    assert(client.controlChannelsOut().size <= std::numeric_limits<int>::max());
-    w->controlOut(static_cast<int>(client.controlChannelsOut().size),
-                  mControlAtoms.data());
+    index outputCount = client.controlChannelsOut().count; 
+    index numFeatures = client.controlChannelsOut().size; 
+    assert(numFeatures <= std::numeric_limits<int>::max());
+    for(index i = 0; i < outputCount; ++i)
+    {
+      for (index j = 0; j < numFeatures; ++j)
+      {
+        SETFLOAT(mControlAtoms[i].data() + j, mControlOutputs(i,j));
+      }
+      w->controlOut(i, static_cast<int>(numFeatures), mControlAtoms[i].data());
+    }
   }
 
   float sampleRate() { return sys_getsr(); }
@@ -211,16 +221,16 @@ public:
   }
 
 private:
-  static void            doControlOut(Wrapper* x) { x->controlData(); }
-  std::vector<ViewType>  mInputs;
-  std::vector<ViewType>  mOutputs;
-  std::vector<t_sample*> mSigIns;
-  std::vector<t_sample*> mSigOuts;
-  std::vector<t_float>   mControlOutputs;
-  std::vector<t_atom>    mControlAtoms;
-  t_outlet*              mLatencyOut;
-  t_clock*               mControlClock{nullptr};
-  FluidContext           mContext;
+  static void             doControlOut(Wrapper* x) { x->controlData(); }
+  std::vector<ViewType>   mInputs;
+  std::vector<ViewType>   mOutputs;
+  std::vector<t_sample*>  mSigIns;
+  std::vector<t_sample*>  mSigOuts;
+  FluidTensor<t_float, 2> mControlOutputs;
+  FluidTensor<t_atom, 2>  mControlAtoms;
+  t_outlet*               mLatencyOut;
+  t_clock*                mControlClock{nullptr};
+  FluidContext            mContext;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -925,7 +935,7 @@ public:
   }
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mListSize{32}, mDumpOutlet{nullptr}, mControlOutlet(nullptr),
+      : mListSize{32}, mDumpOutlet{nullptr},
         mParams(Client::getParameterDescriptors(), FluidDefaultAllocator()),
         mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av),
                                                    FluidContext()},
@@ -994,7 +1004,6 @@ public:
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
           mOutputListViews.emplace_back(mOutputListData.row(i));
       }
-      mControlOutlet = mDataOutlets[0];
     }              
 
       
@@ -1082,9 +1091,10 @@ public:
     });
   }
 
-  void controlOut(int ac, t_atom* av)
+  void controlOut(index outletIndex, int ac, t_atom* av)
   {
-    outlet_list(mControlOutlet, nullptr, static_cast<short>(ac), av);
+    outlet_list(mDataOutlets[asUnsigned(outletIndex)], nullptr,
+                static_cast<short>(ac), av);
   }
 
   static bool isTag(t_atom* a)
@@ -1870,7 +1880,6 @@ private:
   index        mListSize;
   Result       mResult;
   t_outlet*    mDumpOutlet;
-  t_outlet*    mControlOutlet;
   bool         mVerbose;
   ParamSetType mParams;
   ParamValues mParamSnapshot;
