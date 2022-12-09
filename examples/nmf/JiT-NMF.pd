@@ -1,5 +1,5 @@
-#N canvas 437 112 858 711 12;
-#N canvas 1149 386 517 377 drums_players 0;
+#N canvas 85 114 858 711 12;
+#N canvas 950 386 517 377 drums_players 0;
 #X obj 125 60 r pd-dsp-started;
 #X obj 27 17 loadbang;
 #X obj 27 59 soundfiler;
@@ -14,8 +14,7 @@
 #X obj 28 221 outlet~;
 #X obj 124 154 array define jitnmf_drums;
 #X obj 28 200 tabread4~ jitnmf_drums;
-#X msg 26 37 read -resize ../../help/media/Nicol-LoopE-M.wav jitnmf_drums
-;
+#X msg 26 37 read -resize ../../help/media/Nicol-LoopE-M.wav jitnmf_drums;
 #X connect 0 0 10 0;
 #X connect 1 0 14 0;
 #X connect 2 0 9 0;
@@ -36,8 +35,7 @@
 #X connect 14 0 2 0;
 #X restore 155 235 pd drums_players;
 #X obj 234 625 dac~;
-#X obj 481 176 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
+#X obj 481 176 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 571 245 value counter;
 #X obj 480 224 expr counter = 1 - counter;
 #X obj 480 245 sel 0 1;
@@ -61,14 +59,9 @@
 #X obj 239 514 tabplay~ output2-1;
 #X obj 371 514 tabplay~ output2-2;
 #X msg 489 374 source input1 \, resynth output1 \, bang;
-#X obj 480 399 fluid.bufnmf -components 3 -numframes 22050 -fftsettings
-512 256 1024 -blocking 0, f 43;
-#X text 167 35 what is happening: alternating arrays are doing a fake
-real time - every half second \, it sends a frame to be proceesed by
-NMF~ \, requesting 3 components. Because this latter process is randomly
-seeded and not sorted \, the 3 components are not getting similar results
-each time \, hence the random pan;
-#X text 506 175 1 start to hear the process;
+#X text 167 35 what is happening: alternating arrays are doing a fake real time - every half second \, it sends a frame to be proceesed by NMF~ \, requesting 3 components. Because this latter process is randomly seeded and not sorted \, the 3 components are not getting similar results each time \, hence the random pan;
+#X text 506 175 1) start to hear the process;
+#X obj 480 399 fluid.bufnmf -components 3 -numframes 22050 -fftsettings 512 256 1024 -blocking 0 -resynthmode 1, f 43;
 #X connect 0 0 8 0;
 #X connect 0 0 9 0;
 #X connect 2 0 10 0;
@@ -84,7 +77,7 @@ each time \, hence the random pan;
 #X connect 5 1 22 0;
 #X connect 5 1 25 0;
 #X connect 10 0 4 0;
-#X connect 11 0 26 0;
+#X connect 11 0 28 0;
 #X connect 18 0 1 1;
 #X connect 18 0 1 0;
 #X connect 19 0 1 0;
@@ -93,4 +86,4 @@ each time \, hence the random pan;
 #X connect 22 0 1 0;
 #X connect 23 0 18 0;
 #X connect 24 0 1 1;
-#X connect 25 0 26 0;
+#X connect 25 0 28 0;
