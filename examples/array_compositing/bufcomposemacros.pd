@@ -13,10 +13,7 @@
 #X obj 58 371 expr sin($f1 * 3);
 #X obj 42 422 expr sin($f1 / 0.2 * 3);
 #X obj 40 106 t f b b;
-#X msg 122 111 \; bufmacro_low-0 resize 100 \, const \; bufmacro_low-1
-resize 100 \, const \; bufmacro_mid-0 resize 100 \, const \; bufmacro_mid-1
-resize 100 \, const \; bufmacro_high-0 resize 100 \, const \; bufmacro_high-1
-resize 100 \, const;
+#X msg 122 111 \; bufmacro_low-0 resize 100 \, const \; bufmacro_low-1 resize 100 \, const \; bufmacro_mid-0 resize 100 \, const \; bufmacro_mid-1 resize 100 \, const \; bufmacro_high-0 resize 100 \, const \; bufmacro_high-1 resize 100 \, const;
 #X obj 122 63 inlet;
 #X obj 72 340 tabwrite bufmacro_low-0;
 #X obj 58 392 tabwrite bufmacro_mid-0;
@@ -42,11 +39,9 @@ resize 100 \, const;
 #X connect 10 2 11 0;
 #X connect 12 0 6 0;
 #X restore 26 217 pd generate_basic_waveforms;
-#X obj 26 195 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 26 195 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 56 194 1) click here to reset to the basic shapes;
-#X text 34 303 2) try the new macros! They all take a list of (fluid.multi)arrays
-as arguments \, and will update the first item., f 112;
+#X text 34 303 2) try the new macros! They all take a list of (fluid.multi)arrays as arguments \, and will update the first item., f 112;
 #X text 562 61 3) view the arrays to monitor the results;
 #X text 37 361 Concat juxtaposes the whole list in time;
 #X text 444 362 Merge mixes them at unity gain;
@@ -62,10 +57,8 @@ as arguments \, and will update the first item., f 112;
 #X msg 72 451 concat bufmacro_piano bufmacro_low;
 #X obj 563 83 array define bufmacro_piano-0 4410;
 #X obj 563 104 array define bufmacro_piano-1 4410;
-#X msg 25 90 read ../../help/media/Tremblay-SA-UprightPianoPedalWide.wav
-bufmacro_piano-0 bufmacro_piano-1;
-#X obj 41 497 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X msg 25 90 read ../../help/media/Tremblay-SA-UprightPianoPedalWide.wav bufmacro_piano-0 bufmacro_piano-1;
+#X obj 41 497 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 290 104 780 584 concat 0;
 #X obj 365 336 outlet;
 #X obj 36 111 list split 1;
@@ -88,8 +81,7 @@ bufmacro_piano-0 bufmacro_piano-1;
 #X msg 124 486 source \$1;
 #X obj 229 398 t b s b;
 #X text 136 110 splits the destination;
-#X text 394 313 iterates through the rest of arrays \, bangs when done
-;
+#X text 394 313 iterates through the rest of arrays \, bangs when done;
 #X obj 36 33 inlet;
 #X obj 36 58 route concat;
 #X connect 1 0 2 0;
@@ -123,8 +115,7 @@ bufmacro_piano-0 bufmacro_piano-1;
 #X connect 22 0 23 0;
 #X connect 23 0 5 0;
 #X restore 41 475 pd concat;
-#X obj 446 500 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 446 500 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 290 104 780 584 merge 0;
 #X obj 365 336 outlet;
 #X obj 36 111 list split 1;
@@ -143,8 +134,7 @@ bufmacro_piano-0 bufmacro_piano-1;
 #X msg 17 285 destination \$1;
 #X msg 124 486 source \$1;
 #X text 136 110 splits the destination;
-#X text 394 313 iterates through the rest of arrays \, bangs when done
-;
+#X text 394 313 iterates through the rest of arrays \, bangs when done;
 #X obj 36 33 inlet;
 #X obj 36 58 route merge;
 #X obj 229 398 t b s;
@@ -180,9 +170,8 @@ bufmacro_piano-0 bufmacro_piano-1;
 #X msg 463 432 merge bufmacro_mid bufmacro_piano bufmacro_low;
 #X msg 451 408 merge bufmacro_mid bufmacro_low bufmacro_high;
 #X msg 445 386 merge bufmacro_low bufmacro_mid;
-#X text 247 602 Stack would piles them up in as many channels as it
-would need \, but there is no programatic ways to recover the number
-of 'channels' of a fluid.multiarray...;
+#X text 247 602 Stack would piles them up in as many channels as it would need \, but there is no programatic ways to augment the number of 'channels' of a fluid.multiarray... one would need to create a dynamic output using the automatic_multiarray. See this helpfile to understand their use:;
+#X obj 519 665 fluid.bufinfo;
 #X connect 0 0 21 0;
 #X connect 3 0 2 0;
 #X connect 15 0 23 0;
