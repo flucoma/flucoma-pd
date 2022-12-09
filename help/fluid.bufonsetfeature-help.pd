@@ -120,7 +120,7 @@ FFT size is, f 25;
 #X obj 33 450 vradio 12 1 0 10 empty empty metric: 0 -8 0 10 #fcfcfc
 #000000 #000000 0;
 #X msg 435 235 framedelta 0;
-#X text 28 6 Optional parameters to fluid.buufonsetfeature;
+#X text 28 6 Optional parameters to fluid.bufonsetfeature;
 #X text 188 446 metric used to derive a difference curve between spectral
 frames, f 25;
 #X text 575 165 size of a smoothing filter that is applied on the novelty
