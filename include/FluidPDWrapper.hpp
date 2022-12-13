@@ -29,6 +29,7 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <cstdarg>
 #include <cstring>
 #include <chrono>
+#include <deque>
 #include <tuple>
 #include <utility>
 #include <map>
@@ -807,21 +808,38 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     {
       if (!ac) return;
       x->messages().reset();
-      auto& a = x->params().template get<N>();
 
-      if (!x->mInitialized)        
-        x->params().template set<N>(
-            LongRuntimeMaxParam(atom_getint(av), a.maxRaw()),
-            x->verbose() ? &x->messages() : nullptr);
+      /// Possible scenarios to cope with;
+      /// 1. object is not yet initialized (i.e @something in the box vs setter
+      /// being called from outside world
+      /// 2. initial value could already have been set by argument for 'primary'
+      /// params: attribute-in-box should 'win' in that case?
+      /// 3. clients will need to call max() in constructors, so constraints
+      /// that can increase the value for some need to be applied ASAP
+      /// 4. for in-box attribute user can pass list (initial, max): if only one
+      /// is present, then this becomes both initial and max UNLESS max set by
+      /// argument is bigger
+
+      auto a = x->params().template get<N>();
+
+      if (!x->mInitialized)
+      {
+        index val = atom_getint(av);
+        index incomingMax = std::max<index>(
+            {a.maxRaw(), atom_getint(ac > 1 ? av + 1 : av), val});
+        incomingMax = x->params().template applyConstraintToMax<N>(incomingMax);
+        a = LongRuntimeMaxParam(val, incomingMax);
+      }
       else
-        x->params().template set<N>(
-            LongRuntimeMaxParam(atom_getint(av), a.max()),
-            x->verbose() ? &x->messages() : nullptr);
-
+      {
+        a = LongRuntimeMaxParam(atom_getint(av), a.max());
+      }
+      x->params().template set<N>(std::move(a),
+                                  x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
     }
   };
-  
+
   template <size_t N>
   struct Setter<FFTParamsT,N>
   {
@@ -831,16 +849,31 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       x->messages().reset();
       auto& a = x->params().template get<N>();
       
-      std::array<index,3> defaults{1024, -1, -1};
+      std::array<index, 4> values{a.winSize(), a.hopRaw(), a.fftRaw(),
+                                  a.maxRaw()};
       
       for (index i = 0; i < 3 && i < static_cast<index>(ac); i++)
-            defaults[asUnsigned(i)] = atom_getint(av + i);
-      
-      if(!x->mInitialized)
-        a = FFTParams(defaults[0], defaults[1], defaults[2], a.maxRaw());
+            values[asUnsigned(i)] = atom_getint(av + i);
+
+      if (!x->mInitialized)
+      {
+        if (ac > 3)
+        {
+          values[3] = std::max<index>(
+              {values[0], values[2], values[3], atom_getint(av + 3)});
+        }
+        a = FFTParams(values[0], values[1], values[2], values[3]);
+      }
       else
-        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.max()), x->verbose() ? &x->messages() : nullptr);
-      
+      {
+        a.setWin(values[0]);
+        a.setHop(values[1]);
+        a.setFFT(values[2]);
+      }
+
+      a = x->params().template applyConstraintsTo<N>(a);
+      x->params().template set<N>(std::move(a),
+                                  x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
     }
   };
@@ -943,10 +976,7 @@ public:
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
-    auto results = mParams.keepConstrained(true);
     mParamSnapshot = mParams.toTuple();
-
-    for (auto& r : results) printResult(this, r);
 
     this->setupAudio(pdObject, mClient.audioChannelsIn(),
                      mClient.audioChannelsOut());
@@ -1040,7 +1070,13 @@ public:
         if(!currentValue || currentValue->name() == gensym(""))
           mParams.template set<N>(BufferT::type(new PDBufferAdaptor(gensym(name.c_str()),sys_getsr(),&mHostedOutputBufferObjects.back())),nullptr);
     });
-    
+
+    while (mUserMessageQueue.size() > 0)
+    {
+      printResult(this, mUserMessageQueue.front());
+      mUserMessageQueue.pop_front();
+    }
+
     mInitialized = true; 
   }
   
@@ -1264,12 +1300,10 @@ public:
     mBufferDispatch[asUnsigned(inlet)](this, ac, av);
   }
   
-
   Result&       messages() { return mResult; }
   bool          verbose() { return mVerbose; }
   Client&       client() { return mClient; }
   ParamSetType& params() { return mParams; }
-
 
   void progress(double progress)
   {
@@ -1390,7 +1424,7 @@ private:
 
       mParams.setPrimaryParameterValues(
           true,
-          [](auto idx, long ac, t_atom* av, long& currentCount) {
+          [this](auto idx, long ac, t_atom* av, long& currentCount) {
             auto defaultValue = paramDescriptor<idx()>().defaultValue;
 
             if constexpr (std::is_same<std::decay_t<decltype(defaultValue)>,
@@ -1398,7 +1432,8 @@ private:
             {
               index val = currentCount < ac ? atom_getint(av + currentCount++)
                                             : defaultValue();
-              return LongRuntimeMaxParam{val, -1};
+              val = mParams.template applyConstraintToMax<idx()>(val);
+              return LongRuntimeMaxParam{val, val};
             }
             else
             {
@@ -1407,14 +1442,14 @@ private:
             }
           },
           numArgs, av, argCount);
-//      for (auto& r : r1) x->mMessages.push_back(r);
 
       mParams.template setFixedParameterValues<Fetcher>(
-          true, numArgs, av, argCount);
-      // for (auto& r : results) mMessages.push_back(r);    
+          true, numArgs, av, argCount);      
     }
     // process in-box attributes for mutable params
     paramArgProcess(ac, av);
+    auto results = mParams.keepConstrained(true);
+    for (auto& r : results) mUserMessageQueue.push_back(r);
     // return params so this can be called in client initaliser
     return mParams;
   }
@@ -1460,47 +1495,91 @@ private:
       class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME,
                       0);
 
-      using SetterFn = void (*)(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av);
-      
+      /// Apparently we need to be able to specify max<X> attributes *in the
+      /// box* only as their own
+      /// `-max<whatever>` as well as part of a list attached to the main
+      /// attribute.
+      ///  Policy is that the biggest proposed maximum 'wins' (think this is
+      ///  safest and easist to enforce / grok)
+      using SetterFn =
+          void (*)(FluidPDWrapper<Client> * x, t_symbol*, int ac, t_atom* av);
+
       if constexpr (std::is_same<T, LongRuntimeMaxT>::value)
       {
         std::string maxname = "max" + name;
-                
-        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
-        {
-          static constexpr index Idx = N;
-          if(ac && !x->mInitialized)
+
+        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac,
+                                t_atom* av) {
+          static constexpr index Idx = N; // for MSVC
+
+          if (ac && !x->mInitialized)
           {
-            auto current = x->mParams.template get<Idx>();
-            index newMax = atom_getint(av);
-            if(newMax > 0)
+            auto  a = x->mParams.template get<Idx>();
+            index incomingMax = atom_getint(av);
+            if (incomingMax > 0)
             {
-              x->mParams.template set<Idx>(LongRuntimeMaxParam(current(),newMax),nullptr);
+              incomingMax = std::max<index>(a.max(), incomingMax);
+              incomingMax =
+                  x->params().template applyConstraintToMax<Idx>(incomingMax);
+              a = LongRuntimeMaxParam(a(), incomingMax);
+              x->params().template set<Idx>(
+                  std::move(a), x->verbose() ? &x->messages() : nullptr);
+              printResult(x, x->messages());
             }
           }
+          else
+          {
+            /// Can't capture here (we need function pointer behaviour),
+            /// so need to go through some rigmarole to get attribute name for
+            /// warning string
+            std::string attrname =
+                std::string("max") +
+                lowerCase(x->template paramDescriptor<Idx>().name);
+            Result onlySetInBox{
+                Result::Status::kWarning, attrname,
+                " attribute can only be set at object instantiation"};
+            printResult(x, onlySetInBox);
+          }
         };
-        
+
         class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
       }
       
       if constexpr (std::is_same<T,FFTParamsT>::value)
       {
         std::string maxname = "maxfftsize";
-        
-        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
-        {
-          static constexpr index Idx = N;
-          if(ac && !x->mInitialized)
+
+        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac,
+                                t_atom* av) {
+          static constexpr index Idx = N; // for MSVC
+          if (ac && !x->mInitialized)
           {
-            auto current = x->mParams.template get<Idx>();
+            auto  a = x->mParams.template get<Idx>();
             index newMax = atom_getint(av);
-            if(newMax > 0)
+            if (newMax > 0)
             {
-              x->mParams.template set<Idx>(FFTParams(current.winSize(), current.hopRaw(), current.fftRaw(),newMax),nullptr);
+              newMax = std::max(newMax, a.max());
+              a = FFTParams(a.winSize(), a.hopRaw(), a.fftRaw(), newMax);
+              a = x->params().template applyConstraintsTo<N>(a);
+              x->mParams.template set<Idx>(
+                  std::move(a), x->verbose() ? &x->messages() : nullptr);
             }
           }
+          else
+          {
+            /// Can't capture here (we need function pointer behaviour),
+            /// so need to go through some rigmarole to get attribute name for
+            /// warning string
+            std::string attrname =
+                std::string("max") +
+                lowerCase(x->template paramDescriptor<Idx>().name);
+            Result onlySetInBox{
+                Result::Status::kWarning, attrname,
+                " attribute can only be set at object instantiation"};
+            printResult(x, onlySetInBox);
+          }
         };
-        
+
         class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
       }
     }
@@ -1877,16 +1956,16 @@ private:
   static void outputToken(std::vector<t_atom>&, SharedClientRef<const T>)
   {}
 
-  index        mListSize;
-  Result       mResult;
-  t_outlet*    mDumpOutlet;
-  bool         mVerbose;
-  ParamSetType mParams;
-  ParamValues mParamSnapshot;
-  Client       mClient;
-
+  index              mListSize;
+  Result             mResult;
+  std::deque<Result> mUserMessageQueue;
+  t_outlet*          mDumpOutlet;
+  bool               mVerbose;
+  ParamSetType       mParams;
+  ParamValues        mParamSnapshot;
+  Client             mClient;
   bool               mAutosize;
-  
+
   FluidTensor<double, 2>                  mInputListData;
   std::vector<FluidTensorView<double, 1>> mInputListViews;
   FluidTensor<double, 2>                  mOutputListData;
