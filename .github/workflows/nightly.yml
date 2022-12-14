@@ -74,7 +74,7 @@ jobs:
           path: release-packaging/FluCoMa-PD-Linux-nightly.tar.gz
   
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [macbuild, winbuild, linuxbuild]
 
     steps:
