@@ -56,7 +56,7 @@ jobs:
           path: release-packaging/FluCoMa-PD-Windows-nightly.zip
 
   linuxbuild:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - uses: flucoma/actions/env@main 
