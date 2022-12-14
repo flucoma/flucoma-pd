@@ -49,7 +49,7 @@ jobs:
           path: release-packaging/FluCoMa-PD-Windows.zip
 
   linuxbuild:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
