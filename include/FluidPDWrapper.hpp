@@ -21,12 +21,15 @@ under the European Union’s Horizon 2020 research and innovation programme
 #include <clients/common/ParameterTypes.hpp>
 #include <clients/nrt/FluidSharedInstanceAdaptor.hpp>
 
+#include <data/FluidMemory.hpp>
+
 #include <m_pd.h>
 
 #include <cctype>
 #include <cstdarg>
 #include <cstring>
 #include <chrono>
+#include <deque>
 #include <tuple>
 #include <utility>
 #include <map>
@@ -130,9 +133,11 @@ public:
     static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t),
                   "size of pointer int type is wrongwrongwrong");
 
-    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
-      wrapper->mClient = typename Wrapper::ClientType{wrapper->mParams};
+    mContext = FluidContext(sp[0]->s_vecsize, FluidDefaultAllocator());
 
+    if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
+      wrapper->mClient =
+          typename Wrapper::ClientType{wrapper->mParams, mContext};
 
     auto& client = wrapper->client();
     client.sampleRate(sp[0]->s_sr);
@@ -153,9 +158,15 @@ public:
       mControlClock = mControlClock ? mControlClock
                                     : clock_new((t_object*) wrapper,
                                                 (t_method) doControlOut);
-      mControlOutputs.resize(asUnsigned(client.maxControlChannelsOut()));
-      mControlAtoms.resize(asUnsigned(client.maxControlChannelsOut()));
-      mOutputs.emplace_back(mControlOutputs.data(), 0, mControlOutputs.size()); 
+
+      index outputCount = client.controlChannelsOut().count;
+      index maxFeatures = client.maxControlChannelsOut();
+      mControlOutputs.resize(outputCount, maxFeatures);
+      mControlAtoms.resize(outputCount, maxFeatures);
+      for (index i = 0; i < outputCount; ++i)
+      {
+        mOutputs.emplace_back(mControlOutputs.row(i));
+      }
     }
 
     for (index i = 0; i < asSigned(mSigIns.size()); i++)
@@ -190,13 +201,17 @@ public:
   {
     Wrapper* w = static_cast<Wrapper*>(this);
     auto&    client = w->client();
-
-    for (index i = 0; i < client.controlChannelsOut().size; i++)
-      SETFLOAT(mControlAtoms.data() + i, mControlOutputs[asUnsigned(i)]);
-
-    assert(client.controlChannelsOut().size <= std::numeric_limits<int>::max());
-    w->controlOut(static_cast<int>(client.controlChannelsOut().size),
-                  mControlAtoms.data());
+    index outputCount = client.controlChannelsOut().count; 
+    index numFeatures = client.controlChannelsOut().size; 
+    assert(numFeatures <= std::numeric_limits<int>::max());
+    for(index i = 0; i < outputCount; ++i)
+    {
+      for (index j = 0; j < numFeatures; ++j)
+      {
+        SETFLOAT(mControlAtoms[i].data() + j, mControlOutputs(i,j));
+      }
+      w->controlOut(i, static_cast<int>(numFeatures), mControlAtoms[i].data());
+    }
   }
 
   float sampleRate() { return sys_getsr(); }
@@ -207,16 +222,16 @@ public:
   }
 
 private:
-  static void            doControlOut(Wrapper* x) { x->controlData(); }
-  std::vector<ViewType>  mInputs;
-  std::vector<ViewType>  mOutputs;
-  std::vector<t_sample*> mSigIns;
-  std::vector<t_sample*> mSigOuts;
-  std::vector<t_float>   mControlOutputs;
-  std::vector<t_atom>    mControlAtoms;
-  t_outlet*              mLatencyOut;
-  t_clock*               mControlClock{nullptr};
-  FluidContext           mContext;
+  static void             doControlOut(Wrapper* x) { x->controlData(); }
+  std::vector<ViewType>   mInputs;
+  std::vector<ViewType>   mOutputs;
+  std::vector<t_sample*>  mSigIns;
+  std::vector<t_sample*>  mSigOuts;
+  FluidTensor<t_float, 2> mControlOutputs;
+  FluidTensor<t_atom, 2>  mControlAtoms;
+  t_outlet*               mLatencyOut;
+  t_clock*                mControlClock{nullptr};
+  FluidContext            mContext;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -583,7 +598,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
   template <size_t N>
   struct Fetcher<N, StringT>
   {
-    std::string operator()(const long ac, t_atom* av, long& currentCount)
+    rt::string operator()(const long ac, t_atom* av, long& currentCount)
     {
       auto defaultValue = paramDescriptor<N>().defaultValue;
       return {currentCount < ac ? atom_getsymbol(av + currentCount++)->s_name
@@ -610,11 +625,11 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       (atom)->a_w.w_float = v;
     }
 
-    static std::string getString(t_atom* a)
+    static rt::string getString(t_atom* a)
     {
       switch (atom_gettype(a))
       {
-      case A_FLOAT: return std::to_string(atom_getfloat(a));
+      case A_FLOAT: return rt::string{std::to_string(atom_getfloat(a))};
       default: {
         char result[MAXPDSTRING];
         atom_string(a, &result[0], MAXPDSTRING);
@@ -649,10 +664,13 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
           new PDBufferAdaptor(atom_getsymbol(a), x->sampleRate()));
     }
 
-    static auto fromAtom(FluidPDWrapper*, t_atom* a, const StringT::type&)
+    template <typename Alloc>
+    static auto
+    fromAtom(FluidPDWrapper*, t_atom* a,
+             std::basic_string<char, std::char_traits<char>, Alloc> const&)
     {
-      auto s = getString(a);
-      return s;
+      return std::basic_string<char, std::char_traits<char>, Alloc>{
+          getString(a)};
     }
 
     template <typename T>
@@ -693,12 +711,19 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       atom_setsym(a, b ? b->name() : nullptr);
     }
 
-    static auto toAtom(t_atom* a, StringT::type v)
+    template <typename Alloc>
+    static auto
+    toAtom(t_atom*                                                       a,
+           std::basic_string<char, std::char_traits<char>, Alloc> const& v)
     {
       atom_setsym(a, gensym(v.c_str()));
     }
 
-    static auto toAtom(t_atom* a, FluidTensor<std::string, 1> v)
+    template <typename Alloc>
+    static auto toAtom(
+        t_atom* a,
+        FluidTensor<std::basic_string<char, std::char_traits<char>, Alloc>, 1>
+            v)
     {
       for (auto& s : v) atom_setsym(a++, gensym(s.c_str()));
     }
@@ -724,7 +749,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     }
 
     template <typename... Ts, size_t... Is>
-    static void toAtom(t_atom* a, std::tuple<Ts...>&& x,
+    static void toAtom(t_atom* a, std::tuple<Ts...> const& x,
                        std::index_sequence<Is...>,
                        std::array<size_t, sizeof...(Ts)> offsets)
     {
@@ -744,7 +769,8 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     static void set(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
     {
       ParamLiteralConvertor<T, argSize> a;
-      a.set(Client::getParameterDescriptors().template makeValue<N>());
+      a.set(Client::getParameterDescriptors().template makeValue<N>(
+          FluidDefaultAllocator()));
 
       x->messages().reset();
 
@@ -782,21 +808,38 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     {
       if (!ac) return;
       x->messages().reset();
-      auto& a = x->params().template get<N>();
 
-      if (!x->mInitialized)        
-        x->params().template set<N>(
-            LongRuntimeMaxParam(atom_getint(av), a.maxRaw()),
-            x->verbose() ? &x->messages() : nullptr);
+      /// Possible scenarios to cope with;
+      /// 1. object is not yet initialized (i.e @something in the box vs setter
+      /// being called from outside world
+      /// 2. initial value could already have been set by argument for 'primary'
+      /// params: attribute-in-box should 'win' in that case?
+      /// 3. clients will need to call max() in constructors, so constraints
+      /// that can increase the value for some need to be applied ASAP
+      /// 4. for in-box attribute user can pass list (initial, max): if only one
+      /// is present, then this becomes both initial and max UNLESS max set by
+      /// argument is bigger
+
+      auto a = x->params().template get<N>();
+
+      if (!x->mInitialized)
+      {
+        index val = atom_getint(av);
+        index incomingMax = std::max<index>(
+            {a.maxRaw(), atom_getint(ac > 1 ? av + 1 : av), val});
+        incomingMax = x->params().template applyConstraintToMax<N>(incomingMax);
+        a = LongRuntimeMaxParam(val, incomingMax);
+      }
       else
-        x->params().template set<N>(
-            LongRuntimeMaxParam(atom_getint(av), a.max()),
-            x->verbose() ? &x->messages() : nullptr);
-
+      {
+        a = LongRuntimeMaxParam(atom_getint(av), a.max());
+      }
+      x->params().template set<N>(std::move(a),
+                                  x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
     }
   };
-  
+
   template <size_t N>
   struct Setter<FFTParamsT,N>
   {
@@ -806,16 +849,31 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       x->messages().reset();
       auto& a = x->params().template get<N>();
       
-      std::array<index,3> defaults{1024, -1, -1};
+      std::array<index, 4> values{a.winSize(), a.hopRaw(), a.fftRaw(),
+                                  a.maxRaw()};
       
       for (index i = 0; i < 3 && i < static_cast<index>(ac); i++)
-            defaults[asUnsigned(i)] = atom_getint(av + i);
-      
-      if(!x->mInitialized)
-        a = FFTParams(defaults[0], defaults[1], defaults[2], a.maxRaw());
+            values[asUnsigned(i)] = atom_getint(av + i);
+
+      if (!x->mInitialized)
+      {
+        if (ac > 3)
+        {
+          values[3] = std::max<index>(
+              {values[0], values[2], values[3], atom_getint(av + 3)});
+        }
+        a = FFTParams(values[0], values[1], values[2], values[3]);
+      }
       else
-        x->params().template set<N>(FFTParams(defaults[0], defaults[1], defaults[2], a.max()), x->verbose() ? &x->messages() : nullptr);
-      
+      {
+        a.setWin(values[0]);
+        a.setHop(values[1]);
+        a.setFFT(values[2]);
+      }
+
+      a = x->params().template applyConstraintsTo<N>(a);
+      x->params().template set<N>(std::move(a),
+                                  x->verbose() ? &x->messages() : nullptr);
       printResult(x, x->messages());
     }
   };
@@ -908,21 +966,17 @@ public:
     getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), CLASS_PD | CLASS_NOINLET, A_GIMME,0));
     class_addmethod(getInletProxyClass(), (t_method) inletProxyBuffer, gensym("buffer"), A_GIMME, 0);
   }
-  
+
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mListSize{32},
-        mDumpOutlet{nullptr},
-        mControlOutlet(nullptr),
-        mParams(Client::getParameterDescriptors()),
-        mParamSnapshot(mParams.toTuple()),
-        mClient{initParamsFromArgs(ac, av)},mCanvas{canvas_getcurrent()}
+      : mListSize{32}, mDumpOutlet{nullptr},
+        mParams(Client::getParameterDescriptors(), FluidDefaultAllocator()),
+        mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av),
+                                                   FluidContext()},
+        mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
-    auto results = mParams.keepConstrained(true);
     mParamSnapshot = mParams.toTuple();
-
-    for (auto& r : results) printResult(this, r);
 
     this->setupAudio(pdObject, mClient.audioChannelsIn(),
                      mClient.audioChannelsOut());
@@ -980,7 +1034,6 @@ public:
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
           mOutputListViews.emplace_back(mOutputListData.row(i));
       }
-      mControlOutlet = mDataOutlets[0];
     }              
 
       
@@ -1017,7 +1070,13 @@ public:
         if(!currentValue || currentValue->name() == gensym(""))
           mParams.template set<N>(BufferT::type(new PDBufferAdaptor(gensym(name.c_str()),sys_getsr(),&mHostedOutputBufferObjects.back())),nullptr);
     });
-    
+
+    while (mUserMessageQueue.size() > 0)
+    {
+      printResult(this, mUserMessageQueue.front());
+      mUserMessageQueue.pop_front();
+    }
+
     mInitialized = true; 
   }
   
@@ -1068,9 +1127,10 @@ public:
     });
   }
 
-  void controlOut(int ac, t_atom* av)
+  void controlOut(index outletIndex, int ac, t_atom* av)
   {
-    outlet_list(mControlOutlet, nullptr, static_cast<short>(ac), av);
+    outlet_list(mDataOutlets[asUnsigned(outletIndex)], nullptr,
+                static_cast<short>(ac), av);
   }
 
   static bool isTag(t_atom* a)
@@ -1240,12 +1300,10 @@ public:
     mBufferDispatch[asUnsigned(inlet)](this, ac, av);
   }
   
-
   Result&       messages() { return mResult; }
   bool          verbose() { return mVerbose; }
   Client&       client() { return mClient; }
   ParamSetType& params() { return mParams; }
-
 
   void progress(double progress)
   {
@@ -1333,7 +1391,7 @@ private:
   ParamSetType& initParamsFromArgs(int argc, t_atom* argv)
   {
     
-    long ac = argc;
+    int ac = argc;
     
     std::vector<t_atom> av_vec = [&](){
       bool needsNameAtom = IsThreadedShared<Client>::value &&
@@ -1366,7 +1424,7 @@ private:
 
       mParams.setPrimaryParameterValues(
           true,
-          [](auto idx, long ac, t_atom* av, long& currentCount) {
+          [this](auto idx, long ac, t_atom* av, long& currentCount) {
             auto defaultValue = paramDescriptor<idx()>().defaultValue;
 
             if constexpr (std::is_same<std::decay_t<decltype(defaultValue)>,
@@ -1374,7 +1432,8 @@ private:
             {
               index val = currentCount < ac ? atom_getint(av + currentCount++)
                                             : defaultValue();
-              return LongRuntimeMaxParam{val, -1};
+              val = mParams.template applyConstraintToMax<idx()>(val);
+              return LongRuntimeMaxParam{val, val};
             }
             else
             {
@@ -1383,14 +1442,14 @@ private:
             }
           },
           numArgs, av, argCount);
-//      for (auto& r : r1) x->mMessages.push_back(r);
 
       mParams.template setFixedParameterValues<Fetcher>(
-          true, numArgs, av, argCount);
-      // for (auto& r : results) mMessages.push_back(r);    
+          true, numArgs, av, argCount);      
     }
     // process in-box attributes for mutable params
     paramArgProcess(ac, av);
+    auto results = mParams.keepConstrained(true);
+    for (auto& r : results) mUserMessageQueue.push_back(r);
     // return params so this can be called in client initaliser
     return mParams;
   }
@@ -1408,14 +1467,14 @@ private:
 
   static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
   {
-    std::string name(newName->s_name);
-    if (std::string(name) != x->mParams.template get<0>())
+    rt::string name(newName->s_name);
+    if (name != x->mParams.template get<0>())
     {
       Result r = x->mParams.lookup(name);
       if (r.ok())
       {
         x->mParams.refer(name);
-        x->mClient = Client(x->mParams);
+        x->mClient = Client(x->mParams, FluidContext());
       }
       else
         printResult(x, r);
@@ -1436,47 +1495,91 @@ private:
       class_addmethod(getClass(), setterMethod, gensym(name.c_str()), A_GIMME,
                       0);
 
-      using SetterFn = void (*)(FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av);
-      
+      /// Apparently we need to be able to specify max<X> attributes *in the
+      /// box* only as their own
+      /// `-max<whatever>` as well as part of a list attached to the main
+      /// attribute.
+      ///  Policy is that the biggest proposed maximum 'wins' (think this is
+      ///  safest and easist to enforce / grok)
+      using SetterFn =
+          void (*)(FluidPDWrapper<Client> * x, t_symbol*, int ac, t_atom* av);
+
       if constexpr (std::is_same<T, LongRuntimeMaxT>::value)
       {
         std::string maxname = "max" + name;
-                
-        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
-        {
-          static constexpr index Idx = N;
-          if(ac && !x->mInitialized)
+
+        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac,
+                                t_atom* av) {
+          static constexpr index Idx = N; // for MSVC
+
+          if (ac && !x->mInitialized)
           {
-            auto current = x->mParams.template get<Idx>();
-            index newMax = atom_getint(av);
-            if(newMax > 0)
+            auto  a = x->mParams.template get<Idx>();
+            index incomingMax = atom_getint(av);
+            if (incomingMax > 0)
             {
-              x->mParams.template set<Idx>(LongRuntimeMaxParam(current(),newMax),nullptr);
+              incomingMax = std::max<index>(a.max(), incomingMax);
+              incomingMax =
+                  x->params().template applyConstraintToMax<Idx>(incomingMax);
+              a = LongRuntimeMaxParam(a(), incomingMax);
+              x->params().template set<Idx>(
+                  std::move(a), x->verbose() ? &x->messages() : nullptr);
+              printResult(x, x->messages());
             }
           }
+          else
+          {
+            /// Can't capture here (we need function pointer behaviour),
+            /// so need to go through some rigmarole to get attribute name for
+            /// warning string
+            std::string attrname =
+                std::string("max") +
+                lowerCase(x->template paramDescriptor<Idx>().name);
+            Result onlySetInBox{
+                Result::Status::kWarning, attrname,
+                " attribute can only be set at object instantiation"};
+            printResult(x, onlySetInBox);
+          }
         };
-        
+
         class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
       }
       
       if constexpr (std::is_same<T,FFTParamsT>::value)
       {
         std::string maxname = "maxfftsize";
-        
-        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac, t_atom* av)
-        {
-          static constexpr index Idx = N;
-          if(ac && !x->mInitialized)
+
+        SetterFn maxSetter = [](FluidPDWrapper<Client>* x, t_symbol*, int ac,
+                                t_atom* av) {
+          static constexpr index Idx = N; // for MSVC
+          if (ac && !x->mInitialized)
           {
-            auto current = x->mParams.template get<Idx>();
+            auto  a = x->mParams.template get<Idx>();
             index newMax = atom_getint(av);
-            if(newMax > 0)
+            if (newMax > 0)
             {
-              x->mParams.template set<Idx>(FFTParams(current.winSize(), current.hopRaw(), current.fftRaw(),newMax),nullptr);
+              newMax = std::max(newMax, a.max());
+              a = FFTParams(a.winSize(), a.hopRaw(), a.fftRaw(), newMax);
+              a = x->params().template applyConstraintsTo<N>(a);
+              x->mParams.template set<Idx>(
+                  std::move(a), x->verbose() ? &x->messages() : nullptr);
             }
           }
+          else
+          {
+            /// Can't capture here (we need function pointer behaviour),
+            /// so need to go through some rigmarole to get attribute name for
+            /// warning string
+            std::string attrname =
+                std::string("max") +
+                lowerCase(x->template paramDescriptor<Idx>().name);
+            Result onlySetInBox{
+                Result::Status::kWarning, attrname,
+                " attribute can only be set at object instantiation"};
+            printResult(x, onlySetInBox);
+          }
         };
-        
+
         class_addmethod(getClass(),(t_method)maxSetter,gensym(maxname.c_str()), A_GIMME, 0);
       }
     }
@@ -1500,14 +1603,14 @@ private:
   }
 
   template <template <typename, size_t> class Tensor, typename T>
-  static size_t ResultSize(Tensor<T, 1>&& x)
+  static size_t ResultSize(Tensor<T, 1> const& x)
   {
     return asUnsigned(static_cast<FluidTensor<T, 1>>(x).size());
   }
 
   template <typename... Ts, size_t... Is>
   static std::tuple<std::array<size_t, sizeof...(Ts)>, size_t>
-  ResultSize(std::tuple<Ts...>&& x, std::index_sequence<Is...>)
+  ResultSize(std::tuple<Ts...> const& x, std::index_sequence<Is...>)
   {
     size_t                            size = 0;
     std::array<size_t, sizeof...(Ts)> offsets;
@@ -1531,22 +1634,24 @@ private:
                     out.data());
   }
 
-  template <typename... Ts>
-  static void messageOutput(FluidPDWrapper* x, t_symbol* s,std::vector<t_atom>& outputTokens,
-                            MessageResult<std::tuple<Ts...>> r)
+  template <typename Tuple>
+  static std::enable_if_t<isSpecialization<Tuple, std::tuple>::value>
+  messageOutput(FluidPDWrapper* x, t_symbol* s,
+                std::vector<t_atom>& outputTokens, MessageResult<Tuple> r)
   {
-    auto   indices = std::index_sequence_for<Ts...>();
-    size_t resultSize;
-    std::array<size_t, sizeof...(Ts)> offsets;
-    std::tie(offsets, resultSize) =
-        ResultSize(static_cast<std::tuple<Ts...>>(r), indices);
-    
+
+    constexpr auto        N = std::tuple_size_v<Tuple>;
+    auto                  indices = std::make_index_sequence<N>();
+    size_t                resultSize;
+    std::array<size_t, N> offsets;
+    std::tie(offsets, resultSize) = ResultSize(r.value(), indices);
+
     resultSize += outputTokens.size();
     std::vector<t_atom> out(resultSize);
     std::copy_n(outputTokens.begin(), outputTokens.size(), out.begin());
-    ParamAtomConverter::toAtom(out.data() + outputTokens.size(), static_cast<std::tuple<Ts...>>(r),
+    ParamAtomConverter::toAtom(out.data() + outputTokens.size(), r.value(),
                                indices, offsets);
-                               
+
     outlet_anything(x->mDataOutlets[0], s, static_cast<int>(resultSize),
                     out.data());
   }
@@ -1851,17 +1956,16 @@ private:
   static void outputToken(std::vector<t_atom>&, SharedClientRef<const T>)
   {}
 
-  index        mListSize;
-  Result       mResult;
-  t_outlet*    mDumpOutlet;
-  t_outlet*    mControlOutlet;
-  bool         mVerbose;
-  ParamSetType mParams;
-  ParamValues mParamSnapshot;
-  Client       mClient;
-
+  index              mListSize;
+  Result             mResult;
+  std::deque<Result> mUserMessageQueue;
+  t_outlet*          mDumpOutlet;
+  bool               mVerbose;
+  ParamSetType       mParams;
+  ParamValues        mParamSnapshot;
+  Client             mClient;
   bool               mAutosize;
-  
+
   FluidTensor<double, 2>                  mInputListData;
   std::vector<FluidTensorView<double, 1>> mInputListViews;
   FluidTensor<double, 2>                  mOutputListData;

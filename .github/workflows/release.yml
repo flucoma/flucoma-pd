@@ -49,7 +49,7 @@ jobs:
           path: release-packaging/FluCoMa-PD-Windows.zip
 
   linuxbuild:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
@@ -73,7 +73,7 @@ jobs:
         working-directory: build/_deps/flucoma-core-src
   
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [macbuild, winbuild, linuxbuild]
 
     steps:

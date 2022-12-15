@@ -1,4 +1,4 @@
-#N canvas 331 23 1148 932 12;
+#N canvas 76 83 1148 932 12;
 #X obj 1078 862 dac~;
 #X obj 217 424 samphold~;
 #X obj 278 451 snapshot~;
@@ -193,10 +193,8 @@
 #X connect 76 0 68 0;
 #X connect 77 0 63 0;
 #X restore 947 175 pd bd;
-#X obj 948 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 999 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 948 149 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 999 149 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 478 280 856 404 sn 0;
 #X obj 146 3 inlet;
 #X obj 149 361 outlet~;
@@ -300,8 +298,7 @@
 #X connect 44 0 22 1;
 #X connect 45 0 22 0;
 #X restore 998 175 pd sn;
-#X obj 1047 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 1047 149 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 251 184 686 360 hh 0;
 #X obj 487 16 inlet;
 #X obj 147 308 outlet~;
@@ -360,9 +357,7 @@
 #X connect 25 0 9 0;
 #X restore 1046 175 pd hh;
 #X obj 977 92 text define -k theseq;
-#A set 111 1 \; 111 0 \; 111 3 \; 111 0 \; 111 2 \; 111 0 \; 111 3
-\; 111 1 \; 111 0 \; 111 1 \; 111 1 \; 0 3 \; 111 0 \; 111 2 \; 111
-0 \; 111 3 \; 111 3 \;;
+#A set 111 1 \; 111 0 \; 111 3 \; 111 0 \; 111 2 \; 111 0 \; 111 3 \; 111 1 \; 111 0 \; 111 1 \; 111 1 \; 0 3 \; 111 0 \; 111 2 \; 111 0 \; 111 3 \; 111 3 \;;
 #X obj 949 70 text sequence theseq -w 1;
 #X msg 948 32 line 0 \, auto;
 #X msg 1049 32 stop;
@@ -380,37 +375,28 @@
 #X obj 278 511 spigot 1;
 #X obj 523 518 spigot 0;
 #X msg 278 475 startframe \$1 \, bang;
-#X obj 576 462 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 576 482 == 0;
-#X obj 15 554 fluid.bufnmf -components 1 -iterations 100 -bases JiTbaseTemp
--basesmode 1 -fftsettings 128 64 -numframes 128 -source input;
-#X floatatom 15 686 5 0 2 0 - - -;
+#X obj 576 462 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 538 485 == 0;
+#X floatatom 15 686 5 0 2 0 - - - 0;
 #X obj 15 706 int;
 #X msg 174 731 destination JiTbases-\$1;
 #X msg 11 732 \; JiTbaseTemp const 0.1;
-#X obj 365 727 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 15 610 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 382 708 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 15 610 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 216 261 fexpr~ 1 + ($y1[-1] % 2205);
-#X obj 233 300 fexpr~ input[$x1[0]] = $x2[0] \; input[$x1[0]+2205]
-= $x2[0];
+#X obj 233 300 fexpr~ input[$x1[0]] = $x2[0] \; input[$x1[0]+2205] = $x2[0];
 #X obj 467 396 del 2;
-#X obj 523 555 fluid.bufnmf -components 3 -iterations 100 -bases JiTbases
--basesmode 2 -activations JiTactivations -fftsettings 128 64 -numframes
-128 -source input;
-#X floatatom 620 696 5 0 0 0 - - -;
+#X floatatom 620 696 10 0 0 0 - - - 0;
 #X obj 620 672 expr $s2[1];
 #X msg 771 649 symbol JiTactivations-1;
-#X floatatom 720 696 5 0 0 0 - - -;
+#X floatatom 720 696 10 0 0 0 - - - 0;
 #X obj 720 672 expr $s2[1];
 #X msg 807 671 symbol JiTactivations-2;
 #X obj 780 622 loadbang;
-#X floatatom 523 694 5 0 0 0 - - -;
+#X floatatom 523 694 10 0 0 0 - - - 0;
 #X obj 523 670 expr $s2[1];
 #X msg 597 649 symbol JiTactivations-0;
-#X floatatom 556 723 5 0 0 0 - - -;
+#X floatatom 556 723 5 0 0 0 - - - 0;
 #X obj 523 769 sel 1;
 #N canvas 293 252 1377 404 bd 0;
 #X obj 28 8 inlet;
@@ -600,10 +586,8 @@
 #X connect 76 0 68 0;
 #X connect 77 0 63 0;
 #X restore 522 792 pd bd;
-#X obj 502 792 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 604 795 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 502 792 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 604 795 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 478 280 856 404 sn 0;
 #X obj 146 3 inlet;
 #X obj 149 361 outlet~;
@@ -702,8 +686,7 @@
 #X connect 43 0 22 1;
 #X connect 44 0 22 0;
 #X restore 619 794 pd sn;
-#X obj 710 795 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 710 795 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 251 184 686 360 hh 0;
 #X obj 487 16 inlet;
 #X obj 147 308 outlet~;
@@ -762,51 +745,40 @@
 #X connect 25 0 9 0;
 #X restore 726 795 pd hh;
 #X obj 523 745 > 0.6;
-#X floatatom 652 726 5 0 0 0 - - -;
+#X floatatom 652 726 5 0 0 0 - - - 0;
 #X obj 620 772 sel 1;
 #X obj 620 748 > 0.6;
-#X floatatom 752 729 5 0 0 0 - - -;
+#X floatatom 752 729 5 0 0 0 - - - 0;
 #X obj 720 774 sel 1;
 #X obj 720 750 > 0.6;
-#X text 521 134 1 select a source and play (drum algo optimised and
-randomised from a source from Snappizz on sc list archive - https://sccode.org/1-523
-);
-#X text 595 458 2 select training (0) behaviour;
-#X text 57 663 3 for each source (bd \, sn \, hh) select a class to
-train: (0:bd 1:sn 3:hh) then play about 5 instances of that sound in
-the top right of the patch, f 47;
-#X text 627 486 4 select classifying (1) behaviour;
-#X text 500 856 5 play individual sound a the top right of the patch
-\, observe the activations above \, and adjust the threshold to trigger
-resynth on the right channel.;
-#X text 35 21 what is happening: a circular buffer is recording to
-do fake real time - every attack sends a very short frame to be proceesed
-by NMF~ \, requesting 1 component in training mode \, which we then
-copy to a 3-component base array to do the same analysis on incoming
-audio to be 'classified'. We then threshold on the activations of that
-3-component nmf.;
-#X obj 461 302 fluid.ampslice~ -floor -47 -slowrampup 2205 -slowrampdown
-2205 -onthreshold 12 -offthreshold 9 -fastrampup 10 -fastrampdown 1666
--minslicelength 4410 -highpassfreq 85;
-#X obj 174 752 fluid.bufcompose -source JiTbaseTemp -destination JiTbases-0
-, f 36;
+#X text 35 21 what is happening: a circular buffer is recording to do fake real time - every attack sends a very short frame to be proceesed by NMF~ \, requesting 1 component in training mode \, which we then copy to a 3-component base array to do the same analysis on incoming audio to be 'classified'. We then threshold on the activations of that 3-component nmf.;
+#X obj 461 302 fluid.ampslice~ -floor -47 -slowrampup 2205 -slowrampdown 2205 -onthreshold 12 -offthreshold 9 -fastrampup 10 -fastrampdown 1666 -minslicelength 4410 -highpassfreq 85;
+#X obj 174 752 fluid.bufcompose -source JiTbaseTemp -destination JiTbases-0, f 36;
+#X text 521 134 1) select a source and play (drum algo optimised and randomised from a source from Snappizz on sc list archive - https://sccode.org/1-523 );
+#X text 595 458 2) select training (0) behaviour;
+#X obj 15 554 fluid.bufnmf -components 1 -iterations 100 -bases JiTbaseTemp -basesmode 1 -fftsettings 128 64 -numframes 128 -source input;
+#X obj 523 555 fluid.bufnmf -components 3 -iterations 100 -bases JiTbases -basesmode 2 -activations JiTactivations -fftsettings 128 64 -numframes 128 -source input;
+#X text 57 663 3) for each source (bd \, sn \, hh) select a class to train: (0:bd 1:sn 2:hh) then play about 5 instances of that sound in the top right of the patch and press the bang button to 'record' it, f 47;
+#X obj 523 610 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X text 627 486 4) select classifying (1) behaviour;
+#X text 500 856 5) play individual sound a the top right of the patch \, observe the activations above \, and adjust the threshold to trigger resynth on the right channel.;
 #X connect 1 0 2 0;
 #X connect 2 0 20 0;
-#X connect 3 0 32 0;
+#X connect 3 0 31 0;
 #X connect 4 0 5 0;
 #X connect 5 0 1 1;
 #X connect 6 0 0 0;
-#X connect 6 0 31 1;
-#X connect 6 0 65 0;
+#X connect 6 0 30 1;
+#X connect 6 0 58 0;
 #X connect 7 0 6 0;
 #X connect 8 0 9 0;
 #X connect 9 0 0 0;
-#X connect 9 0 31 1;
-#X connect 9 0 65 0;
+#X connect 9 0 30 1;
+#X connect 9 0 58 0;
 #X connect 10 0 11 0;
 #X connect 11 0 0 0;
-#X connect 11 0 31 1;
-#X connect 11 0 65 0;
+#X connect 11 0 30 1;
+#X connect 11 0 58 0;
 #X connect 13 0 16 0;
 #X connect 13 2 14 0;
 #X connect 14 0 13 0;
@@ -814,51 +786,52 @@ audio to be 'classified'. We then threshold on the activations of that
 #X connect 16 0 7 0;
 #X connect 16 1 8 0;
 #X connect 16 2 10 0;
-#X connect 18 0 23 0;
-#X connect 19 0 33 0;
+#X connect 18 0 62 0;
+#X connect 19 0 63 0;
 #X connect 20 0 18 0;
 #X connect 20 0 19 0;
 #X connect 21 0 19 1;
 #X connect 21 0 22 0;
 #X connect 22 0 18 1;
-#X connect 23 0 29 0;
+#X connect 23 0 24 0;
 #X connect 24 0 25 0;
-#X connect 25 0 26 0;
-#X connect 25 0 27 0;
-#X connect 26 0 66 0;
-#X connect 28 0 66 0;
-#X connect 30 0 1 0;
-#X connect 30 0 31 0;
-#X connect 32 0 2 0;
-#X connect 33 0 35 0;
-#X connect 33 0 38 0;
-#X connect 33 0 42 0;
-#X connect 34 0 55 0;
-#X connect 35 0 34 0;
-#X connect 36 0 35 1;
-#X connect 37 0 58 0;
+#X connect 24 0 26 0;
+#X connect 25 0 59 0;
+#X connect 27 0 59 0;
+#X connect 29 0 1 0;
+#X connect 29 0 30 0;
+#X connect 31 0 2 0;
+#X connect 32 0 53 0;
+#X connect 33 0 32 0;
+#X connect 34 0 33 1;
+#X connect 35 0 56 0;
+#X connect 36 0 35 0;
+#X connect 37 0 36 1;
+#X connect 38 0 34 0;
 #X connect 38 0 37 0;
-#X connect 39 0 38 1;
-#X connect 40 0 36 0;
+#X connect 38 0 41 0;
+#X connect 39 0 50 0;
 #X connect 40 0 39 0;
-#X connect 40 0 43 0;
-#X connect 41 0 52 0;
-#X connect 42 0 41 0;
-#X connect 43 0 42 1;
-#X connect 44 0 52 1;
-#X connect 45 0 47 0;
-#X connect 45 0 46 0;
-#X connect 46 0 0 1;
+#X connect 41 0 40 1;
+#X connect 42 0 50 1;
+#X connect 43 0 45 0;
+#X connect 43 0 44 0;
+#X connect 44 0 0 1;
+#X connect 47 0 0 1;
 #X connect 49 0 0 1;
-#X connect 51 0 0 1;
-#X connect 52 0 45 0;
-#X connect 53 0 55 1;
-#X connect 54 0 48 0;
-#X connect 54 0 49 0;
-#X connect 55 0 54 0;
-#X connect 56 0 58 1;
-#X connect 57 0 50 0;
-#X connect 57 0 51 0;
-#X connect 58 0 57 0;
-#X connect 65 0 4 0;
-#X connect 65 0 3 0;
+#X connect 50 0 43 0;
+#X connect 51 0 53 1;
+#X connect 52 0 46 0;
+#X connect 52 0 47 0;
+#X connect 53 0 52 0;
+#X connect 54 0 56 1;
+#X connect 55 0 48 0;
+#X connect 55 0 49 0;
+#X connect 56 0 55 0;
+#X connect 58 0 4 0;
+#X connect 58 0 3 0;
+#X connect 62 0 28 0;
+#X connect 63 0 65 0;
+#X connect 65 0 40 0;
+#X connect 65 0 36 0;
+#X connect 65 0 33 0;

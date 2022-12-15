@@ -1,27 +1,19 @@
-#N struct 1101-rectangle float x float c;
-#N struct 1101-pixel float x0 float y0 float x1 float y1;
-#N struct 1102-rectangle float x float c;
-#N struct 1102-pixel float x0 float y0 float x1 float y1;
-#N struct 1116-rectangle float x float c;
-#N struct 1116-pixel float x0 float y0 float x1 float y1;
+#N struct 1031-rectangle float x float c;
+#N struct 1031-pixel float x0 float y0 float x1 float y1;
+#N struct 1032-rectangle float x float c;
+#N struct 1032-pixel float x0 float y0 float x1 float y1;
+#N struct 1046-rectangle float x float c;
+#N struct 1046-pixel float x0 float y0 float x1 float y1;
 #N canvas 58 66 698 714 12;
-#X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/
-;
-#X obj 488 605 cnv 15 192 93 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 18 66 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
-#404040 0;
+#X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/;
+#X obj 488 605 cnv 15 192 93 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 18 66 cnv 15 488 17 empty empty A\ K-D\ tree. 4 8 0 13 #e0e0e0 #404040 0;
 #N canvas 139 103 698 804 radius_&_neighbours 0;
-#X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
-#404040 0;
-#X text 16 92 Change the specificity of searches by constraining the
-distance and number of nearest neighbours, f 67;
-#X obj 21 160 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 19 64 cnv 15 488 17 empty empty A\ K-D\ tree. 4 8 0 13 #e0e0e0 #404040 0;
+#X text 16 92 Change the specificity of searches by constraining the distance and number of nearest neighbours, f 67;
+#X obj 21 160 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 308 -994 640 382 generate_random_points 0;
 #X obj 37 37 inlet;
 #X obj 37 317 outlet;
@@ -35,8 +27,7 @@ distance and number of nearest neighbours, f 67;
 #X obj 84 142 + 1;
 #X obj 52 165 t f b;
 #X msg 52 221 addpoint point-\$1 kd_tree_h3_query;
-#X obj 84 186 expr kd_tree_h3_query[0] = random(0 \, 101) * 0.01 \;
-kd_tree_h3_query[1] = random(0 \, 101) * 0.01;
+#X obj 84 186 expr kd_tree_h3_query[0] = random(0 \, 101) * 0.01 \; kd_tree_h3_query[1] = random(0 \, 101) * 0.01;
 #X obj 37 273 fluid.ds2text kd_tree_h3_ds kd_tree_h3_txt;
 #X obj 247 314 text define kd_tree_h3_txt;
 #X msg 37 296 setpoints kd_tree_h3_txt;
@@ -74,44 +65,26 @@ kd_tree_h3_query[1] = random(0 \, 101) * 0.01;
 #X obj 21 731 s kd_tree_h3_plotter;
 #X obj 31 206 r kd_tree_h3_plotter;
 #X obj 34 611 r kd_tree_h3_tree;
-#X obj 356 235 cnv 15 330 135 empty empty Radius\\\ vs\\\ Number\\\ of\\\ Neighbours
-4 8 0 13 #dfdfdf #404040 0;
-#X text 363 260 We can query the tree in terms of either a (maximum)
-number of neighbouring points to return \, or a radius around the query
-point., f 43;
-#X text 363 310 Because the range of distances is hard to predict a
-priori \, you can use the knearestdist message to get an idea of useful
-values for radius., f 42;
-#X obj 356 381 cnv 15 330 90 empty empty empty 0 0 0 13 #dfdfdf #404040
-0;
-#X text 363 386 numneighbours > 0 \, radius = 0 : radius is ignored:
-the whole extent of the tree is searched, f 42;
+#X obj 356 235 cnv 15 330 135 empty empty Radius\ vs\ Number\ of\ Neighbours 4 8 0 13 #dfdfdf #404040 0;
+#X text 363 260 We can query the tree in terms of either a (maximum) number of neighbouring points to return \, or a radius around the query point., f 43;
+#X text 363 310 Because the range of distances is hard to predict a priori \, you can use the knearestdist message to get an idea of useful values for radius., f 42;
+#X obj 356 381 cnv 15 330 90 empty empty empty 0 0 0 13 #dfdfdf #404040 0;
+#X text 363 386 numneighbours > 0 \, radius = 0 : radius is ignored: the whole extent of the tree is searched, f 42;
 #X msg 363 436 \; kd_tree_h3_tree numneighbours 10 \, radius 0;
-#X obj 356 481 cnv 15 330 140 empty empty empty 0 0 0 13 #dfdfdf #404040
-0;
-#X text 363 486 numneighbours > 0 \, radius > 0 : only the extent within
-radius is searched \; number of returned points is capped at numneighbours
-, f 41;
+#X obj 356 481 cnv 15 330 140 empty empty empty 0 0 0 13 #dfdfdf #404040 0;
+#X text 363 486 numneighbours > 0 \, radius > 0 : only the extent within radius is searched \; number of returned points is capped at numneighbours, f 41;
 #X msg 357 549 \; kd_tree_h3_tree numneighbours 30 \, radius 0.3;
 #X msg 357 584 \; kd_tree_h3_tree numneighbours 10 \, radius 0.09;
-#X obj 356 631 cnv 15 330 130 empty empty empty 0 0 0 13 #dfdfdf #404040
-0;
-#X text 363 636 numneighbours = 0 \, radius > 0 : only the extent within
-radius is searched \; number of returned points is uncapped, f 45
-;
+#X obj 356 631 cnv 15 330 130 empty empty empty 0 0 0 13 #dfdfdf #404040 0;
+#X text 363 636 numneighbours = 0 \, radius > 0 : only the extent within radius is searched \; number of returned points is uncapped, f 45;
 #X msg 362 687 \; kd_tree_h3_tree numneighbours 0 \, radius 0.3;
 #X msg 362 722 \; kd_tree_h3_tree numneighbours 0 \, radius 0.09;
-#X obj 40 143 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 237 188 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 395 187 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 40 141 1) Generate random data to be stored in the fluid.dataset
-, f 30;
+#X obj 40 143 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 237 188 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 395 187 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 40 141 1) Generate random data to be stored in the fluid.dataset, f 30;
 #X text 237 186 2) Click and drag around this space, f 17;
-#X text 395 186 3) Experiment with changing the numneighbours and radius
-constraints \, then browse again the 2d space., f 37;
+#X text 395 186 3) Experiment with changing the numneighbours and radius constraints \, then browse again the 2d space., f 37;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
@@ -126,14 +99,10 @@ constraints \, then browse again the 2d space., f 37;
 #X connect 16 0 10 0;
 #X restore 491 653 pd radius_&_neighbours;
 #N canvas 175 102 698 764 stripping_it_back 0;
-#X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 19 64 cnv 15 488 17 empty empty A\\\ K-D\\\ tree. 4 8 0 13 #e0e0e0
-#404040 0;
-#X text 20 96 A stripped back example for how to fluid.kdtree works
-;
-#X obj 46 137 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 19 17 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 19 64 cnv 15 488 17 empty empty A\ K-D\ tree. 4 8 0 13 #e0e0e0 #404040 0;
+#X text 20 96 A stripped back example for how to fluid.kdtree works;
+#X obj 46 137 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 46 157 t b b b b b, f 23;
 #N canvas 804 -701 373 208 create_a_toy_dataset 0;
 #X obj 37 37 inlet;
@@ -166,15 +135,12 @@ constraints \, then browse again the 2d space., f 37;
 #X text 138 244 "0";
 #X msg 317 233 fit kd_tree_h2_ds;
 #X obj 317 256 fluid.kdtree kd_tree_h2_tree;
-#X obj 128 340 xy 101 101;
-#X obj 128 477 expr kd_tree_h2_query[0] = $f1 / 100 \; kd_tree_h2_query[1]
-= $f2 / 100 \;, f 38;
-#X obj 128 446 route click motion;
-#X obj 128 513 t b;
-#X msg 128 536 knearest kd_tree_h2_query;
-#X obj 128 560 fluid.kdtree kd_tree_h2_tree;
-#X obj 128 583 route knearest;
-#X listbox 279 653 8 0 0 0 - - - 0;
+#X obj 128 322 xy 101 101;
+#X obj 128 459 expr kd_tree_h2_query[0] = $f1 / 100 \; kd_tree_h2_query[1] = $f2 / 100 \;, f 38;
+#X obj 128 428 route click motion;
+#X obj 128 495 t b;
+#X obj 128 579 fluid.kdtree kd_tree_h2_tree;
+#X listbox 237 655 8 0 0 0 - - - 0;
 #X obj 28 631 symbol;
 #X symbolatom 28 654 10 0 0 0 - - - 0;
 #N canvas 89 120 366 237 retrieve_the_value 0;
@@ -194,26 +160,22 @@ constraints \, then browse again the 2d space., f 37;
 #X connect 5 0 1 0;
 #X connect 6 0 7 0;
 #X connect 7 0 3 0;
-#X restore 279 630 pd retrieve_the_value;
-#X obj 370 534 array get kd_tree_h2_query;
-#X listbox 370 557 11 0 0 0 - - - 0;
-#X text 450 557 This is our input or "query". We want to find which
-stored point in the dataset is closest to this., f 31;
-#X text 279 672 This is the value of the closest points. Compare them
-to the input to see how "close" they are., f 40;
-#X text 24 677 This is the identifier of the point as it was entered
-in the dataset., f 27;
-#X obj 67 136 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 316 215 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 234 343 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X restore 237 632 pd retrieve_the_value;
+#X obj 357 517 array get kd_tree_h2_query;
+#X listbox 357 540 11 0 0 0 - - - 0;
+#X text 437 540 This is our input or "query". We want to find which stored point in the dataset is closest to this., f 31;
+#X text 237 674 This is the value of the closest points. Compare them to the input to see how "close" they are., f 33;
+#X text 24 677 This is the identifier of the point as it was entered in the dataset., f 27;
+#X obj 67 136 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 316 215 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 234 343 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 317 213 2) Fit a kdtree to the dataset that was just made;
-#X text 67 135 1) Create a dataset with four \, two-dimensional points
-;
-#X text 234 342 3) Move the knob around to create a "query" for the
-kdtree, f 34;
+#X text 67 135 1) Create a dataset with four \, two-dimensional points;
+#X text 234 324 3) Move the knob around to create a "query" for the kdtree, f 34;
+#X obj 128 601 route knearest knearestdist;
+#X msg 128 522 knearest kd_tree_h2_query \, knearestdist kd_tree_h2_query, f 30;
+#X listbox 509 631 20 0 0 0 - - - 0;
+#X text 507 654 This is the computed distance we retrieved with knearestdist, f 21;
 #X connect 3 0 4 0;
 #X connect 4 0 6 0;
 #X connect 4 1 7 0;
@@ -229,20 +191,19 @@ kdtree, f 34;
 #X connect 17 0 19 0;
 #X connect 18 0 17 0;
 #X connect 18 1 17 0;
-#X connect 19 0 20 0;
-#X connect 19 0 27 0;
-#X connect 20 0 21 0;
-#X connect 21 0 22 0;
-#X connect 22 0 26 0;
-#X connect 22 0 24 0;
-#X connect 24 0 25 0;
-#X connect 26 0 23 0;
-#X connect 27 0 28 0;
+#X connect 19 0 37 0;
+#X connect 19 0 25 0;
+#X connect 20 0 36 0;
+#X connect 22 0 23 0;
+#X connect 24 0 21 0;
+#X connect 25 0 26 0;
+#X connect 36 0 24 0;
+#X connect 36 0 22 0;
+#X connect 36 1 38 0;
+#X connect 37 0 20 0;
 #X restore 491 631 pd stripping_it_back;
-#X text 18 85 A K-dimensional tree for efficient neighbourhood searches
-of multi-dimensional data.;
-#X obj 22 157 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X text 18 85 A K-dimensional tree for efficient neighbourhood searches of multi-dimensional data.;
+#X obj 22 157 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 401 -983 972 651 load_data 0;
 #X obj 37 44 inlet;
 #X obj 630 618 outlet;
@@ -275,8 +236,7 @@ of multi-dimensional data.;
 #X obj 223 409 fluid.concataudiofiles kdtree_h1 kdtree_h1_files;
 #X obj 433 224 text define kdtree_h1_txt;
 #X msg 630 596 setpoints kdtree_h1_txt;
-#X msg 341 66 read -resize data/flucoma_corpus_slices.wav kdtree_h1_slices
-;
+#X msg 341 66 read -resize data/flucoma_corpus_slices.wav kdtree_h1_slices;
 #X obj 406 381 t l l;
 #X obj 406 358 list prepend;
 #X connect 0 0 4 0;
@@ -325,16 +285,8 @@ of multi-dimensional data.;
 #X obj 119 177 r kd_tree_h1_plotter;
 #X msg 326 644 highlight \$1;
 #X obj 326 668 s kd_tree_h1_plotter;
-#X text 330 266 Each of these points on this space represents a small
-segment of a large sound file. Using audio descriptors each segment
-is assigned two values \, loudness and spectral centroid \, that attempt
-to represent perceived qualities of the sound. The fluid.kdtree~ performs
-the function of mapping our mouse inside the space \, to the point
-that has the most similar set of descriptor values. In effect \, it
-is a fast lookup mechanism so that we can scrub through the analysis
-space., f 49;
-#X text 330 478 For a relevant tutorial \, see https://learn.flucoma.org/overviews
-, f 37;
+#X text 330 266 Each of these points on this space represents a small segment of a large sound file. Using audio descriptors each segment is assigned two values \, loudness and spectral centroid \, that attempt to represent perceived qualities of the sound. The fluid.kdtree~ performs the function of mapping our mouse inside the space \, to the point that has the most similar set of descriptor values. In effect \, it is a fast lookup mechanism so that we can scrub through the analysis space., f 49;
+#X text 330 478 For a relevant tutorial \, see https://learn.flucoma.org/overviews, f 37;
 #X floatatom 108 621 5 0 0 0 - - - 0;
 #X obj 108 600 fluid.s2f;
 #N canvas 739 591 308 296 player 0;
@@ -362,14 +314,10 @@ space., f 49;
 #X restore 108 644 pd player;
 #X obj 108 668 fluid.out~;
 #X obj 491 676 note_on_automatic_datasets;
-#X obj 41 144 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 326 204 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 41 144 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 326 204 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 327 203 2) Click and drag around this space.;
-#X text 41 142 1) For demonstrative purposes much of this first example
-is preanalused and pretrained data. This button loads in this subpatch
-when the helpfle is opened, f 86;
+#X text 41 142 1) For demonstrative purposes much of this first example is preanalused and pretrained data. This button loads in this subpatch when the helpfle is opened, f 86;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;
