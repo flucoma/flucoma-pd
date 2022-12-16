@@ -34,7 +34,7 @@ buffer to a single channel buffer., f 105;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 539 270 pd loadinput;
-#X obj 23 271 fluid.bufmfcc 13 -source input -feature mfcc;
+#X obj 23 271 fluid.bufmfcc 13 -source input -features mfcc;
 #X obj 400 293 clone 13 fluid.multiarray mfcc;
 #X obj 400 316 clone 13 fluid.multiarray mfccstats;
 #X obj 23 343 t b;
