@@ -133,7 +133,7 @@ public:
     static_assert(sizeof(PD_LONGINTTYPE) == sizeof(intptr_t),
                   "size of pointer int type is wrongwrongwrong");
 
-    mContext = FluidContext(sp[0]->s_vecsize, FluidDefaultAllocator());
+    mContext = FluidContext(sp[0]->s_n, FluidDefaultAllocator());
 
     if (!Wrapper::template IsModel_t<typename Wrapper::ClientType>::value)
       wrapper->mClient =
@@ -177,7 +177,7 @@ public:
 
 
     if (!(client.controlChannelsIn() > 0))
-      dsp_add(callPerform, 2, wrapper, sp[0]->s_vecsize);
+      dsp_add(callPerform, 2, wrapper, sp[0]->s_n);
   }
 
   void perform(int sampleframes)
