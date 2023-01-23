@@ -204,7 +204,7 @@ public:
     index outputCount = client.controlChannelsOut().count; 
     index numFeatures = client.controlChannelsOut().size; 
     assert(numFeatures <= std::numeric_limits<int>::max());
-    for(index i = 0; i < outputCount; ++i)
+    for(index i = outputCount - 1; i >= 0; --i)
     {
       for (index j = 0; j < numFeatures; ++j)
       {
@@ -480,7 +480,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
                            
       x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
       
-      for (index i = 0; i <  asSigned(x->mDataOutlets.size()); ++i)
+      for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i)
       {
         index count = std::min<index>(x->mListSize,ac); 
         for(index j = 0; j < count; ++j)
@@ -1112,19 +1112,21 @@ public:
   }
 
   void doneBang()
-  { 
-    mParams.template forEachParamType<BufferT>([this, n = 0u](auto&, auto idx) mutable
-    {
-        static t_symbol* buffer_sym = gensym("buffer");
-        static constexpr index N = idx();
-        auto b = static_cast<PDBufferAdaptor*>(params().template get<N>().get());
-        
-        t_atom a;
-        a.a_type = A_SYMBOL;
-        a.a_w.w_symbol = b->name();
-        
-        outlet_anything(mDataOutlets[n++], buffer_sym, 1, &a);
+  {
+
+    static constexpr index count = ParamDescType::template NumOfType<BufferT>;
+    std::array<t_atom, count> bufferNames;
+    static t_symbol*          buffer_sym = gensym("buffer");
+    mParams.template forEachParamType<BufferT>([this, n = 0u, &bufferNames](
+                                                   auto&, auto idx) mutable {
+      static constexpr index N = idx();
+      auto b = static_cast<PDBufferAdaptor*>(params().template get<N>().get());
+      bufferNames[n].a_type = A_SYMBOL;
+      bufferNames[n++].a_w.w_symbol = b->name();
     });
+    for (index i = count - 1; i >= 0; --i)
+      outlet_anything(mDataOutlets[asUnsigned(i)], buffer_sym, 1,
+                      &bufferNames[asUnsigned(i)]);
   }
 
   void controlOut(index outletIndex, int ac, t_atom* av)
