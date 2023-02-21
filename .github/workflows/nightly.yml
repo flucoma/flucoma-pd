@@ -3,7 +3,7 @@ name: nightly
 on:
   workflow_dispatch:
   push:
-    branches: [ dev, ci/** ]
+    branches: [ main, ci/** ]
 
 concurrency:
   group: environment-${{ github.ref }}
@@ -17,7 +17,7 @@ jobs:
       - uses: flucoma/actions/env@main 
       - uses: flucoma/actions/pd@v5
         with:
-          branch: origin/dev
+          branch: origin/main
 
       - name: sign binaries
         uses: flucoma/actions/distribution@main
@@ -44,7 +44,7 @@ jobs:
       - uses: flucoma/actions/env@main         
       - uses: flucoma/actions/pd@v5
         with:
-          branch: origin/dev
+          branch: origin/main
 
       - name: compress archive
         run: 7z a FluCoMa-PD-Windows-nightly.zip FluidCorpusManipulation
@@ -62,7 +62,7 @@ jobs:
       - uses: flucoma/actions/env@main 
       - uses: flucoma/actions/pd@v5
         with:
-          branch: origin/dev
+          branch: origin/main
 
       - name: compress archive
         run: tar -zcvf FluCoMa-PD-Linux-nightly.tar.gz FluidCorpusManipulation
