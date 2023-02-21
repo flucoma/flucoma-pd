@@ -10,7 +10,7 @@ jobs:
       - uses: flucoma/actions/env@main 
       - uses: flucoma/actions/pd@v5
         with:
-          branch: origin/production
+          branch: origin/${{ github.ref_name }}
 
       - name: sign binaries
         uses: flucoma/actions/distribution@main
@@ -37,7 +37,7 @@ jobs:
       - uses: flucoma/actions/env@main         
       - uses: flucoma/actions/pd@v5
         with:
-          branch: origin/production
+          branch: origin/${{ github.ref_name }}
 
       - name: compress archive
         run: 7z a FluCoMa-PD-Windows.zip FluidCorpusManipulation
@@ -57,7 +57,7 @@ jobs:
       - uses: flucoma/actions/env@main
       - uses: flucoma/actions/pd@v5
         with:
-          branch: origin/production 
+          branch: origin/${{ github.ref_name }} 
 
       - name: compress archive
         run: tar -zcvf FluCoMa-PD-Linux.tar.gz FluidCorpusManipulation
