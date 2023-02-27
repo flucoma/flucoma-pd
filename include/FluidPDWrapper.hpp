@@ -474,25 +474,25 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       FluidContext c;
       
 //      post("which:%d\n",which);
-        
+
       index count = std::min<index>(x->mListSize, ac);
-      for(index i = 0; i < count; ++i)
+      for (index i = 0; i < count; ++i)
         x->mInputListData[which][i] = atom_getfloat(av + i);
-               
-        if (!which) {
-          x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
-      
-      for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i)
-      {
-        index count = std::min<index>(x->mListSize,ac); 
-        for(index j = 0; j < count; ++j)
-        {
-          SETFLOAT(x->mOutputListAtoms.data() + j,static_cast<float>(x->mOutputListData[i][j]));
+
+      if (!which) {
+        x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
+
+        for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i) {
+          index count = std::min<index>(x->mListSize, ac);
+          for (index j = 0; j < count; ++j) {
+            SETFLOAT(x->mOutputListAtoms.data() + j,
+                     static_cast<float>(x->mOutputListData[i][j]));
+          }
+          outlet_list(x->mDataOutlets[asUnsigned(i)], gensym("list"),
+                      static_cast<int>(x->mListSize),
+                      x->mOutputListAtoms.data());
         }
-        outlet_list(x->mDataOutlets[asUnsigned(i)],
-                    gensym("list"), static_cast<int>(x->mListSize), x->mOutputListAtoms.data());
       }
-        }
     }
   };
 
