@@ -469,16 +469,18 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     
     }
 
-    void operator()(FluidPDWrapper* x, long ac, t_atom* av)
+    void operator()(FluidPDWrapper* x, index which, long ac, t_atom* av)
     {
       FluidContext c;
       
-      //todo handle multiple list inlets?
+//      post("which:%d\n",which);
+        
       index count = std::min<index>(x->mListSize, ac);
       for(index i = 0; i < count; ++i)
-        x->mInputListData[0][i] = atom_getfloat(av + i);
-                           
-      x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
+        x->mInputListData[which][i] = atom_getfloat(av + i);
+               
+        if (!which) {
+          x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
       
       for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i)
       {
@@ -490,6 +492,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
         outlet_list(x->mDataOutlets[asUnsigned(i)],
                     gensym("list"), static_cast<int>(x->mListSize), x->mOutputListAtoms.data());
       }
+        }
     }
   };
 
@@ -959,12 +962,18 @@ public:
   {
     x->mOwner->doBufferInlet(x->mIndex, ac, av);
   }
-  
+    
+  static void inletProxyList(InletProxy* x, t_symbol* what, int ac, t_atom* av)
+    {
+      x->mOwner->doList(x->mOwner, x->mIndex, what, ac, av);
+    }
+    
   static void inletProxySetup(const char* className)
   {
     std::string inletProxyClassName = std::string(className) + " inlet proxy";
     getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), CLASS_PD | CLASS_NOINLET, A_GIMME,0));
     class_addmethod(getInletProxyClass(), (t_method) inletProxyBuffer, gensym("buffer"), A_GIMME, 0);
+    class_addmethod(getInletProxyClass(), (t_method) inletProxyList, gensym("list"), A_GIMME, 0);
   }
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
@@ -1355,15 +1364,16 @@ public:
       }
   }
 
-  static void doList(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
+  static void doList(FluidPDWrapper* x, index which, t_symbol*, long ac, t_atom* av)
   {
+    
     if(ac != x->mListSize) x->resizeListHandlers(ac);
-    x->mListHandler(x, ac, av);
+    x->mListHandler(x, which, ac, av);
   }
   
   static void handleList(FluidPDWrapper* x, t_symbol* s, long ac, t_atom* av)
   {
-      doList(x,s,ac,av);      
+      doList(x, 0, s, ac, av);
   }
 
 private:
