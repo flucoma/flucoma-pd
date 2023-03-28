@@ -1,4 +1,4 @@
-#N canvas 938 -980 745 649 12;
+#N canvas 68 141 745 649 12;
 #X obj 409 31 inlet;
 #X obj 409 121 osc~ 1;
 #X obj 176 31 loadbang;

@@ -70,48 +70,33 @@
 #X coords 0 1 101 0 202 140 1 0 0;
 #X restore 16 286 graph;
 #X obj 518 125 note_on_multithreading;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufstats.html reference/bufstats/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Statistically\\\ summarise\\\ a\\\ time\\\ series\\\ in\\\ an\\\ array
-4 8 0 13 #e0e0e0 #404040 0;
-#X obj 465 545 cnv 15 215 152 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufstats.html reference/bufstats/;
+#X obj 17 60 cnv 15 488 17 empty empty Statistically\ summarise\ a\ time\ series\ in\ an\ array 4 8 0 13 #e0e0e0 #404040 0;
+#X obj 465 545 cnv 15 215 152 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 155 91 698 745 musical_example 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 19 230 soundfiler;
 #X text 17 79 sort buffer segments by descriptor statistics;
-#X obj 39 158 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 39 158 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 39 157 1) load a soundfile;
-#X obj 19 158 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 358 159 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 19 158 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 358 159 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 358 179 tabplay~ help.bufstats.src.2;
 #X obj 358 203 fluid.out~ bufstatshelp;
-#X msg 19 178 read -resize media/Tremblay-AaS-AcBassGuit-Melo-M.wav
-help.bufstats.src.2, f 40;
-#X obj 377 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X msg 19 178 read -resize media/Tremblay-AaS-AcBassGuit-Melo-M.wav help.bufstats.src.2, f 40;
+#X obj 377 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 377 158 2) listen to the source (an acoustic bass);
-#X obj 20 296 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 42 296 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 42 295 3) slice and analyse the segments of the source sound
-;
+#X obj 20 296 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 42 296 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 42 295 3) slice and analyse the segments of the source sound;
 #X obj 448 62 array define help.bufstats.src.2;
 #N canvas 239 179 967 654 analysis_and_statistics 0;
 #X obj 27 22 inlet;
 #X obj 27 238 fluid.bufselect -channels 0, f 17;
 #X obj 381 238 fluid.bufselect -channels 1, f 16;
-#X obj 27 78 fluid.bufonsetslice -source help.bufstats.src.2 -indices
-help.bufstats.slices.2 -minslicelength 40, f 57;
-#X obj 27 299 fluid.bufstats -source help.bufstats.pitch.2 -stats help.bufstats.stats.2
--select mid;
+#X obj 27 78 fluid.bufonsetslice -source help.bufstats.src.2 -indices help.bufstats.slices.2 -minslicelength 40, f 57;
+#X obj 27 299 fluid.bufstats -source help.bufstats.pitch.2 -stats help.bufstats.stats.2 -select mid;
 #N canvas 1179 393 556 696 iterate_slice_pairs 0;
 #X obj 32 41 inlet;
 #X obj 127 572 outlet;
@@ -122,16 +107,14 @@ help.bufstats.slices.2 -minslicelength 40, f 57;
 #X msg 320 468 numframes \$1, f 9;
 #X obj 127 320 f;
 #X msg 223 468 startframe \$1, f 10;
-#X obj 127 468 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 127 468 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 127 417 t b f l, f 28;
 #X obj 127 344 t f f;
 #X obj 127 240 t f b;
 #X obj 127 156 array size help.bufstats.slices.2;
 #X obj 127 393 array get help.bufstats.slices.2 0 2;
 #X floatatom 127 181 5 0 0 0 - - - 0;
-#X obj 32 70 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 32 70 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 159 368 s itercount;
 #X obj 32 96 t b b, f 14;
 #X msg 32 124 \; done bang, f 7;
@@ -164,18 +147,13 @@ help.bufstats.slices.2 -minslicelength 40, f 57;
 #X text 194 120 iterate over slice pairs, f 28;
 #X text 417 153 analyse the pitch of contiguous segments;
 #X text 154 237 calculate the stats of the segment's pitch, f 22;
-#X text 506 235 use the pitch confidence channel of analysis as statistical
-weights. This makes analysis frames with higher pitch confidence worth
-more in the statistical analysis;
+#X text 506 235 use the pitch confidence channel of analysis as statistical weights. This makes analysis frames with higher pitch confidence worth more in the statistical analysis;
 #X obj 615 514 array define help.bufstats.slices.2;
 #X obj 545 535 clone fluid.multiarray 2 help.bufstats.pitch.2;
 #X obj 615 556 array define help.bufstats.stats.2 14;
 #X text 434 85 slice the source sound file, f 28;
-#X obj 92 24 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X text 187 347 Using -select we extract only the "mid" statistic (by
-default this is the 50th percentile and therefore the median). This
-is a little more robust to outliers than the mean;
+#X obj 92 24 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X text 187 347 Using -select we extract only the "mid" statistic (by default this is the 50th percentile and therefore the median). This is a little more robust to outliers than the mean;
 #X obj 27 198 t a a, f 51;
 #X floatatom 27 436 5 0 0 0 - - - 0;
 #X obj 27 412 array get help.bufstats.stats.2;
@@ -185,8 +163,7 @@ is a little more robust to outliers than the mean;
 #X obj 27 555 outlet;
 #X obj 171 558 outlet;
 #X obj 27 51 t b b, f 21;
-#X obj 27 150 fluid.bufpitch -source help.bufstats.src.2 -features
-help.bufstats.pitch.2 -fftsettings 4096 1024 4096;
+#X obj 27 150 fluid.bufpitch -source help.bufstats.src.2 -features help.bufstats.pitch.2 -fftsettings 4096 1024 4096;
 #X connect 0 0 24 0;
 #X connect 1 0 4 0;
 #X connect 2 0 4 1;
@@ -205,10 +182,8 @@ help.bufstats.pitch.2 -fftsettings 4096 1024 4096;
 #X connect 24 1 23 0;
 #X connect 25 0 16 0;
 #X restore 20 333 pd analysis_and_statistics;
-#X text 214 332 look in here for detailed explanation of the analysis
-processing chain;
-#X text 214 466 Sort each segment's value of fundamental pitch analysis
-and retrieve the ordinal.;
+#X text 214 332 look in here for detailed explanation of the analysis processing chain;
+#X text 214 466 Sort each segment's value of fundamental pitch analysis and retrieve the ordinal.;
 #N canvas 249 209 608 767 sortslices 0;
 #X obj 53 27 inlet;
 #X text 110 28 slice pairs;
@@ -218,8 +193,7 @@ and retrieve the ordinal.;
 #X msg 210 138 clear;
 #X obj 187 196 text define SLICES;
 #X obj 210 171 text define PROCSLICES;
-#X obj 53 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 53 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 100 392 0;
 #X floatatom 76 323 5 0 0 0 - - - 0;
 #X obj 53 393 until;
@@ -309,13 +283,10 @@ and retrieve the ordinal.;
 #X connect 6 0 3 0;
 #X connect 6 1 2 0;
 #X restore 31 642 pd start_and_duration;
-#X text 156 581 By indexing the ordinal linearly we effectively "sort"
-the segments by their pitch value;
-#X obj 80 563 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X text 156 581 By indexing the ordinal linearly we effectively "sort" the segments by their pitch value;
+#X obj 80 563 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 80 562 5) Playback slices sorted by pitch;
-#X obj 103 714 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 103 714 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 103 713 4) audio on;
 #X connect 5 0 9 0;
 #X connect 6 0 7 0;
@@ -334,12 +305,9 @@ the segments by their pitch value;
 #X connect 26 0 24 0;
 #X restore 468 565 pd musical_example;
 #N canvas 160 78 869 772 derivative 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 17 79 Calculating derivatives to differentiate distributions
-;
-#X obj 18 191 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 79 Calculating derivatives to differentiate distributions;
+#X obj 18 191 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 1474 -1040 384 447 fill_up 0;
 #X obj 37 37 inlet;
 #X obj 37 102 until;
@@ -376,50 +344,34 @@ the segments by their pitch value;
 #X array help.bufstats.src.down 100 float 2;
 #X coords 0 1 100 -1 250 30 1 0 0;
 #X restore 278 136 graph;
-#X obj 36 191 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 36 190 1) fill buffers with some upward and downward ramps
-;
-#X obj 18 281 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 36 281 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 36 280 2) Calculate the raw statistics with no derivatives
-;
+#X obj 36 191 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 36 190 1) fill buffers with some upward and downward ramps;
+#X obj 18 281 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 36 281 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 36 280 2) Calculate the raw statistics with no derivatives;
 #X listbox 18 455 47 0 0 0 - - - 0;
 #X obj 39 402 array define help.bufstats.stats.up;
 #X obj 403 402 array define help.bufstats.stats.down;
-#X obj 18 351 fluid.bufstats -source help.bufstats.src.up -stats help.bufstats.stats.up
-, f 28;
+#X obj 18 351 fluid.bufstats -source help.bufstats.src.up -stats help.bufstats.stats.up, f 28;
 #X listbox 378 455 65 0 0 0 - - - 0;
-#X obj 378 351 fluid.bufstats -source help.bufstats.src.down -stats
-help.bufstats.stats.down, f 29;
+#X obj 378 351 fluid.bufstats -source help.bufstats.src.down -stats help.bufstats.stats.down, f 29;
 #X obj 18 427 array get help.bufstats.stats.up;
 #X obj 378 427 array get help.bufstats.stats.down;
 #X obj 38 676 array define help.bufstats.skew.up;
 #X obj 402 676 array define help.bufstats.skew.down;
-#X obj 18 521 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 36 521 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 521 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 36 521 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X listbox 18 735 47 0 0 0 - - - 0;
 #X listbox 378 735 47 0 0 0 - - - 0;
 #X obj 18 707 array get help.bufstats.stats.up;
 #X obj 378 707 array get help.bufstats.stats.down;
-#X text 36 520 3) Only calculate the skewness of the 0th (raw) and
-1st derivative, f 75;
-#X obj 378 581 fluid.bufstats -source help.bufstats.src.down -numderivs
-1 -select skew -stats help.bufstats.stats.down, f 45;
-#X obj 18 581 fluid.bufstats -source help.bufstats.src.up -numderivs
-1 -select skew -stats help.bufstats.stats.up, f 43;
-#X obj 18 404 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 377 405 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 18 676 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 378 677 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X text 36 520 3) Only calculate the skewness of the 0th (raw) and 1st derivative, f 75;
+#X obj 378 581 fluid.bufstats -source help.bufstats.src.down -numderivs 1 -select skew -stats help.bufstats.stats.down, f 45;
+#X obj 18 581 fluid.bufstats -source help.bufstats.src.up -numderivs 1 -select skew -stats help.bufstats.stats.up, f 43;
+#X obj 18 404 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 377 405 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 18 676 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 378 677 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X connect 2 0 3 0;
 #X connect 8 0 14 0;
 #X connect 8 0 16 0;
@@ -439,33 +391,23 @@ help.bufstats.stats.down, f 29;
 #X connect 33 0 26 0;
 #X restore 468 609 pd derivative;
 #N canvas 281 38 696 840 weighted_statistics 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 17 69 apply weightings and removing outliers for refining observations
-;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 69 apply weightings and removing outliers for refining observations;
 #X obj 16 298 soundfiler;
-#X obj 36 228 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 36 228 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 227 1) load a soundfile;
-#X obj 16 228 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 390 228 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 16 228 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 390 228 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 390 318 fluid.out~ bufstatshelp;
-#X obj 409 228 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 36 378 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 16 378 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 409 228 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 36 378 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 16 378 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 36 377 3) Analyse a small portion of the source;
 #X obj 526 95 array define help.bufstats.src.3;
 #X f 21;
-#X msg 16 247 read -resize media/Tremblay-ASWINE-ScratchySynth-M.wav
-help.bufstats.src.3, f 32;
+#X msg 16 247 read -resize media/Tremblay-ASWINE-ScratchySynth-M.wav help.bufstats.src.3, f 32;
 #X obj 390 268 tabplay~ help.bufstats.src.3;
-#X obj 505 132 clone fluid.multiarray 2 help.bufstats.stats.3, f 24
-;
+#X obj 505 132 clone fluid.multiarray 2 help.bufstats.stats.3, f 24;
 #X listbox 26 460 33 0 0 0 - - - 0;
 #X obj 26 436 list;
 #N canvas 1468 -564 521 536 just_the_mean 0;
@@ -526,8 +468,7 @@ help.bufstats.src.3, f 32;
 #X connect 14 1 5 0;
 #X restore 186 516 pd weighted_by_confidence;
 #X f 23;
-#N canvas 1414 -969 575 606 weighted_by_confidence_and_outliers_cutoff
-0;
+#N canvas 1414 -969 575 606 weighted_by_confidence_and_outliers_cutoff 0;
 #X obj 26 31 inlet;
 #X msg 27 315 0;
 #X obj 27 341 array get;
@@ -541,8 +482,7 @@ help.bufstats.src.3, f 32;
 #X obj 27 399 outlet;
 #X msg 27 371 \$1;
 #X obj 26 55 t a a;
-#X obj 26 147 fluid.bufstats -select mean -outlierscutoff 1.5 -numchans
-1, f 32;
+#X obj 26 147 fluid.bufstats -select mean -outlierscutoff 1.5 -numchans 1, f 32;
 #X obj 27 246 t b a;
 #X connect 0 0 12 0;
 #X connect 1 0 2 0;
@@ -562,15 +502,13 @@ help.bufstats.src.3, f 32;
 #X connect 14 1 5 0;
 #X restore 356 516 pd weighted_by_confidence_and_outliers_cutoff;
 #X f 22;
-#X obj 16 398 fluid.bufpitch -source help.bufstats.src.3 -startframe
-42250 -numframes 44100;
+#X obj 16 398 fluid.bufpitch -source help.bufstats.src.3 -startframe 42250 -numframes 44100;
 #N canvas 1525 -987 637 766 pitch_analysis_comparison 0;
 #X obj 73 73 inlet;
 #X obj 77 637 outlet~;
 #X obj 357 611 *~ 0.1;
 #X obj 357 637 outlet~;
-#X obj 434 445 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 434 445 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 475 512 0 5;
 #X obj 475 485 delay 995;
 #X obj 434 541 line~;
@@ -617,8 +555,7 @@ help.bufstats.src.3, f 32;
 #X connect 21 2 12 0;
 #X restore 16 768 pd pitch_analysis_comparison;
 #X obj 16 800 fluid.out~ bufstatshelp;
-#X obj 209 639 vradio 30 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 209 639 vradio 30 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 242 698 weighted by confidence and outliers cutoff, f 23;
 #X text 421 670 <-, f 30;
 #X text 242 643 just the mean, f 23;
@@ -628,12 +565,9 @@ help.bufstats.src.3, f 32;
 #X floatatom 186 556 5 0 0 0 - - - 0;
 #X floatatom 356 566 5 0 0 0 - - - 0;
 #X obj 16 493 t a a a, f 49;
-#X text 409 226 2) listen to the source (an acoustic bass), f 23;
-#X obj 443 632 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 443 631 4) Play back the section of the source that was analysed
-alongside a sine tone at the detected frequency. Decide which one is
-the closest for yourself!, f 27;
+#X obj 443 632 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 443 631 4) Play back the section of the source that was analysed alongside a sine tone at the detected frequency. Decide which one is the closest for yourself!, f 27;
+#X text 409 226 2) listen to the source (a scratchy synth), f 23;
 #X connect 5 0 13 0;
 #X connect 6 0 14 0;
 #X connect 10 0 21 0;
@@ -658,12 +592,9 @@ the closest for yourself!, f 27;
 #X connect 33 2 20 0;
 #X restore 468 631 pd weighted_statistics;
 #N canvas 134 49 693 684 multichannel 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 22 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 22 310 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 22 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 22 310 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 741 516 859 503 composer 0;
 #X obj 37 37 inlet;
 #X obj 57 193 until;
@@ -677,8 +608,7 @@ the closest for yourself!, f 27;
 #X obj 57 314 / 100;
 #X obj 250 357 expr random(0 \, 100001) * 1e-05;
 #X obj 267 403 tabwrite help.bufstats.src-1;
-#X msg 138 121 \; help.bufstats.src-0 const \; help.bufstats.src-1
-const;
+#X msg 138 121 \; help.bufstats.src-0 const \; help.bufstats.src-1 const;
 #X obj 48 405 tabwrite help.bufstats.src-0;
 #X connect 0 0 6 0;
 #X connect 1 0 3 0;
@@ -817,22 +747,16 @@ const;
 #X connect 15 6 14 0;
 #X coords 0 -1 1 1 144 150 1 100 100;
 #X restore 352 488 pd stats on data;
-#X obj 22 333 fluid.bufstats -source help.bufstats.src -stats help.bufstats.dst
--numderivs 1, f 88;
+#X obj 22 333 fluid.bufstats -source help.bufstats.src -stats help.bufstats.dst -numderivs 1, f 88;
 #X obj 352 422 array get help.bufstats.dst-1 0;
 #X obj 22 420 array get help.bufstats.dst-0 0;
 #X obj 353 657 clone 2 fluid.multiarray help.bufstats.dst;
-#X obj 44 85 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 41 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 64 392 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 44 83 1) compose an artificially wide "stereo" array - a line
-on the left channel \, and noise on the right channel, f 76;
+#X obj 44 85 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 41 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 64 392 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 44 83 1) compose an artificially wide "stereo" array - a line on the left channel \, and noise on the right channel, f 76;
 #X text 41 309 2) process;
-#X text 65 391 3) retrieves the stats of channel 0 and channel 1 separately
-;
+#X text 65 391 3) retrieves the stats of channel 0 and channel 1 separately;
 #X connect 1 0 3 0;
 #X connect 2 0 13 0;
 #X connect 3 0 2 0;
@@ -847,55 +771,35 @@ on the left channel \, and noise on the right channel, f 76;
 #X connect 15 0 7 0;
 #X restore 468 653 pd multichannel;
 #X text 17 79 Statistical analysis on array channels.;
-#X obj 17 174 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000
-#000000 0;
+#X obj 17 174 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 36 172 ramp up;
 #X text 36 187 ramp down;
 #X text 36 202 sine;
 #X text 36 217 random;
 #X obj 16 653 array define help.bufstats.stats.1 14;
-#X obj 251 168 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 251 234 fluid.bufstats -source help.bufstats.src.1 -stats help.bufstats.stats.1
--numderivs 1, f 43;
+#X obj 251 168 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 251 234 fluid.bufstats -source help.bufstats.src.1 -stats help.bufstats.stats.1 -numderivs 1, f 43;
 #N canvas 139 82 693 620 select 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 17 70 You can also select which outputs should even be copied
-to the destination buffer. This removes the need for a fluid.bufselect~
-to capture descriptors you care about., f 83;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstats 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 70 You can also select which outputs should even be copied to the destination buffer. This removes the need for a fluid.bufselect~ to capture descriptors you care about., f 83;
 #X obj 22 553 array define help.bufstats.select.src;
 #X obj 20 184 soundfiler;
-#X msg 20 148 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-help.bufstats.select.src;
+#X msg 20 148 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav help.bufstats.select.src;
 #X msg 23 250 select mean skew \, bang;
 #X msg 51 282 select mean std skew kurtosis low mid high \, bang;
 #X msg 82 311 select skew mean \, bang;
 #X obj 22 575 array define help.bufstats.select.dst;
-#X obj 23 459 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 23 423 fluid.bufstats -source help.bufstats.select.src -stats
-help.bufstats.select.dst, f 47;
+#X obj 23 459 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 23 423 fluid.bufstats -source help.bufstats.select.src -stats help.bufstats.select.dst, f 47;
 #X obj 23 479 array get help.bufstats.select.dst;
 #X listbox 23 502 71 0 0 0 - - - 0;
-#X obj 93 341 cnv 15 580 75 empty empty empty 4 10 0 13 #e0e0e0 #404040
-0;
-#X text 98 343 No matter what order you specify the selection in \,
-the order that those choices are returned will follow the same order
-as if you didn't select any. A good trick for getting the order is
-to see the attributes listed out in the object when no -select is chosen.
-Think of this parameter like a filter \, rather than a reordering of
-the outputs., f 81;
-#X obj 20 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 191 250 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 247 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 405 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 93 341 cnv 15 580 75 empty empty empty 4 10 0 13 #e0e0e0 #404040 0;
+#X text 98 343 No matter what order you specify the selection in \, the order that those choices are returned will follow the same order as if you didn't select any. A good trick for getting the order is to see the attributes listed out in the object when no -select is chosen. Think of this parameter like a filter \, rather than a reordering of the outputs., f 81;
+#X obj 20 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 191 250 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 247 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 405 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 19 127 1) Load a soundfile;
 #X text 191 249 2) Only returns the mean and skew;
 #X text 403 282 3) Back to default;
@@ -987,10 +891,8 @@ the outputs., f 81;
 #X connect 9 0 3 0;
 #X restore 281 208 pd changing_the_centiles;
 #X obj 468 675 note_on_automatic_multiarrays;
-#X obj 14 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 273 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 14 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 273 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 13 146 1) Select a source;
 #X text 273 166 2) Process the statistics;
 #X connect 12 0 0 0;
