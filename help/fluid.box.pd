@@ -1,6 +1,5 @@
-#N canvas 1522 -1046 1163 822 12;
-#X obj 101 101 cnv 15 40 40 empty \$0-col empty 20 12 0 14 #e3e38e
-#fcfcfc 0;
+#N canvas 143 148 1163 822 12;
+#X obj 101 101 cnv 15 40 40 empty \$0-col empty 20 12 0 14 #e3e3e3 #fcfcfc 0;
 #X obj 220 83 inlet;
 #X obj 220 726 s \$0-col;
 #X obj 392 543 makefilename %02x;
