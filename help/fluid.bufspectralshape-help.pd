@@ -1,20 +1,12 @@
 #N canvas 8 41 700 728 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22
-0 36 #4ba3fb #ffffff 0;
-#X obj 465 592 cnv 15 215 110 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufspectralshape.html reference/bufspectralshape/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Seven\\\ Spectral\\\ Shape\\\ Descriptors\\\ on\\\ a\\\ Buffer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Seven of the spectral shape descriptors \, computed on
-a linear scale for both amplitude and frequency.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 465 592 cnv 15 215 110 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufspectralshape.html reference/bufspectralshape/;
+#X obj 17 60 cnv 15 488 17 empty empty Seven\ Spectral\ Shape\ Descriptors\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Seven of the spectral shape descriptors \, computed on a linear scale for both amplitude and frequency.;
 #N canvas 119 59 706 918 layout_of_results 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22
-0 36 #4ba3fb #ffffff 0;
-#X text 17 79 fluid.bufspectralshape~ outputs its results to a buffer
-where each channel is a different descriptor and each "frame" is a
-window of spectral analysis.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 79 fluid.bufspectralshape~ outputs its results to a buffer where each channel is a different descriptor and each "frame" is a window of spectral analysis.;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -26,22 +18,17 @@ window of spectral analysis.;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 18 228 pd loadsrc;
-#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 180 fluid.demoaudiofiles;
 #X text 19 161 1) select a source;
 #X obj 435 176 array define help.specshape.2.src;
-#X obj 18 279 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 18 299 fluid.bufspectralshape -source help.specshape.2.src -features
-help.specshape.2.features -numchans 1;
-#X obj 435 206 clone 7 fluid.multiarray help.specshape.2.features,
-f 31;
+#X obj 18 279 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 18 299 fluid.bufspectralshape -source help.specshape.2.src -features help.specshape.2.features -numchans 1;
+#X obj 435 206 clone 7 fluid.multiarray help.specshape.2.features, f 31;
 #X floatatom 17 357 5 0 0 0 - - - 0;
 #X obj 140 421 loadbang;
 #X msg 140 446 0;
-#X obj 140 487 vradio 15 1 0 7 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 140 487 vradio 15 1 0 7 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 156 499 spread, f 13;
 #X text 156 514 skewness, f 13;
 #X text 156 529 kurtosis, f 13;
@@ -52,8 +39,7 @@ f 31;
 #X msg 140 619 symbol help.specshape.2.features-\$1, f 30;
 #X floatatom 17 802 5 0 0 0 - - - 0;
 #X text 59 802 value;
-#X obj 38 279 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 38 279 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 39 279 2) Do spectral shape analysis;
 #N canvas 1876 -561 678 492 draw_visualisation 0;
 #X obj 37 61 t a a, f 26;
@@ -66,13 +52,11 @@ f 31;
 #X connect 2 0 1 0;
 #X connect 4 0 0 0;
 #X restore 209 714 pd draw_visualisation;
-#X obj 192 742 hsl 345 100 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#e3c6ff #000000 0 1;
+#X obj 192 742 hsl 345 100 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #e3c6ff #000000 0 1;
 #X obj 189 742 fluid.waveform 350 100 1 empty empty 0;
 #N canvas 1838 -1021 450 300 indexwave 0;
 #X obj 24 24 inlet;
-#X obj 131 102 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 131 102 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 137 150 6 0 0 0 - - - 0;
 #X obj 25 191 outlet;
 #X obj 131 74 r draw;
@@ -86,12 +70,10 @@ f 31;
 #X connect 6 0 5 1;
 #X restore 189 693 pd indexwave;
 #X obj 17 662 t f f, f 25;
-#X obj 268 529 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 268 529 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 163 484 centroid, f 12;
 #X text 269 529 4) Select one of the seven descriptors;
-#X obj 58 359 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 58 359 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 59 359 3) Select a frame of analysis;
 #X connect 2 0 7 0;
 #X connect 4 0 2 0;
@@ -108,10 +90,8 @@ f 31;
 #X connect 30 1 29 0;
 #X restore 468 612 pd layout_of_results;
 #N canvas 216 104 711 872 select 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22
-0 36 #4ba3fb #ffffff 0;
-#X text 17 79 Seven of the spectral shape descriptors \, computed on
-a linear scale for both amplitude and frequency.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 79 Seven of the spectral shape descriptors \, computed on a linear scale for both amplitude and frequency.;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -119,45 +99,33 @@ a linear scale for both amplitude and frequency.;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 18 228 pd loadsrc;
-#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 180 fluid.demoaudiofiles;
 #X text 19 161 1) select a source;
 #X obj 445 176 array define help.specshape.3.src;
-#X obj 18 588 fluid.bufspectralshape -source help.specshape.3.src -features
-help.specshape.3.features -numchans 1;
-#X text 105 265 No matter what order you specify the selection in \,
-the order that those choices are returned will follow the same order
-as if you didn't select any. A good trick for getting the order is
-to see the attributes listed out in the object when no '-select' is
-chosen., f 63;
-#X text 105 355 Think of this parameter like a filter \, rather than
-a reordering of the outputs., f 63;
+#X obj 18 588 fluid.bufspectralshape -source help.specshape.3.src -features help.specshape.3.features -numchans 1;
+#X text 105 265 No matter what order you specify the selection in \, the order that those choices are returned will follow the same order as if you didn't select any. A good trick for getting the order is to see the attributes listed out in the object when no '-select' is chosen., f 63;
+#X text 105 355 Think of this parameter like a filter \, rather than a reordering of the outputs., f 63;
 #X msg 39 450 select centroid skew \, bang;
-#X obj 18 409 cnv 15 500 20 empty empty order:\ centroid\ /\ spread\ /\ skew\ /\ kurtosis\ /\ rolloff\ /\ flatness\ /\ crest
-3 10 0 12 #c6ffc7 #404040 0;
+#X obj 18 409 cnv 15 500 20 empty empty order:\ centroid\ /\ spread\ /\ skew\ /\ kurtosis\ /\ rolloff\ /\ flatness\ /\ crest 3 10 0 12 #c6ffc7 #404040 0;
 #X msg 59 490 select skew centroid \, bang;
 #X msg 79 530 select skew kurtosis centroid \, bang;
 #X text 250 448 only return the centroid and skew;
 #X text 261 487 this is actually the same as above;
-#X msg 18 631 features help.specshape.3.features;
 #X obj 18 661 fluid.waveform 480 110 1 empty empty 0;
-#X obj 445 205 clone 7 fluid.multiarray help.specshape.3.features,
-f 33;
+#X obj 445 205 clone 7 fluid.multiarray help.specshape.3.features, f 33;
+#X msg 18 631 waveform help.specshape.3.src \, features help.specshape.3.features, f 65;
 #X connect 4 0 2 0;
-#X connect 7 0 16 0;
+#X connect 7 0 18 0;
 #X connect 10 0 7 0;
 #X connect 12 0 7 0;
 #X connect 13 0 7 0;
-#X connect 16 0 17 0;
+#X connect 18 0 16 0;
 #X restore 468 634 pd select;
-#X obj 17 326 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 17 346 fluid.bufspectralshape -source help.specshape.src -features
-help.specshape.features -numchans 1;
+#X obj 17 326 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 17 346 fluid.bufspectralshape -source help.specshape.src -features help.specshape.features -numchans 1;
 #X obj 453 176 array define help.specshape.src;
-#X obj 453 206 clone 7 fluid.multiarray help.specshape.features, f
-31;
+#X obj 453 206 clone 7 fluid.multiarray help.specshape.features, f 31;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -165,8 +133,7 @@ help.specshape.features -numchans 1;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 18 228 pd loadsrc;
-#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 180 fluid.demoaudiofiles;
 #X text 19 161 1) select a source;
 #N canvas 1433 -768 477 251 drawing_commands 0;
@@ -182,11 +149,9 @@ help.specshape.features -numchans 1;
 #X connect 4 1 3 0;
 #X restore 17 384 pd drawing_commands;
 #X obj 17 408 fluid.waveform 490 100 0 empty empty 0;
-#X obj 38 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 38 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 38 325 2) Do spectral shape analysis;
-#X text 515 422 Use the mouse to scrub through different parts of the
-audio file and retrieve the analysis, f 24;
+#X text 515 422 Use the mouse to scrub through different parts of the audio file and retrieve the analysis, f 24;
 #N canvas 998 -1001 1511 939 feature_lookup 0;
 #X obj 102 -580 inlet;
 #X obj 103 -396 *;
@@ -273,8 +238,7 @@ audio file and retrieve the analysis, f 24;
 #X connect 41 0 28 0;
 #X coords 0 -1 1 1 185 160 1 100 100;
 #X restore 17 543 pd feature_lookup;
-#X text 213 547 These are the features taken from reading the arrays
-, f 14;
+#X text 213 547 These are the features taken from reading the arrays, f 14;
 #X obj 468 678 note_on_multithreading;
 #X obj 468 656 note_on_automatic_multiarrays;
 #X connect 7 0 8 0;
