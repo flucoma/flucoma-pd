@@ -1,34 +1,24 @@
-#N struct 1021-rectangle float x float c;
-#N struct 1021-pixel float x0 float y0 float x1 float y1;
+#N struct 1392-rectangle float x float c;
+#N struct 1392-pixel float x0 float y0 float x1 float y1;
 #N canvas 31 42 695 748 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.stats 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 536 683 cnv 15 140 46 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.stats.html reference/stats/
-;
-#X obj 56 189 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 17 79 Rolling mean and standard deviation on control inputs
-;
-#X text 17 119 Computes the rolling mean and sample standard deviation
-over a given window for multichannel control inputs.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.stats 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 536 683 cnv 15 140 46 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.stats.html reference/stats/;
+#X obj 56 189 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 17 79 Rolling mean and standard deviation on control inputs;
+#X text 17 119 Computes the rolling mean and sample standard deviation over a given window for multichannel control inputs.;
 #X text 57 188 1) switch the message rate noise generator on;
-#X obj 22 189 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#N canvas 1292 -1011 697 822 a_real_use_case 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.stats 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 22 189 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#N canvas 135 76 697 822 a_real_use_case 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.stats 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 smoothing a stream of audio descriptors;
-#X obj 41 129 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 41 129 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 41 197 readsf~;
 #X msg 66 149 0;
 #X text 97 149 stop;
 #X obj 190 245 fluid.out~ helpstats;
 #X msg 41 173 open media/Tremblay-AaS-AcBassGuit-Melo-M.wav \, 1;
-#X obj 41 106 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 41 106 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 41 283 fluid.mfcc~ 20 -startcoeff 1;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.stats.array.mfcc 20 float 2;
@@ -41,24 +31,17 @@ over a given window for multichannel control inputs.;
 #X obj 41 462 fluid.stats 20 -history 15;
 #X obj 51 310 array set help.stats.array.mfcc;
 #X text 42 105 2) play the acoustic bass sample;
-#X obj 259 250 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 259 250 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 260 249 1) audio on, f 57;
 #X text 258 355 The raw MFCC values of the current frame., f 57;
 #X obj 41 489 array set help.stats.array.mean;
-#X text 261 532 The mean values of the last 15 MFCC frames. The changes
-are much smoother because the mean of the last 15 frames is being taken
-instead of the raw values., f 57;
+#X text 261 532 The mean values of the last 15 MFCC frames. The changes are much smoother because the mean of the last 15 frames is being taken instead of the raw values., f 57;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.stats.array.stddev 20 float 2;
 #X coords 0 10 20 -10 200 50 1 0 0;
 #X restore 51 616 graph;
 #X obj 271 489 array set help.stats.array.stddev;
-#X text 261 612 The standard deviations of each coefficient. Higher
-values mean that they have deviated from the mean more over the history
-of the fluid.stats object. You might like to think of this as its own
-kind of descriptor that can indicate variation or how sporadic the
-data is over time., f 57;
+#X text 261 612 The standard deviations of each coefficient. Higher values mean that they have deviated from the mean more over the history of the fluid.stats object. You might like to think of this as its own kind of descriptor that can indicate variation or how sporadic the data is over time., f 57;
 #X connect 2 0 7 0;
 #X connect 3 0 6 0;
 #X connect 3 0 6 1;
