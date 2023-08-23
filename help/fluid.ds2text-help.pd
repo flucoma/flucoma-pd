@@ -41,37 +41,24 @@
 #X obj 21 263 t f f;
 #X msg 21 346 setpoint entry-\$1 input;
 #X obj 21 681 text define myText;
-#X obj 21 537 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 21 537 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 21 436 fluid.dataset myDS;
 #X obj 21 579 fluid.ds2text myDS myText;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.ds2text 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.ds2text.html reference/ds2text/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Convert\\\ FluCoMa\\\ DataSet\\\ into\\\ text
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ds2text 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.ds2text.html reference/ds2text/;
+#X obj 17 60 cnv 15 488 17 empty empty Convert\ FluCoMa\ DataSet\ into\ text 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 A utility object to convert a dataset into text.;
-#X text 19 194 Message '-1' will store a dataset point with an identifier
-'entry--1' and data which is the list of values in the array., f 61
-;
+#X text 131 228 Message '-1' will store a dataset point with an identifier 'entry--1' and data which is the list of values in the array., f 61;
 #X text 169 285 create values in array 'input', f 16;
 #X obj 571 679 fluid.ls2text;
 #X text 495 679 see also:;
-#X obj 19 135 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 87 387 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 42 535 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 18 134 1) Click these to populate an array with values and
-save those in dataset myDS.;
-#X text 42 535 3) Click to convert the myDS dataset and save it in
-text object myText, f 36;
-#X text 87 388 2) Click to see the DataSet printed in the Pd window
-, f 28;
-#X obj 19 651 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 189 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 87 387 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 42 535 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 17 188 1) Click these to populate an array with values and save those in dataset myDS.;
+#X text 42 535 3) Click to convert the myDS dataset and save it in text object myText, f 36;
+#X text 87 388 2) Click to see the DataSet printed in the Pd window, f 28;
+#X obj 19 651 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 20 650 4) Click on Text object to see its content;
 #X connect 2 0 11 0;
 #X connect 3 0 7 0;
