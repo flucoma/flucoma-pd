@@ -1,0 +1,15 @@
+* text=auto
+
+*.cpp text
+*.gitignore text
+*.h text
+*.md text
+*.cmake text
+*.yml text
+*.c text
+*.txt text
+*.hpp text
+*.html text
+*.pd text
+
+*.png binary
