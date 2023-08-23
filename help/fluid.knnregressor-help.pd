@@ -1,24 +1,17 @@
-#N canvas 37 88 701 961 12;
+#N canvas 37 25 701 792 12;
 #X obj 40 570 fluid.knnregressor;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.knnregressor 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.knnregressor.html reference/knnregressor/
-;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.knnregressor 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.knnregressor.html reference/knnregressor/;
 #X text 17 79 Regression with K-Nearest Neighbours;
-#X text 17 129 Regression between DataSets using weighted average of
-neighbours;
+#X text 17 129 Regression between DataSets using weighted average of neighbours;
 #X obj 39 183 loadbang;
-#X obj 39 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 195 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 351 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 39 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 195 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 351 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 0 38 637 563 linear_ramp 0;
 #X obj 37 11 inlet;
 #X obj 37 397 outlet;
-#X obj 37 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 37 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 37 205 f;
 #X obj 76 204 + 1;
 #X obj 76 228 % 100;
@@ -54,8 +47,7 @@ neighbours;
 #N canvas 967 174 652 714 sinusoid 0;
 #X obj 67 11 inlet;
 #X obj 67 487 outlet;
-#X obj 67 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 67 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 67 205 f;
 #X obj 106 204 + 1;
 #X obj 106 228 % 100;
@@ -89,8 +81,7 @@ neighbours;
 #N canvas 1315 23 733 734 exponential_ramp 0;
 #X obj 187 11 inlet;
 #X obj 187 427 outlet;
-#X obj 187 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 187 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 187 205 f;
 #X obj 226 204 + 1;
 #X obj 226 228 % 100;
@@ -142,48 +133,33 @@ neighbours;
 #X msg 40 413 clear;
 #X msg 60 463 fit help.knnreg.in help.knnreg.out, f 21;
 #X obj 40 609 route predict fit, f 23;
-#X obj 119 638 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 119 638 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 40 697 fluid.dataset help.knnreg.predict;
-#X obj 40 821 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 40 821 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 60 818 store dataset into a text object;
-#X text 237 900 <- double-click 'text' to see data, f 18;
-#X obj 40 846 fluid.ds2text help.knnreg.predict help.knnreg.predict.text
-, f 27;
-#X msg 90 520 predict help.knnreg.query help.knnreg.predict, f 29
-;
+#X obj 40 846 fluid.ds2text help.knnreg.predict help.knnreg.predict.text, f 27;
+#X msg 90 520 predict help.knnreg.query help.knnreg.predict, f 29;
 #X obj 351 277 fluid.dataset help.knnreg.query, f 21;
 #X obj 40 900 text define help.knnreg.predict.text;
 #X f 27;
-#X obj 94 413 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 94 413 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 95 412 1) start by resetting the neural network;
-#X obj 230 463 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 231 462 2) now fit two fluid.dataset~s against each other,
-f 31;
-#X obj 316 520 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 317 519 3) Predict the output for the given input dataset,
-f 26;
+#X obj 230 463 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 231 462 2) now fit two fluid.dataset~s against each other, f 31;
+#X obj 316 520 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 317 519 3) Predict the output for the given input dataset, f 26;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.knnreg.display 100 float 2;
 #X coords 0 1 100 -1 260 40 1 0 0;
 #X restore 222 755 graph;
 #X msg 40 668 tobuffer help.knnreg.display;
-#X text 520 272 Each of these arrays is representative of a dataset.
-, f 20;
-#X text 520 345 Look inside the sub patchers to see how that works.
-, f 20;
-#X text 504 681 Predicting the outputs for an exponential ramp shows
-how the mapping works., f 24;
-#X text 504 751 We have a quasi-exponential sine wave here as a result
-of predicting based on the curved ramp of help.knnreg.query, f 24
-;
-#X obj 489 888 cnv 15 192 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X text 520 272 Each of these arrays is representative of a dataset., f 20;
+#X text 520 345 Look inside the sub patchers to see how that works., f 20;
+#X text 504 681 Predicting the outputs for an exponential ramp shows how the mapping works., f 24;
+#X text 504 751 We have a quasi-exponential sine wave here as a result of predicting based on the curved ramp of help.knnreg.query, f 24;
+#X obj 489 888 cnv 15 192 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 491 915 note_on_automatic_datasets;
+#X text 237 900 <- click 'text' to see data, f 18;
 #X connect 0 0 19 0;
 #X connect 5 0 6 0;
 #X connect 5 0 7 0;
@@ -193,11 +169,11 @@ of predicting based on the curved ramp of help.knnreg.query, f 24
 #X connect 8 0 11 0;
 #X connect 9 0 13 0;
 #X connect 10 0 14 0;
-#X connect 11 0 27 0;
+#X connect 11 0 26 0;
 #X connect 17 0 0 0;
 #X connect 18 0 0 0;
-#X connect 19 0 36 0;
+#X connect 19 0 35 0;
 #X connect 19 1 20 0;
-#X connect 22 0 25 0;
-#X connect 26 0 0 0;
-#X connect 36 0 21 0;
+#X connect 22 0 24 0;
+#X connect 25 0 0 0;
+#X connect 35 0 21 0;
