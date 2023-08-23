@@ -1,12 +1,6 @@
 #N canvas 37 41 697 441 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufinfo 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Retrieve\\\ the\\\ size\\\ of\\\ a\\\ fluid.multiarray
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 92 This utility object test the validity \, the size in
-frames and the number of channels of a fluid.multiarray \, either when
-created via the clone object \, or programmatically with automatically
-generated 'buffers'., f 68;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufinfo 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Retrieve\ the\ size\ of\ a\ fluid.multiarray 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 23 303 fluid.bufinfo;
 #X obj 173 400 clone 3 fluid.multiarray bufinfo1 10;
 #X msg 23 202 buffer bufinfo1;
@@ -25,14 +19,9 @@ generated 'buffers'., f 68;
 #X msg 37 268 buffer bufinfo3;
 #X obj 525 180 note_on_multiarrays;
 #N canvas 277 114 696 509 auto_managed_buffers 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufinfo 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Automatically\\\ managed\\\ buffers
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 92 Many objects \, when not provided with a destination
-buffer \, will create a multichannel array. The advantage is two-fold:
-it can be dynamically resized \, and it removes many temporary intermediate
-multiarrays., f 89;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufinfo 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Automatically\ managed\ buffers 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 92 Many objects \, when not provided with a destination buffer \, will create a multichannel array. The advantage is two-fold: it can be dynamically resized \, and it removes many temporary intermediate multiarrays., f 89;
 #X obj 20 199 soundfiler;
 #X obj 20 219 t b;
 #X obj 20 294 t a a, f 18;
@@ -41,25 +30,19 @@ multiarrays., f 89;
 #X obj 308 271 array define bufinfo_source;
 #X obj 20 338 list prepend, f 18;
 #X listbox 20 361 33 0 0 0 - - - 0;
-#X msg 32 173 read -resize media/Tremblay-AaS-AcBassGuit-Melo-M.wav
-bufinfo_source, f 68;
+#X msg 32 173 read -resize media/Tremblay-AaS-AcBassGuit-Melo-M.wav bufinfo_source, f 68;
 #X obj 20 271 fluid.bufmfcc 26 -source bufinfo_source;
 #X floatatom 122 222 5 0 0 0 - - - 0;
 #X msg 122 244 numcoeffs \$1;
 #X obj 293 380 array get;
 #X msg 359 317 symbol \$1-0;
-#X obj 293 360 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 293 360 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X listbox 293 403 51 0 0 0 - - - 0;
 #X obj 29 469 note_on_automatic_multiarrays;
-#X obj 229 219 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 228 218 1) load different files \, and change the number of
-coeffcients, f 62;
-#X obj 336 359 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 310 357 <-- 2) retrieve a channel's content with pd objects
-;
+#X obj 229 219 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 228 218 1) load different files \, and change the number of coeffcients, f 62;
+#X obj 336 359 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 310 357 <-- 2) retrieve a channel's content with pd objects;
 #X connect 3 0 4 0;
 #X connect 4 0 12 0;
 #X connect 5 0 6 0;
@@ -76,18 +59,15 @@ coeffcients, f 62;
 #X connect 16 0 15 2;
 #X connect 17 0 15 0;
 #X restore 498 207 pd auto_managed_buffers;
-#X obj 509 60 fluid.referencelauncher fluid.bufinfo.html reference/bufinfo/
-;
-#X obj 23 179 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 509 60 fluid.referencelauncher fluid.bufinfo.html reference/bufinfo/;
+#X obj 23 179 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 24 179 1) try on a fluid.multiarray;
-#X obj 149 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 157 268 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 150 236 2) works on native arrays too...c;
+#X obj 149 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 157 268 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 157 267 3) ... and on constructed stereo;
-#X connect 3 0 6 0;
-#X connect 5 0 3 0;
-#X connect 9 0 3 0;
-#X connect 12 0 3 0;
+#X text 150 236 2) works on native arrays too...;
+#X text 17 92 This utility object tests the validity \, the size in frames and the number of channels of a fluid.multiarray \, either when created via the clone object \, or programmatically with automatically generated 'buffers'., f 68;
+#X connect 2 0 5 0;
+#X connect 4 0 2 0;
+#X connect 8 0 2 0;
+#X connect 11 0 2 0;
