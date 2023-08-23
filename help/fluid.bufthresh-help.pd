@@ -1,24 +1,18 @@
 #N canvas 151 184 692 598 12;
-#X floatatom 23 181 5 0 0 0 - - - 0;
+#X floatatom 23 181 5 -1 1 0 - - - 0;
 #X msg 23 201 threshold \$1 \, bang;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufthresh 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufthresh.html reference/bufthresh/
-;
-#X obj 17 60 cnv 15 488 17 empty empty A\\\ Gate\\\ Processor\\\ for\\\ Buffers
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Replace all values of a buffer under the given threshold
-with 0 and copy the result to a destination buffer.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufthresh 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufthresh.html reference/bufthresh/;
+#X obj 17 60 cnv 15 488 17 empty empty A\ Gate\ Processor\ for\ Buffers 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Replace all values of a buffer under the given threshold with 0 and copy the result to a destination buffer.;
 #N canvas 1094 23 554 314 fillarrays 0;
 #X obj 15 17 loadbang;
-#X msg 15 124 \; stereoinput-1 sinesum 256 1 0 0.33 0 0.2 0 0.14 0
-0.11 0 0.09;
+#X msg 15 124 \; stereoinput-1 sinesum 256 1 0 0.33 0 0.2 0 0.14 0 0.11 0 0.09;
 #X msg 46 82 \; stereoinput-0 sinesum 256 0 0 0 0 0 0 0 0 1;
 #X connect 0 0 2 0;
 #X connect 0 0 1 0;
 #X restore 574 162 pd fillarrays;
-#X obj 23 262 fluid.bufthresh -source stereoinput -destination stereooutput
--threshold 0.5;
+#X obj 23 262 fluid.bufthresh -source stereoinput -destination stereooutput -threshold 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array stereooutput-0 259 float 2;
 #X coords 0 1 259 -1 258 66 1 0 0;
@@ -36,11 +30,9 @@ with 0 and copy the result to a destination buffer.;
 #X coords 0 1 258 -1 258 66 1 0 0;
 #X restore 306 334 graph;
 #X obj 37 237 loadbang;
-#X obj 458 526 cnv 15 215 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 458 526 cnv 15 215 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 463 550 note_on_automatic_multiarrays;
-#X obj 64 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 64 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 64 179 1) change the threshold and observe the output.;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
