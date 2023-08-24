@@ -499,7 +499,7 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
 
   struct NoStreamingListInput
   {
-    void operator()(FluidPDWrapper*, long, t_atom*) {}
+    void operator()(FluidPDWrapper*, index, long, t_atom*) {}
   };
 
   using ListInputHandler =
@@ -981,8 +981,7 @@ public:
       : mListSize{32}, mDumpOutlet{nullptr},
         mParams(Client::getParameterDescriptors(), FluidDefaultAllocator()),
         mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av),
-                                                   FluidContext()},
-        mCanvas{canvas_getcurrent()}
+        FluidContext()}, mAutosize{true}, mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
@@ -996,7 +995,6 @@ public:
     
     if (index controlIns = mClient.controlChannelsIn())
     {
-//      mAutosize = true;
       if (mListSize)
       {
         mInputListData.resize(controlIns, mListSize);
@@ -1249,12 +1247,12 @@ public:
   {
     void* x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
-    static constexpr index hasListInput = isControlOutFollowsIn<typename Client::Client>;
-    if (static_cast<index>(paramArgOffset(ac, av) - hasListInput) >
+    static constexpr index numListArgs = isControlOutFollowsIn<typename Client::Client>;
+    if (static_cast<index>(paramArgOffset(ac, av) - numListArgs) >
         ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
-                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput);
+                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + numListArgs);
     }
 
     return x;
@@ -1456,7 +1454,7 @@ private:
     {
       long argCount{0};
       
-      if(isControlIn<typename Client::Client>)
+      if(isControlOutFollowsIn<typename Client::Client>)
       {
         mListSize = atom_getint(av);
         numArgs -= 1;
