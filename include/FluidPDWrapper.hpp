@@ -473,8 +473,6 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     {
       FluidContext c;
       
-//      post("which:%d\n",which);
-
       index count = std::min<index>(x->mListSize, ac);
       for (index i = 0; i < count; ++i)
         x->mInputListData[which][i] = atom_getfloat(av + i);
@@ -482,14 +480,17 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
       if (!which) {
         x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
 
-        for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i) {
-          index count = std::min<index>(x->mListSize, ac);
-          for (index j = 0; j < count; ++j) {
+        index outSize = isControlOutFollowsIn<typename Client::Client> ? std::min<index>(x->mListSize, ac) : x->mClient.controlChannelsOut().size;
+
+        for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i) // check order
+        {
+          assert(x->mOutputListData[i].size() >= outSize);
+          for (index j = 0; j < outSize; ++j) {
             SETFLOAT(x->mOutputListAtoms.data() + j,
                      static_cast<float>(x->mOutputListData[i][j]));
           }
           outlet_list(x->mDataOutlets[asUnsigned(i)], gensym("list"),
-                      static_cast<int>(x->mListSize),
+                      static_cast<int>(outSize),
                       x->mOutputListAtoms.data());
         }
       }
@@ -995,7 +996,7 @@ public:
     
     if (index controlIns = mClient.controlChannelsIn())
     {
-      mAutosize = true;
+//      mAutosize = true;
       if (mListSize)
       {
         mInputListData.resize(controlIns, mListSize);
@@ -1036,10 +1037,14 @@ public:
 
     if (mClient.controlChannelsOut().count) 
     {
-      if(mListSize)
+      index outputSize = isControlOutFollowsIn<typename Client::Client>
+                         ? mListSize
+                         : mClient.controlChannelsOut().max;
+
+      if(outputSize > 0)
       {
-        mOutputListData.resize(mClient.controlChannelsOut().count, mListSize);
-        mOutputListAtoms.reserve(asUnsigned(mListSize));
+        mOutputListData.resize(mClient.controlChannelsOut().count, outputSize);
+        mOutputListAtoms.reserve(asUnsigned(outputSize));
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
           mOutputListViews.emplace_back(mOutputListData.row(i));
       }
@@ -1213,6 +1218,9 @@ public:
       mParams.template forEachParam<MatchName>(s->s_name + 1, matched);
       if (!strcmp(s->s_name + 1, "warnings")) matched = true;
 
+      if (!strcmp(s->s_name + 1, "autosize"))
+        matched = true;
+
       if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "blocking"))
         matched = true;
 
@@ -1241,11 +1249,9 @@ public:
   {
     void* x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
-    
-    static constexpr bool hasListInput = isControlIn<typename Client::Client>;
-    
-    if (static_cast<index>(paramArgOffset(ac, av)) >
-        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput)
+    static constexpr index hasListInput = isControlOutFollowsIn<typename Client::Client>;
+    if (static_cast<index>(paramArgOffset(ac, av) - hasListInput) >
+        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
                         ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput);
@@ -1278,6 +1284,10 @@ public:
       class_addmethod(getClass(), (t_method) handleList, gensym("list"), A_GIMME, 0);
     }
 
+     if (isControlOutFollowsIn<typename Client::Client>)
+     {
+      class_addmethod(getClass(), (t_method) doAutosize, gensym("autosize"), A_FLOAT, 0);
+     }
 
     m.template iterate<SetupMessage>();
 
@@ -1300,6 +1310,12 @@ public:
   {
     x->mVerbose = (bool) warnings;
   }
+    
+    static void doAutosize(FluidPDWrapper* x, t_float autosize)
+    {
+      x->mAutosize = (bool) autosize;
+    }
+
 
   template<class T>
   using HasProcess_t = decltype(std::declval<T&>().process());
@@ -1342,17 +1358,19 @@ public:
 
   void resizeListHandlers(index newSize)
   {
-      index numIns = mClient.controlChannelsIn();
+    if (mListSize != newSize)
+    {
       mListSize = newSize; 
-      if(mListSize)
+      index numIns = mClient.controlChannelsIn();
+      mInputListData.resize(numIns,mListSize);
+      mInputListViews.clear();
+      for (index i = 0; i < numIns; ++i)
       {
-        mInputListData.resize(numIns,mListSize);
-        mInputListViews.clear();
-        for (index i = 0; i < numIns; ++i)
-        {
-          mInputListViews.emplace_back(mInputListData.row(i));
-        }
-        
+        mInputListViews.emplace_back(mInputListData.row(i));
+      }
+
+      if (isControlOutFollowsIn<typename Client::Client>)
+      {      
         mOutputListData.resize(mClient.controlChannelsOut().count,mListSize);
         mOutputListAtoms.reserve(asUnsigned(mListSize));
         mOutputListViews.clear();
@@ -1360,14 +1378,26 @@ public:
         {
           mOutputListViews.emplace_back(mOutputListData.row(i));
         }
-        
       }
+    }
   }
 
   static void doList(FluidPDWrapper* x, index which, t_symbol*, long ac, t_atom* av)
   {
+    if (!x->mListSize && !x->mAutosize)
+    {
+      pd_error(x, "No list size argument nor autosize enabled: can't do anything");
+      return;
+    }
+
+    if (!x->mAutosize && ac != x->mListSize)
+    {
+      object_warn(x, "bad input list size (%d), expect %d",ac,x->mListSize);
+      return;
+    }
+     
+    if (x->mAutosize) x->resizeListHandlers(ac);
     
-    if(ac != x->mListSize) x->resizeListHandlers(ac);
     x->mListHandler(x, which, ac, av);
   }
   
