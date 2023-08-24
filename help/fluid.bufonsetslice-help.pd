@@ -1,14 +1,9 @@
-#N canvas 27 49 697 898 12;
-#X obj 16 18 cnv 15 660 42 empty empty fluid.bufonsetslice 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 463 791 cnv 15 212 88 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 508 65 fluid.referencelauncher fluid.bufonsetslice.html reference/bufonsetslice/
-;
-#X obj 16 65 cnv 15 488 17 empty empty Spectral\\\ Difference-Based\\\ Audio\\\ Buffer\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 16 84 Implements a selection of spectrum-based onset slicers
-;
+#N canvas 27 25 697 798 12;
+#X obj 16 18 cnv 15 660 42 empty empty fluid.bufonsetslice 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 463 791 cnv 15 212 88 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 508 65 fluid.referencelauncher fluid.bufonsetslice.html reference/bufonsetslice/;
+#X obj 16 65 cnv 15 488 17 empty empty Spectral\ Difference-Based\ Audio\ Buffer\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 16 84 Implements a selection of spectrum-based onset slicers;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -21,14 +16,10 @@
 #X obj 17 175 fluid.demoaudiofiles;
 #X obj 440 178 array define help.bufonset.src;
 #X obj 17 611 fluid.waveform 313 130 1 empty empty 0;
-#X obj 97 327 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 117 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 17 157 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 97 517 fluid.bufonsetslice -source help.bufonset.src -indices
-help.bufonset.slices -metric 9 -threshold 0.25;
+#X obj 97 327 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 117 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 17 157 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 97 517 fluid.bufonsetslice -source help.bufonset.src -indices help.bufonset.slices -metric 9 -threshold 0.25;
 #X msg 97 555 indices help.bufonset.slices help.bufonset.src;
 #X obj 440 208 array define help.bufonset.slices;
 #X text 390 484 <-- more parameters;
@@ -44,19 +35,14 @@ help.bufonset.slices -metric 9 -threshold 0.25;
 #X text 28 6 Optional parameters;
 #X obj 29 125 s \$0-params;
 #X text 192 158 for hopsize \, -1 = windowsize/2, f 25;
-#X text 193 100 window size (1024) \, hop size (-1) \, fft size (-1)
-, f 25;
-#X text 192 199 for fftsize \, -1 = windowsize snapped to nearest power
-of 2, f 25;
-#X obj 29 74 cnv 10 340 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X text 193 100 window size (1024) \, hop size (-1) \, fft size (-1), f 25;
+#X text 192 199 for fftsize \, -1 = windowsize snapped to nearest power of 2, f 25;
+#X obj 29 74 cnv 10 340 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 54 FFT settings;
 #X msg 29 102 fftsettings 1024 -1 1;
 #X obj 29 283 s \$0-params;
 #X msg 29 260 maxfftsize -1;
-#X text 193 255 Set an explicit upper bound on the FFT size at object
-instantiation. The default of -1 sets this to whatever the initial
-FFT size is, f 25;
+#X text 193 255 Set an explicit upper bound on the FFT size at object instantiation. The default of -1 sets this to whatever the initial FFT size is, f 25;
 #X msg 419 382 numchans -1;
 #X msg 419 452 numframes -1;
 #X obj 419 685 s \$0-params;
@@ -64,33 +50,24 @@ FFT size is, f 25;
 #X obj 419 615 s \$0-params;
 #X msg 419 522 source symbol;
 #X msg 419 592 startchan symbol;
-#X obj 39 675 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 39 675 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 37 655 Warnings;
 #X obj 39 735 s \$0-params;
 #X msg 39 712 warnings 0;
 #X text 173 710 warnings on(1) or off (0), f 27;
-#X text 573 380 for multichannel source \, how many channels should
-be processed, f 32;
+#X text 573 380 for multichannel source \, how many channels should be processed, f 32;
 #X text 573 450 How many frames should be processed., f 32;
-#X text 573 521 name of the buffer to use as the source material,
-f 32;
-#X text 573 591 for multichannel source \, which channel to start processing
-at., f 32;
-#X obj 419 74 cnv 10 340 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X text 573 521 name of the buffer to use as the source material, f 32;
+#X text 573 591 for multichannel source \, which channel to start processing at., f 32;
+#X obj 419 74 cnv 10 340 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X msg 419 102 filtersize;
-#X text 573 100 size of a smoothing filter that is applied on the novelty
-curve, f 32;
+#X text 573 100 size of a smoothing filter that is applied on the novelty curve, f 32;
 #X msg 419 172 framedelta 0;
-#X text 573 170 for certain metrics \, the distance does not have to
-be computed between consecutive frames, f 32;
+#X text 573 170 for certain metrics \, the distance does not have to be computed between consecutive frames, f 32;
 #X msg 419 242 indices symbol;
-#X text 573 240 name of the buffer where the indices (in sample) of
-the estimated starting points of slices will be written, f 32;
+#X text 573 240 name of the buffer where the indices (in sample) of the estimated starting points of slices will be written, f 32;
 #X obj 33 602 s \$0-params;
-#X obj 29 415 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 29 415 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 395 Metric;
 #X msg 33 580 metric 0;
 #X text 48 446 0: Energy, f 15;
@@ -103,17 +80,13 @@ the estimated starting points of slices will be written, f 32;
 #X text 48 531 7: WPhaseDev, f 15;
 #X text 48 543 8: ComplexDev, f 15;
 #X text 48 555 9: RComplexDev, f 15;
-#X obj 33 450 vradio 12 1 0 10 empty empty metric: 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
-#X text 188 446 metric used to derive a difference curve between spectral
-frames, f 25;
+#X obj 33 450 vradio 12 1 0 10 empty empty metric: 0 -8 0 10 #fcfcfc #000000 #000000 0;
+#X text 188 446 metric used to derive a difference curve between spectral frames, f 25;
 #X obj 419 755 s \$0-params;
 #X msg 419 312 minslicelength 2;
-#X text 573 311 minimum duration of a slice in number of hopSize.,
-f 32;
+#X text 573 311 minimum duration of a slice in number of hopSize., f 32;
 #X msg 419 662 startframe 0;
-#X text 573 660 Where in the source should the slicing process start
-\, in samples, f 32;
+#X text 573 660 Where in the source should the slicing process start \, in samples, f 32;
 #X msg 419 732 threshold 0.5;
 #X text 573 730 thresholding of a new slice, f 32;
 #X connect 0 0 1 0;
@@ -150,17 +123,12 @@ f 32;
 #X coords 0 -1 1 1 170 30 2 100 100;
 #X restore 287 366 pd parameters;
 #X text 466 366 change the threshold;
-#N canvas 134 90 697 782 parameter_combinations 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufonsetslice 1 22 0 36
-#4ba3fb #ffffff 0;
-#X text 17 79 Implements a selection A selection of metric and sound
-file combinations \, to demonstrate the different characteristics of
-each one spectrum-based onset slicers, f 89;
+#N canvas 134 41 697 782 parameter_combinations 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufonsetslice 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 446 746 array define help.bufonset2.slices;
 #X obj 30 635 fluid.waveform 460 80 0 empty empty 0;
 #X obj 442 594 fluid.out~ bufnoveltyslicehelp;
-#X obj 513 599 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 513 599 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X floatatom 440 506 5 0 0 0 - - - 0;
 #N canvas 1088 -793 905 588 extract_slices 0;
 #X obj 37 427 outlet~;
@@ -203,10 +171,8 @@ each one spectrum-based onset slicers, f 89;
 #X connect 16 0 18 0;
 #X connect 18 0 0 0;
 #X restore 440 529 pd extract_slices;
-#X obj 440 475 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 450 182 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 440 475 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 450 182 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas -889 -1080 1728 1027 guts 0;
 #X obj 102 320 r _tg;
 #X obj 102 344 route 0;
@@ -236,8 +202,7 @@ each one spectrum-based onset slicers, f 89;
 #X obj 112 2008 t b f, f 49;
 #X obj 462 2008 route 0 1 2 3 4 5 6 7 8 9;
 #X obj 112 1984 route 6;
-#X obj 100 100 cnv 15 470 170 empty empty empty 20 12 0 14 #f9e09e
-#404040 0;
+#X obj 100 100 cnv 15 470 170 empty empty empty 20 12 0 14 #f9e09e #404040 0;
 #X obj 391 128 fluid.onsetslice.help.ch 0 1;
 #X obj 373 128 fluid.onsetslice.help.ch 0 0;
 #X obj 409 128 fluid.onsetslice.help.ch 0 2;
@@ -281,82 +246,44 @@ each one spectrum-based onset slicers, f 89;
 #X obj 481 242 fluid.onsetslice.help.ch 6 6;
 #X obj 517 223 fluid.onsetslice.help.ch 5 8;
 #X text 325 108 metric;
-#X obj 391 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 373 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 373 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 391 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 391 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 391 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 409 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 427 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 427 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 427 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 409 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 517 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 517 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 535 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 535 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 517 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
+#X obj 391 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 373 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 373 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 391 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 391 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 391 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 409 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 427 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 427 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 427 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 409 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 517 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 517 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 535 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 535 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 517 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
 #X text 116 127 Nicol-LoopE-M.wav;
 #X text 116 146 Tremblay-AaS-AcousticStrums-M.wav;
 #X text 116 165 Tremblay-ASWINE-ScratchySynth-M.wav;
@@ -405,15 +332,11 @@ each one spectrum-based onset slicers, f 89;
 #X obj 761 206 array define src5;
 #X obj 761 227 array define src6;
 #X msg 889 100 read -resize ./media/Nicol-LoopE-M.wav src0;
-#X msg 899 121 read -resize ./media/Tremblay-AaS-AcousticStrums-M.wav
-src1;
-#X msg 909 142 read -resize ./media/Tremblay-ASWINE-ScratchySynth-M.wav
-src2, f 63;
+#X msg 899 121 read -resize ./media/Tremblay-AaS-AcousticStrums-M.wav src1;
+#X msg 909 142 read -resize ./media/Tremblay-ASWINE-ScratchySynth-M.wav src2, f 63;
 #X msg 919 163 read -resize ./media/Tremblay-BaB-HumDC-M.wav src3;
-#X msg 929 184 read -resize ./media/Tremblay-BeatRemember.wav src4
-;
-#X msg 939 205 read -resize ./media/Tremblay-UW-ComplexDescent-M.wav
-src5;
+#X msg 929 184 read -resize ./media/Tremblay-BeatRemember.wav src4;
+#X msg 939 205 read -resize ./media/Tremblay-UW-ComplexDescent-M.wav src5;
 #X msg 949 226 read -resize ./media/Tremblay-FMTriDist-M.wav src6;
 #X msg 112 1495 \; src symbol src4;
 #X msg 102 1215 \; src symbol src3;
@@ -501,8 +424,7 @@ src5;
 #X restore 23 171 pd guts;
 #X obj 30 352 r src;
 #X msg 320 535 waveform \$1;
-#X obj 30 503 fluid.bufonsetslice -indices help.bufonset2.slices,
-f 32;
+#X obj 30 503 fluid.bufonsetslice -indices help.bufonset2.slices, f 32;
 #N canvas 1013 -1015 1368 693 fetch_settings 0;
 #X floatatom 509 206 8 0 0 0 - - - 0;
 #X floatatom 394 206 8 0 0 0 - - - 0;
@@ -574,29 +496,27 @@ f 32;
 #X coords 0 693 1 692 345 185 0;
 #X restore 42 477 pd fetch_settings;
 #X msg 30 547 indices help.bufonset2.slices, f 30;
-#X obj 513 173 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 513 173 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 441 475 3) Select a segment to play back;
 #X msg 30 455 source \$1 \, bang;
 #X obj 30 386 t a a, f 13;
-#X text 511 172 1) Select from a combination of curated sound files
-and parameters, f 19;
+#X text 511 172 1) Select from a combination of curated sound files and parameters, f 19;
 #X text 514 599 2) Audio on, f 17;
-#X connect 6 0 7 0;
-#X connect 7 0 4 0;
-#X connect 7 0 4 1;
-#X connect 11 0 19 0;
-#X connect 12 0 3 0;
-#X connect 13 0 15 0;
-#X connect 14 0 13 0;
-#X connect 15 0 3 0;
-#X connect 18 0 13 0;
-#X connect 19 0 18 0;
-#X connect 19 1 12 0;
+#X text 17 79 Implements a selection of metric and sound file combinations \, to demonstrate the different characteristics of each one spectrum-based onset slicers, f 89;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 6 0 3 1;
+#X connect 10 0 18 0;
+#X connect 11 0 2 0;
+#X connect 12 0 14 0;
+#X connect 13 0 12 0;
+#X connect 14 0 2 0;
+#X connect 17 0 12 0;
+#X connect 18 0 17 0;
+#X connect 18 1 11 0;
 #X restore 466 811 pd parameter_combinations;
 #X obj 427 731 fluid.out~ bufnoveltyslicehelp;
-#X obj 499 736 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 499 736 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X floatatom 426 643 5 0 0 0 - - - 0;
 #N canvas 1744 -1080 666 626 extract_slices 0;
 #X obj 37 427 outlet~;
@@ -633,8 +553,7 @@ and parameters, f 19;
 #X connect 14 0 9 1;
 #X connect 15 0 0 0;
 #X restore 426 666 pd extract_slices;
-#X obj 426 619 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 426 619 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 427 619 4) Select a segment to play back;
 #X obj 466 855 note_on_multithreading;
 #X obj 466 833 note_on_automatic_multiarrays;

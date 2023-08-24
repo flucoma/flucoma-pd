@@ -1,19 +1,12 @@
-#N canvas 37 52 695 945 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 459 817 cnv 15 217 113 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufmelbands.html reference/bufmelbands/
-;
-#X obj 17 60 cnv 15 488 17 empty empty A\\\ Perceptually\\\ Spread\\\ Spectral\\\ Contour\\\ Descriptor\\\ on\\\ a\\\ Buffer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Magnitudes for a number of perceptually-evenly spaced
-bands.;
+#N canvas 37 25 695 791 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 459 817 cnv 15 217 113 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufmelbands.html reference/bufmelbands/;
+#X obj 17 60 cnv 15 488 17 empty empty A\ Perceptually\ Spread\ Spectral\ Contour\ Descriptor\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Magnitudes for a number of perceptually-evenly spaced bands.;
 #N canvas 188 166 752 725 visualising_the_mel_bands 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36
-#4ba3fb #ffffff 0;
-#X text 17 79 Visualising mel bands as a spectrum with fluid.waveform~
-;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 79 Visualising mel bands as a spectrum with fluid.waveform~;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -26,15 +19,11 @@ bands.;
 #X obj 18 170 fluid.demoaudiofiles;
 #X obj 446 174 array define help.mel.2.src;
 #X obj 18 358 fluid.waveform 700 190 1 empty empty 0;
-#X obj 18 247 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 18 247 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 18 317 imagelogflag 1 \, imagecolorscheme 1 \, image \$1;
-#X obj 18 272 fluid.bufmelbands -source help.mel.2.src -numbands 40
-;
-#X text 407 271 Because no -features are set \, an output buffer is
-automatically assigned for us that we can then visualise, f 44;
-#X obj 19 146 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 272 fluid.bufmelbands -source help.mel.2.src -numbands 40;
+#X text 407 271 Because no -features are set \, an output buffer is automatically assigned for us that we can then visualise, f 44;
+#X obj 19 146 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 21 145 1) Load a buffer;
 #X connect 2 0 6 0;
 #X connect 3 0 2 0;
@@ -43,11 +32,9 @@ automatically assigned for us that we can then visualise, f 44;
 #X connect 8 0 7 0;
 #X restore 462 837 pd visualising_the_mel_bands;
 #N canvas 124 87 700 834 multichannel 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36
-#4ba3fb #ffffff 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 Processing multichannel inputs;
-#X obj 20 502 fluid.bufmelbands 10 -source help.mc.src.3 -features
-help.mc.features;
+#X obj 20 502 fluid.bufmelbands 10 -source help.mc.src.3 -features help.mc.features;
 #X msg 20 580 features help.mc.features;
 #X obj 20 624 fluid.waveform 660 190 0 empty empty 0;
 #N canvas 1443 -826 550 256 loadsrc 0;
@@ -55,10 +42,8 @@ help.mc.features;
 #X obj 16 205 outlet;
 #X obj 96 173 soundfiler;
 #X obj 16 36 t b b, f 12;
-#X msg 16 71 read -resize media/Nicol-LoopE-M.wav help.mc.src.1, f
-39;
-#X msg 96 115 read -resize media/Tremblay-AaS-VoiceQC-B2K-M.wav help.mc.src.2
-, f 38;
+#X msg 16 71 read -resize media/Nicol-LoopE-M.wav help.mc.src.1, f 39;
+#X msg 96 115 read -resize media/Tremblay-AaS-VoiceQC-B2K-M.wav help.mc.src.2, f 38;
 #X obj 16 9 inlet;
 #X connect 0 0 1 0;
 #X connect 3 0 4 0;
@@ -67,15 +52,13 @@ help.mc.features;
 #X connect 5 0 2 0;
 #X connect 6 0 3 0;
 #X restore 20 212 pd loadsrc;
-#X obj 40 180 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 40 180 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 41 180 1) compose a radical stereo source;
 #X obj 491 136 array define help.mc.src.1;
 #X obj 491 159 array define help.mc.src.2;
 #N canvas 1498 -1023 495 381 stereo_source 0;
 #X obj 31 29 inlet;
-#X msg 31 53 reset \, source help.mc.src.1 \, bang \, source help.mc.src.2
-\, deststartchan 1 \, bang;
+#X msg 31 53 reset \, source help.mc.src.1 \, bang \, source help.mc.src.2 \, deststartchan 1 \, bang;
 #X obj 31 91 fluid.bufcompose -destination help.mc.src.3;
 #X obj 31 115 outlet;
 #X connect 0 0 1 0;
@@ -85,16 +68,12 @@ help.mc.features;
 #X obj 491 182 clone 2 fluid.multiarray help.mc.src.3, f 26;
 #X msg 20 284 waveform help.mc.src.3;
 #X obj 20 308 fluid.waveform 280 130 0 empty empty 0;
-#X obj 20 180 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
+#X obj 20 180 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
 #X obj 491 219 clone 20 fluid.multiarray help.mc.features, f 26;
-#X obj 40 473 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 20 473 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
+#X obj 40 473 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 20 473 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
 #X text 41 473 2) process;
-#X text 211 580 Every band is computed for the left and then right
-channel;
+#X text 211 580 Every band is computed for the left and then right channel;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 5 0 10 0;
@@ -113,34 +92,23 @@ channel;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 18 218 pd loadsrc;
-#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 170 fluid.demoaudiofiles;
-#X obj 18 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 38 241 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 18 477 fluid.bufmelbands 120 -source help.mel.1.src -features
-help.mel.1.features -minfreq 20 -maxfreq 20000 -numchans 1, f 44;
-#X obj 86 322 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 87 321 5) Modify the number of bands in the analysis, f 25
-;
+#X obj 18 242 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 38 241 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 18 477 fluid.bufmelbands 120 -source help.mel.1.src -features help.mel.1.features -minfreq 20 -maxfreq 20000 -numchans 1, f 44;
+#X obj 86 322 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 87 321 5) Modify the number of bands in the analysis, f 25;
 #X obj 18 880 fluid.out~ bufmelbandshelp;
-#X obj 446 196 clone 120 fluid.multiarray help.mel.1.features, f 27
-;
-#X obj 96 885 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 446 196 clone 120 fluid.multiarray help.mel.1.features, f 27;
+#X obj 96 885 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 33 433 Arguments:, f 28;
 #X msg 18 550 waveform help.mel.1.src;
-#X obj 71 644 hsl 251 64 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#000000 #000000 0 1;
+#X obj 71 644 hsl 251 64 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 68 644 fluid.waveform 256 64 1 empty empty 0;
-#X obj 81 610 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 82 609 4) Use your mouse to scrub through the source sound
-, f 34;
-#N canvas 1276 -1003 717 611 oscillators 0;
+#X obj 81 610 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 82 609 4) Use your mouse to scrub through the source sound, f 34;
+#N canvas 723 25 717 611 oscillators 0;
 #X floatatom 307 122 8 1 40 0 - - - 0;
 #X floatatom 386 122 8 0 0 0 - - - 0;
 #X floatatom 465 122 8 0 0 0 - - - 0;
@@ -165,11 +133,9 @@ help.mel.1.features -minfreq 20 -maxfreq 20000 -numchans 1, f 44;
 #X obj 34 453 outlet;
 #X obj 35 432 pack f f;
 #X text 248 247 makes a range \, and splits it evenly in Mel;
-#X text 102 401 calculate the position of the centre of each band in
-mel \, then converts them all back in Hz;
+#X text 102 401 calculate the position of the centre of each band in mel \, then converts them all back in Hz;
 #X msg 71 299 -1;
-#X obj 54 378 expr (exp(((($f1 + 1) * $f2) + $f3) / 1127.01048) - 1
-) * 700, f 62;
+#X obj 54 378 expr (exp(((($f1 + 1) * $f2) + $f3) / 1127.01048) - 1 ) * 700, f 62;
 #X obj 35 167 f;
 #X obj 35 82 t b f;
 #X obj 35 188 t f b f;
@@ -206,17 +172,17 @@ mel \, then converts them all back in Hz;
 #X obj 307 61 inlet;
 #X text 112 65 from slider [0 \, 1];
 #X obj 58 100 t f b;
-#X obj 90 132 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 90 132 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 90 191 5 0 0 0 - - - 0;
 #X obj 90 153 array size help.mel.1.features-0, f 23;
 #X obj 58 242 *;
-#X floatatom 58 297 5 0 0 0 - - - 0;
+#X floatatom 58 317 5 0 0 0 - - - 0;
 #X obj 58 265 int;
-#X text 99 295 frame to index features;
-#X msg 58 338 all \$1;
+#X text 99 315 frame to index features;
+#X msg 58 358 all \$1;
 #X obj 58 411 clone fluid.bufmelbands.polyoscil 40;
 #X obj 307 89 unpack 0 0 0, f 23;
+#X obj 58 289 - 1;
 #X connect 0 0 3 0;
 #X connect 1 0 3 2;
 #X connect 2 0 3 1;
@@ -230,20 +196,21 @@ mel \, then converts them all back in Hz;
 #X connect 11 0 10 0;
 #X connect 12 0 14 0;
 #X connect 13 0 16 0;
-#X connect 14 0 13 0;
+#X connect 14 0 19 0;
 #X connect 16 0 17 0;
 #X connect 17 0 4 0;
 #X connect 18 0 0 0;
 #X connect 18 1 1 0;
 #X connect 18 2 2 0;
+#X connect 19 0 13 0;
 #X restore 18 821 pd oscillators;
 #X f 53;
 #X obj 265 451 t a;
-#N canvas 1036 -979 979 761 parameters 0;
+#N canvas 461 25 979 761 parameters 0;
 #X msg 65 242 numbands \$1;
 #X msg 169 242 minfreq \$1;
 #X msg 274 242 maxfreq \$1;
-#X floatatom 167 106 8 0 0 0 - - - 0;
+#X floatatom 167 106 8 1 40 0 - - - 0;
 #X floatatom 167 126 8 0 0 0 - - - 0;
 #X floatatom 167 146 8 0 0 0 - - - 0;
 #N canvas 986 235 344 279 pak 0;
@@ -291,11 +258,8 @@ mel \, then converts them all back in Hz;
 #X coords 0 -1 1 1 130 68 2 100 100;
 #X restore 266 322 pd parameters;
 #X text 40 446 numbands(number)(optional), f 27;
-#X text 402 643 We lookup the index of analysis for the selected moment
-of time from the source buffer., f 24;
-#X text 59 748 This example uses mel bands as a resynthesis / vocoder.
-Each mel band drives an oscillator that has its frequency determined
-by the spacing of the bands., f 47;
+#X text 402 643 We lookup the index of analysis for the selected moment of time from the source buffer., f 24;
+#X text 59 748 This example uses mel bands as a resynthesis / vocoder. Each mel band drives an oscillator that has its frequency determined by the spacing of the bands., f 47;
 #X text 19 151 1) Load a sound of your choice;
 #X text 39 241 2) slice using transient slicing;
 #X text 98 884 3) Audio on;

@@ -1,45 +1,31 @@
-#N canvas 112 38 696 958 12;
+#N canvas 112 25 696 792 12;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.filter.src.1 453932 float 0;
 #X coords 0 1 453931 -1 250 40 1 0 0;
 #X restore 302 197 graph;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.nmffilter~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.nmffilter~.html reference/nmffilter/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Real-Time\\\ Non-Negative\\\ Matrix\\\ Factorisation\\\ with\\\ Fixed\\\ Bases
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Decomposes and resynthesises a signal against a set of
-spectral templates;
-#X obj 407 893 cnv 15 262 45 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 580 125 700 826 realtime_content-aware_separation 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.nmffilter~ 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmffilter~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.nmffilter~.html reference/nmffilter/;
+#X obj 17 60 cnv 15 488 17 empty empty Real-Time\ Non-Negative\ Matrix\ Factorisation\ with\ Fixed\ Bases 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Decomposes and resynthesises a signal against a set of spectral templates;
+#X obj 407 893 cnv 15 262 45 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#N canvas 580 25 700 792 realtime_content-aware_separation 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmffilter~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 20 79 delay components with low spectral centroid;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.filter.src.2 468335 float 0;
 #X coords 0 1 468334 -1 250 40 1 0 0;
 #X restore 313 257 graph;
 #X obj 27 308 soundfiler;
-#X obj 47 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 47 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 47 237 1) load a soundfile;
-#X obj 27 238 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X msg 27 258 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-help.filter.src.2, f 37;
-#X obj 505 124 clone fluid.multiarray 2 help.filter.bases.2, f 24
-;
-#X obj 498 87 clone fluid.multiarray 2 help.filter.resynth.2, f 25
-;
-#X obj 27 378 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 47 377 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 27 238 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X msg 27 258 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav help.filter.src.2, f 37;
+#X obj 505 124 clone fluid.multiarray 2 help.filter.bases.2, f 24;
+#X obj 498 87 clone fluid.multiarray 2 help.filter.resynth.2, f 25;
+#X obj 27 378 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 47 377 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 47 376 2) decompose the piano into 2 components;
-#N canvas 1589 -1036 561 722 find_lowest_spectral_centroid_component
-0;
+#N canvas 1589 -1036 561 722 find_lowest_spectral_centroid_component 0;
 #X obj 37 37 inlet;
 #X obj 37 61 fluid.bufspectralshape -select centroid;
 #X obj 37 125 fluid.bufstats -select mid;
@@ -89,8 +75,7 @@ help.filter.src.2, f 37;
 #X obj 406 740 fluid.out~ nmffilterhelp;
 #X obj 406 706 +~;
 #X obj 435 706 +~;
-#X obj 441 576 fluid.nmffilter~ 2 -bases help.filter.bases.2, f 29
-;
+#X obj 441 576 fluid.nmffilter~ 2 -bases help.filter.bases.2, f 29;
 #X floatatom 27 552 5 0 0 0 - - - 0;
 #N canvas 2371 -505 388 477 srcselect 0;
 #X obj 60 71 inlet~;
@@ -99,10 +84,8 @@ help.filter.src.2, f 37;
 #X obj 62 371 +~;
 #X obj 62 395 outlet~;
 #X obj 221 172 == 0;
-#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X obj 221 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 221 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X msg 219 266 \$1 10;
 #X obj 219 292 line~;
 #X obj 273 71 loadbang;
@@ -129,8 +112,7 @@ help.filter.src.2, f 37;
 #X connect 15 0 3 1;
 #X restore 441 635 pd srcselect;
 #X f 29;
-#X obj 403 497 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 403 497 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 512 268 1103 698 cool_delays 0;
 #X obj 15 381 inlet~;
 #X obj 273 287 outlet~;
@@ -199,19 +181,13 @@ help.filter.src.2, f 37;
 #X connect 29 0 20 0;
 #X connect 30 0 18 0;
 #X restore 441 663 pd cool_delays;
-#X obj 27 398 fluid.bufnmf -source help.filter.src.2 -resynth help.filter.resynth.2
--bases help.filter.bases.2 -resynthmode 1 -components 2 -numchans 1
-;
-#X obj 422 497 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 27 398 fluid.bufnmf -source help.filter.src.2 -resynth help.filter.resynth.2 -bases help.filter.bases.2 -resynthmode 1 -components 2 -numchans 1;
+#X obj 422 497 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 423 496 4) play the source through the filter;
-#X obj 476 745 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 476 745 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 477 744 3) audio on;
-#X text 70 513 We make the assumption this component will be the resonant
-material, f 39;
-#X text 69 480 Discern which component has the lowest median spectral
-centroid, f 39;
+#X text 70 513 We make the assumption this component will be the resonant material, f 39;
+#X text 69 480 Discern which component has the lowest median spectral centroid, f 39;
 #X connect 6 0 7 0;
 #X connect 7 0 3 0;
 #X connect 10 0 23 0;
@@ -231,27 +207,18 @@ centroid, f 39;
 #X connect 23 0 13 0;
 #X restore 410 913 pd realtime_content-aware_separation;
 #X obj 16 248 soundfiler;
-#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 177 1) load a soundfile;
-#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X msg 16 198 read -resize media/Nicol-LoopE-M.wav help.filter.src.1
-, f 37;
-#X obj 16 308 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 16 328 fluid.bufnmf -source help.filter.src.1 -bases help.filter.bases.1
--resynth help.filter.resynth.1 -resynthmode 1 -components 2;
-#X obj 497 265 clone fluid.multiarray 2 help.filter.resynth.1, f 25
-;
-#X obj 497 302 clone fluid.multiarray 2 help.filter.bases.1, f 25
-;
-#X obj 36 307 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X msg 16 198 read -resize media/Nicol-LoopE-M.wav help.filter.src.1, f 37;
+#X obj 16 308 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 16 328 fluid.bufnmf -source help.filter.src.1 -bases help.filter.bases.1 -resynth help.filter.resynth.1 -resynthmode 1 -components 2;
+#X obj 497 265 clone fluid.multiarray 2 help.filter.resynth.1, f 25;
+#X obj 497 302 clone fluid.multiarray 2 help.filter.bases.1, f 25;
+#X obj 36 307 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 306 2) decompose the drum loop into 2 components;
 #X obj 16 574 tabplay~ help.filter.resynth.1-0, f 24;
-#X obj 16 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 16 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 16 692 fluid.out~ nmffilterhelp;
 #X obj 34 611 tabplay~ help.filter.resynth.1-1, f 23;
 #N canvas 1622 23 388 477 srcselect 0;
@@ -261,8 +228,7 @@ centroid, f 39;
 #X obj 62 371 +~;
 #X obj 62 395 outlet~;
 #X obj 167 177 == 0;
-#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X msg 219 266 \$1 10;
 #X obj 219 292 line~;
 #X obj 273 71 loadbang;
@@ -288,41 +254,26 @@ centroid, f 39;
 #X connect 14 0 3 1;
 #X restore 16 658 pd srcselect;
 #X f 13;
-#X obj 41 428 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 105 473 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 41 428 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 105 473 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 123 469 component 1;
 #X text 123 487 component 2;
-#X text 42 427 3) audition the two components;
-#X obj 296 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 316 413 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 296 428 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 316 413 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 296 469 tabplay~ help.filter.src.1;
 #X obj 296 534 +~;
-#X obj 421 670 fluid.nmffilter~ 2 -bases help.filter.bases.1, f 25
-;
-#X obj 181 713 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 183 710 5) listen to different components, f 13;
-#X text 317 412 4) play the original source, f 16;
+#X obj 421 670 fluid.nmffilter~ 2 -bases help.filter.bases.1, f 25;
+#X obj 181 713 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 506 520 readsf~;
-#X msg 506 447 open ./media/Tremblay-AaS-AcousticStrums-M.wav \, 1
-, f 23;
-#X obj 507 412 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 284 711 cnv 15 390 44 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X msg 506 447 open ./media/Tremblay-AaS-AcousticStrums-M.wav \, 1, f 23;
+#X obj 507 412 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 284 711 cnv 15 390 44 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 421 756 *~;
-#X obj 439 735 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 439 735 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 562 756 *~;
-#X obj 580 735 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 580 735 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 278 786 *~;
-#X obj 296 735 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 296 735 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X text 312 733 source;
 #X text 290 710 select which components to hear:;
 #N canvas 63 101 338 195 sum 1;
@@ -340,16 +291,20 @@ centroid, f 39;
 #X restore 278 823 pd sum;
 #X f 41;
 #X obj 278 854 fluid.out~ nmffilterhelp;
-#X text 304 490 Sounds a lot like the resynthesis outputs..., f 23
-;
+#X text 304 490 Sounds a lot like the resynthesis outputs..., f 23;
 #X text 598 732 component2;
-#X text 415 583 nmffilter is pointed to the bases produced by fluid.bufnmf~
-this allows you to filter audio based on what has been "learned" and
-which is stored in the "bases"., f 37;
+#X text 415 583 nmffilter is pointed to the bases produced by fluid.bufnmf~ this allows you to filter audio based on what has been "learned" and which is stored in the "bases"., f 37;
 #X text 456 732 component 1;
 #X msg 303 446 stop;
 #X text 508 411 ... or another source through the filter, f 21;
 #X msg 517 498 stop;
+#X obj 349 860 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 89 697 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 90 696 3) audio on;
+#X text 42 427 4) audition the two components;
+#X text 350 859 5) audio on;
+#X text 317 412 6) play the original source, f 16;
+#X text 183 710 7) listen to different components, f 13;
 #X connect 10 0 11 0;
 #X connect 11 0 7 0;
 #X connect 12 0 13 0;
@@ -360,21 +315,21 @@ which is stored in the "bases"., f 37;
 #X connect 22 0 20 0;
 #X connect 22 0 20 1;
 #X connect 24 0 22 2;
-#X connect 28 0 30 0;
+#X connect 27 0 29 0;
+#X connect 29 0 30 0;
 #X connect 30 0 31 0;
-#X connect 31 0 32 0;
-#X connect 31 0 44 0;
-#X connect 32 0 40 0;
-#X connect 32 1 42 0;
-#X connect 36 0 31 1;
-#X connect 37 0 36 0;
-#X connect 40 0 48 1;
-#X connect 41 0 40 1;
-#X connect 42 0 48 2;
-#X connect 43 0 42 1;
-#X connect 44 0 48 0;
-#X connect 45 0 44 1;
-#X connect 48 0 49 0;
-#X connect 48 0 49 1;
-#X connect 54 0 30 0;
-#X connect 56 0 36 0;
+#X connect 30 0 41 0;
+#X connect 31 0 37 0;
+#X connect 31 1 39 0;
+#X connect 33 0 30 1;
+#X connect 34 0 33 0;
+#X connect 37 0 45 1;
+#X connect 38 0 37 1;
+#X connect 39 0 45 2;
+#X connect 40 0 39 1;
+#X connect 41 0 45 0;
+#X connect 42 0 41 1;
+#X connect 45 0 46 0;
+#X connect 45 0 46 1;
+#X connect 51 0 29 0;
+#X connect 53 0 33 0;

@@ -1,9 +1,9 @@
-#N struct 1031-rectangle float x float c;
-#N struct 1031-pixel float x0 float y0 float x1 float y1;
-#N struct 1032-rectangle float x float c;
-#N struct 1032-pixel float x0 float y0 float x1 float y1;
-#N struct 1046-rectangle float x float c;
-#N struct 1046-pixel float x0 float y0 float x1 float y1;
+#N struct 9335-rectangle float x float c;
+#N struct 9335-pixel float x0 float y0 float x1 float y1;
+#N struct 9336-rectangle float x float c;
+#N struct 9336-pixel float x0 float y0 float x1 float y1;
+#N struct 9350-rectangle float x float c;
+#N struct 9350-pixel float x0 float y0 float x1 float y1;
 #N canvas 58 66 698 714 12;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kdtree 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 510 66 fluid.referencelauncher fluid.kdtree.html reference/kdtree/;
@@ -317,7 +317,7 @@
 #X obj 41 144 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 326 204 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 327 203 2) Click and drag around this space.;
-#X text 41 142 1) For demonstrative purposes much of this first example is preanalused and pretrained data. This button loads in this subpatch when the helpfle is opened, f 86;
+#X text 41 142 1) For demonstrative purposes much of this first example is preanalised and pretrained data. This button loads in this subpatch when the helpfle is opened, f 86;
 #X connect 7 0 8 0;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;

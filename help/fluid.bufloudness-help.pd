@@ -1,23 +1,13 @@
 #N canvas 30 63 698 729 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufloudness 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 456 615 cnv 15 218 90 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufloudness.html reference/bufloudness/
-;
-#X obj 17 60 cnv 15 488 17 empty empty A\\\ Loudness\\\ and\\\ True-Peak\\\ Descriptor\\\ on\\\ a\\\ Buffer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Two loudness descriptors \, computing the true peak of
-the signal as well as applying the filters proposed by broadcasting
-standards to emulate the perception of amplitude.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufloudness 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 456 615 cnv 15 218 90 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufloudness.html reference/bufloudness/;
+#X obj 17 60 cnv 15 488 17 empty empty A\ Loudness\ and\ True-Peak\ Descriptor\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Two loudness descriptors \, computing the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude.;
 #N canvas 174 101 694 829 processing_the_data 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufloudness 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty A\\\ Loudness\\\ and\\\ True-Peak\\\ Descriptor\\\ on\\\ a\\\ Buffer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Two loudness descriptors \, computing the true peak of
-the signal as well as applying the filters proposed by broadcasting
-standards to emulate the perception of amplitude., f 87;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufloudness 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\ Loudness\ and\ True-Peak\ Descriptor\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Two loudness descriptors \, computing the true peak of the signal as well as applying the filters proposed by broadcasting standards to emulate the perception of amplitude., f 87;
 #N canvas 1496 -809 330 216 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -29,24 +19,19 @@ standards to emulate the perception of amplitude., f 87;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X restore 18 228 pd loadsrc;
-#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 180 fluid.demoaudiofiles;
 #X text 19 161 1) Select a sound to analyse;
 #X obj 422 156 array define help.loudness.2.source;
-#X obj 18 262 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 18 282 fluid.bufloudness -source help.loudness.2.source -features
-help.loudness.2.features;
-#X obj 422 181 clone 2 fluid.multiarray help.loudness.2.features,
-f 35;
+#X obj 18 262 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 18 282 fluid.bufloudness -source help.loudness.2.source -features help.loudness.2.features;
+#X obj 422 181 clone 2 fluid.multiarray help.loudness.2.features, f 35;
 #N canvas 1466 23 582 361 draw_visualisation 0;
 #X obj 37 37 inlet;
 #X obj 37 227 outlet;
 #X obj 37 71 t b b, f 26;
 #X msg 37 95 waveform help.loudness.2.source, f 23;
-#X msg 216 95 featurescolor #ff99cc \, features help.loudness.2.features
-;
+#X msg 216 95 featurescolor #ff99cc \, features help.loudness.2.features;
 #X connect 0 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 1 4 0;
@@ -54,18 +39,12 @@ f 35;
 #X connect 4 0 1 0;
 #X restore 18 320 pd draw_visualisation;
 #X obj 18 344 fluid.waveform 480 100 1 empty empty 0;
-#X text 499 346 Loudness and true-peak represented by two lines overlayed
-on the waveform., f 24;
-#X obj 18 512 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 43 512 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 44 512 2) Use the loudness analysis to compute the median loudness
-over the whole sound file.;
-#X obj 18 562 fluid.bufstats -source help.loudness.2.features -stats
-help.loudness.2.stats -numchans 2;
-#X obj 422 218 clone 2 fluid.multiarray help.loudness.2.stats, f 35
-;
+#X text 499 346 Loudness and true-peak represented by two lines overlayed on the waveform., f 24;
+#X obj 18 512 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 43 512 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 44 512 2) Use the loudness analysis to compute the median loudness over the whole sound file.;
+#X obj 18 562 fluid.bufstats -source help.loudness.2.features -stats help.loudness.2.stats -numchans 2;
+#X obj 422 218 clone 2 fluid.multiarray help.loudness.2.stats, f 35;
 #X obj 18 637 array get help.loudness.2.stats-0, f 24;
 #X floatatom 18 753 7 0 0 0 - - - 0;
 #X msg 18 718 \$6;
@@ -109,41 +88,31 @@ help.loudness.2.stats -numchans 2;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 18 228 pd loadsrc;
-#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 180 fluid.demoaudiofiles;
 #X obj 441 187 array define help.loudness.source;
-#X obj 42 290 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 42 290 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 41 483 fluid.out~ bufloudnesshelp;
 #X text 19 161 1) Select a sound to analyse;
-#X obj 67 290 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 68 290 2) Play back the source sound and watch the playhead
-move along the features in the waveform view, f 34;
-#X obj 323 406 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 323 256 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 323 426 fluid.bufloudness -source help.loudness.source -features
-help.loudness.features, f 47;
-#X obj 441 212 clone 2 fluid.multiarray help.loudness.features, f
-33;
+#X obj 67 290 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 68 290 2) Play back the source sound and watch the playhead move along the features in the waveform view, f 34;
+#X obj 323 406 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 323 256 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 323 426 fluid.bufloudness -source help.loudness.source -features help.loudness.features, f 47;
+#X obj 441 212 clone 2 fluid.multiarray help.loudness.features, f 33;
 #N canvas 1370 23 678 492 draw_visualisation 0;
 #X obj 37 37 inlet;
 #X obj 37 61 t a a, f 26;
 #X obj 37 229 outlet;
 #X msg 37 115 waveform help.loudness.source, f 21;
-#X msg 216 115 featurescolor #ff99cc \, features help.loudness.features
-;
+#X msg 216 115 featurescolor #ff99cc \, features help.loudness.features;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 1 1 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 2 0;
 #X restore 323 478 pd draw_visualisation;
-#X obj 326 502 hsl 345 100 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#e3c6ff #000000 0 1;
+#X obj 326 502 hsl 345 100 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #e3c6ff #000000 0 1;
 #X obj 323 502 fluid.waveform 350 100 1 empty empty 0;
 #X text 417 391 Arguments:;
 #X text 427 405 maxwindowsize(number)(optional);
@@ -181,8 +150,7 @@ help.loudness.features, f 47;
 #N canvas 2054 -871 583 440 featureslength 0;
 #X obj 44 74 inlet~;
 #X obj 131 74 inlet;
-#X obj 131 102 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 131 102 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 137 150 6 0 0 0 - - - 0;
 #X obj 131 122 array size help.loudness.features-0;
 #X obj 44 229 outlet~;
@@ -222,6 +190,8 @@ help.loudness.features, f 47;
 #X floatatom 92 450 8 0 0 0 - - - 0;
 #X text 154 450 LUfs;
 #X text 104 428 Loudness;
+#X obj 111 489 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 111 487 3) switch audio on;
 #X connect 8 0 18 0;
 #X connect 10 0 8 0;
 #X connect 12 0 26 0;
