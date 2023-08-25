@@ -469,33 +469,37 @@ class FluidPDWrapper : public impl::FluidPDBase<FluidPDWrapper<Client>,
     
     }
 
-    void operator()(FluidPDWrapper* x, long ac, t_atom* av)
+    void operator()(FluidPDWrapper* x, index which, long ac, t_atom* av)
     {
       FluidContext c;
       
-      //todo handle multiple list inlets?
       index count = std::min<index>(x->mListSize, ac);
-      for(index i = 0; i < count; ++i)
-        x->mInputListData[0][i] = atom_getfloat(av + i);
-                           
-      x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
-      
-      for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i)
-      {
-        index count = std::min<index>(x->mListSize,ac); 
-        for(index j = 0; j < count; ++j)
+      for (index i = 0; i < count; ++i)
+        x->mInputListData[which][i] = atom_getfloat(av + i);
+
+      if (!which) {
+        x->mClient.process(x->mInputListViews, x->mOutputListViews, c);
+
+        index outSize = isControlOutFollowsIn<typename Client::Client> ? std::min<index>(x->mListSize, ac) : x->mClient.controlChannelsOut().size;
+
+        for (index i = asSigned(x->mDataOutlets.size()) - 1; i >= 0; --i) // check order
         {
-          SETFLOAT(x->mOutputListAtoms.data() + j,static_cast<float>(x->mOutputListData[i][j]));
+          assert(x->mOutputListData[i].size() >= outSize);
+          for (index j = 0; j < outSize; ++j) {
+            SETFLOAT(x->mOutputListAtoms.data() + j,
+                     static_cast<float>(x->mOutputListData[i][j]));
+          }
+          outlet_list(x->mDataOutlets[asUnsigned(i)], gensym("list"),
+                      static_cast<int>(outSize),
+                      x->mOutputListAtoms.data());
         }
-        outlet_list(x->mDataOutlets[asUnsigned(i)],
-                    gensym("list"), static_cast<int>(x->mListSize), x->mOutputListAtoms.data());
       }
     }
   };
 
   struct NoStreamingListInput
   {
-    void operator()(FluidPDWrapper*, long, t_atom*) {}
+    void operator()(FluidPDWrapper*, index, long, t_atom*) {}
   };
 
   using ListInputHandler =
@@ -959,20 +963,25 @@ public:
   {
     x->mOwner->doBufferInlet(x->mIndex, ac, av);
   }
-  
+    
+  static void inletProxyList(InletProxy* x, t_symbol* what, int ac, t_atom* av)
+    {
+      x->mOwner->doList(x->mOwner, x->mIndex, what, ac, av);
+    }
+    
   static void inletProxySetup(const char* className)
   {
     std::string inletProxyClassName = std::string(className) + " inlet proxy";
     getInletProxyClass(class_new(gensym(inletProxyClassName.c_str()),0, 0, sizeof(InletProxy), CLASS_PD | CLASS_NOINLET, A_GIMME,0));
     class_addmethod(getInletProxyClass(), (t_method) inletProxyBuffer, gensym("buffer"), A_GIMME, 0);
+    class_addmethod(getInletProxyClass(), (t_method) inletProxyList, gensym("list"), A_GIMME, 0);
   }
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
       : mListSize{32}, mDumpOutlet{nullptr},
         mParams(Client::getParameterDescriptors(), FluidDefaultAllocator()),
         mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av),
-                                                   FluidContext()},
-        mCanvas{canvas_getcurrent()}
+        FluidContext()}, mAutosize{true}, mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
@@ -986,7 +995,6 @@ public:
     
     if (index controlIns = mClient.controlChannelsIn())
     {
-      mAutosize = true;
       if (mListSize)
       {
         mInputListData.resize(controlIns, mListSize);
@@ -1027,10 +1035,14 @@ public:
 
     if (mClient.controlChannelsOut().count) 
     {
-      if(mListSize)
+      index outputSize = isControlOutFollowsIn<typename Client::Client>
+                         ? mListSize
+                         : mClient.controlChannelsOut().max;
+
+      if(outputSize > 0)
       {
-        mOutputListData.resize(mClient.controlChannelsOut().count, mListSize);
-        mOutputListAtoms.reserve(asUnsigned(mListSize));
+        mOutputListData.resize(mClient.controlChannelsOut().count, outputSize);
+        mOutputListAtoms.reserve(asUnsigned(outputSize));
         for (index i = 0; i < mClient.controlChannelsOut().count; ++i)
           mOutputListViews.emplace_back(mOutputListData.row(i));
       }
@@ -1204,6 +1216,9 @@ public:
       mParams.template forEachParam<MatchName>(s->s_name + 1, matched);
       if (!strcmp(s->s_name + 1, "warnings")) matched = true;
 
+      if (!strcmp(s->s_name + 1, "autosize"))
+        matched = true;
+
       if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "blocking"))
         matched = true;
 
@@ -1232,14 +1247,12 @@ public:
   {
     void* x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
-    
-    static constexpr bool hasListInput = isControlIn<typename Client::Client>;
-    
-    if (static_cast<index>(paramArgOffset(ac, av)) >
-        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput)
+    static constexpr index numListArgs = isControlOutFollowsIn<typename Client::Client>;
+    if (static_cast<index>(paramArgOffset(ac, av) - numListArgs) >
+        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
-                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + hasListInput);
+                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + numListArgs);
     }
 
     return x;
@@ -1269,6 +1282,10 @@ public:
       class_addmethod(getClass(), (t_method) handleList, gensym("list"), A_GIMME, 0);
     }
 
+     if (isControlOutFollowsIn<typename Client::Client>)
+     {
+      class_addmethod(getClass(), (t_method) doAutosize, gensym("autosize"), A_FLOAT, 0);
+     }
 
     m.template iterate<SetupMessage>();
 
@@ -1291,6 +1308,12 @@ public:
   {
     x->mVerbose = (bool) warnings;
   }
+    
+    static void doAutosize(FluidPDWrapper* x, t_float autosize)
+    {
+      x->mAutosize = (bool) autosize;
+    }
+
 
   template<class T>
   using HasProcess_t = decltype(std::declval<T&>().process());
@@ -1333,17 +1356,19 @@ public:
 
   void resizeListHandlers(index newSize)
   {
-      index numIns = mClient.controlChannelsIn();
+    if (mListSize != newSize)
+    {
       mListSize = newSize; 
-      if(mListSize)
+      index numIns = mClient.controlChannelsIn();
+      mInputListData.resize(numIns,mListSize);
+      mInputListViews.clear();
+      for (index i = 0; i < numIns; ++i)
       {
-        mInputListData.resize(numIns,mListSize);
-        mInputListViews.clear();
-        for (index i = 0; i < numIns; ++i)
-        {
-          mInputListViews.emplace_back(mInputListData.row(i));
-        }
-        
+        mInputListViews.emplace_back(mInputListData.row(i));
+      }
+
+      if (isControlOutFollowsIn<typename Client::Client>)
+      {      
         mOutputListData.resize(mClient.controlChannelsOut().count,mListSize);
         mOutputListAtoms.reserve(asUnsigned(mListSize));
         mOutputListViews.clear();
@@ -1351,19 +1376,32 @@ public:
         {
           mOutputListViews.emplace_back(mOutputListData.row(i));
         }
-        
       }
+    }
   }
 
-  static void doList(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
+  static void doList(FluidPDWrapper* x, index which, t_symbol*, long ac, t_atom* av)
   {
-    if(ac != x->mListSize) x->resizeListHandlers(ac);
-    x->mListHandler(x, ac, av);
+    if (!x->mListSize && !x->mAutosize)
+    {
+      pd_error(x, "No list size argument nor autosize enabled: can't do anything");
+      return;
+    }
+
+    if (!x->mAutosize && ac != x->mListSize)
+    {
+      object_warn(x, "bad input list size (%d), expect %d",ac,x->mListSize);
+      return;
+    }
+     
+    if (x->mAutosize) x->resizeListHandlers(ac);
+    
+    x->mListHandler(x, which, ac, av);
   }
   
   static void handleList(FluidPDWrapper* x, t_symbol* s, long ac, t_atom* av)
   {
-      doList(x,s,ac,av);      
+      doList(x, 0, s, ac, av);
   }
 
 private:
@@ -1416,7 +1454,7 @@ private:
     {
       long argCount{0};
       
-      if(isControlIn<typename Client::Client>)
+      if(isControlOutFollowsIn<typename Client::Client>)
       {
         mListSize = atom_getint(av);
         numArgs -= 1;
