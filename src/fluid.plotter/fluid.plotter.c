@@ -41,6 +41,14 @@ typedef struct _edit_proxy{
     struct      _fplot *p_cnv;
 }t_edit_proxy;
 
+typedef struct _fpoint{
+    t_symbol    *id;
+    float       x;
+    float       y;
+    int       size;
+    int       class;
+}t_fpoint;
+
 typedef struct _fplot{
     t_object       x_obj;
     t_glist       *x_glist;
@@ -67,6 +75,8 @@ typedef struct _fplot{
     t_symbol      *x_snd_raw;
     t_outlet      *x_outlet;
     t_binbuf      *x_binbuf;
+    int           x_nbpoints;
+    t_fpoint      *x_points;
 }t_fplot;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
@@ -148,8 +158,8 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
     x->x_x = CLIP(x->x_x,0,x->x_width);
     x->x_y = CLIP(x->x_y,0,x->x_height);
     t_atom at[2];
-    SETFLOAT(at, x->x_x);
-    SETFLOAT(at+1, x->x_y);
+    SETFLOAT(at, (float)x->x_x / (float)x->x_width);
+    SETFLOAT(at+1, (float)x->x_y / (float)x->x_height);
     outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
     if(x->x_send != &s_ && x->x_send->s_thing)
         pd_list(x->x_send->s_thing, &s_list, 2, at);
@@ -161,8 +171,8 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
     x->x_x = CLIP((xpix - xpos) / x->x_zoom,0,x->x_width);
     x->x_y = CLIP(x->x_height - (ypix - ypos) / x->x_zoom,0,x->x_height);
     if(doit){//if mousedown
-        SETFLOAT(at, (float)x->x_x);
-        SETFLOAT(at+1, (float)x->x_y);
+        SETFLOAT(at, (float)x->x_x / (float)x->x_width);
+        SETFLOAT(at+1, (float)x->x_y / (float)x->x_height);
         outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
         if(x->x_send != &s_ && x->x_send->s_thing)
             pd_list(x->x_send->s_thing, &s_list, 2, at);
@@ -198,6 +208,7 @@ static void fplot_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c move %lx_outline %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
     sys_vgui(".x%lx.c move %lx_frame %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
+    sys_vgui(".x%lx.c move %lx_points %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
     if(obj->x_receive == &s_)
         sys_vgui(".x%lx.c move %lx_in %d %d\n", cv, obj, dx*obj->x_zoom, dy*obj->x_zoom);
     if(obj->x_send == &s_)
@@ -236,6 +247,12 @@ static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n",
                  cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
                  x->x_outline ? "black" : "white", x);
+        for (int n = 0; n < x->x_nbpoints; n++) {
+            int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
+            int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
+            sys_vgui(".x%lx.c create oval %d %d %d %d -fill black -tags %lx_points\n",
+                     cv, xP-1, yP-1, xP+1, yP+1, x);
+        }
     }
     
     if(!x->x_init) x->x_init = 1;
@@ -248,6 +265,7 @@ static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
 static void fplot_erase(t_fplot* x, struct _glist *glist){
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c delete %lx_frame\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_points\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
@@ -282,6 +300,12 @@ static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -fill black -tags %lx_frame\n",
                  cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom),
                  x->x_outline ? "black" : "white", x);
+        for (int n = 0; n < x->x_nbpoints; n++) {
+            int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
+            int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
+            sys_vgui(".x%lx.c create oval %d %d %d %d -fill black -tags %lx_points\n",
+                     cv, xP-1, yP-1, xP+1, yP+1, x);
+        }
         post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
@@ -304,7 +328,7 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
     
     int natom = binbuf_getnatom(x->x_binbuf);
     t_atom *stuff = binbuf_getvec(x->x_binbuf);
-        
+    
     for (int n = 0; n<natom; n+=4){
         if ((stuff[n].a_type != A_FLOAT && stuff[n].a_type != A_SYMBOL) ||
             stuff[n+1].a_type != A_FLOAT || stuff[n+2].a_type != A_FLOAT ||
@@ -312,8 +336,28 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
             pd_error(x, "[fluid.plotter]: wrong format of text for setpoints");
             return;
         }
-//        outlet_float(x->x_outlet, (float)n);
     }
+    
+    // allocate the memory
+    if (x->x_nbpoints > 0) free(x->x_points);
+    
+    x->x_nbpoints = (int)(natom / 4);
+    x->x_points = (t_fpoint*)malloc(x->x_nbpoints * sizeof(t_fpoint));
+    
+    for (int n = 0,m=0; n<natom; n+=4,m++){
+        x->x_points[m].id = atom_gensym(&(stuff[n]));
+        x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
+        x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
+        x->x_points[m].size = 3;
+        x->x_points[m].class = 0;
+    }
+    
+//    for (int n = 0; n < x->x_nbpoints; n++) {
+//        post("%s %f %f %i %i", x->x_points[n].id->s_name,x->x_points[n].x,
+//             x->x_points[n].y, x->x_points[n].size, x->x_points[n].class);
+//    }
+
+    fplot_draw(x, x->x_glist, 1);
 }
 
 static void fplot_send(t_fplot *x, t_symbol *s){
@@ -467,6 +511,7 @@ static void fplot_free(t_fplot *x){ // delete if variable is unset and image is 
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
     pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
+    if (x->x_nbpoints > 0) free(x->x_points);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
     gfxstub_deleteforkey(x);
@@ -484,8 +529,8 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
-    x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = 0;
+    x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
+    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = 0;
     x->x_outline =  1;
     x->x_width = x->x_height = 10;
     

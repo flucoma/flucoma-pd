@@ -5,6 +5,7 @@
 -Wl,-U,_atom_getsymbol
 -Wl,-U,_atom_getint
 -Wl,-U,_atom_string
+-Wl,-U,_atom_gensym
 -Wl,-U,_class_new
 -Wl,-U,_class_addmethod
 -Wl,-U,_class_getname
