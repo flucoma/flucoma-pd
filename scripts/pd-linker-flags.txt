@@ -62,6 +62,7 @@
 -Wl,-U,_glist_grab
 -Wl,-U,_pd_bang
 -Wl,-U,_pd_float
+-Wl,-U,_pd_list
 -Wl,-U,_s_
 -Wl,-U,_s_bang
 -Wl,-U,_s_list
