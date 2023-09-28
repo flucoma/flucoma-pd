@@ -66,6 +66,7 @@ typedef struct _fplot{
     t_symbol      *x_send;
     t_symbol      *x_snd_raw;
     t_outlet      *x_outlet;
+    t_binbuf      *x_binbuf;
 }t_fplot;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
@@ -155,7 +156,6 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
 }
 
 static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
-    shift = alt = dbl = 0;
     t_atom at[2];
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     x->x_x = CLIP((xpix - xpos) / x->x_zoom,0,x->x_width);
@@ -299,130 +299,22 @@ static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
         fplot_erase(x, x->x_glist);
 }
 
-//void fplot_audiobuffer(t_fplot* x, t_symbol* name){
-//    t_garray* inputarray;
-//    t_word* words = NULL;
-//    int length = 0;
-//    int nbchans = 0;
-//    int nbframes = 0;
-//    char nameString[MAXPDSTRING];
-//    int multichannel = 0;
-//    int ioutw = x->x_width;
-//    int iouth = x->x_height;
-//    // float minVal, maxVal; //no normalisation for audio buffers for now
-//
-//    // parsing the 'multiarray'
-//    // check there is an array at the end of that name as is (mono)
-//    inputarray = (t_garray*)pd_findbyclass(name, garray_class);
-//    if (inputarray){
-//        nbchans = 1;
-//        garray_getfloatwords(inputarray, &length, &words);
-//        nbframes = length;
-//    }
-//    else {
-//        snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
-//        while ((inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class))) {
-//            nbchans ++;
-//            garray_getfloatwords(inputarray, &length, &words);
-//            nbframes = MAX(nbframes, length);
-//            snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
-//        }
-//        multichannel = 1;
-//    }
-//    //if nothing, bails
-//    if (!nbchans) {
-//        pd_error(x, "[fluid.waveform]: no valid buffer");
-//        return;
-//    }
-//
-//    //set min and max to first value
-//    // minVal = maxVal = words[0].w_float;
-//
-//    // post("%d chans %d frames",nbchans,nbframes);
-//
-//    // if we have something
-//
-//    // make a local copy of the input
-//    // allocate the memory
-//    float** localcopy = (float**) malloc((unsigned long)nbchans * sizeof(float*));
-//    for(int i=0;i<nbchans;i++) {
-//        localcopy[i]=(float*)malloc((unsigned long)nbframes * sizeof(float));
-//    }
-//
-//    // iterated and copy
-//    //iterate through channels
-//    for (int j = 0;j<nbchans;j++) {
-//        // if mono
-//        if (!j && !multichannel){
-//            inputarray = (t_garray*)pd_findbyclass(name, garray_class);
-//        }
-//        else { //if fluid format
-//            snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, j);
-//            inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class);
-//        }
-//        // retrieve sample array and find the min and the max
-//        garray_getfloatwords(inputarray, &length, &words);
-//        for (int i = 0;i < length;i++){
-//            localcopy[j][i] = words[i].w_float;
-//            // if (minVal > words[i].w_float) minVal = words[i].w_float;
-//            // else if (maxVal < words[i].w_float) maxVal = words[i].w_float;
-//        }
-//    }
-//    // post("%f %f", minVal, maxVal);
-//    x->x_nbframes = nbframes;
-//
-//    // ratios
-//    float ratiow = (float)nbframes / ioutw;
-//    float ratioh = (float)iouth / nbchans / 2;
-//    // post("%d %f %d %f", ioutw, ratiow, iouth, ratioh);
-//    if(x->x_def_img)
-//        x->x_def_img = 0;
-//
-//    // for (int ch = 0; ch < nbchans; ch++){
-//    //   for (int fr = 0; fr < ioutw; fr++){
-//    //     post("in ch %d fr %d = ", ch, fr);
-//    //     int min = (int)((localcopy[ch][(int)(fr*ratiow)] * ratioh) + (ratioh * ((2 * ch) + 1)));
-//    //     int max = min;
-//    //     for (int localidx = (int)(fr*ratiow); localidx < (int)((fr+1)*ratiow); localidx++) {
-//    //       int val = (int)((localcopy[ch][(int)(fr*ratiow)] * ratioh) + (ratioh * ((2 * ch) + 1)));
-//    //       if (val < min) {
-//    //         min = val;
-//    //       } else if (val > max) {
-//    //         max = val;
-//    //       }
-//    //     }
-//    //     post("%d %d\n", min, max);
-//    // //     post("%d %d %d %f %d\n",ch, fr, (int)(fr * ratiow), localcopy[ch][(int)(fr*ratiow)] * ratioh, (int)((localcopy[ch][(int)(fr*ratiow)] * ratioh) + (ratioh * ((2 * ch) + 1))));
-//    //   }
-//    // }
-//    // make an array for the list of peaks in TCLTK
-//    sys_vgui("if { [info exists %lx_audiopeaks] == 1 } {array unset %lx_audiopeaks}\n", x->x_fullname, x->x_fullname); // delete previous version
-//    sys_vgui("set %lx_audiopeaks {", x->x_fullname); //header to the channel line
-//    for (int ch = 0; ch < nbchans; ch++) {
-//        for (int fr = 0; fr < ioutw; fr++) {
-//            int min = (int)(localcopy[ch][(int)(fr*ratiow)] * ratioh);
-//            int max = min;
-//            for (int localidx = (int)(fr*ratiow); localidx < (int)((fr+1)*ratiow); localidx++) {
-//                int val = (int)(localcopy[ch][localidx] * ratioh);
-//                if (val < min) {
-//                    min = val;
-//                } else if (val > max) {
-//                    max = val;
-//                }
-//            }
-//            int centre = (int)(ratioh * ((2 * ch) + 1));
-//            sys_vgui("%d %d %d %d ", fr, centre - MAX(0,max) , fr, centre - MIN(min, 0));
-//        }
-//    }
-//    sys_vgui("}\n"); //footer to the channel line
-//    fplot_erase(x, x->x_glist);
-//    fplot_draw(x, x->x_glist, 1);
-//
-//    for(int i=0;i<nbchans;i++) {
-//        free(localcopy[i]);
-//    }
-//    free(localcopy);
-//}
+void fplot_setpoints(t_fplot* x, t_symbol* name){
+    x->x_binbuf = text_getbufbyname(name);
+    
+    int natom = binbuf_getnatom(x->x_binbuf);
+    t_atom *stuff = binbuf_getvec(x->x_binbuf);
+        
+    for (int n = 0; n<natom; n+=4){
+        if ((stuff[n].a_type != A_FLOAT && stuff[n].a_type != A_SYMBOL) ||
+            stuff[n+1].a_type != A_FLOAT || stuff[n+2].a_type != A_FLOAT ||
+            stuff[n+3].a_type != A_SEMI) {
+            pd_error(x, "[fluid.plotter]: wrong format of text for setpoints");
+            return;
+        }
+//        outlet_float(x->x_outlet, (float)n);
+    }
+}
 
 static void fplot_send(t_fplot *x, t_symbol *s){
     if(s != gensym("")){
@@ -531,7 +423,6 @@ static void fplot_zoom(t_fplot *x, t_floatarg zoom){
 
 //------------------- Properties --------------------------------------------------------
 void fplot_properties(t_gobj *z, t_glist *gl){
-    gl = NULL;
     t_fplot *x = (t_fplot *)z;
     fplot_get_snd_rcv(x);
     char buffer[512];
@@ -546,8 +437,6 @@ void fplot_properties(t_gobj *z, t_glist *gl){
 }
 
 static void fplot_ok(t_fplot *x, t_symbol *s, int ac, t_atom *av){
-    // post("in ok");
-    s = NULL;
     x->x_width = MAX(10, (int)(atom_getfloatarg(0, ac, av)));
     x->x_height = MAX(10, (int)(atom_getfloatarg(1, ac, av)));
     fplot_outline(x, atom_getfloatarg(2, ac, av));
@@ -584,7 +473,6 @@ static void fplot_free(t_fplot *x){ // delete if variable is unset and image is 
 }
 
 static void *fplot_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     t_fplot *x = (t_fplot *)pd_new(fplot_class);
     t_canvas *cv = canvas_getcurrent();
     x->x_glist = (t_glist*)cv;
@@ -691,6 +579,7 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(fplot_class, (t_method)fplot_size_callback, gensym("_fplotsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
+    class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_DEFSYMBOL, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
