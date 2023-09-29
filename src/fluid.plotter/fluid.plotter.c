@@ -355,7 +355,7 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
     for (int n = 0,m=0; n<natom; n+=4,m++){
         x->x_points[m].id = atom_gensym(&(stuff[n]));
         x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
-        x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
+        x->x_points[m].y = 1 - atom_getfloat(&(stuff[n+2]));;
         x->x_points[m].size = x->x_pointsize;
         x->x_points[m].class = -1;
     }
