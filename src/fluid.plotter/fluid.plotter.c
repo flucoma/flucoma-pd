@@ -244,24 +244,48 @@ static void fplot_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
-static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
-    t_canvas *cv = glist_getcanvas(glist);
-    int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-    int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(visible || (_Bool)vis){
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n",
-                 cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
-                 x->x_outline ? "black" : "white", x);
-        const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
-        for (int n = 0; n < x->x_nbpoints; n++) {
-            int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
-            int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
-            int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
-            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
-                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
+static void fplot_drawplot(t_fplot* x, t_canvas *cv){
+    int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n",
+             cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
+             x->x_outline ? "black" : "white", x);
+    
+    const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
+    
+    for (int n = 0; n < x->x_nbpoints; n++) {
+        int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
+        int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
+        int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
+        sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
+                 cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
+    }
+}
+
+static void fplot_outline(t_fplot *x, t_float f){
+    int outline = (int)(f != 0);
+    if(x->x_outline != outline){
+        x->x_outline = outline;
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            if(x->x_outline){
+                int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+                if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
+                                      cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
+                else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                              cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
+            }
+            else if(!x->x_edit)
+                sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+            
         }
     }
-    
+}
+
+static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
+    t_canvas *cv = glist_getcanvas(glist);
+    int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
+    if(visible || (_Bool)vis) fplot_drawplot(x, cv);
+
     if(!x->x_init) x->x_init = 1;
     
     sys_vgui(".x%lx.c bind %lx_frame <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
@@ -301,30 +325,12 @@ static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
         post("visible");
         t_canvas *cv = glist_getcanvas(x->x_glist);
-        int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
         post("----callback");
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -fill black -tags %lx_frame\n",
-                 cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom),
-                 x->x_outline ? "black" : "white", x);
-        const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
-        for (int n = 0; n < x->x_nbpoints; n++) {
-            int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
-            int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
-            int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
-            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
-                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
-        }
+        fplot_drawplot(x, cv);
         post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
-            sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-            if(x->x_sel)
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-                         cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-            else
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                         cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-            fplot_draw_io_let(x);
+            fplot_outline(x, 1);
         }
     }
     else
@@ -516,26 +522,6 @@ static void fplot_receive(t_fplot *x, t_symbol *s){
                 if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                     sys_vgui(".x%lx.c delete %lx_in\n", glist_getcanvas(x->x_glist), x);
             }
-        }
-    }
-}
-
-static void fplot_outline(t_fplot *x, t_float f){
-    int outline = (int)(f != 0);
-    if(x->x_outline != outline){
-        x->x_outline = outline;
-        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-            t_canvas *cv = glist_getcanvas(x->x_glist);
-            if(x->x_outline){
-                int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-                if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-                                      cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-                else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                              cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-            }
-            else if(!x->x_edit)
-                sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-            
         }
     }
 }
