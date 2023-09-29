@@ -79,6 +79,10 @@ typedef struct _fplot{
     int           x_nbpoints;
     int           x_pointsize;
     int           x_nbhighlight;
+    float         x_x_min;
+    float         x_x_range;
+    float         x_y_min;
+    float         x_y_range;
 }t_fplot;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
@@ -163,8 +167,8 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
     x->x_x = CLIP(x->x_x,0,x->x_width);
     x->x_y = CLIP(x->x_y,0,x->x_height);
     t_atom at[2];
-    SETFLOAT(at, (float)x->x_x / (float)x->x_width);
-    SETFLOAT(at+1, (float)x->x_y / (float)x->x_height);
+    SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
+    SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
     outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
     if(x->x_send != &s_ && x->x_send->s_thing)
         pd_list(x->x_send->s_thing, &s_list, 2, at);
@@ -176,8 +180,8 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
     x->x_x = CLIP((xpix - xpos) / x->x_zoom,0,x->x_width);
     x->x_y = CLIP(x->x_height - (ypix - ypos) / x->x_zoom,0,x->x_height);
     if(doit){//if mousedown
-        SETFLOAT(at, (float)x->x_x / (float)x->x_width);
-        SETFLOAT(at+1, (float)x->x_y / (float)x->x_height);
+        SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
+        SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
         outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
         if(x->x_send != &s_ && x->x_send->s_thing)
             pd_list(x->x_send->s_thing, &s_list, 2, at);
@@ -253,11 +257,15 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
     const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
     
     for (int n = 0; n < x->x_nbpoints; n++) {
-        int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
-        int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
-        int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
-        sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
-                 cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
+        float scaledx = (x->x_points[n].x - x->x_x_min) / x->x_x_range;
+        float scaledy = (x->x_points[n].y - x->x_y_min) / x->x_y_range;
+        if (scaledx >= 0 && scaledx <= 1 && scaledy >= 0 && scaledy <= 1){
+            int xP = xpos + (int)(scaledx * x->x_width * x->x_zoom);
+            int yP = ypos + (int)((1 - scaledy) * x->x_height * x->x_zoom);
+            int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
+            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
+                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
+        }
     }
 }
 
@@ -361,7 +369,7 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
     for (int n = 0,m=0; n<natom; n+=4,m++){
         x->x_points[m].id = atom_gensym(&(stuff[n]));
         x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
-        x->x_points[m].y = 1 - atom_getfloat(&(stuff[n+2]));;
+        x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
         x->x_points[m].size = x->x_pointsize;
         x->x_points[m].class = -1;
     }
@@ -486,7 +494,29 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
 
     fplot_draw(x, x->x_glist, 1);
 }
+
+void fplot_xrange(t_fplot *x, t_float left, t_float right){
+    x->x_x_min = left;
+    x->x_x_range = right - left;
+    if (x->x_x_range == 0) x->x_x_range = 1;
+    fplot_draw(x, x->x_glist, 1);
+}
     
+void fplot_yrange(t_fplot *x, t_float left, t_float right){
+    x->x_y_min = left;
+    x->x_y_range = right - left;
+    if (x->x_y_range == 0) x->x_y_range = 1;
+    fplot_draw(x, x->x_glist, 1);
+}
+
+void fplot_range(t_fplot *x, t_float left, t_float right){
+    x->x_x_min = x->x_y_min = left;
+    x->x_x_range = x->x_y_range = right - left;
+    if (x->x_x_range == 0) x->x_x_range = 1;
+    if (x->x_y_range == 0) x->x_y_range = 1;
+    fplot_draw(x, x->x_glist, 1);
+}
+
 static void fplot_send(t_fplot *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
@@ -638,8 +668,8 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = x->x_nbhighlight = 0;
-    x->x_outline =  1;
+    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = x->x_nbhighlight = x->x_x_min = x->x_y_min = 0;
+    x->x_outline =  x->x_x_range = x->x_y_range = 1;
     x->x_pointsize = 3;
     x->x_width = x->x_height = 10;
     
@@ -736,6 +766,9 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_highlight, gensym("highlight"), A_GIMME, 0);
+    class_addmethod(fplot_class, (t_method)fplot_xrange, gensym("xrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_yrange, gensym("yrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_range, gensym("range"), A_DEFFLOAT, A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
