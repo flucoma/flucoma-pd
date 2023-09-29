@@ -418,7 +418,11 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
             pd_error(x, "[fluid.plotter]: mismatch of identifier between dataset and labelset");
             return;
         }
-        x->x_points[n].class = (int)atom_getfloat(&(stuff[(n*3)+1]));
+        if (stuff[(n*3)+1].a_type == A_FLOAT) {
+            x->x_points[n].class = (int)atom_getfloat(&(stuff[(n*3)+1]));
+        } else {
+            x->x_points[n].class = atoi(atom_gensym(&(stuff[(n*3)+1]))->s_name);
+        }
     }
     
 //    for (int n = 0; n < x->x_nbpoints; n++) {
