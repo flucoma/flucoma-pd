@@ -85,9 +85,12 @@ static void fplot_draw_io_let(t_fplot *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-    if(x->x_edit && x->x_receive == &s_)
+    if(x->x_edit && x->x_receive == &s_) {
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
                  cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
+                 cv, xpos+x->x_width, ypos, xpos+x->x_width-(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
+    }
     sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
     if(x->x_edit && x->x_send == &s_)
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
@@ -248,12 +251,13 @@ static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n",
                  cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
                  x->x_outline ? "black" : "white", x);
+        const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
         for (int n = 0; n < x->x_nbpoints; n++) {
             int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
             int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
             int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
-            sys_vgui(".x%lx.c create oval %d %d %d %d -fill black -tags %lx_points\n",
-                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, x);
+            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
+                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
         }
     }
     
@@ -302,12 +306,13 @@ static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -outline %s -fill black -tags %lx_frame\n",
                  cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom),
                  x->x_outline ? "black" : "white", x);
+        const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
         for (int n = 0; n < x->x_nbpoints; n++) {
             int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
             int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
             int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
-            sys_vgui(".x%lx.c create oval %d %d %d %d -fill black -tags %lx_points\n",
-                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, x);
+            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
+                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
         }
         post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
@@ -352,11 +357,69 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
         x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
         x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
         x->x_points[m].size = x->x_pointsize;
-        x->x_points[m].class = 0;
+        x->x_points[m].class = -1;
     }
 
     fplot_draw(x, x->x_glist, 1);
 }
+
+void fplot_setlabels(t_fplot* x, t_symbol* name){
+    x->x_binbuf = text_getbufbyname(name);
+    
+    if (x->x_nbpoints < 1) {
+        pd_error(x, "[fluid.plotter]: setlabels needs a dataset first");
+        return;
+    }
+    
+    int natom = binbuf_getnatom(x->x_binbuf);
+    
+    if (x->x_nbpoints != (natom/3)) {
+        pd_error(x, "[fluid.plotter]: the labelset is not the same size as the dataset");
+        return;
+    }
+    
+    t_atom *stuff = binbuf_getvec(x->x_binbuf);
+    
+    for (int n = 0; n<natom; n+=3){
+        if ((stuff[n].a_type != A_FLOAT && stuff[n].a_type != A_SYMBOL) ||
+            stuff[n+1].a_type != A_FLOAT || stuff[n+2].a_type != A_SEMI) {
+            pd_error(x, "[fluid.plotter]: wrong format of text for setlabels");
+            return;
+        }
+    }
+    
+    //sort both stuff and x_points using shellsort
+    for (int interval = x->x_nbpoints/2; interval > 0; interval /= 2) {
+        for (int i = interval; i < x->x_nbpoints; i += 1) {
+            t_fpoint temp = x->x_points[i];
+            int j;
+            for (j = i; j >= interval && x->x_points[j - interval].id->s_name > temp.id->s_name; j -= interval)
+                x->x_points[j] = x->x_points[j - interval];
+            x->x_points[j] = temp;
+        }
+    }
+    
+    for (int interval = x->x_nbpoints/2; interval > 0; interval /= 2) {
+        for (int i = interval; i < x->x_nbpoints; i += 1) {
+            t_atom tempS = stuff[i*3];
+            t_atom tempF = stuff[(i*3)+1];
+            int j;
+            for (j = i; j >= interval && atom_gensym(&stuff[(j - interval)*3])->s_name > atom_gensym(&tempS)->s_name; j -= interval){
+                stuff[j*3] = stuff[(j-interval)*3];
+                stuff[(j*3)+1] = stuff[((j-interval)*3)+1];
+            }
+            stuff[j*3] = tempS;
+            stuff[(j*3)+1] = tempF;
+        }
+    }
+    
+    for (int n = 0; n<x->x_nbpoints; n++){
+        if (atom_gensym(&(stuff[n*3]))->s_name != x->x_points[n].id->s_name){
+            pd_error(x, "[fluid.plotter]: mismatch of identifier between dataset and labelset");
+            return;
+        }
+        x->x_points[n].class = (int)atom_getfloat(&(stuff[(n*3)+1]));
+    }
     
 //    for (int n = 0; n < x->x_nbpoints; n++) {
 //        post("%s %f %f %i %i", x->x_points[n].id->s_name,x->x_points[n].x,
@@ -536,6 +599,7 @@ static void fplot_free(t_fplot *x){ // delete if variable is unset and image is 
 
 static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     t_fplot *x = (t_fplot *)pd_new(fplot_class);
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("setlabels"), gensym("setlabels"));
     t_canvas *cv = canvas_getcurrent();
     x->x_glist = (t_glist*)cv;
     x->x_zoom = x->x_glist->gl_zoom;
@@ -643,6 +707,7 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_size_callback, gensym("_fplotsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_DEFSYMBOL, 0);
+    class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
