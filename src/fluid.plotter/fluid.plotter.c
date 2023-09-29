@@ -78,6 +78,7 @@ typedef struct _fplot{
     t_fpoint      *x_points;
     int           x_nbpoints;
     int           x_pointsize;
+    int           x_nbhighlight;
 }t_fplot;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
@@ -424,11 +425,6 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
             x->x_points[n].class = atoi(atom_gensym(&(stuff[(n*3)+1]))->s_name);
         }
     }
-    
-//    for (int n = 0; n < x->x_nbpoints; n++) {
-//        post("%s %f %f %i %i", x->x_points[n].id->s_name,x->x_points[n].x,
-//             x->x_points[n].y, x->x_points[n].size, x->x_points[n].class);
-//    }
 
     fplot_draw(x, x->x_glist, 1);
 }
@@ -442,6 +438,47 @@ void fplot_pointsize(t_fplot* x, float size){
         
         fplot_draw(x, x->x_glist, 1);
     }
+}
+
+void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
+    //clear with early exit
+    if (x->x_nbhighlight) {
+        for (int i = 0;i<x->x_nbpoints;i++) {
+            if (x->x_points[i].size > x->x_pointsize){
+                x->x_points[i].size = x->x_pointsize;
+                if ((x->x_nbhighlight -= 1) <= 0) break;
+            }
+        }
+    }
+    
+    if (ac < 1) {
+        fplot_draw(x, x->x_glist, 1);
+        return;
+    }
+    
+    // check for arguments
+    for (int i = 0; i<ac; i++) {
+        if (av[i].a_type != A_SYMBOL) {
+            pd_error(x, "[fluid.plotter]: highlight takes identifiers as symbols");
+            return;
+        }
+    }
+    
+    for (int i = 0; i < x->x_nbpoints; i++) {
+        for (int j = 0; j<ac; j++) {
+            if (av[j].a_w.w_symbol->s_name == x->x_points[i].id->s_name){
+                x->x_points[i].size *= 4;
+                x->x_nbhighlight += 1;
+            }
+        }
+        if (x->x_nbhighlight == ac) break;
+    }
+
+    if (x->x_nbhighlight != ac){
+        pd_error(x, "[fluid.plotter]: no matching symbol to highlight for %d item(s)", (ac - x->x_nbhighlight));
+    }
+
+    fplot_draw(x, x->x_glist, 1);
 }
     
 static void fplot_send(t_fplot *x, t_symbol *s){
@@ -615,7 +652,7 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = 0;
+    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = x->x_nbhighlight = 0;
     x->x_outline =  1;
     x->x_pointsize = 3;
     x->x_width = x->x_height = 10;
@@ -712,6 +749,7 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_highlight, gensym("highlight"), A_GIMME, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
