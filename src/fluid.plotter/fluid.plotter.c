@@ -454,6 +454,17 @@ void fplot_pointsize(t_fplot* x, float size){
     }
 }
 
+void fplot_pointcolor(t_fplot* x, t_symbol *s, float classnum){
+    for (int i = 0; i < x->x_nbpoints; i++) {
+        if (x->x_points[i].id->s_name == s->s_name){
+            x->x_points[i].class = MIN(MAX((int)classnum,-1),6);
+            fplot_draw(x, x->x_glist, 1);
+            return;
+        }
+    }
+    pd_error(x, "[fluid.plotter]: no matching symbol for %s", s->s_name);
+}
+
 void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
     //clear with early exit
     if (x->x_nbhighlight) {
@@ -769,6 +780,7 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_xrange, gensym("xrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_yrange, gensym("yrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_range, gensym("range"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointcolor, gensym("pointcolor"), A_DEFSYMBOL, A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
