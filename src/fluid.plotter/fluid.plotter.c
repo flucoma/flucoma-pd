@@ -75,8 +75,9 @@ typedef struct _fplot{
     t_symbol      *x_snd_raw;
     t_outlet      *x_outlet;
     t_binbuf      *x_binbuf;
-    int           x_nbpoints;
     t_fpoint      *x_points;
+    int           x_nbpoints;
+    int           x_pointsize;
 }t_fplot;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
@@ -250,8 +251,9 @@ static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
         for (int n = 0; n < x->x_nbpoints; n++) {
             int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
             int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
+            int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
             sys_vgui(".x%lx.c create oval %d %d %d %d -fill black -tags %lx_points\n",
-                     cv, xP-1, yP-1, xP+1, yP+1, x);
+                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, x);
         }
     }
     
@@ -303,8 +305,9 @@ static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
         for (int n = 0; n < x->x_nbpoints; n++) {
             int xP = xpos + (int)(x->x_points[n].x * x->x_width * x->x_zoom);
             int yP = ypos + (int)(x->x_points[n].y * x->x_height * x->x_zoom);
+            int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
             sys_vgui(".x%lx.c create oval %d %d %d %d -fill black -tags %lx_points\n",
-                     cv, xP-1, yP-1, xP+1, yP+1, x);
+                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, x);
         }
         post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
@@ -348,9 +351,12 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
         x->x_points[m].id = atom_gensym(&(stuff[n]));
         x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
         x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
-        x->x_points[m].size = 3;
+        x->x_points[m].size = x->x_pointsize;
         x->x_points[m].class = 0;
     }
+
+    fplot_draw(x, x->x_glist, 1);
+}
     
 //    for (int n = 0; n < x->x_nbpoints; n++) {
 //        post("%s %f %f %i %i", x->x_points[n].id->s_name,x->x_points[n].x,
@@ -360,6 +366,17 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
     fplot_draw(x, x->x_glist, 1);
 }
 
+void fplot_pointsize(t_fplot* x, float size){
+    x->x_pointsize = (int)MAX(size,1);
+    
+    if (x->x_nbpoints > 0){
+        for (int n = 0; n < x->x_nbpoints; n++)
+            x->x_points[n].size = x->x_pointsize;
+        
+        fplot_draw(x, x->x_glist, 1);
+    }
+}
+    
 static void fplot_send(t_fplot *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
@@ -532,6 +549,7 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
     x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = 0;
     x->x_outline =  1;
+    x->x_pointsize = 3;
     x->x_width = x->x_height = 10;
     
     if(ac && av->a_type == A_FLOAT){ // 1ST width
@@ -625,6 +643,7 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_size_callback, gensym("_fplotsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_DEFSYMBOL, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
