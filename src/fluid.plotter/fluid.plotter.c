@@ -382,7 +382,8 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
     
     for (int n = 0; n<natom; n+=3){
         if ((stuff[n].a_type != A_FLOAT && stuff[n].a_type != A_SYMBOL) ||
-            stuff[n+1].a_type != A_FLOAT || stuff[n+2].a_type != A_SEMI) {
+            (stuff[n+1].a_type != A_FLOAT && stuff[n+1].a_type != A_SYMBOL)
+            || stuff[n+2].a_type != A_SEMI) {
             pd_error(x, "[fluid.plotter]: wrong format of text for setlabels");
             return;
         }
@@ -629,26 +630,23 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
             if(ac && av->a_type == A_FLOAT){ // 3rd outline
                 x->x_outline = (int)(av->a_w.w_float != 0);
                 ac--; av++;
-                if(ac && av->a_type == A_SYMBOL){ // 4th Send
-                    if(av->a_w.w_symbol == gensym("empty")){ // ignore
-                        ac--, av++;
-                    }
-                    else {
-                        x->x_send = av->a_w.w_symbol;
-                        ac--, av++;
-                    }
-                    if(ac && av->a_type == A_SYMBOL){ // 5th Receive
+                if(ac && av->a_type == A_FLOAT){ // 4TH latch
+                    x->x_latch = (int)(av->a_w.w_float != 0);
+                    ac--; av++;
+                    if(ac && av->a_type == A_SYMBOL){ // 5th Send
                         if(av->a_w.w_symbol == gensym("empty")){ // ignore
                             ac--, av++;
                         }
                         else {
-                            x->x_receive = av->a_w.w_symbol;
+                            x->x_send = av->a_w.w_symbol;
                             ac--, av++;
                         }
-                        
-                        if(ac && av->a_type == A_FLOAT){ // 6TH latch
-                            x->x_latch = (int)(av->a_w.w_float != 0);
-                            ac--; av++;
+                        if(ac && av->a_type == A_SYMBOL){ // 6th Receive
+                            if(av->a_w.w_symbol == gensym("empty")){ // ignore
+                            }
+                            else {
+                                x->x_receive = av->a_w.w_symbol;
+                            }
                         }
                     }
                 }
