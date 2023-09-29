@@ -117,7 +117,7 @@ static void fplot_get_snd_rcv(t_fplot* x){
                 }
             }
             else{ // we got no flags, let's search for argument
-                int arg_n = 4; // receive argument number
+                int arg_n = 5; // send argument number
                 if(n_args >= arg_n){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
                     x->x_snd_raw = gensym(buf);
@@ -143,8 +143,8 @@ static void fplot_get_snd_rcv(t_fplot* x){
                 }
             }
             else{ // we got no flags, let's search for argument
-                int arg_n = 5; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
+                int arg_n = 6; //
+                if(n_args >= 6){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
                     x->x_rcv_raw = gensym(buf);
                 }
@@ -285,9 +285,8 @@ static void fplot_vis(t_gobj *z, t_glist *glist, int vis){
 static void fplot_save(t_gobj *z, t_binbuf *b){
     t_fplot *x = (t_fplot *)z;
     fplot_get_snd_rcv(x);
-    binbuf_addv(b, "ssiisiiissi", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
-                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_width, x->x_height, x->x_outline, x->x_snd_raw,
-                x->x_rcv_raw, x->x_latch);
+    binbuf_addv(b, "ssiisiiiiss", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
+                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_width, x->x_height, x->x_outline, x->x_latch, x->x_snd_raw, x->x_rcv_raw);
     binbuf_addv(b, ";");
 }
 
@@ -643,9 +642,11 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
                         }
                         if(ac && av->a_type == A_SYMBOL){ // 6th Receive
                             if(av->a_w.w_symbol == gensym("empty")){ // ignore
+                                ac--, av++;
                             }
                             else {
                                 x->x_receive = av->a_w.w_symbol;
+                                ac--, av++;
                             }
                         }
                     }
