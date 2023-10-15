@@ -444,6 +444,42 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
     fplot_draw(x, x->x_glist, 1);
 }
 
+void fplot_setpoint(t_fplot* x, t_symbol* name, float xin, float yin, float size, float class){
+    if (x->x_nbpoints == 0) {
+        x->x_points = (t_fpoint*)malloc(sizeof(t_fpoint));
+    } else {
+        // check if the point exists
+        for (int i = 0; i < x->x_nbpoints; i++) {
+            if (x->x_points[i].id->s_name == name->s_name){
+                x->x_points[i].x = xin;
+                x->x_points[i].y = yin;
+                if (size != 0) {
+                    x->x_points[i].size = MAX((int)size,1);
+                    x->x_points[i].class = MIN(MAX((int)class,-1),6);
+                }
+                fplot_draw(x, x->x_glist, 1);
+                return;
+            }
+        }
+        x->x_points = (t_fpoint*)realloc(x->x_points, (x->x_nbpoints + 1) * sizeof(t_fpoint));
+    }
+    
+    x->x_points[x->x_nbpoints].id = name;
+    x->x_points[x->x_nbpoints].x = xin;
+    x->x_points[x->x_nbpoints].y = yin;
+    if (size != 0) {
+        x->x_points[x->x_nbpoints].size = MAX((int)size,1);
+        x->x_points[x->x_nbpoints].class = MIN(MAX((int)class,-1),6);
+    } else {
+        x->x_points[x->x_nbpoints].size = 3;
+        x->x_points[x->x_nbpoints].class = -1;
+    }
+
+    x->x_nbpoints += 1;
+
+    fplot_draw(x, x->x_glist, 1);
+}
+
 void fplot_pointsizescale(t_fplot* x, float size){
     x->x_pointsizescale = MAX(size,1);
     fplot_draw(x, x->x_glist, 1);
@@ -779,15 +815,16 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(fplot_class, (t_method)fplot_size_callback, gensym("_fplotsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
-    class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_DEFSYMBOL, 0);
-    class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_DEFSYMBOL, 0);
-    class_addmethod(fplot_class, (t_method)fplot_pointsizescale, gensym("pointsizescale"), A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_SYMBOL, 0);
+    class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_SYMBOL, 0);
+    class_addmethod(fplot_class, (t_method)fplot_setpoint, gensym("setpoint"), A_SYMBOL, A_FLOAT, A_FLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointsizescale, gensym("pointsizescale"), A_FLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_highlight, gensym("highlight"), A_GIMME, 0);
-    class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFSYMBOL, A_DEFFLOAT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_pointcolor, gensym("pointcolor"), A_DEFSYMBOL, A_DEFFLOAT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_xrange, gensym("xrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_yrange, gensym("yrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_range, gensym("range"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_SYMBOL, A_FLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointcolor, gensym("pointcolor"), A_SYMBOL, A_FLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_xrange, gensym("xrange"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_yrange, gensym("yrange"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
