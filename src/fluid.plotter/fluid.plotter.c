@@ -570,6 +570,12 @@ void fplot_range(t_fplot *x, t_float left, t_float right){
     fplot_draw(x, x->x_glist, 1);
 }
 
+static void fplot_clear(t_fplot *x){
+    if (x->x_nbpoints > 0) free(x->x_points);
+    x->x_nbpoints = 0;
+    fplot_draw(x, x->x_glist, 1);
+}
+
 static void fplot_send(t_fplot *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
@@ -825,6 +831,7 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_xrange, gensym("xrange"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_yrange, gensym("yrange"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_clear, gensym("clear"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
