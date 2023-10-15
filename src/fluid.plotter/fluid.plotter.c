@@ -77,7 +77,7 @@ typedef struct _fplot{
     t_binbuf      *x_binbuf;
     t_fpoint      *x_points;
     int           x_nbpoints;
-    int           x_pointsize;
+    float         x_pointsizescale;
     int           x_nbhighlight;
     float         x_x_min;
     float         x_x_range;
@@ -262,9 +262,10 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
         if (scaledx >= 0 && scaledx <= 1 && scaledy >= 0 && scaledy <= 1){
             int xP = xpos + (int)(scaledx * x->x_width * x->x_zoom);
             int yP = ypos + (int)((1 - scaledy) * x->x_height * x->x_zoom);
-            int halfsize = (int)MAX((x->x_points[n].size + 1) / 2, 1);
+            float halfsize = MAX(((x->x_points[n].size * x->x_pointsizescale) + 1) * 0.5, 0.5);
             sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
-                     cv, xP-halfsize, yP-halfsize, xP+halfsize, yP+halfsize, colours[x->x_points[n].class+1], x);
+                     cv, (int)(xP-halfsize), (int)(yP-halfsize), (int)(xP+halfsize),
+                     (int)(yP+halfsize), colours[x->x_points[n].class+1], x);
         }
     }
 }
@@ -370,7 +371,7 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
         x->x_points[m].id = atom_gensym(&(stuff[n]));
         x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
         x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
-        x->x_points[m].size = x->x_pointsize;
+        x->x_points[m].size = x->x_pointsizescale;
         x->x_points[m].class = -1;
     }
 
@@ -443,15 +444,20 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
     fplot_draw(x, x->x_glist, 1);
 }
 
-void fplot_pointsize(t_fplot* x, float size){
-    x->x_pointsize = (int)MAX(size,1);
-    
-    if (x->x_nbpoints > 0){
-        for (int n = 0; n < x->x_nbpoints; n++)
-            x->x_points[n].size = x->x_pointsize;
-        
-        fplot_draw(x, x->x_glist, 1);
+void fplot_pointsizescale(t_fplot* x, float size){
+    x->x_pointsizescale = MAX(size,1);
+    fplot_draw(x, x->x_glist, 1);
+}
+
+void fplot_pointsize(t_fplot* x, t_symbol *s, float size){
+    for (int i = 0; i < x->x_nbpoints; i++) {
+        if (x->x_points[i].id->s_name == s->s_name){
+            x->x_points[i].size = MAX((int)size,1);
+            fplot_draw(x, x->x_glist, 1);
+            return;
+        }
     }
+    pd_error(x, "[fluid.plotter]: no matching symbol for %s", s->s_name);
 }
 
 void fplot_pointcolor(t_fplot* x, t_symbol *s, float classnum){
@@ -469,8 +475,8 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
     //clear with early exit
     if (x->x_nbhighlight) {
         for (int i = 0;i<x->x_nbpoints;i++) {
-            if (x->x_points[i].size > x->x_pointsize){
-                x->x_points[i].size = x->x_pointsize;
+            if (x->x_points[i].size > x->x_pointsizescale){
+                x->x_points[i].size /= 3;
                 if ((x->x_nbhighlight -= 1) <= 0) break;
             }
         }
@@ -492,7 +498,7 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
     for (int i = 0; i < x->x_nbpoints; i++) {
         for (int j = 0; j<ac; j++) {
             if (av[j].a_w.w_symbol->s_name == x->x_points[i].id->s_name){
-                x->x_points[i].size *= 4;
+                x->x_points[i].size *= 3;
                 x->x_nbhighlight += 1;
             }
         }
@@ -681,7 +687,7 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
     x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbpoints = x->x_nbhighlight = x->x_x_min = x->x_y_min = 0;
     x->x_outline =  x->x_x_range = x->x_y_range = 1;
-    x->x_pointsize = 3;
+    x->x_pointsizescale = 3;
     x->x_width = x->x_height = 10;
     
     if(ac && av->a_type == A_FLOAT){ // 1ST width
@@ -775,12 +781,13 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_DEFSYMBOL, 0);
-    class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointsizescale, gensym("pointsizescale"), A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_highlight, gensym("highlight"), A_GIMME, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointsize, gensym("pointsize"), A_DEFSYMBOL, A_DEFFLOAT, 0);
+    class_addmethod(fplot_class, (t_method)fplot_pointcolor, gensym("pointcolor"), A_DEFSYMBOL, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_xrange, gensym("xrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_yrange, gensym("yrange"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_range, gensym("range"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_pointcolor, gensym("pointcolor"), A_DEFSYMBOL, A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     fplot_widgetbehavior.w_getrectfn  = fplot_getrect;
