@@ -254,20 +254,31 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
              cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
              x->x_outline ? "black" : "white", x);
     
-    const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
+//    const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
+//
+//    for (int n = 0; n < x->x_nbpoints; n++) {
+//        float scaledx = (x->x_points[n].x - x->x_x_min) / x->x_x_range;
+//        float scaledy = (x->x_points[n].y - x->x_y_min) / x->x_y_range;
+//        if (scaledx >= 0 && scaledx <= 1 && scaledy >= 0 && scaledy <= 1){
+//            int xP = xpos + (int)(scaledx * x->x_width * x->x_zoom);
+//            int yP = ypos + (int)((1 - scaledy) * x->x_height * x->x_zoom);
+//            float halfsize = MAX(((x->x_points[n].size * x->x_pointsizescale) + 1) * 0.5, 0.5);
+//            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
+//                     cv, (int)(xP-halfsize), (int)(yP-halfsize), (int)(xP+halfsize),
+//                     (int)(yP+halfsize), colours[x->x_points[n].class+1], x);
+//        }
+//    }
+
+//    sys_vgui("puts $tcl_version\n");
+//    sys_vgui("puts \"Number of points: [dict size $%lx_points]\"}\n", x, x);
+//    sys_vgui("puts \"Number of points: [dict size $%lx_points]\"\n", x, x);
+//    sys_vgui("dict for {key val} $%lx_points {puts \"$key\"}\n", x, x);
+//    sys_vgui("if {[dict exists %lx_points left]} {dict for {key val} $%lx_points {puts \"$key\"}}\n", x, x);
     
-    for (int n = 0; n < x->x_nbpoints; n++) {
-        float scaledx = (x->x_points[n].x - x->x_x_min) / x->x_x_range;
-        float scaledy = (x->x_points[n].y - x->x_y_min) / x->x_y_range;
-        if (scaledx >= 0 && scaledx <= 1 && scaledy >= 0 && scaledy <= 1){
-            int xP = xpos + (int)(scaledx * x->x_width * x->x_zoom);
-            int yP = ypos + (int)((1 - scaledy) * x->x_height * x->x_zoom);
-            float halfsize = MAX(((x->x_points[n].size * x->x_pointsizescale) + 1) * 0.5, 0.5);
-            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
-                     cv, (int)(xP-halfsize), (int)(yP-halfsize), (int)(xP+halfsize),
-                     (int)(yP+halfsize), colours[x->x_points[n].class+1], x);
-        }
-    }
+    sys_vgui("if {[info exists %lx_points]} {dict for {key val} $%lx_points {dict with val {puts \"$key $left $right $top $bottom $colour\"}}}\n", x, x);
+
+//    sys_vgui("dict for {key val} $%lx_points {dict with val {.x%lx.c create oval $x1 $y1 $x2 $y2 -fill black -tags %lx_points}}\n", x, x, x);
+    
 }
 
 static void fplot_outline(t_fplot *x, t_float f){
@@ -374,6 +385,26 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
         x->x_points[m].size = x->x_pointsizescale;
         x->x_points[m].class = -1;
     }
+    
+    sys_vgui("if {[info exists %lx_points]} {unset %lx_points}\n", x, x);
+    
+    for (int n = 0,m=0; n<natom; n+=4,m++){
+        char* key = atom_gensym(&(stuff[n]))->s_name;
+        float xin = atom_getfloat(&(stuff[n+1])) - (x->x_pointsizescale * 0.5);
+        float yin = atom_getfloat(&(stuff[n+2])) - (x->x_pointsizescale * 0.5);
+//        post("%s",key);
+        sys_vgui("dict set %lx_points %s left %d \n", x, key, (int)xin);
+        sys_vgui("dict set %lx_points %s right %d \n", x, key, (int)(xin + x->x_pointsizescale));
+        sys_vgui("dict set %lx_points %s top %d \n", x, key, (int)yin);
+        sys_vgui("dict set %lx_points %s bottom %d \n", x, key, (int)(yin + x->x_pointsizescale));;
+        sys_vgui("dict set %lx_points %s colour %s\n", x, key, "black");
+    }
+        
+//    sys_vgui("foreach id [dict keys $%lx_points] {puts [ dict get $%lx_points $id left ] }\n", x);
+//    sys_vgui("puts \"Number of points: [dict size $%lx_points]\"\n", x);
+//    sys_vgui("foreach {key val} $%lx_points {puts \"$key $val\"}\n", x);
+//    sys_vgui("foreach {key val} $%lx_points {puts \"$key\" \n dict with val {puts \"$left $right $top $bottom\"}}\n", x);
+//    sys_vgui("dict for {id info} $%lx_points {puts \"$id\" \n dict with info {puts \"$left $right $top $bottom\"}}\n", x);
 
     fplot_draw(x, x->x_glist, 1);
 }
