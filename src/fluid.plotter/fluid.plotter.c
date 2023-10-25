@@ -78,7 +78,6 @@ typedef struct _fplot{
     t_outlet      *x_outlet;
     t_binbuf      *x_binbuf;
     t_fpoint      *x_points;
-//    int           x_nbpoints;
     float         x_pointsizescale;
     int           x_nbhighlight;
     float         x_x_min;
@@ -255,24 +254,6 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n",
              cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
              x->x_outline ? "black" : "white", x);
-    
-//    const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
-//
-//    for (int n = 0; n < x->x_nbpoints; n++) {
-//        float scaledx = (x->x_points[n].x - x->x_x_min) / x->x_x_range;
-//        float scaledy = (x->x_points[n].y - x->x_y_min) / x->x_y_range;
-//        if (scaledx >= 0 && scaledx <= 1 && scaledy >= 0 && scaledy <= 1){
-//            int xP = xpos + (int)(scaledx * x->x_width * x->x_zoom);
-//            int yP = ypos + (int)((1 - scaledy) * x->x_height * x->x_zoom);
-//            float halfsize = MAX(((x->x_points[n].size * x->x_pointsizescale) + 1) * 0.5, 0.5);
-//            sys_vgui(".x%lx.c create oval %d %d %d %d -fill %s -tags %lx_points\n",
-//                     cv, (int)(xP-halfsize), (int)(yP-halfsize), (int)(xP+halfsize),
-//                     (int)(yP+halfsize), colours[x->x_points[n].class+1], x);
-//        }
-//    }
-
-//    sys_vgui("puts $tcl_version\n");
-//    sys_vgui("if {[info exists %lx_pointdict]} {dict for {key val} $%lx_pointdict {dict with val {puts \"$key $x $y $size $class\"}}}\n", x, x);
 
     sys_vgui("if {[info exists %lx_pointdict]} { \n", x);
     sys_vgui("  dict for {key val} $%lx_pointdict { \n", x);
@@ -379,20 +360,6 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
         }
     }
     
-//    // allocate the memory
-//    if (x->x_nbpoints > 0) free(x->x_points);
-    
-//    x->x_nbpoints = (int)(natom / 4);
-//    x->x_points = (t_fpoint*)malloc(x->x_nbpoints * sizeof(t_fpoint));
-    
-//    for (int n = 0,m=0; n<natom; n+=4,m++){
-//        x->x_points[m].id = atom_gensym(&(stuff[n]));
-//        x->x_points[m].x = atom_getfloat(&(stuff[n+1]));
-//        x->x_points[m].y = atom_getfloat(&(stuff[n+2]));;
-//        x->x_points[m].size = x->x_pointsizescale;
-//        x->x_points[m].class = -1;
-//    }
-//
     sys_vgui("if {[info exists %lx_pointdict]} {unset %lx_pointdict}\n", x, x);
     
     for (int n = 0,m=0; n<natom; n+=4,m++){
@@ -409,17 +376,7 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
 void fplot_setlabels(t_fplot* x, t_symbol* name){
     x->x_binbuf = text_getbufbyname(name);
     
-//    if (x->x_nbpoints < 1) {
-//        pd_error(x, "[fluid.plotter]: setlabels needs a dataset first");
-//        return;
-//    }
-    
     int natom = binbuf_getnatom(x->x_binbuf);
-    
-//    if (x->x_nbpoints != (natom/3)) {
-//        pd_error(x, "[fluid.plotter]: the labelset is not the same size as the dataset");
-//        return;
-//    }
     
     t_atom *stuff = binbuf_getvec(x->x_binbuf);
     
@@ -431,37 +388,8 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
             return;
         }
     }
-//
-//    //sort both stuff and x_points using shellsort
-//    for (int interval = x->x_nbpoints/2; interval > 0; interval /= 2) {
-//        for (int i = interval; i < x->x_nbpoints; i += 1) {
-//            t_fpoint temp = x->x_points[i];
-//            int j;
-//            for (j = i; j >= interval && x->x_points[j - interval].id->s_name > temp.id->s_name; j -= interval)
-//                x->x_points[j] = x->x_points[j - interval];
-//            x->x_points[j] = temp;
-//        }
-//    }
-//
-//    for (int interval = x->x_nbpoints/2; interval > 0; interval /= 2) {
-//        for (int i = interval; i < x->x_nbpoints; i += 1) {
-//            t_atom tempS = stuff[i*3];
-//            t_atom tempF = stuff[(i*3)+1];
-//            int j;
-//            for (j = i; j >= interval && atom_gensym(&stuff[(j - interval)*3])->s_name > atom_gensym(&tempS)->s_name; j -= interval){
-//                stuff[j*3] = stuff[(j-interval)*3];
-//                stuff[(j*3)+1] = stuff[((j-interval)*3)+1];
-//            }
-//            stuff[j*3] = tempS;
-//            stuff[(j*3)+1] = tempF;
-//        }
-//    }
     
     for (int n = 0; n<(natom/3); n++){
-//        if (atom_gensym(&(stuff[n*3]))->s_name != x->x_points[n].id->s_name){
-//            pd_error(x, "[fluid.plotter]: mismatch of identifier between dataset and labelset");
-//            return;
-//        }
         char* key = atom_gensym(&(stuff[n*3]))->s_name;
         int classID = (stuff[(n*3)+1].a_type == A_FLOAT) ? (int)atom_getfloat(&(stuff[(n*3)+1])) : atoi(atom_gensym(&(stuff[(n*3)+1]))->s_name);
         sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[classID + 1]);
@@ -471,35 +399,6 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
 }
 
 void fplot_setpoint(t_fplot* x, t_symbol* name, float xin, float yin, float size, float class){
-//    if (x->x_nbpoints == 0) {
-//        x->x_points = (t_fpoint*)malloc(sizeof(t_fpoint));
-//    } else {
-//        // check if the point exists
-//        for (int i = 0; i < x->x_nbpoints; i++) {
-//            if (x->x_points[i].id->s_name == name->s_name){
-//                x->x_points[i].x = xin;
-//                x->x_points[i].y = yin;
-//                if (size != 0) {
-//                    x->x_points[i].size = MAX((int)size,1);
-//                    x->x_points[i].class = MIN(MAX((int)class,-1),6);
-//                }
-//                fplot_draw(x, x->x_glist, 1);
-//                return;
-//            }
-//        }
-//        x->x_points = (t_fpoint*)realloc(x->x_points, (x->x_nbpoints + 1) * sizeof(t_fpoint));
-//    }
-//
-//    x->x_points[x->x_nbpoints].x = xin;
-//    x->x_points[x->x_nbpoints].y = yin;
-//    if (size != 0) {
-//        x->x_points[x->x_nbpoints].size = MAX((int)size,1);
-//        x->x_points[x->x_nbpoints].class = MIN(MAX((int)class,-1),6);
-//    } else {
-//        x->x_points[x->x_nbpoints].size = 3;
-//        x->x_points[x->x_nbpoints].class = -1;
-//    }
-
     char* key = name->s_name;
     sys_vgui("dict set %lx_pointdict %s x %f \n", x, key, xin);
     sys_vgui("dict set %lx_pointdict %s y %f \n", x, key, yin);
@@ -520,42 +419,16 @@ void fplot_pointsizescale(t_fplot* x, float size){
 }
 
 void fplot_pointsize(t_fplot* x, t_symbol *s, float size){
-//    for (int i = 0; i < x->x_nbpoints; i++) {
-//        if (x->x_points[i].id->s_name == s->s_name){
-//            x->x_points[i].size = ;
-//            fplot_draw(x, x->x_glist, 1);
-//            return;
-//        }
-//    }
-//    pd_error(x, "[fluid.plotter]: no matching symbol for %s", s->s_name);
     sys_vgui("dict set %lx_pointdict %s size %f \n", x, s->s_name, MAX(size,1));
     fplot_draw(x, x->x_glist, 1);
 }
 
 void fplot_pointcolor(t_fplot* x, t_symbol *s, float classnum){
-//    for (int i = 0; i < x->x_nbpoints; i++) {
-//        if (x->x_points[i].id->s_name == s->s_name){
-//            x->x_points[i].class = MIN(MAX((int)classnum,-1),6);
-//            fplot_draw(x, x->x_glist, 1);
-//            return;
-//        }
-//    }
-//    pd_error(x, "[fluid.plotter]: no matching symbol for %s", s->s_name);
     sys_vgui("dict set %lx_pointdict %s class %s \n", x, s->s_name, colours[MIN(MAX((int)classnum,-1),6)]);
     fplot_draw(x, x->x_glist, 1);
 }
 
 void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
-//    //clear with early exit
-//    if (x->x_nbhighlight) {
-//        for (int i = 0;i<x->x_nbpoints;i++) {
-//            if (x->x_points[i].size > x->x_pointsizescale){
-//                x->x_points[i].size /= 3;
-//                if ((x->x_nbhighlight -= 1) <= 0) break;
-//            }
-//        }
-//    }
-
     sys_vgui("if { [info exists %lx_highlighted] } { \n", x);
     sys_vgui("  foreach item $%lx_highlighted { \n", x);
     sys_vgui("    dict set %lx_pointdict $item size [expr [dict get $%lx_pointdict $item size] / 3]\n", x, x);
@@ -579,20 +452,6 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
         sys_vgui("lappend %lx_highlighted %s\n", x, id);
         sys_vgui("dict set %lx_pointdict %s size [expr [dict get $%lx_pointdict %s size] * 3]\n", x, id, x, id);
     }
-    
-//    for (int i = 0; i < x->x_nbpoints; i++) {
-//        for (int j = 0; j<ac; j++) {
-//            if (av[j].a_w.w_symbol->s_name == x->x_points[i].id->s_name){
-//                x->x_points[i].size *= 3;
-//                x->x_nbhighlight += 1;
-//            }
-//        }
-//        if (x->x_nbhighlight == ac) break;
-//    }
-//
-//    if (x->x_nbhighlight != ac){
-//        pd_error(x, "[fluid.plotter]: no matching symbol to highlight for %d item(s)", (ac - x->x_nbhighlight));
-//    }
     
     fplot_draw(x, x->x_glist, 1);
 }
@@ -620,8 +479,6 @@ void fplot_range(t_fplot *x, t_float left, t_float right){
 }
 
 static void fplot_clear(t_fplot *x){
-//    if (x->x_nbpoints > 0) free(x->x_points);
-//    x->x_nbpoints = 0;
     sys_vgui("if {[info exists %lx_pointdict]} {unset %lx_pointdict}\n", x, x);
     sys_vgui("if {[info exists %lx_highlighted]} {unset %lx_highlighted}\n", x, x);
     fplot_draw(x, x->x_glist, 1);
