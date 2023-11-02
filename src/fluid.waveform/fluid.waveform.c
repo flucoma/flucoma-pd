@@ -192,11 +192,12 @@ static int fwf_click(t_fwf *x, struct _glist *glist, int xpix, int ypix, int shi
 }
 
 static void fwf_mouserelease(t_fwf* x){
-    if(x->x_latch){
-        outlet_float(x->x_outlet, -1);
-        if(x->x_send != &s_ && x->x_send->s_thing)
-            pd_float(x->x_send->s_thing, -1);
-    }
+//    could do something here if needs be
+//    if(x->x_latch){
+//        outlet_float(x->x_outlet, -1);
+//        if(x->x_send != &s_ && x->x_send->s_thing)
+//            pd_float(x->x_send->s_thing, -1);
+//    }
 }
 
 static void fwf_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -272,7 +273,7 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
             sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
                 x->x_fullname, x->x_bindname->s_name, x->x_fullname, x->x_fullname);
     }
-    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);//if there is no picture mouserelease won't work...
     fwf_draw_io_let(x);
 }
 
