@@ -255,6 +255,9 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
     }
     else{
         if(visible || (_Bool)vis){
+            if(x->x_edit || x->x_outline)
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                    cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
             sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} \n",
                 x->x_fullname, cv, xpos, ypos, x->x_fullname, x);
             sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
@@ -1021,7 +1024,8 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_outline = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;
+    x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;
+    x->x_outline = 1;
     x->x_width = x->x_height = 10;
     x->x_linewidth = 2;
     memcpy((x->x_featurescolor),"880000",6);
