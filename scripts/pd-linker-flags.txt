@@ -5,6 +5,7 @@
 -Wl,-U,_atom_getsymbol
 -Wl,-U,_atom_getint
 -Wl,-U,_atom_string
+-Wl,-U,_atom_gensym
 -Wl,-U,_class_new
 -Wl,-U,_class_addmethod
 -Wl,-U,_class_getname
@@ -62,6 +63,10 @@
 -Wl,-U,_glist_grab
 -Wl,-U,_pd_bang
 -Wl,-U,_pd_float
+-Wl,-U,_pd_list
+-Wl,-U,_text_getbufbyname
+-Wl,-U,_binbuf_getvec
+-Wl,-U,_binbuf_getnatom
 -Wl,-U,_s_
 -Wl,-U,_s_bang
 -Wl,-U,_s_list

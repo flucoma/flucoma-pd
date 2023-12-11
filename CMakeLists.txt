@@ -154,6 +154,7 @@ generate_pd_source(
 
 add_pd_external(fluid.bufinfo "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.bufinfo/fluid.bufinfo.cpp")
 add_pd_external(fluid.waveform "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.waveform/fluid.waveform.c")
+add_pd_external(fluid.plotter "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.plotter/fluid.plotter.c")
 
 target_include_directories(fluid.bufinfo PRIVATE 
   "${CMAKE_CURRENT_SOURCE_DIR}/include"
