@@ -90,8 +90,10 @@ typedef struct _fplot{
     float         x_y_refmin;
     float         x_y_refrange;
     float         x_y_temp;
-    _Bool         x_altclick;
+    int           x_clicktype;
 }t_fplot;
+
+static void fplot_draw(t_fplot* x, struct _glist *glist, int vis);
 
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fplot_draw_io_let(t_fplot *x){
@@ -175,7 +177,7 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
     x->x_x = CLIP(x->x_x,0,x->x_width);
     x->x_y = CLIP(x->x_y,0,x->x_height);
     t_atom at[2];
-    if (x->x_altclick == (_Bool)0) {
+    if (x->x_clicktype == 0) {
         SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
         SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
         outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
@@ -192,19 +194,19 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
     if(doit){//if mousedown
         float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
         float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
-        if (alt) {
-            if (shift) {
-                x->x_x_min = x->x_x_refmin;
-                x->x_x_range = x->x_x_refrange;
-                x->x_y_min = x->x_y_refmin;
-                x->x_y_range = x->x_y_refrange;
-            } else {
-                x->x_altclick = (_Bool)1;
-                x->x_x_temp = scaledX;
-                x->x_y_temp = scaledY;
-            }
+        if (shift) {
+            x->x_clicktype = 2;
+            x->x_x_min = x->x_x_refmin;
+            x->x_x_range = x->x_x_refrange;
+            x->x_y_min = x->x_y_refmin;
+            x->x_y_range = x->x_y_refrange;
+            fplot_draw(x, x->x_glist, 1);
+        } else if (alt) {
+            x->x_clicktype = 1;
+            x->x_x_temp = scaledX;
+            x->x_y_temp = scaledY;
         } else {
-            x->x_altclick = (_Bool)0;
+            x->x_clicktype = 0;
             SETFLOAT(at, scaledX);
             SETFLOAT(at+1, scaledY);
             outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
@@ -223,13 +225,16 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
 }
 
 static void fplot_mouserelease(t_fplot* x){
-    if (x->x_altclick == (_Bool)1) {
+    if (x->x_clicktype == 1) {
         float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
         float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
         x->x_x_min = MIN(x->x_x_temp,scaledX);
         x->x_x_range = fabsf(x->x_x_temp - scaledX);
+        if (x->x_x_range == 0) x->x_x_range = 1;
         x->x_y_min = MIN(x->x_y_temp,scaledY);
         x->x_y_range = fabsf(x->x_y_temp - scaledY);
+        if (x->x_y_range == 0) x->x_y_range = 1;
+        fplot_draw(x, x->x_glist, 1);
     }
 }
 
