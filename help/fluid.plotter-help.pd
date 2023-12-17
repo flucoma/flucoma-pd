@@ -83,8 +83,8 @@
 #X obj 536 362 t b f;
 #X obj 496 386 pack f f;
 #X msg 496 408 yrange \$1 \$2;
-#X msg 373 589 range \$1 \$2;
-#X text 370 611 this would set both x and y at the same time, f 15;
+#X msg 371 474 range \$1 \$2;
+#X text 368 496 this would set both x and y at the same time, f 15;
 #X text 18 85 By default \, the range of the fluid.plotter is between 0 and 1 for both the X and Y axis. You can modify the displayed range of the plotter with two messages \, xrange and yrange. Each message accepts two values \, the minimum and maximum for each., f 91;
 #X obj 129 158 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 59 287 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
@@ -93,6 +93,7 @@
 #X text 58 287 2) Draw - all bunched up in the top right corner;
 #X text 370 318 3) Change the range of each dimension;
 #X obj 28 439 fluid.plotter 300 300 1 0 empty empty;
+#X text 366 608 alt-click-drag a region to zoom in shift-click to zoom back out to the last x- and y- ranges defined;
 #X connect 2 0 7 0;
 #X connect 3 0 2 0;
 #X connect 4 0 7 0;
@@ -208,8 +209,7 @@
 #X obj 373 385 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 373 384 2) Move your mouse over the plotter;
 #X obj 167 646 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
-#X text 167 644 comment;
-#X text 168 645 3) These are the coordinates of your mouse inside the two-dimensional space according to the ranges which have been set by xrange and yrange.;
+#X text 167 645 3) These are the coordinates of your mouse inside the two-dimensional space according to the ranges which have been set by xrange and yrange.;
 #X connect 2 0 3 0;
 #X connect 3 0 9 0;
 #X connect 3 1 8 0;
