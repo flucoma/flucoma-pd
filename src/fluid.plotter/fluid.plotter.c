@@ -84,6 +84,13 @@ typedef struct _fplot{
     float         x_x_range;
     float         x_y_min;
     float         x_y_range;
+    float         x_x_refmin;
+    float         x_x_refrange;
+    float         x_x_temp;
+    float         x_y_refmin;
+    float         x_y_refrange;
+    float         x_y_temp;
+    _Bool         x_altclick;
 }t_fplot;
 
 // ------------------------ draw inlet --------------------------------------------------------------------
@@ -168,11 +175,13 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
     x->x_x = CLIP(x->x_x,0,x->x_width);
     x->x_y = CLIP(x->x_y,0,x->x_height);
     t_atom at[2];
-    SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
-    SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
-    outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
-    if(x->x_send != &s_ && x->x_send->s_thing)
-        pd_list(x->x_send->s_thing, &s_list, 2, at);
+    if (x->x_altclick == (_Bool)0) {
+        SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
+        SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
+        outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+        if(x->x_send != &s_ && x->x_send->s_thing)
+            pd_list(x->x_send->s_thing, &s_list, 2, at);
+    }
 }
 
 static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -181,15 +190,31 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
     x->x_x = CLIP((xpix - xpos) / x->x_zoom,0,x->x_width);
     x->x_y = CLIP(x->x_height - (ypix - ypos) / x->x_zoom,0,x->x_height);
     if(doit){//if mousedown
-        SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
-        SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
-        outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
-        if(x->x_send != &s_ && x->x_send->s_thing)
+        float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
+        float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
+        if (alt) {
+            if (shift) {
+                x->x_x_min = x->x_x_refmin;
+                x->x_x_range = x->x_x_refrange;
+                x->x_y_min = x->x_y_refmin;
+                x->x_y_range = x->x_y_refrange;
+            } else {
+                x->x_altclick = (_Bool)1;
+                x->x_x_temp = scaledX;
+                x->x_y_temp = scaledY;
+            }
+        } else {
+            x->x_altclick = (_Bool)0;
+            SETFLOAT(at, scaledX);
+            SETFLOAT(at+1, scaledY);
+            outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+            if(x->x_send != &s_ && x->x_send->s_thing)
             pd_list(x->x_send->s_thing, &s_list, 2, at);
+        }
         // start streaming the coordinates
         glist_grab(x->x_glist, &x->x_obj.te_g, (t_glistmotionfn)fplot_motion, 0, xpix, ypix);
     }
-    // else{// to send the coordinates on mouse up if we want to eventually
+    // else{// to send the coordinates on hover above if we want to eventually
     //     SETFLOAT(at, (float)x->x_x);
     //     SETFLOAT(at+1, (float)x->x_y);
     //     outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
@@ -198,12 +223,14 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
 }
 
 static void fplot_mouserelease(t_fplot* x){
-    // could do something here if needs be
-    //    if(x->x_latch){
-    //        outlet_float(x->x_outlet, -1);
-    //        if(x->x_send != &s_ && x->x_send->s_thing)
-    //            pd_float(x->x_send->s_thing, -1);
-    //    }
+    if (x->x_altclick == (_Bool)1) {
+        float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
+        float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
+        x->x_x_min = MIN(x->x_x_temp,scaledX);
+        x->x_x_range = fabsf(x->x_x_temp - scaledX);
+        x->x_y_min = MIN(x->x_y_temp,scaledY);
+        x->x_y_range = fabsf(x->x_y_temp - scaledY);
+    }
 }
 
 static void fplot_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -325,17 +352,13 @@ static void fplot_save(t_gobj *z, t_binbuf *b){
 
 //------------------------------- METHODS --------------------------------------------
 static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
-    post("callback");
     if ((x->x_width != w) || (x->x_height != h)){
         pd_error(x,"strange size");
         return;
     }
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        post("visible");
         t_canvas *cv = glist_getcanvas(x->x_glist);
-        post("----callback");
         fplot_drawplot(x, cv);
-        post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
             fplot_outline(x, 1);
@@ -457,24 +480,23 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void fplot_xrange(t_fplot *x, t_float left, t_float right){
-    x->x_x_min = left;
-    x->x_x_range = right - left;
-    if (x->x_x_range == 0) x->x_x_range = 1;
+    x->x_x_min = x->x_x_refmin = left;
+    x->x_x_range = x->x_x_refrange = right - left;
+    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = 1;
     fplot_draw(x, x->x_glist, 1);
 }
     
 void fplot_yrange(t_fplot *x, t_float left, t_float right){
-    x->x_y_min = left;
-    x->x_y_range = right - left;
-    if (x->x_y_range == 0) x->x_y_range = 1;
+    x->x_y_min = x->x_y_refmin = left;
+    x->x_y_range = x->x_y_refrange = right - left;
+    if (x->x_y_range == 0) x->x_y_range = x->x_y_refrange = 1;
     fplot_draw(x, x->x_glist, 1);
 }
 
 void fplot_range(t_fplot *x, t_float left, t_float right){
-    x->x_x_min = x->x_y_min = left;
-    x->x_x_range = x->x_y_range = right - left;
-    if (x->x_x_range == 0) x->x_x_range = 1;
-    if (x->x_y_range == 0) x->x_y_range = 1;
+    x->x_x_min = x->x_x_refmin = x->x_y_min = x->x_y_refmin = left;
+    x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = right - left;
+    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = 1;
     fplot_draw(x, x->x_glist, 1);
 }
 
@@ -637,8 +659,8 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = 0;
-    x->x_outline =  x->x_x_range = x->x_y_range = 1;
+    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
+    x->x_outline =  x->x_x_range = x->x_y_range = x->x_x_refrange = x->x_y_refrange = 1;
     x->x_pointsizescale = 3;
     x->x_width = x->x_height = 10;
     
