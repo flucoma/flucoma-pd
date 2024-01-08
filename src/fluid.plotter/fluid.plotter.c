@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4244 )
@@ -230,10 +231,10 @@ static void fplot_mouserelease(t_fplot* x){
         float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
         x->x_x_min = MIN(x->x_x_temp,scaledX);
         x->x_x_range = fabsf(x->x_x_temp - scaledX);
-        if (x->x_x_range == 0) x->x_x_range = 1;
+        if (x->x_x_range == 0) x->x_x_range = FLT_EPSILON;
         x->x_y_min = MIN(x->x_y_temp,scaledY);
         x->x_y_range = fabsf(x->x_y_temp - scaledY);
-        if (x->x_y_range == 0) x->x_y_range = 1;
+        if (x->x_y_range == 0) x->x_y_range = FLT_EPSILON;
         fplot_draw(x, x->x_glist, 1);
     }
 }
@@ -487,21 +488,21 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
 void fplot_xrange(t_fplot *x, t_float left, t_float right){
     x->x_x_min = x->x_x_refmin = left;
     x->x_x_range = x->x_x_refrange = right - left;
-    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = 1;
+    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = FLT_EPSILON;
     fplot_draw(x, x->x_glist, 1);
 }
     
 void fplot_yrange(t_fplot *x, t_float left, t_float right){
     x->x_y_min = x->x_y_refmin = left;
     x->x_y_range = x->x_y_refrange = right - left;
-    if (x->x_y_range == 0) x->x_y_range = x->x_y_refrange = 1;
+    if (x->x_y_range == 0) x->x_y_range = x->x_y_refrange = FLT_EPSILON;
     fplot_draw(x, x->x_glist, 1);
 }
 
 void fplot_range(t_fplot *x, t_float left, t_float right){
     x->x_x_min = x->x_x_refmin = x->x_y_min = x->x_y_refmin = left;
     x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = right - left;
-    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = 1;
+    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = FLT_EPSILON;
     fplot_draw(x, x->x_glist, 1);
 }
 
