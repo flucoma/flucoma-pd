@@ -613,8 +613,8 @@ void fplot_properties(t_gobj *z, t_glist *gl){
 }
 
 static void fplot_ok(t_fplot *x, t_symbol *s, int ac, t_atom *av){
-    x->x_width = MAX(10, (int)(atom_getfloatarg(0, ac, av)));
-    x->x_height = MAX(10, (int)(atom_getfloatarg(1, ac, av)));
+    x->x_width = MAX(20, (int)(atom_getfloatarg(0, ac, av)));
+    x->x_height = MAX(20, (int)(atom_getfloatarg(1, ac, av)));
     fplot_outline(x, atom_getfloatarg(2, ac, av));
     fplot_latch(x, atom_getfloatarg(3, ac, av));
     fplot_send(x, atom_getsymbolarg(4, ac, av));
@@ -668,13 +668,13 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
     x->x_outline =  x->x_x_range = x->x_y_range = x->x_x_refrange = x->x_y_refrange = 1;
     x->x_pointsizescale = 3;
-    x->x_width = x->x_height = 10;
+    x->x_width = x->x_height = 300;
     
     if(ac && av->a_type == A_FLOAT){ // 1ST width
-        x->x_width = MAX((int)av->a_w.w_float, 10);
+        x->x_width = MAX((int)av->a_w.w_float, 20);
         ac--; av++;
         if(ac && av->a_type == A_FLOAT){ // 2nd height
-            x->x_height = MAX((int)av->a_w.w_float, 10);
+            x->x_height = MAX((int)av->a_w.w_float, 20);
             ac--; av++;
             if(ac && av->a_type == A_FLOAT){ // 3rd outline
                 x->x_outline = (int)(av->a_w.w_float != 0);
