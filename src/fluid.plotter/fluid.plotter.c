@@ -229,12 +229,28 @@ static void fplot_mouserelease(t_fplot* x){
     if (x->x_clicktype == 1) {
         float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
         float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
-        x->x_x_min = MIN(x->x_x_temp,scaledX);
-        x->x_x_range = fabsf(x->x_x_temp - scaledX);
-        if (x->x_x_range == 0) x->x_x_range = FLT_EPSILON;
-        x->x_y_min = MIN(x->x_y_temp,scaledY);
-        x->x_y_range = fabsf(x->x_y_temp - scaledY);
-        if (x->x_y_range == 0) x->x_y_range = FLT_EPSILON;
+        if (scaledX == x->x_x_temp) {
+            x->x_x_min = scaledX;
+            x->x_x_range = FLT_EPSILON;
+        } else if (x->x_x_range > 0) {
+            x->x_x_min = MIN(x->x_x_temp,scaledX);
+            x->x_x_range = fabsf(x->x_x_temp - scaledX);
+        } else {
+            x->x_x_min = MAX(x->x_x_temp,scaledX);
+            x->x_x_range = fabsf(x->x_x_temp - scaledX) * -1.0;
+        }
+        
+        if (scaledY == x->x_y_temp) {
+            x->x_y_min = scaledY;
+            x->x_y_range = FLT_EPSILON;
+        } else if (x->x_y_range > 0) {
+            x->x_y_min = MIN(x->x_y_temp,scaledY);
+            x->x_y_range = fabsf(x->x_y_temp - scaledY);
+        } else {
+            x->x_y_min = MAX(x->x_y_temp,scaledY);
+            x->x_y_range = fabsf(x->x_y_temp - scaledY) * -1.0;
+        }
+
         fplot_draw(x, x->x_glist, 1);
     }
 }
@@ -643,7 +659,6 @@ static void fplot_free(t_fplot *x){ // delete if variable is unset and image is 
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
     pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
-//    if (x->x_nbpoints > 0) free(x->x_points);
     sys_vgui("if {[info exists %lx_pointdict]} {unset %lx_pointdict}\n", x, x);
     sys_vgui("if {[info exists %lx_highlighted]} {unset %lx_highlighted}\n", x, x);
     x->x_proxy->p_cnv = NULL;
