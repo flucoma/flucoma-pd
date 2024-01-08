@@ -87,10 +87,12 @@ typedef struct _fplot{
     float         x_y_range;
     float         x_x_refmin;
     float         x_x_refrange;
-    float         x_x_temp;
+    int           x_x_temp;
+    float         x_x_s_temp;
     float         x_y_refmin;
     float         x_y_refrange;
-    float         x_y_temp;
+    int           x_y_temp;
+    float         x_y_s_temp;
     int           x_clicktype;
 }t_fplot;
 
@@ -184,6 +186,8 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
         outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
         if(x->x_send != &s_ && x->x_send->s_thing)
             pd_list(x->x_send->s_thing, &s_list, 2, at);
+    } else if (x->x_clicktype == 1) {
+        fplot_draw(x, x->x_glist, 1);
     }
 }
 
@@ -204,8 +208,10 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
             fplot_draw(x, x->x_glist, 1);
         } else if (alt) {
             x->x_clicktype = 1;
-            x->x_x_temp = scaledX;
-            x->x_y_temp = scaledY;
+            x->x_x_temp = x->x_x;
+            x->x_y_temp = x->x_y;
+            x->x_x_s_temp = scaledX;
+            x->x_y_s_temp = scaledY;
         } else {
             x->x_clicktype = 0;
             SETFLOAT(at, scaledX);
@@ -229,28 +235,29 @@ static void fplot_mouserelease(t_fplot* x){
     if (x->x_clicktype == 1) {
         float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
         float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
-        if (scaledX == x->x_x_temp) {
+        if (scaledX == x->x_x_s_temp) {
             x->x_x_min = scaledX;
             x->x_x_range = FLT_EPSILON;
         } else if (x->x_x_range > 0) {
-            x->x_x_min = MIN(x->x_x_temp,scaledX);
-            x->x_x_range = fabsf(x->x_x_temp - scaledX);
+            x->x_x_min = MIN(x->x_x_s_temp,scaledX);
+            x->x_x_range = fabsf(x->x_x_s_temp - scaledX);
         } else {
-            x->x_x_min = MAX(x->x_x_temp,scaledX);
-            x->x_x_range = fabsf(x->x_x_temp - scaledX) * -1.0;
+            x->x_x_min = MAX(x->x_x_s_temp,scaledX);
+            x->x_x_range = fabsf(x->x_x_s_temp - scaledX) * -1.0;
         }
         
-        if (scaledY == x->x_y_temp) {
+        if (scaledY == x->x_y_s_temp) {
             x->x_y_min = scaledY;
             x->x_y_range = FLT_EPSILON;
         } else if (x->x_y_range > 0) {
-            x->x_y_min = MIN(x->x_y_temp,scaledY);
-            x->x_y_range = fabsf(x->x_y_temp - scaledY);
+            x->x_y_min = MIN(x->x_y_s_temp,scaledY);
+            x->x_y_range = fabsf(x->x_y_s_temp - scaledY);
         } else {
-            x->x_y_min = MAX(x->x_y_temp,scaledY);
-            x->x_y_range = fabsf(x->x_y_temp - scaledY) * -1.0;
+            x->x_y_min = MAX(x->x_y_s_temp,scaledY);
+            x->x_y_range = fabsf(x->x_y_s_temp - scaledY) * -1.0;
         }
 
+        x->x_clicktype = 0;
         fplot_draw(x, x->x_glist, 1);
     }
 }
@@ -315,6 +322,17 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
     sys_vgui("        set halfsize [expr %f * $size * 0.5]\n", x->x_pointsizescale);
     sys_vgui("        .x%lx.c create oval [expr $xP - $halfsize] [expr $yP - $halfsize] [expr $xP + $halfsize] [expr $yP + $halfsize] -fill $class -tags %lx_points}\n", cv, x);
     sys_vgui("}}}\n");
+    
+    if(x->x_clicktype == 1){
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -tags %lx_selframe\n",
+                 cv, xpos + (x->x_x * x->x_zoom),
+                 ypos + ((x->x_height - x->x_y) * x->x_zoom),
+                 xpos + (x->x_x_temp * x->x_zoom),
+                 ypos + ((x->x_height - x->x_y_temp) * x->x_zoom),
+                 x->x_zoom, x);
+    } else {
+        sys_vgui(".x%lx.c delete %lx_selframe\n", cv, x);
+    }
     
 }
 
