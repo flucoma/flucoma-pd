@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <float.h>
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4244 )
@@ -84,7 +85,18 @@ typedef struct _fplot{
     float         x_x_range;
     float         x_y_min;
     float         x_y_range;
+    float         x_x_refmin;
+    float         x_x_refrange;
+    int           x_x_temp;
+    float         x_x_s_temp;
+    float         x_y_refmin;
+    float         x_y_refrange;
+    int           x_y_temp;
+    float         x_y_s_temp;
+    int           x_clicktype;
 }t_fplot;
+
+static void fplot_draw(t_fplot* x, struct _glist *glist, int vis);
 
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fplot_draw_io_let(t_fplot *x){
@@ -168,11 +180,15 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
     x->x_x = CLIP(x->x_x,0,x->x_width);
     x->x_y = CLIP(x->x_y,0,x->x_height);
     t_atom at[2];
-    SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
-    SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
-    outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
-    if(x->x_send != &s_ && x->x_send->s_thing)
-        pd_list(x->x_send->s_thing, &s_list, 2, at);
+    if (x->x_clicktype == 0) {
+        SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
+        SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
+        outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+        if(x->x_send != &s_ && x->x_send->s_thing)
+            pd_list(x->x_send->s_thing, &s_list, 2, at);
+    } else if (x->x_clicktype == 1) {
+        fplot_draw(x, x->x_glist, 1);
+    }
 }
 
 static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -181,15 +197,33 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
     x->x_x = CLIP((xpix - xpos) / x->x_zoom,0,x->x_width);
     x->x_y = CLIP(x->x_height - (ypix - ypos) / x->x_zoom,0,x->x_height);
     if(doit){//if mousedown
-        SETFLOAT(at, ((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min);
-        SETFLOAT(at+1, ((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min);
-        outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
-        if(x->x_send != &s_ && x->x_send->s_thing)
+        float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
+        float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
+        if (shift) {
+            x->x_clicktype = 2;
+            x->x_x_min = x->x_x_refmin;
+            x->x_x_range = x->x_x_refrange;
+            x->x_y_min = x->x_y_refmin;
+            x->x_y_range = x->x_y_refrange;
+            fplot_draw(x, x->x_glist, 1);
+        } else if (alt) {
+            x->x_clicktype = 1;
+            x->x_x_temp = x->x_x;
+            x->x_y_temp = x->x_y;
+            x->x_x_s_temp = scaledX;
+            x->x_y_s_temp = scaledY;
+        } else {
+            x->x_clicktype = 0;
+            SETFLOAT(at, scaledX);
+            SETFLOAT(at+1, scaledY);
+            outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
+            if(x->x_send != &s_ && x->x_send->s_thing)
             pd_list(x->x_send->s_thing, &s_list, 2, at);
+        }
         // start streaming the coordinates
         glist_grab(x->x_glist, &x->x_obj.te_g, (t_glistmotionfn)fplot_motion, 0, xpix, ypix);
     }
-    // else{// to send the coordinates on mouse up if we want to eventually
+    // else{// to send the coordinates on hover above if we want to eventually
     //     SETFLOAT(at, (float)x->x_x);
     //     SETFLOAT(at+1, (float)x->x_y);
     //     outlet_anything(x->x_obj.ob_outlet, &s_list, 2, at);
@@ -198,12 +232,34 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
 }
 
 static void fplot_mouserelease(t_fplot* x){
-    // could do something here if needs be
-    //    if(x->x_latch){
-    //        outlet_float(x->x_outlet, -1);
-    //        if(x->x_send != &s_ && x->x_send->s_thing)
-    //            pd_float(x->x_send->s_thing, -1);
-    //    }
+    if (x->x_clicktype == 1) {
+        float scaledX =((float)x->x_x / (float)x->x_width * x->x_x_range) + x->x_x_min;
+        float scaledY =((float)x->x_y / (float)x->x_height * x->x_y_range) + x->x_y_min;
+        if (scaledX == x->x_x_s_temp) {
+            x->x_x_min = scaledX;
+            x->x_x_range = FLT_EPSILON;
+        } else if (x->x_x_range > 0) {
+            x->x_x_min = MIN(x->x_x_s_temp,scaledX);
+            x->x_x_range = fabsf(x->x_x_s_temp - scaledX);
+        } else {
+            x->x_x_min = MAX(x->x_x_s_temp,scaledX);
+            x->x_x_range = fabsf(x->x_x_s_temp - scaledX) * -1.0;
+        }
+        
+        if (scaledY == x->x_y_s_temp) {
+            x->x_y_min = scaledY;
+            x->x_y_range = FLT_EPSILON;
+        } else if (x->x_y_range > 0) {
+            x->x_y_min = MIN(x->x_y_s_temp,scaledY);
+            x->x_y_range = fabsf(x->x_y_s_temp - scaledY);
+        } else {
+            x->x_y_min = MAX(x->x_y_s_temp,scaledY);
+            x->x_y_range = fabsf(x->x_y_s_temp - scaledY) * -1.0;
+        }
+
+        x->x_clicktype = 0;
+        fplot_draw(x, x->x_glist, 1);
+    }
 }
 
 static void fplot_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -267,6 +323,17 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
     sys_vgui("        .x%lx.c create oval [expr $xP - $halfsize] [expr $yP - $halfsize] [expr $xP + $halfsize] [expr $yP + $halfsize] -fill $class -tags %lx_points}\n", cv, x);
     sys_vgui("}}}\n");
     
+    if(x->x_clicktype == 1){
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -tags %lx_selframe\n",
+                 cv, xpos + (x->x_x * x->x_zoom),
+                 ypos + ((x->x_height - x->x_y) * x->x_zoom),
+                 xpos + (x->x_x_temp * x->x_zoom),
+                 ypos + ((x->x_height - x->x_y_temp) * x->x_zoom),
+                 x->x_zoom, x);
+    } else {
+        sys_vgui(".x%lx.c delete %lx_selframe\n", cv, x);
+    }
+    
 }
 
 static void fplot_outline(t_fplot *x, t_float f){
@@ -325,17 +392,13 @@ static void fplot_save(t_gobj *z, t_binbuf *b){
 
 //------------------------------- METHODS --------------------------------------------
 static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
-    post("callback");
     if ((x->x_width != w) || (x->x_height != h)){
         pd_error(x,"strange size");
         return;
     }
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        post("visible");
         t_canvas *cv = glist_getcanvas(x->x_glist);
-        post("----callback");
         fplot_drawplot(x, cv);
-        post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
             fplot_outline(x, 1);
@@ -457,24 +520,23 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void fplot_xrange(t_fplot *x, t_float left, t_float right){
-    x->x_x_min = left;
-    x->x_x_range = right - left;
-    if (x->x_x_range == 0) x->x_x_range = 1;
+    x->x_x_min = x->x_x_refmin = left;
+    x->x_x_range = x->x_x_refrange = right - left;
+    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = FLT_EPSILON;
     fplot_draw(x, x->x_glist, 1);
 }
     
 void fplot_yrange(t_fplot *x, t_float left, t_float right){
-    x->x_y_min = left;
-    x->x_y_range = right - left;
-    if (x->x_y_range == 0) x->x_y_range = 1;
+    x->x_y_min = x->x_y_refmin = left;
+    x->x_y_range = x->x_y_refrange = right - left;
+    if (x->x_y_range == 0) x->x_y_range = x->x_y_refrange = FLT_EPSILON;
     fplot_draw(x, x->x_glist, 1);
 }
 
 void fplot_range(t_fplot *x, t_float left, t_float right){
-    x->x_x_min = x->x_y_min = left;
-    x->x_x_range = x->x_y_range = right - left;
-    if (x->x_x_range == 0) x->x_x_range = 1;
-    if (x->x_y_range == 0) x->x_y_range = 1;
+    x->x_x_min = x->x_x_refmin = x->x_y_min = x->x_y_refmin = left;
+    x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = right - left;
+    if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = FLT_EPSILON;
     fplot_draw(x, x->x_glist, 1);
 }
 
@@ -585,8 +647,8 @@ void fplot_properties(t_gobj *z, t_glist *gl){
 }
 
 static void fplot_ok(t_fplot *x, t_symbol *s, int ac, t_atom *av){
-    x->x_width = MAX(10, (int)(atom_getfloatarg(0, ac, av)));
-    x->x_height = MAX(10, (int)(atom_getfloatarg(1, ac, av)));
+    x->x_width = MAX(20, (int)(atom_getfloatarg(0, ac, av)));
+    x->x_height = MAX(20, (int)(atom_getfloatarg(1, ac, av)));
     fplot_outline(x, atom_getfloatarg(2, ac, av));
     fplot_latch(x, atom_getfloatarg(3, ac, av));
     fplot_send(x, atom_getsymbolarg(4, ac, av));
@@ -615,7 +677,6 @@ static void fplot_free(t_fplot *x){ // delete if variable is unset and image is 
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
     pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
-//    if (x->x_nbpoints > 0) free(x->x_points);
     sys_vgui("if {[info exists %lx_pointdict]} {unset %lx_pointdict}\n", x, x);
     sys_vgui("if {[info exists %lx_highlighted]} {unset %lx_highlighted}\n", x, x);
     x->x_proxy->p_cnv = NULL;
@@ -637,16 +698,16 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = 0;
-    x->x_outline =  x->x_x_range = x->x_y_range = 1;
+    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
+    x->x_outline =  x->x_x_range = x->x_y_range = x->x_x_refrange = x->x_y_refrange = 1;
     x->x_pointsizescale = 3;
-    x->x_width = x->x_height = 10;
+    x->x_width = x->x_height = 300;
     
     if(ac && av->a_type == A_FLOAT){ // 1ST width
-        x->x_width = MAX((int)av->a_w.w_float, 10);
+        x->x_width = MAX((int)av->a_w.w_float, 20);
         ac--; av++;
         if(ac && av->a_type == A_FLOAT){ // 2nd height
-            x->x_height = MAX((int)av->a_w.w_float, 10);
+            x->x_height = MAX((int)av->a_w.w_float, 20);
             ac--; av++;
             if(ac && av->a_type == A_FLOAT){ // 3rd outline
                 x->x_outline = (int)(av->a_w.w_float != 0);
