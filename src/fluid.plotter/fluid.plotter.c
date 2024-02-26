@@ -32,7 +32,8 @@
 #pragma warning( disable : 4305 )
 #endif
 
-const char* colours[] = {"black","red","green","blue","yellow","magenta","cyan","orange"};
+// black, then every 16 colours of CET-C6 from https://colorcet.com/, rotated
+const char* colours[] = {"black", "#F7371A", "#99B800", "#25E8EB", "#AEA1FF", "#FC7401", "#4C9C12", "#31C5FF", "#EEBFFA", "#FFB300", "#2CA751", "#2894FF", "#FFA2B4", "#E1D100", "#32CFA1", "#5E82FF", "#FF655E"};
 
 static t_class *fplot_class, *edit_proxy_class;
 t_widgetbehavior fplot_widgetbehavior;
@@ -455,7 +456,7 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
     for (int n = 0; n<(natom/3); n++){
         char* key = atom_gensym(&(stuff[n*3]))->s_name;
         int classID = (stuff[(n*3)+1].a_type == A_FLOAT) ? (int)atom_getfloat(&(stuff[(n*3)+1])) : atoi(atom_gensym(&(stuff[(n*3)+1]))->s_name);
-        sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[classID + 1]);
+        sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[MIN(MAX(classID + 1,0),16)]);
     }
 
     fplot_draw(x, x->x_glist, 1);
@@ -467,7 +468,7 @@ void fplot_setpoint(t_fplot* x, t_symbol* name, float xin, float yin, float size
     sys_vgui("dict set %lx_pointdict %s y %f \n", x, key, yin);
     if (size != 0) {
         sys_vgui("dict set %lx_pointdict %s size %f \n", x, key, MAX((int)size,1));;
-        sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[MIN(MAX((int)class + 1,0),7)]);
+        sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[MIN(MAX((int)class + 1,0),16)]);
     } else {
         sys_vgui("dict set %lx_pointdict %s size %f \n", x, key, x->x_pointsizescale);;
         sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, "black");
@@ -487,7 +488,7 @@ void fplot_pointsize(t_fplot* x, t_symbol *s, float size){
 }
 
 void fplot_pointcolor(t_fplot* x, t_symbol *s, float classnum){
-    sys_vgui("dict set %lx_pointdict %s class %s \n", x, s->s_name, colours[MIN(MAX((int)classnum,-1),6)]);
+    sys_vgui("dict set %lx_pointdict %s class %s \n", x, s->s_name, colours[MIN(MAX((int)classnum,-1),16)]);
     fplot_draw(x, x->x_glist, 1);
 }
 
