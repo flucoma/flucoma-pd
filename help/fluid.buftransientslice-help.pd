@@ -1,19 +1,13 @@
-#N canvas 38 64 697 771 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.buftransientslice 1 22
-0 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.buftransientslice.html
-reference/buftransientslice/;
-#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Transient-Based\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
+#N canvas 38 45 697 771 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.buftransientslice 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.buftransientslice.html reference/buftransientslice/;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Transient-Based\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Transient-based slice extractor on buffers;
-#X obj 18 382 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 18 467 fluid.buftransientslice -source help.ts.src -indices
-help.ts.slices;
+#X obj 18 382 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 18 467 fluid.buftransientslice -source help.ts.src -indices help.ts.slices;
 #X obj 482 170 array define help.ts.src;
 #X obj 482 194 array define help.ts.slices;
-#X obj 455 681 cnv 15 215 68 empty empty More\ information 4 10 0 13
-#e0e0e0 #404040 0;
+#X obj 455 681 cnv 15 215 68 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 460 725 note_on_multithreading;
 #X obj 460 703 note_on_automatic_multiarrays;
 #N canvas 1955 -858 448 179 loadsrc 0;
@@ -23,15 +17,13 @@ help.ts.slices;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 18 218 pd loadsrc;
-#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 151 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 170 fluid.demoaudiofiles;
 #X text 19 151 1) select a source;
 #N canvas 1718 -961 510 218 drawing_commands 0;
 #X obj 37 37 inlet;
 #X obj 37 87 outlet;
-#X msg 37 61 waveform help.ts.src \, indices help.ts.slices help.ts.src
-;
+#X msg 37 61 waveform help.ts.src \, indices help.ts.slices help.ts.src;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 18 505 pd drawing_commands;
@@ -58,8 +50,7 @@ help.ts.slices;
 #X msg 336 421 threshback \$1;
 #X text 111 185 threshfwd, f 10;
 #X msg 296 391 threshfwd \$1;
-#X msg 34 -37 \; help.buftransientslice.presets 20 256 128 0 2 1.1
-;
+#X msg 34 -37 \; help.buftransientslice.presets 20 256 128 0 2 1.1;
 #X obj 186 4 r help.buftransientslice.presets;
 #X connect 1 0 21 0;
 #X connect 2 0 3 0;
@@ -89,8 +80,7 @@ help.ts.slices;
 #X obj 29 780 outlet;
 #X obj 29 125 s \$0-params;
 #X msg 29 102 blocksize 256;
-#X text 163 101 size of audio block (in samples) on which the process
-is operating, f 32;
+#X text 163 101 size of audio block (in samples) on which the process is operating, f 32;
 #X obj 29 195 s \$0-params;
 #X obj 29 265 s \$0-params;
 #X obj 29 349 s \$0-params;
@@ -98,20 +88,16 @@ is operating, f 32;
 #X obj 29 475 s \$0-params;
 #X obj 29 545 s \$0-params;
 #X msg 29 172 clumplength 25;
-#X text 163 171 window size in samples within which anomalous samples
-will be clumped together to avoid over-detecting in time, f 32;
+#X text 163 171 window size in samples within which anomalous samples will be clumped together to avoid over-detecting in time, f 32;
 #X obj 479 475 s \$0-params;
 #X obj 479 545 s \$0-params;
 #X obj 479 615 s \$0-params;
 #X msg 479 452 warnings 0;
 #X msg 479 522 windowsize 14;
 #X msg 479 592 reset;
-#X text 603 591 Calling reset will change parameter values back to
-those the object was created with, f 33;
-#X text 603 521 averaging window of the error detection function,
-f 33;
-#X text 603 451 enable warnings to be issued whenever a parameter value
-is constrained, f 33;
+#X text 603 591 Calling reset will change parameter values back to those the object was created with, f 33;
+#X text 603 521 averaging window of the error detection function, f 33;
+#X text 603 451 enable warnings to be issued whenever a parameter value is constrained, f 33;
 #X obj 29 615 s \$0-params;
 #X obj 29 685 s \$0-params;
 #X obj 479 335 s \$0-params;
@@ -120,40 +106,29 @@ is constrained, f 33;
 #X msg 29 662 skew 0;
 #X msg 479 312 threshback 1.1;
 #X msg 479 382 threshfwd 2;
-#X text 163 591 size (in samples) of analysis on each side of blocksize
-, f 32;
-#X text 163 661 nervousness of the bespoke detection function, f 32
-;
-#X text 613 311 threshold applied to the smoothed backward prediction
-error for determining an offset, f 33;
-#X text 604 381 threshold applied to the smoothed forward prediction
-error for determining an onset, f 33;
+#X text 163 591 size (in samples) of analysis on each side of blocksize, f 32;
+#X text 163 661 nervousness of the bespoke detection function, f 32;
+#X text 613 311 threshold applied to the smoothed backward prediction error for determining an offset, f 33;
+#X text 604 381 threshold applied to the smoothed forward prediction error for determining an onset, f 33;
 #X msg 29 242 indices symbol;
-#X text 163 241 name of array where indices will be written, f 32
-;
+#X text 163 241 name of array where indices will be written, f 32;
 #X msg 29 312 minslicelength 1000, f 15;
 #X msg 29 382 numchans -1;
 #X msg 29 452 numframes 1;
 #X msg 29 522 order 20;
 #X text 165 311 minimum duration of a slice in samples, f 32;
-#X text 163 381 for multichannel source \, how many channels to process
-, f 32;
-#X text 163 451 How many frames of source should be processed, f 32
-;
-#X text 163 521 number of previous samples used by algorithm to create
-the model of the signal within the blocksize window of analysis, f
-32;
+#X text 163 381 for multichannel source \, how many channels to process, f 32;
+#X text 163 451 How many frames of source should be processed, f 32;
+#X text 163 521 number of previous samples used by algorithm to create the model of the signal within the blocksize window of analysis, f 32;
 #X obj 479 125 s \$0-params;
 #X obj 479 195 s \$0-params;
 #X obj 479 265 s \$0-params;
 #X msg 479 102 source symbol;
 #X text 613 101 name of array to analyse, f 32;
 #X msg 479 172 startchan 0;
-#X text 613 171 for multichannel source \, which channel to begin processing
-from, f 32;
+#X text 613 171 for multichannel source \, which channel to begin processing from, f 32;
 #X msg 479 242 startframe 0;
-#X text 613 241 where in source the process should begin \, in samples
-, f 33;
+#X text 613 241 where in source the process should begin \, in samples, f 33;
 #X text 28 6 Optional parameters to fluid.buftransientslice;
 #X connect 0 0 1 0;
 #X connect 3 0 2 0;
@@ -174,11 +149,9 @@ from, f 32;
 #X connect 49 0 45 0;
 #X connect 51 0 46 0;
 #X restore 332 404 pd parameters;
-#X obj 38 381 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 38 381 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 453 609 fluid.out~ bufnoveltyslicehelp;
-#X obj 525 614 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 525 614 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X floatatom 453 548 5 0 0 0 - - - 0;
 #N canvas 2078 -1040 412 479 extract_slices 0;
 #X obj 37 427 outlet~;
@@ -219,10 +192,10 @@ from, f 32;
 #X restore 453 571 pd extract_slices;
 #X text 39 381 2) slice using transient slicing, f 17;
 #X obj 276 443 t a;
-#X text 439 248 fluid.transientslice~ has a lot of parameters. These
-6 are a good place to start if you want to configure the algorithm.
-, f 27;
-#X text 526 614 3) Start audio, f 17;
+#X text 439 248 fluid.transientslice~ has a lot of parameters. These 6 are a good place to start if you want to configure the algorithm., f 27;
+#X text 525 612 3) Start audio, f 17;
+#X obj 494 549 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 494 548 4) choose a slice;
 #X connect 4 0 5 0;
 #X connect 5 0 15 0;
 #X connect 13 0 11 0;

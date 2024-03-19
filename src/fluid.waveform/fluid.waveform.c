@@ -1,5 +1,5 @@
 // Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
-// Copyright 2017-2022 University of Huddersfield.
+// Copyright University of Huddersfield.
 // Licensed under the BSD-3 License.
 // See license.md file in the project root for full license information.
 // This project has received funding from the European Research Council (ERC)
@@ -11,7 +11,6 @@
 // more help from
 // https://wiki.tcl-lang.org/page/Canvas+pixel+painting
 // https://wiki.tcl-lang.org/page/Tk+image+Dos+and+Don%27ts
-// idea: make a permanent array of the size, write items, then draw it as image
 
 #define MIN(A,B) ((A)<(B) ? (A) : (B))
 #define MAX(A,B) ((A)>(B) ? (A) : (B))
@@ -192,11 +191,12 @@ static int fwf_click(t_fwf *x, struct _glist *glist, int xpix, int ypix, int shi
 }
 
 static void fwf_mouserelease(t_fwf* x){
-    if(x->x_latch){
-        outlet_float(x->x_outlet, -1);
-        if(x->x_send != &s_ && x->x_send->s_thing)
-            pd_float(x->x_send->s_thing, -1);
-    }
+//    could do something here if needs be
+//    if(x->x_latch){
+//        outlet_float(x->x_outlet, -1);
+//        if(x->x_send != &s_ && x->x_send->s_thing)
+//            pd_float(x->x_send->s_thing, -1);
+//    }
 }
 
 static void fwf_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -254,11 +254,13 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
     }
     else{
         if(visible || (_Bool)vis){
+            if(x->x_edit || x->x_outline)
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                    cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
             sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} \n",
                 x->x_fullname, cv, xpos, ypos, x->x_fullname, x);
             sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
                 x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_waveformcolor);
-            // sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {puts $%lx_featureslen \n puts $%lx_featurescount \n puts [llength $%lx_featurespeaks] \n} \n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
             sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
                 x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, x->x_featurescolor);
             sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
@@ -272,12 +274,11 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
             sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
                 x->x_fullname, x->x_bindname->s_name, x->x_fullname, x->x_fullname);
     }
-    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);//if there is no picture mouserelease won't work...
     fwf_draw_io_let(x);
 }
 
 static void fwf_erase(t_fwf* x, struct _glist *glist){
-//    post("erase");
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c delete %lx_picture\n", cv, x); // ERASE
     sys_vgui(".x%lx.c delete %lx_waveform\n", cv, x); // ERASE
@@ -304,26 +305,21 @@ static void fwf_save(t_gobj *z, t_binbuf *b){
 
 //------------------------------- METHODS --------------------------------------------
 static void fwf_size_callback(t_fwf *x, t_float w, t_float h){ // callback
-//    post("callback");
     if ((x->x_width != w) || (x->x_height != h)){
       pd_error(x,"strange size");
       return;
     }
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-//        post("visible");
         t_canvas *cv = glist_getcanvas(x->x_glist);
         int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-//        post("----callback");
         sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} \n",
             x->x_fullname, cv, xpos, ypos, x->x_fullname, x);
         sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] }  { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
             x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_waveformcolor);
-        // sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {puts $%lx_featureslen \n puts $%lx_featurescount \n puts [llength $%lx_featurespeaks] \n} \n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
         sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
             x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, x->x_featurescolor);
         sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
             x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, x->x_indicescolor);
-//        post("----called-back");
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
             sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
@@ -350,7 +346,6 @@ void fwf_audiobuffer(t_fwf* x, t_symbol* name){
   int multichannel = 0;
   int ioutw = x->x_width;
   int iouth = x->x_height;
-  // float minVal, maxVal; //no normalisation for audio buffers for now
 
   // parsing the 'multiarray'
   // check there is an array at the end of that name as is (mono)
@@ -376,11 +371,6 @@ void fwf_audiobuffer(t_fwf* x, t_symbol* name){
     return;
   }
 
-  //set min and max to first value
-  // minVal = maxVal = words[0].w_float;
-
-  // post("%d chans %d frames",nbchans,nbframes);
-
   // if we have something
 
   // make a local copy of the input
@@ -405,37 +395,16 @@ void fwf_audiobuffer(t_fwf* x, t_symbol* name){
     garray_getfloatwords(inputarray, &length, &words);
     for (int i = 0;i < length;i++){
       localcopy[j][i] = words[i].w_float;
-      // if (minVal > words[i].w_float) minVal = words[i].w_float;
-      // else if (maxVal < words[i].w_float) maxVal = words[i].w_float;
     }
   }
-  // post("%f %f", minVal, maxVal);
   x->x_nbframes = nbframes;
   
   // ratios
   float ratiow = (float)nbframes / ioutw;
   float ratioh = (float)iouth / nbchans / 2;
-  // post("%d %f %d %f", ioutw, ratiow, iouth, ratioh);
   if(x->x_def_img)
   x->x_def_img = 0;
   
-  // for (int ch = 0; ch < nbchans; ch++){
-  //   for (int fr = 0; fr < ioutw; fr++){
-  //     post("in ch %d fr %d = ", ch, fr);
-  //     int min = (int)((localcopy[ch][(int)(fr*ratiow)] * ratioh) + (ratioh * ((2 * ch) + 1)));
-  //     int max = min;
-  //     for (int localidx = (int)(fr*ratiow); localidx < (int)((fr+1)*ratiow); localidx++) {
-  //       int val = (int)((localcopy[ch][(int)(fr*ratiow)] * ratioh) + (ratioh * ((2 * ch) + 1)));
-  //       if (val < min) {
-  //         min = val;
-  //       } else if (val > max) {
-  //         max = val;
-  //       }
-  //     }
-  //     post("%d %d\n", min, max);
-  // //     post("%d %d %d %f %d\n",ch, fr, (int)(fr * ratiow), localcopy[ch][(int)(fr*ratiow)] * ratioh, (int)((localcopy[ch][(int)(fr*ratiow)] * ratioh) + (ratioh * ((2 * ch) + 1))));
-  //   }
-  // }
   // make an array for the list of peaks in TCLTK
   sys_vgui("if { [info exists %lx_audiopeaks] == 1 } {array unset %lx_audiopeaks}\n", x->x_fullname, x->x_fullname); // delete previous version
   sys_vgui("set %lx_audiopeaks {", x->x_fullname); //header to the channel line
@@ -490,11 +459,9 @@ void fwf_imagebuffer(t_fwf* x, t_symbol* name){
   }
   else {
     snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
-    // post("%s",nameString);
     while ((inputarray = (t_garray*)pd_findbyclass(gensym(nameString), garray_class))) {
       nbchans ++;
       garray_getfloatwords(inputarray, &length, &words);
-      // post("%f %f", minVal, maxVal);
       nbframes = MAX(nbframes, length);
       snprintf(nameString, MAXPDSTRING, "%s-%d", name->s_name, nbchans);
     }
@@ -549,8 +516,7 @@ void fwf_imagebuffer(t_fwf* x, t_symbol* name){
   fprintf(fp, "P6\n%d %d %d\n", ioutw, iouth, MaxColorComponentValue);
 
   // write the components
-  // post("%f %f", minVal, maxVal);
-
+    
   if (x->x_imagelogflag) {
     minVal = (float)log(minVal+0.000001);
     maxVal = (float)log(maxVal+0.000001);
@@ -583,8 +549,6 @@ void fwf_imagebuffer(t_fwf* x, t_symbol* name){
   // format the file for TCL for Windows
   char file_name_open[L_tmpnam];
   sys_unbashfilename(x->x_filename, file_name_open);
-
-  // post("%s",x->x_filename); post("%s",file_name_open);
 
   //delete the image if already cached
   sys_vgui("if { [info exists %lx_picname] == 1} { image delete %lx_picname \n}\n",
@@ -680,20 +644,8 @@ void fwf_featuresbuffer(t_fwf* x, t_symbol* name){
   // ratios
   float ratiow = (float)nbframes / ioutw;
   float ratioh = (float)iouth / nbchans;
-  // post("%d %f %d %f", ioutw, ratiow, iouth, ratioh);
   if(x->x_def_img)
   x->x_def_img = 0;
-
-  // for (int ch = 0; ch < nbchans; ch++) {
-  //   float invDeltaVal = 1.0 / (maxVal[ch] - minVal[ch]);
-  //   for (int fr = 0; fr < ioutw; fr++) {
-  //     float val = localcopy[ch][(int)(fr*ratiow)];
-  //     for (int localidx = (int)(fr*ratiow); localidx < (int)((fr+1)*ratiow); localidx++) {
-  //       val = MAX(val, localcopy[ch][localidx]);
-  //     }
-  //     post("%d %d ", fr, (int)(((ch + 1) - ((val - minVal[ch]) * invDeltaVal)) * ratioh));
-  //   }
-  // }
     
   // make an array for the list of peaks in TCLTK
   sys_vgui("if { [info exists %lx_featurespeaks] == 1 } {array unset %lx_featurespeaks\n unset %lx_featurescount\n unset %lx_featureslen}\n", x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname); // delete previous version
@@ -788,7 +740,6 @@ void fwf_indicesbuffer(t_fwf* x, t_symbol* name){
 
   // ratios
   float ratiow = (float)ioutw / x->x_nbframes;
-  // post("%d %f %d %f", ioutw, ratiow, iouth, ratioh);
   if(x->x_def_img)
   x->x_def_img = 0;
   
@@ -1020,7 +971,8 @@ static void *fwf_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_outline = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;
+    x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = x->x_nbframes = x->x_imagelogflag = x->x_imagecolorscheme =  0;
+    x->x_outline = 1;
     x->x_width = x->x_height = 10;
     x->x_linewidth = 2;
     memcpy((x->x_featurescolor),"880000",6);
