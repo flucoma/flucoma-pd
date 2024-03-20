@@ -467,7 +467,7 @@ void fplot_setpoint(t_fplot* x, t_symbol* name, float xin, float yin, float size
     sys_vgui("dict set %lx_pointdict %s x %f \n", x, key, xin);
     sys_vgui("dict set %lx_pointdict %s y %f \n", x, key, yin);
     if (size != 0) {
-        sys_vgui("dict set %lx_pointdict %s size %f \n", x, key, MAX((int)size,1));;
+        sys_vgui("dict set %lx_pointdict %s size %f \n", x, key, MAX(size,1));;
         sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[MIN(MAX((int)class + 1,0),10)]);
     } else {
         sys_vgui("dict set %lx_pointdict %s size %f \n", x, key, x->x_pointsizescale);;
@@ -488,7 +488,7 @@ void fplot_pointsize(t_fplot* x, t_symbol *s, float size){
 }
 
 void fplot_pointcolor(t_fplot* x, t_symbol *s, float classnum){
-    sys_vgui("dict set %lx_pointdict %s class %s \n", x, s->s_name, colours[MIN(MAX((int)classnum,-1),10)]);
+    sys_vgui("dict set %lx_pointdict %s class %s \n", x, s->s_name, colours[MIN(MAX((int)classnum + 1,0),10)]);
     fplot_draw(x, x->x_glist, 1);
 }
 

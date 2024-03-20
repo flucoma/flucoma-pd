@@ -1,5 +1,3 @@
-#N struct 1392-rectangle float x float c;
-#N struct 1392-pixel float x0 float y0 float x1 float y1;
 #N canvas 31 42 695 748 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.stats 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 536 683 cnv 15 140 46 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
@@ -102,7 +100,7 @@
 #X connect 20 0 9 0;
 #X restore 22 233 pd gaussian_noise;
 #X obj 119 309 fluid.stats -history 20;
-#X obj 22 426 fluid.plotter;
+#X obj 22 426 fluid.plotter 300 300 1 0 empty empty;
 #N canvas 47 74 966 908 addpoint 0;
 #X obj 159 122 inlet;
 #X obj 153 425 outlet;
@@ -138,17 +136,17 @@
 #X obj 38 69 unpack f f;
 #X obj 104 93 expr ($f1 + 3) / 6;
 #X obj 32 125 expr ($f1 + 3) / 6;
-#X msg 40 209 setpoint stats \$1 \$2 \$3 5;
 #X obj 297 66 expr sqrt(($f1*$f1)+($f2*$f2)) * 50;
+#X msg 40 209 setpoint stats \$1 \$2 \$3 1;
 #X connect 0 0 4 0;
-#X connect 2 0 8 0;
-#X connect 3 0 7 0;
+#X connect 2 0 7 0;
+#X connect 3 0 8 0;
 #X connect 4 0 6 0;
 #X connect 4 1 5 0;
 #X connect 5 0 3 1;
 #X connect 6 0 3 0;
-#X connect 7 0 1 0;
-#X connect 8 0 3 2;
+#X connect 7 0 3 2;
+#X connect 8 0 1 0;
 #X restore 119 386 pd addrange;
 #X listbox 330 363 20 0 0 0 - - - 0;
 #X listbox 330 386 20 0 0 0 - - - 0;
