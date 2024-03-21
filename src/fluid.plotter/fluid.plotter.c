@@ -66,7 +66,6 @@ typedef struct _fplot{
     int            x_snd_set;
     int            x_rcv_set;
     int            x_edit;
-    int            x_init;
     int            x_sel;
     int            x_outline;
     int            x_s_flag;
@@ -352,7 +351,6 @@ static void fplot_outline(t_fplot *x, t_float f){
             }
             else if(!x->x_edit)
                 sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-            
         }
     }
 }
@@ -392,23 +390,6 @@ static void fplot_save(t_gobj *z, t_binbuf *b){
 }
 
 //------------------------------- METHODS --------------------------------------------
-static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
-    if ((x->x_width != w) || (x->x_height != h)){
-        pd_error(x,"strange size");
-        return;
-    }
-    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        fplot_drawplot(x, cv);
-        canvas_fixlinesfor(x->x_glist, (t_text*)x);
-        if(x->x_edit || x->x_outline){
-            fplot_outline(x, 1);
-        }
-    }
-    else
-        fplot_erase(x, x->x_glist);
-}
-
 void fplot_setpoints(t_fplot* x, t_symbol* name){
     x->x_binbuf = text_getbufbyname(name);
     
@@ -699,7 +680,7 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
+    x->x_rcv_set = x->x_snd_set = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
     x->x_outline =  x->x_x_range = x->x_y_range = x->x_x_refrange = x->x_y_refrange = 1;
     x->x_pointsizescale = 3;
     x->x_width = x->x_height = 300;
@@ -791,7 +772,6 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_ok, gensym("ok"), A_GIMME, 0);
     class_addmethod(fplot_class, (t_method)fplot_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_zoom, gensym("zoom"), A_CANT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_size_callback, gensym("_fplotsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_SYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_SYMBOL, 0);
