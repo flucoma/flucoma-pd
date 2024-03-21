@@ -1,13 +1,4 @@
-#N struct 1283-draw-item float x float y float c float a float b;
-#N struct 1284-rectangle float x float c;
-#N struct 1284-pixel float x0 float y0 float x1 float y1;
-#N struct 1293-draw-item float x float y float c float a float b;
-#N struct 1294-rectangle float x float c;
-#N struct 1294-pixel float x0 float y0 float x1 float y1;
-#N struct 1295-draw-item float x float y float c float a float b;
-#N struct 1296-rectangle float x float c;
-#N struct 1296-pixel float x0 float y0 float x1 float y1;
-#N canvas 65 25 701 792 12;
+#N canvas 65 25 701 890 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 474 804 cnv 15 198 68 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.pca.html reference/pca/;
@@ -47,8 +38,8 @@
 #X obj 22 380 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 42 387 store dataset into a text object;
 #X obj 29 617 fluid.normalize;
-#X obj 379 410 fluid.plotter;
-#N canvas 545 25 682 792 whitening 0;
+#X obj 379 410 fluid.plotter 300 300 1 0 empty empty;
+#N canvas 545 25 682 910 whitening 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 Whitening principal components;
 #X obj 21 151 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
@@ -73,8 +64,8 @@
 #X msg 21 229 fittransform help.pca.ds.2;
 #X obj 227 225 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 228 224 2) calculate PCA with whitening on and off, f 43;
-#X obj 15 365 fluid.plotter;
-#X obj 325 365 fluid.plotter;
+#X obj 15 365 fluid.plotter 300 300 1 0 empty empty;
+#X obj 325 365 fluid.plotter 300 300 1 0 empty empty;
 #X text 44 145 1) generate a dataset from each frame of spectral shape analysis, f 32;
 #N canvas 215 258 888 599 drawing 0;
 #X obj 37 37 inlet;

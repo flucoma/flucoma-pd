@@ -1,4 +1,4 @@
-#N canvas 18 25 696 791 12;
+#N canvas 18 25 696 1017 12;
 #X obj 245 621 fluid.datasetquery;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 457 867 cnv 15 222 132 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
@@ -735,7 +735,7 @@
 #X obj 245 678 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 245 698 fluid.ds2text dsq.help.dest dsq.help.dest.text, f 20;
 #X obj 245 650 route transform;
-#N canvas 230 25 694 791 transformjoin_in_practice 0;
+#N canvas 230 25 694 985 transformjoin_in_practice 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 The transformjoin message allows filtering the contents of a dataset based on the contents found in another.;
 #X obj 311 933 cnv 15 243 33 empty empty empty 20 12 0 14 #e0e0e0 #404040 0;
