@@ -1,4 +1,4 @@
-#N canvas 37 25 701 792 12;
+#N canvas 37 25 701 953 12;
 #X obj 40 570 fluid.knnregressor;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.knnregressor 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 509 60 fluid.referencelauncher fluid.knnregressor.html reference/knnregressor/;

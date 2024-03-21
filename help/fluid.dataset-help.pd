@@ -1,4 +1,4 @@
-#N canvas 28 25 695 791 12;
+#N canvas 28 25 695 855 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\ set\ of\ data\ associated\ with\ identifiers. 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.dataset.html reference/dataset/;
@@ -45,7 +45,7 @@
 #X obj 135 266 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 136 265 1) Store a list of numbers in an array. These numbers could be anything \, including audio-descriptor data \, synthesiser parameters or anything!, f 54;
 #X obj 475 662 cnv 15 202 174 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#N canvas 312 25 693 791 audio-descriptor_example 0;
+#N canvas 312 25 693 963 audio-descriptor_example 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 An example of storing audio descriptors into a fluid.dataset~, f 63;
 #X obj 18 397 fluid.dataset sound-analysis;
@@ -262,7 +262,7 @@
 #X connect 23 0 19 0;
 #X connect 24 0 19 0;
 #X restore 478 748 pd merging;
-#N canvas 77 25 705 791 from_and_to_arrays 0;
+#N canvas 77 25 705 920 from_and_to_arrays 0;
 #X obj 17 4 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 70 A fluid.dataset~ can be created from the contents of an array as well as converted from its internal representation TO an array., f 74;
 #N canvas 0 23 448 179 loadsrc 0;

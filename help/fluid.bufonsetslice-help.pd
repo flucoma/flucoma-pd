@@ -1,10 +1,10 @@
-#N canvas 27 25 697 798 12;
+#N canvas 116 59 697 892 12;
 #X obj 16 18 cnv 15 660 42 empty empty fluid.bufonsetslice 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 463 791 cnv 15 212 88 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 508 65 fluid.referencelauncher fluid.bufonsetslice.html reference/bufonsetslice/;
 #X obj 16 65 cnv 15 488 17 empty empty Spectral\ Difference-Based\ Audio\ Buffer\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 16 84 Implements a selection of spectrum-based onset slicers;
-#N canvas 1955 -858 448 179 loadsrc 0;
+#N canvas 1551 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
 #X msg 16 41 read -resize \$1 help.bufonset.src;
@@ -149,7 +149,7 @@
 #X obj 226 330 r src;
 #X msg 226 364 set \$1;
 #X listbox 226 392 20 0 0 0 - - - 0;
-#X obj 37 391 tabplay~ thesource;
+#X obj 37 391 tabplay~ help.bufonset.src;
 #X connect 1 0 2 0;
 #X connect 2 0 11 0;
 #X connect 4 0 8 0;
@@ -425,7 +425,7 @@
 #X obj 30 352 r src;
 #X msg 320 535 waveform \$1;
 #X obj 30 503 fluid.bufonsetslice -indices help.bufonset2.slices, f 32;
-#N canvas 1013 -1015 1368 693 fetch_settings 0;
+#N canvas 631 -1015 1368 693 fetch_settings 0;
 #X floatatom 509 206 8 0 0 0 - - - 0;
 #X floatatom 394 206 8 0 0 0 - - - 0;
 #X floatatom 653 206 8 0 0 0 - - - 0;
@@ -518,7 +518,7 @@
 #X obj 427 731 fluid.out~ bufnoveltyslicehelp;
 #X obj 499 736 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X floatatom 426 643 5 0 0 0 - - - 0;
-#N canvas 1744 -1080 666 626 extract_slices 0;
+#N canvas 1333 -1080 666 626 extract_slices 0;
 #X obj 37 427 outlet~;
 #X obj 37 14 inlet;
 #X floatatom 37 45 5 0 0 0 - - - 0;

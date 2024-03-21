@@ -1,4 +1,4 @@
-#N canvas 112 25 696 792 12;
+#N canvas 112 25 696 955 12;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.filter.src.1 453932 float 0;
 #X coords 0 1 453931 -1 250 40 1 0 0;

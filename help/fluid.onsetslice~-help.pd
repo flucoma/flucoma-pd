@@ -1,16 +1,9 @@
-#N canvas 18 40 725 944 12;
-#X text 35 860 Once latency compensated with the delay as above \,
-the detected position is always at the start of the spectral frame
-in which an onset appears. Change the window size above to observe
-the changes., f 95;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.onsetslice~ 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 510 60 fluid.referencelauncher fluid.onsetslice~.html reference/onsetslice/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Spectral\\\ Difference-Based\\\ Real-Time\\\ Audio\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Implements a selection of spectrum-based onset slicers
-;
+#N canvas 18 40 725 920 12;
+#X text 35 860 Once latency compensated with the delay as above \, the detected position is always at the start of the spectral frame in which an onset appears. Change the window size above to observe the changes., f 95;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.onsetslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 510 60 fluid.referencelauncher fluid.onsetslice~.html reference/onsetslice/;
+#X obj 17 60 cnv 15 488 17 empty empty Spectral\ Difference-Based\ Real-Time\ Audio\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Implements a selection of spectrum-based onset slicers;
 #X obj 18 149 phasor~ 1.11;
 #X obj 18 193 clip~ 0 1;
 #X obj 18 171 biquad~ 0 0 -1 1 0;
@@ -31,8 +24,7 @@ the changes., f 95;
 #X obj 38 669 samphold~;
 #X obj 133 594 fexpr~ $y1[-1] + 1;
 #X text 81 837 spectral frame accurate detection, f 55;
-#X obj 303 264 fluid.onsetslice~ -threshold 1e-06 -fftsettings 50,
-f 23;
+#X obj 303 264 fluid.onsetslice~ -threshold 1e-06 -fftsettings 50, f 23;
 #X obj 104 489 fluid.onsetslice.help.scope A;
 #X obj 308 488 fluid.onsetslice.help.scope B;
 #X obj 512 488 fluid.onsetslice.help.scope C;
@@ -40,8 +32,7 @@ f 23;
 #X text 155 438 original \, latency-compensated, f 20;
 #X text 579 438 output of fluid.onsetslice~, f 18;
 #X text 339 447 both signals added, f 20;
-#X obj 552 759 cnv 15 149 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 552 759 cnv 15 149 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 322 127 711 919 musical_example 0;
 #X obj 23 713 * 1000;
 #X obj 363 673 / 1;
@@ -78,8 +69,7 @@ f 23;
 #X obj 112 2008 t b f, f 49;
 #X obj 462 2008 route 0 1 2 3 4 5 6 7 8 9;
 #X obj 112 1984 route 6;
-#X obj 100 100 cnv 15 470 170 empty empty empty 20 12 0 14 #f9e09e
-#404040 0;
+#X obj 100 100 cnv 15 470 170 empty empty empty 20 12 0 14 #f9e09e #404040 0;
 #X obj 391 128 fluid.onsetslice.help.ch 0 1;
 #X obj 373 128 fluid.onsetslice.help.ch 0 0;
 #X obj 409 128 fluid.onsetslice.help.ch 0 2;
@@ -123,82 +113,44 @@ f 23;
 #X obj 481 242 fluid.onsetslice.help.ch 6 6;
 #X obj 517 223 fluid.onsetslice.help.ch 5 8;
 #X text 325 108 metric;
-#X obj 391 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 373 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 373 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 391 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 391 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 391 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 409 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 427 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 427 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 427 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 409 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 445 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 463 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 517 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 517 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 499 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 481 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 535 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 535 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
-#X obj 517 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040
-0;
+#X obj 391 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 373 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 373 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 391 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 391 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 391 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 409 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 427 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 427 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 427 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 409 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 445 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 147 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 463 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 517 185 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 517 166 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 204 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 499 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 481 128 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 535 223 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 535 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
+#X obj 517 242 cnv 16 16 16 empty empty empty 20 12 0 14 #dfdfdf #404040 0;
 #X text 116 127 Nicol-LoopE-M.wav;
 #X text 116 146 Tremblay-AaS-AcousticStrums-M.wav;
 #X text 116 165 Tremblay-ASWINE-ScratchySynth-M.wav;
@@ -247,15 +199,11 @@ f 23;
 #X obj 761 206 array define src5;
 #X obj 761 227 array define src6;
 #X msg 889 100 read -resize ./media/Nicol-LoopE-M.wav src0;
-#X msg 899 121 read -resize ./media/Tremblay-AaS-AcousticStrums-M.wav
-src1;
-#X msg 909 142 read -resize ./media/Tremblay-ASWINE-ScratchySynth-M.wav
-src2, f 63;
+#X msg 899 121 read -resize ./media/Tremblay-AaS-AcousticStrums-M.wav src1;
+#X msg 909 142 read -resize ./media/Tremblay-ASWINE-ScratchySynth-M.wav src2, f 63;
 #X msg 919 163 read -resize ./media/Tremblay-BaB-HumDC-M.wav src3;
-#X msg 929 184 read -resize ./media/Tremblay-BeatRemember.wav src4
-;
-#X msg 939 205 read -resize ./media/Tremblay-UW-ComplexDescent-M.wav
-src5;
+#X msg 929 184 read -resize ./media/Tremblay-BeatRemember.wav src4;
+#X msg 939 205 read -resize ./media/Tremblay-UW-ComplexDescent-M.wav src5;
 #X msg 949 226 read -resize ./media/Tremblay-FMTriDist-M.wav src6;
 #X msg 112 1495 \; src symbol src4;
 #X msg 102 1215 \; src symbol src3;
@@ -341,14 +289,10 @@ src5;
 #X connect 163 0 149 0;
 #X coords 0 -1 1 1 470 170 1 100 100;
 #X restore 19 175 pd guts;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.onsetslice~ 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Try\\\ different\\\ combinations\\\ of\\\ algorithms
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 19 98 Different onset detection metrics will be more or less
-effective on different types of material, f 86;
-#X text 498 185 Some curated options from the fluid decomposition example
-files \, and metrics for which we got acceptable results., f 25;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.onsetslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Try\ different\ combinations\ of\ algorithms 4 8 0 13 #e0e0e0 #404040 0;
+#X text 19 98 Different onset detection metrics will be more or less effective on different types of material, f 86;
+#X text 498 185 Some curated options from the fluid decomposition example files \, and metrics for which we got acceptable results., f 25;
 #N canvas 291 -981 1698 892 parameters 0;
 #X floatatom 215 218 8 0 0 0 - - - 0;
 #X floatatom 185 196 8 0 0 0 - - - 0;
@@ -419,14 +363,11 @@ files \, and metrics for which we got acceptable results., f 25;
 #X msg 22 419 set \$1 \, 1;
 #X obj 22 393 r src;
 #X listbox 65 393 20 0 0 0 - - - 0;
-#X obj 234 762 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
-#000000 #000000;
+#X obj 234 762 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6 #000000 #000000;
 #X obj 234 731 threshold~ 0.5 1 0.1 1;
-#X obj 21 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 21 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 22 145 1) pick a preset and observe the changes below;
-#X obj 97 848 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 97 848 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 98 846 2) Audio on.;
 #X connect 0 0 13 0;
 #X connect 1 0 0 0;

@@ -66,7 +66,6 @@ typedef struct _fplot{
     int            x_snd_set;
     int            x_rcv_set;
     int            x_edit;
-    int            x_init;
     int            x_sel;
     int            x_outline;
     int            x_s_flag;
@@ -97,7 +96,7 @@ typedef struct _fplot{
     int           x_clicktype;
 }t_fplot;
 
-static void fplot_draw(t_fplot* x, struct _glist *glist, int vis);
+static void fplot_draw(t_fplot* x, struct _glist *glist, int vis, int clean);
 
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fplot_draw_io_let(t_fplot *x){
@@ -188,7 +187,7 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
         if(x->x_send != &s_ && x->x_send->s_thing)
             pd_list(x->x_send->s_thing, &s_list, 2, at);
     } else if (x->x_clicktype == 1) {
-        fplot_draw(x, x->x_glist, 1);
+        fplot_draw(x, x->x_glist, 1, 0);
     }
 }
 
@@ -206,7 +205,7 @@ static int fplot_click(t_fplot *x, struct _glist *glist, int xpix, int ypix, int
             x->x_x_range = x->x_x_refrange;
             x->x_y_min = x->x_y_refmin;
             x->x_y_range = x->x_y_refrange;
-            fplot_draw(x, x->x_glist, 1);
+            fplot_draw(x, x->x_glist, 1, 0);
         } else if (alt) {
             x->x_clicktype = 1;
             x->x_x_temp = x->x_x;
@@ -259,7 +258,7 @@ static void fplot_mouserelease(t_fplot* x){
         }
 
         x->x_clicktype = 0;
-        fplot_draw(x, x->x_glist, 1);
+        fplot_draw(x, x->x_glist, 1, 0);
     }
 }
 
@@ -306,11 +305,23 @@ static void fplot_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
 
-static void fplot_drawplot(t_fplot* x, t_canvas *cv){
+static void fplot_erase(t_fplot* x, struct _glist *glist){
+    t_canvas *cv = glist_getcanvas(glist);
+    sys_vgui(".x%lx.c delete %lx_frame\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_points\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_selframe\n", cv, x);
+}
+
+static void fplot_drawplot(t_fplot* x, t_canvas *cv, int clean){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n",
-             cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom,
-             x->x_outline ? "black" : "white", x);
+    // sys_vgui("if {[info exists %lx_frame]} {.x%lx.c itemconfigure %lx_frame -width %d -outline %s} else {.x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame}\n", x, cv, x, x->x_zoom, x->x_outline ? "black" : "white", cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom, x->x_outline ? "black" : "white", x);
+    if (clean)
+    {
+        sys_vgui(".x%lx.c delete %lx_frame\n", cv, x); // if we don't delete the frame it clogs... and me trying to just update it...
+        sys_vgui(".x%lx.c delete %lx_points\n", cv, x); // and the points if any
+    }
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_frame\n", cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom, x->x_outline ? "black" : "white", x);
 
     sys_vgui("if {[info exists %lx_pointdict]} { \n", x);
     sys_vgui("  dict for {key val} $%lx_pointdict { \n", x);
@@ -320,7 +331,7 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
     sys_vgui("      if {$scaledx >= 0 && $scaledx <= 1 && $scaledy >= 0 && $scaledy <= 1} {\n ");
     sys_vgui("        set xP [expr %d + ($scaledx * %d)]\n", xpos, x->x_width * x->x_zoom);
     sys_vgui("        set yP [expr %d + ((1 - $scaledy) * %d)]\n", ypos, x->x_height * x->x_zoom);
-    sys_vgui("        set halfsize [expr %f * $size * 0.5]\n", x->x_pointsizescale);
+    sys_vgui("        set halfsize [expr %f * $size * 0.5]\n", x->x_pointsizescale * x->x_zoom);
     sys_vgui("        .x%lx.c create oval [expr $xP - $halfsize] [expr $yP - $halfsize] [expr $xP + $halfsize] [expr $yP + $halfsize] -fill $class -tags %lx_points}\n", cv, x);
     sys_vgui("}}}\n");
     
@@ -335,6 +346,7 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv){
         sys_vgui(".x%lx.c delete %lx_selframe\n", cv, x);
     }
     
+    sys_vgui(".x%lx.c bind %lx_frame <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
 }
 
 static void fplot_outline(t_fplot *x, t_float f){
@@ -352,35 +364,21 @@ static void fplot_outline(t_fplot *x, t_float f){
             }
             else if(!x->x_edit)
                 sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-            
         }
     }
 }
 
-static void fplot_draw(t_fplot* x, struct _glist *glist, int vis){
+static void fplot_draw(t_fplot* x, struct _glist *glist, int vis, int clean){
     t_canvas *cv = glist_getcanvas(glist);
     int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(visible || (_Bool)vis) fplot_drawplot(x, cv);
+    if(visible || (_Bool)vis) fplot_drawplot(x, cv, clean);
 
-    if(!x->x_init) x->x_init = 1;
-    
-    sys_vgui(".x%lx.c bind %lx_frame <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
-    
     fplot_draw_io_let(x);
-}
-
-static void fplot_erase(t_fplot* x, struct _glist *glist){
-    t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c delete %lx_frame\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_points\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
 }
 
 static void fplot_vis(t_gobj *z, t_glist *glist, int vis){
     t_fplot* x = (t_fplot*)z;
-    vis ? fplot_draw(x, glist, 1) : fplot_erase(x, glist);
+    vis ? fplot_draw(x, glist, 1, 1) : fplot_erase(x, glist);
 }
 
 static void fplot_save(t_gobj *z, t_binbuf *b){
@@ -392,23 +390,6 @@ static void fplot_save(t_gobj *z, t_binbuf *b){
 }
 
 //------------------------------- METHODS --------------------------------------------
-static void fplot_size_callback(t_fplot *x, t_float w, t_float h){ // callback
-    if ((x->x_width != w) || (x->x_height != h)){
-        pd_error(x,"strange size");
-        return;
-    }
-    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        fplot_drawplot(x, cv);
-        canvas_fixlinesfor(x->x_glist, (t_text*)x);
-        if(x->x_edit || x->x_outline){
-            fplot_outline(x, 1);
-        }
-    }
-    else
-        fplot_erase(x, x->x_glist);
-}
-
 void fplot_setpoints(t_fplot* x, t_symbol* name){
     x->x_binbuf = text_getbufbyname(name);
     
@@ -434,7 +415,7 @@ void fplot_setpoints(t_fplot* x, t_symbol* name){
         sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, "black");
     }
     
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_setlabels(t_fplot* x, t_symbol* name){
@@ -459,7 +440,7 @@ void fplot_setlabels(t_fplot* x, t_symbol* name){
         sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, colours[MIN(MAX(classID + 1,0),10)]);
     }
 
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_setpoint(t_fplot* x, t_symbol* name, float xin, float yin, float size, float class){
@@ -474,22 +455,22 @@ void fplot_setpoint(t_fplot* x, t_symbol* name, float xin, float yin, float size
         sys_vgui("dict set %lx_pointdict %s class %s\n", x, key, "black");
     }
 
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_pointsizescale(t_fplot* x, float size){
     x->x_pointsizescale = MAX(size,1);
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_pointsize(t_fplot* x, t_symbol *s, float size){
     sys_vgui("dict set %lx_pointdict %s size %f \n", x, s->s_name, MAX(size,1));
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_pointcolor(t_fplot* x, t_symbol *s, float classnum){
     sys_vgui("dict set %lx_pointdict %s class %s \n", x, s->s_name, colours[MIN(MAX((int)classnum + 1,0),10)]);
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
@@ -499,7 +480,7 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
     sys_vgui("}\n unset %lx_highlighted\n }\n",x);
         
     if (ac < 1) {
-        fplot_draw(x, x->x_glist, 1);
+        fplot_draw(x, x->x_glist, 1, 1);
         return;
     }
     
@@ -517,34 +498,34 @@ void fplot_highlight(t_fplot *x, t_symbol *s, int ac, t_atom *av){
         sys_vgui("dict set %lx_pointdict %s size [expr [dict get $%lx_pointdict %s size] * 3]\n", x, id, x, id);
     }
     
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_xrange(t_fplot *x, t_float left, t_float right){
     x->x_x_min = x->x_x_refmin = left;
     x->x_x_range = x->x_x_refrange = right - left;
     if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = FLT_EPSILON;
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
     
 void fplot_yrange(t_fplot *x, t_float left, t_float right){
     x->x_y_min = x->x_y_refmin = left;
     x->x_y_range = x->x_y_refrange = right - left;
     if (x->x_y_range == 0) x->x_y_range = x->x_y_refrange = FLT_EPSILON;
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 void fplot_range(t_fplot *x, t_float left, t_float right){
     x->x_x_min = x->x_x_refmin = x->x_y_min = x->x_y_refmin = left;
     x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = right - left;
     if (x->x_x_range == 0) x->x_x_range = x->x_x_refrange = x->x_y_range = x->x_y_refrange = FLT_EPSILON;
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 static void fplot_clear(t_fplot *x){
     sys_vgui("if {[info exists %lx_pointdict]} {unset %lx_pointdict}\n", x, x);
     sys_vgui("if {[info exists %lx_highlighted]} {unset %lx_highlighted}\n", x, x);
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 static void fplot_send(t_fplot *x, t_symbol *s){
@@ -656,7 +637,7 @@ static void fplot_ok(t_fplot *x, t_symbol *s, int ac, t_atom *av){
     fplot_receive(x, atom_getsymbolarg(5, ac, av));
     canvas_dirty(x->x_glist, 1);
     fplot_erase(x, x->x_glist);
-    fplot_draw(x, x->x_glist, 1);
+    fplot_draw(x, x->x_glist, 1, 1);
 }
 
 //-------------------------------------------------------------------------------------
@@ -699,7 +680,7 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
-    x->x_rcv_set = x->x_snd_set = x->x_init = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
+    x->x_rcv_set = x->x_snd_set = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
     x->x_outline =  x->x_x_range = x->x_y_range = x->x_x_refrange = x->x_y_refrange = 1;
     x->x_pointsizescale = 3;
     x->x_width = x->x_height = 300;
@@ -791,7 +772,6 @@ void setup_fluid0x2eplotter(void){
     class_addmethod(fplot_class, (t_method)fplot_ok, gensym("ok"), A_GIMME, 0);
     class_addmethod(fplot_class, (t_method)fplot_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_zoom, gensym("zoom"), A_CANT, 0);
-    class_addmethod(fplot_class, (t_method)fplot_size_callback, gensym("_fplotsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(fplot_class, (t_method)fplot_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(fplot_class, (t_method)fplot_setpoints, gensym("setpoints"), A_SYMBOL, 0);
     class_addmethod(fplot_class, (t_method)fplot_setlabels, gensym("setlabels"), A_SYMBOL, 0);

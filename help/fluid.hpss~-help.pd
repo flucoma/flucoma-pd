@@ -1,4 +1,4 @@
-#N canvas 28 35 691 792 12;
+#N canvas 28 35 691 995 12;
 #X text 18 91 Harmonic-Percussive Source Separation (HPSS) on the an audio input., f 69;
 #X obj 511 199 array define hpss_drums;
 #X text 432 386 size of 'harmonic' median filter (in hops). Bigger = more latency, f 32;

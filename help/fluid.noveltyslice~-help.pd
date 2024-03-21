@@ -1,4 +1,4 @@
-#N canvas 152 25 703 792 12;
+#N canvas 152 25 703 875 12;
 #X obj 18 149 phasor~ 1.11;
 #X obj 18 193 clip~ 0 1;
 #X obj 18 171 biquad~ 0 0 -1 1 0;
@@ -122,7 +122,7 @@
 #X msg 259 158 \; pd dsp 1;
 #X obj 18 367 delwrite~ \$0-latencycomp 200;
 #X obj 527 799 cnv 15 149 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#N canvas 350 54 689 763 musical_example 0;
+#N canvas 350 54 689 689 musical_example 0;
 #X obj 17 525 * 1000;
 #X obj 339 490 / 1;
 #N canvas 520 25 732 792 parameters 0;

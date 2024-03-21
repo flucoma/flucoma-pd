@@ -1,4 +1,4 @@
-#N canvas 0 25 698 751 12;
+#N canvas 0 25 698 767 12;
 #X msg 85 237 print;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.labelset 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\ set\ of\ labels\ associated\ with\ identifiers. 4 8 0 13 #e0e0e0 #404040 0;
@@ -20,7 +20,7 @@
 #X obj 359 446 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 359 445 5) Delete the label with the identifier huddersfield \, and print the labelset to the console again., f 41;
 #X obj 474 616 cnv 15 200 131 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#N canvas 22 25 696 793 audio-descriptor_example 0;
+#N canvas 22 25 696 929 audio-descriptor_example 0;
 #X obj 37 296 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 58 296 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 1600 23 448 165 loadsrc 0;
@@ -67,7 +67,7 @@
 #X connect 17 0 20 0;
 #X connect 17 0 23 0;
 #X restore 477 636 pd audio-descriptor_example;
-#N canvas 149 122 701 570 other_messages 0;
+#N canvas 149 122 695 570 other_messages 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 Other useful messages that can be used with fluid.dataset~;
 #X obj 57 130 loadbang;

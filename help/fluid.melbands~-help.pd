@@ -170,7 +170,7 @@
 #X restore 200 543 pd oscillators;
 #X f 44;
 #X obj 501 733 cnv 15 177 42 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#N canvas 354 25 691 792 visualising_mel_bands 0;
+#N canvas 354 25 691 897 visualising_mel_bands 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.melbands~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 15 84 Visualising mel bands;
 #X obj 15 176 fluid.demosound~;
