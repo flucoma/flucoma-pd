@@ -331,7 +331,7 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv, int clean){
     sys_vgui("      if {$scaledx >= 0 && $scaledx <= 1 && $scaledy >= 0 && $scaledy <= 1} {\n ");
     sys_vgui("        set xP [expr %d + ($scaledx * %d)]\n", xpos, x->x_width * x->x_zoom);
     sys_vgui("        set yP [expr %d + ((1 - $scaledy) * %d)]\n", ypos, x->x_height * x->x_zoom);
-    sys_vgui("        set halfsize [expr %f * $size * 0.5]\n", x->x_pointsizescale);
+    sys_vgui("        set halfsize [expr %f * $size * 0.5]\n", x->x_pointsizescale * x->x_zoom);
     sys_vgui("        .x%lx.c create oval [expr $xP - $halfsize] [expr $yP - $halfsize] [expr $xP + $halfsize] [expr $yP + $halfsize] -fill $class -tags %lx_points}\n", cv, x);
     sys_vgui("}}}\n");
     
