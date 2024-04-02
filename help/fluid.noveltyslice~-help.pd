@@ -1,4 +1,4 @@
-#N canvas 152 85 703 873 12;
+#N canvas 152 25 703 875 12;
 #X obj 18 149 phasor~ 1.11;
 #X obj 18 193 clip~ 0 1;
 #X obj 18 171 biquad~ 0 0 -1 1 0;
@@ -18,16 +18,11 @@
 #X obj 28 609 samphold~;
 #X obj 103 534 fexpr~ $y1[-1] + 1;
 #X text 71 777 spectral frame accurate detection, f 55;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyslice~ 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.noveltyslice~.html reference/noveltyslice/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Real-Time\\\ Novelty-Based\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 A real-time slicer using an algorithm assessing novelty
-in the signal to estimate the slicing points.;
-#X obj 259 367 fluid.noveltyslice~ -threshold 0.01 -fftsettings 128
--kernelsize 31, f 23;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.noveltyslice~.html reference/noveltyslice/;
+#X obj 17 60 cnv 15 488 17 empty empty Real-Time\ Novelty-Based\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 A real-time slicer using an algorithm assessing novelty in the signal to estimate the slicing points.;
+#X obj 259 367 fluid.noveltyslice~ -threshold 0.01 -fftsettings 128 -kernelsize 31, f 23;
 #N canvas 1257 -1048 732 932 parameters 0;
 #X floatatom 499 191 8 0 0 0 - - - 0;
 #X floatatom 29 549 8 0 0 0 - - - 0;
@@ -60,41 +55,30 @@ in the signal to estimate the slicing points.;
 #X obj 29 614 s \$0-params;
 #X obj 267 614 s \$0-params;
 #X obj 144 115 loadbang;
-#X obj 499 147 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 499 147 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 499 115 loadbang;
-#X obj 267 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 267 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 267 465 loadbang;
-#X obj 29 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 29 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 29 465 loadbang;
 #X obj 262 272 s \$0-params;
-#X obj 258 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 258 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 256 54 FFT settings;
-#X obj 28 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 28 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 26 54 Algorithm;
-#X obj 29 161 vradio 15 1 0 4 empty empty Algorithm 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 29 161 vradio 15 1 0 4 empty empty Algorithm 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X msg 144 137 0;
-#X obj 498 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 498 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 496 54 filter size;
-#X obj 259 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 29 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 499 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 259 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 29 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 499 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 414 kernel size;
 #X text 257 414 min slice length;
 #X text 497 414 threshold;
 #X floatatom 499 549 8 0 0 0 - - - 0;
 #X obj 499 614 s \$0-params;
-#X obj 499 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 499 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 499 465 loadbang;
 #X msg 499 587 threshold \$1;
 #X msg 499 527 0.33;
@@ -137,12 +121,11 @@ in the signal to estimate the slicing points.;
 #X restore 453 310 pd parameters;
 #X msg 259 158 \; pd dsp 1;
 #X obj 18 367 delwrite~ \$0-latencycomp 200;
-#X obj 527 799 cnv 15 149 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 350 142 689 763 musical_example 0;
+#X obj 527 799 cnv 15 149 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#N canvas 350 54 689 689 musical_example 0;
 #X obj 17 525 * 1000;
 #X obj 339 490 / 1;
-#N canvas 520 147 732 932 parameters 0;
+#N canvas 520 25 732 792 parameters 0;
 #X floatatom 499 191 8 0 0 0 - - - 0;
 #X floatatom 29 549 8 0 0 0 - - - 0;
 #X msg 499 250 filtersize \$1 \, getlatency;
@@ -174,41 +157,30 @@ in the signal to estimate the slicing points.;
 #X obj 29 614 s \$0-params;
 #X obj 267 614 s \$0-params;
 #X obj 144 115 loadbang;
-#X obj 499 147 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 499 147 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 499 115 loadbang;
-#X obj 267 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 267 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 267 465 loadbang;
-#X obj 29 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 29 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 29 465 loadbang;
 #X obj 262 272 s \$0-params;
-#X obj 258 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 258 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 256 54 FFT settings;
-#X obj 28 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 28 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 26 54 Algorithm;
-#X obj 29 161 vradio 15 1 0 4 empty empty Algorithm 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 29 161 vradio 15 1 0 4 empty empty Algorithm 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X msg 144 137 0;
-#X obj 498 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 498 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 496 54 filter size;
-#X obj 259 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 29 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 499 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 259 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 29 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 499 434 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 414 kernel size;
 #X text 257 414 min slice length;
 #X text 497 414 threshold;
 #X floatatom 499 549 8 0 0 0 - - - 0;
 #X obj 499 614 s \$0-params;
-#X obj 499 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 499 506 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 499 465 loadbang;
 #X msg 499 587 threshold \$1;
 #X msg 499 527 0.33;
@@ -249,31 +221,24 @@ in the signal to estimate the slicing points.;
 #X connect 56 0 53 0;
 #X connect 57 0 52 0;
 #X restore 229 385 pd parameters;
-#X obj 195 422 fluid.noveltyslice~ -threshold 0.2 -kernelsize 31 -filtersize
-3, f 21;
+#X obj 195 422 fluid.noveltyslice~ -threshold 0.2 -kernelsize 31 -filtersize 3, f 21;
 #X obj 357 423 r pd-dsp-started;
 #X obj 357 448 samplerate~;
 #X obj 17 148 fluid.demosound~;
 #X obj 17 258 delwrite~ \$0-latencydelay 1000;
 #X obj 17 547 delread~ \$0-latencydelay;
 #X obj 17 645 fluid.out~ noveltyslice-help;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyslice~ 1 22 0 36
-#4ba3fb #ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Real-Time\\\ Novelty-Based\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Real-Time\ Novelty-Based\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 18 85 A musical example.;
 #X floatatom 367 490 5 0 0 0 - - - 0;
-#X obj 208 576 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
-#000000 #000000;
+#X obj 208 576 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6 #000000 #000000;
 #X obj 208 545 threshold~ 0.5 1 0.1 1;
-#X obj 17 127 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 17 127 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 19 125 1) select a source and start playing;
-#X obj 228 367 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 228 367 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 229 365 3) experiment with parameters;
-#X obj 92 650 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 92 650 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 93 648 2) Audio on.;
 #X connect 0 0 8 0;
 #X connect 1 0 0 0;
@@ -289,18 +254,12 @@ in the signal to estimate the slicing points.;
 #X connect 8 0 9 0;
 #X connect 15 0 14 0;
 #X restore 535 824 pd musical_example;
-#X obj 332 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 453 262 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 332 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 453 262 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 333 156 1) turn DSP on;
 #X text 452 260 3) experiment with parameters, f 15;
-#X obj 25 805 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 26 804 2) Once latency compensated with the delay~ above the
-detection is always at the beginning of the spectral frame in which
-it appears. Change the window size above to explore the changes.,
-f 62;
+#X obj 25 805 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 26 804 2) Once latency compensated with the delay~ above \, the detection is always at the beginning of the spectral frame in which it appears. Change the window size above to explore the changes., f 62;
 #X connect 0 0 2 0;
 #X connect 1 0 23 0;
 #X connect 1 0 26 0;

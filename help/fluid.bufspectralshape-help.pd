@@ -151,7 +151,6 @@
 #X obj 17 408 fluid.waveform 490 100 0 empty empty 0;
 #X obj 38 326 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 38 325 2) Do spectral shape analysis;
-#X text 515 422 Use the mouse to scrub through different parts of the audio file and retrieve the analysis, f 24;
 #N canvas 998 -1001 1511 939 feature_lookup 0;
 #X obj 102 -580 inlet;
 #X obj 103 -396 *;
@@ -241,8 +240,9 @@
 #X text 213 547 These are the features taken from reading the arrays, f 14;
 #X obj 468 678 note_on_multithreading;
 #X obj 468 656 note_on_automatic_multiarrays;
+#X text 515 422 Click and drag to scrub through different parts of the audio file and retrieve the analysis, f 24;
 #X connect 7 0 8 0;
 #X connect 8 0 15 0;
 #X connect 13 0 11 0;
 #X connect 15 0 16 0;
-#X connect 16 0 20 0;
+#X connect 16 0 19 0;

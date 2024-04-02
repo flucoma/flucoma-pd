@@ -1,25 +1,16 @@
-#N canvas 28 35 691 1000 12;
-#X text 18 91 Harmonic-Percussive Source Separation (HPSS) on the an
-audio input., f 69;
+#N canvas 28 35 691 995 12;
+#X text 18 91 Harmonic-Percussive Source Separation (HPSS) on the an audio input., f 69;
 #X obj 511 199 array define hpss_drums;
-#X text 432 386 size of 'harmonic' median filter (in hops). Bigger
-= more latency, f 32;
-#X text 435 504 size of 'percussive' median filter (in spectral bins)
-, f 34;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.hpss~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Harmonic-Percussive\\\ Source\\\ Separation\\\ Using\\\ Median\\\ Filtering
-4 8 0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.hpss~.html reference/hpss/
-;
-#X obj 27 780 cnv 15 380 44 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X text 432 386 size of 'harmonic' median filter (in hops). Bigger = more latency, f 32;
+#X text 435 504 size of 'percussive' median filter (in spectral bins), f 34;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.hpss~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Harmonic-Percussive\ Source\ Separation\ Using\ Median\ Filtering 4 8 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.hpss~.html reference/hpss/;
+#X obj 27 780 cnv 15 380 44 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 238 825 *~;
-#X obj 256 804 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 256 804 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 337 825 *~;
-#X obj 355 804 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 355 804 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 318 321 loadbang;
 #X msg 395 417 harmfiltersize \$1 \, getlatency;
 #X floatatom 395 396 5 3 17 0 - - - 0;
@@ -30,8 +21,7 @@ audio input., f 69;
 #X obj 17 199 fluid.demosound~;
 #X text 273 801 harmonic;
 #X text 373 801 perc;
-#X obj 17 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 17 181 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 238 647 fluid.hpss~, f 43;
 #X obj 17 720 delread~ \$0-latencycomp 1, f 19;
 #X obj 17 693 expr $f1*1000/samplerate;
@@ -39,42 +29,24 @@ audio input., f 69;
 #X text 580 677 LATENCY;
 #X obj 17 647 delwrite~ \$0-latencycomp 1000, f 20;
 #X obj 17 855 *~;
-#X obj 35 804 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 35 804 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X text 51 802 source;
 #X msg 140 396 getlatency;
 #X text 17 179 2) Play a sound;
-#X obj 523 867 cnv 15 152 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 511 107 694 1021 masking_mode1 0;
+#X obj 523 867 cnv 15 152 65 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#N canvas 511 25 694 792 masking_mode1 0;
 #X text 16 67 use mode 1 for more extreme separation;
-#X text 16 181 fluid.hpss~ lets you adjust this threshold with respect
-to frequency \, to enable fine-tuning. In mode 1 \, just use the harmthresh
-attribute \, which will internally make a comlpemntary threshold for
-the percussive part – gurranteeing that the two components still
-sum to the source., f 93;
 #X obj 36 682 list trim;
-#X text 276 612 harmthresh and percthresh are two frequency-amplitude
-pairs. frequency is normalised (0-1) \, amp in dB, f 53;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.hpss~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 16 91 in mode 0 \, fluid.hpss~ uses a soft-masking approach
-that produces smooth results \, at the cost of how separated they are.
-, f 93;
-#X text 16 129 In modes 1 and 2 \, a binary mask is used instead \,
-where a component is designated as being harmonic or percussive if
-the respective median filter output exceeds some threshold. This yields
-greater separation \, but can have more audible artefacts., f 93;
+#X text 276 612 harmthresh and percthresh are two frequency-amplitude pairs. frequency is normalised (0-1) \, amp in dB, f 53;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.hpss~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 16 91 in mode 0 \, fluid.hpss~ uses a soft-masking approach that produces smooth results \, at the cost of how separated they are., f 93;
+#X text 16 129 In modes 1 and 2 \, a binary mask is used instead \, where a component is designated as being harmonic or percussive if the respective median filter output exceeds some threshold. This yields greater separation \, but can have more audible artefacts., f 93;
 #X obj 17 249 fluid.demosound~;
-#X obj 27 348 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 30 348 1) Play a sound;
+#X obj 27 348 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 925 *~;
-#X obj 36 904 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 36 904 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 117 925 *~;
-#X obj 135 904 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 135 904 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 17 980 fluid.out~ hpsshelp;
 #X text 53 901 harmonic;
 #X text 151 900 perc;
@@ -100,11 +72,9 @@ greater separation \, but can have more audible artefacts., f 93;
 #X obj 528 254 r nf1;
 #X obj 897 325 moses;
 #X obj 929 297 r nf2;
-#X obj 496 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 496 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 496 509 value a1;
-#X obj 929 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 929 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 928 509 value a2;
 #X obj 391 479 s a2;
 #X obj 363 500 value a2;
@@ -177,8 +147,7 @@ greater separation \, but can have more audible artefacts., f 93;
 #X connect 16 0 0 0;
 #X restore 110 714 pd makelist;
 #X f 34;
-#X obj 111 677 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 111 677 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 34 689 percthresh;
 #X text 34 677 harmthresh;
 #N canvas 126 -975 297 579 count128 0;
@@ -281,70 +250,52 @@ greater separation \, but can have more audible artefacts., f 93;
 #X msg 252 726 3;
 #X msg 400 726 31;
 #X obj 252 700 loadbang;
-#X obj 157 488 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 157 486 2) modify the frequency threshold ->>;
-#X obj 195 903 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 197 900 3) select which component or components to hear;
+#X obj 157 488 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 195 903 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X listbox 278 594 40 0 0 0 - - - 0;
 #X obj 18 871 fluid.hpss~ -maskingmode 1, f 43;
-#X connect 2 0 30 0;
-#X connect 7 0 30 0;
-#X connect 10 0 14 0;
-#X connect 10 0 14 1;
+#X obj 85 987 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 85 985 1) Turn audio on;
+#X text 30 348 2) Play a sound;
+#X text 157 486 3) modify the frequency threshold ->>;
+#X text 197 900 4) select which component or components to hear;
+#X text 16 181 fluid.hpss~ lets you adjust this threshold with respect to frequency \, to enable fine-tuning. In mode 1 \, just use the harmthresh attribute \, which will internally make a complementary threshold for the percussive part – guaranteeing that the two components still sum to the source., f 93;
+#X connect 1 0 26 0;
+#X connect 6 0 26 0;
+#X connect 8 0 12 0;
+#X connect 8 0 12 1;
+#X connect 9 0 8 1;
+#X connect 10 0 12 0;
+#X connect 10 0 12 1;
 #X connect 11 0 10 1;
-#X connect 12 0 14 0;
-#X connect 12 0 14 1;
-#X connect 13 0 12 1;
-#X connect 17 0 2 0;
-#X connect 17 0 29 0;
-#X connect 18 0 30 0;
-#X connect 19 0 18 0;
-#X connect 20 0 21 0;
-#X connect 21 0 30 0;
-#X connect 22 0 19 0;
-#X connect 23 0 20 0;
-#X connect 24 0 22 0;
-#X connect 24 0 23 0;
-#X connect 30 0 10 0;
-#X connect 30 1 12 0;
+#X connect 15 0 1 0;
+#X connect 15 0 25 0;
+#X connect 16 0 26 0;
+#X connect 17 0 16 0;
+#X connect 18 0 19 0;
+#X connect 19 0 26 0;
+#X connect 20 0 17 0;
+#X connect 21 0 18 0;
+#X connect 22 0 20 0;
+#X connect 22 0 21 0;
+#X connect 26 0 8 0;
+#X connect 26 1 10 0;
 #X restore 526 887 pd masking_mode1;
-#N canvas 335 107 701 941 masking_mode2 0;
-#X text 15 74 use mode 2 for more extreme separation and fine-tuning
-;
-#X text 15 95 in mode 0 \, fluid.hpss~ uses a soft-masking approach
-that produces smooth results \, at the cost of how separated they are.
-In modes 1 and 2 \, a binary mask is used instead (see mode 1 subpatch)
-, f 94;
-#X text 15 140 In mode 2 \, the harmonic and percussive masks use separate
-thresholds. This means that two components are no longer guarranteed
-to sum to the source \, and so the residual buffer contains any leftovers.
-With some patient experimentation \, one can sometimes manage to place
-noisier material in the residual \, with tonal / persussive material
-in the other two channels., f 94;
-#X text 281 607 harmthresh and percthresh are two frequency-amplitude
-pairs. frequency is normalised (0-1) \, amp in dB, f 53;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.hpss~ 1 22 0 36 #4ba3fb
-#ffffff 0;
+#N canvas 335 25 701 792 masking_mode2 0;
+#X text 281 607 harmthresh and percthresh are two frequency-amplitude pairs. frequency is normalised (0-1) \, amp in dB, f 53;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.hpss~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 18 894 fluid.out~ hpsshelp;
 #X obj 17 249 fluid.demosound~;
-#X obj 17 231 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 17 229 1) Play a sound;
+#X obj 17 231 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 793 *~;
-#X obj 36 772 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 36 772 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 142 793 *~;
-#X obj 160 772 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 160 772 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X text 53 771 harmonic;
 #X text 176 771 perc;
-#X obj 18 739 fluid.hpss~ -maskingmode 2 -fftsettings 4096 1024 4096
-;
+#X obj 18 739 fluid.hpss~ -maskingmode 2 -fftsettings 4096 1024 4096;
 #X obj 268 793 *~;
-#X obj 286 772 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 286 772 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #N canvas 845 23 1203 930 calculatethreshold 0;
 #X floatatom 66 435 5 0 0 0 - - - 0;
 #X floatatom 166 381 5 0 0 0 - - - 0;
@@ -361,10 +312,8 @@ pairs. frequency is normalised (0-1) \, amp in dB, f 53;
 #X obj 496 223 t f f, f 71;
 #X obj 496 285 moses;
 #X obj 897 325 moses;
-#X obj 496 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 929 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 496 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 929 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 621 509 5 0 0 0 - - - 0;
 #X floatatom 106 277 5 0 20000 1 - - - 12;
 #X floatatom 146 277 5 -50 50 1 - - - 12;
@@ -468,8 +417,7 @@ pairs. frequency is normalised (0-1) \, amp in dB, f 53;
 #X connect 16 0 0 0;
 #X restore 110 714 pd makelist;
 #X f 34;
-#X obj 111 677 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 111 677 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 34 689 percthresh;
 #X text 34 677 harmthresh;
 #X obj 110 789 outlet;
@@ -548,10 +496,8 @@ pairs. frequency is normalised (0-1) \, amp in dB, f 53;
 #X obj 496 223 t f f, f 71;
 #X obj 496 285 moses;
 #X obj 897 325 moses;
-#X obj 496 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 929 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 496 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 929 484 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 581 509 5 0 0 0 - - - 0;
 #X floatatom 106 277 5 0 20000 1 - - - 12;
 #X floatatom 146 277 5 -50 50 1 - - - 12;
@@ -580,8 +526,7 @@ pairs. frequency is normalised (0-1) \, amp in dB, f 53;
 #X obj 496 509 value a001;
 #X obj 928 509 value a002;
 #X obj -9 351 s redraw3;
-#X obj 581 460 expr a001+(($f1-nf001)*((a002-a001)/(nf002-nf001)))
-;
+#X obj 581 460 expr a001+(($f1-nf001)*((a002-a001)/(nf002-nf001)));
 #N canvas 126 -975 297 579 count128 0;
 #X obj 85 256 until;
 #X obj 85 339 f;
@@ -656,8 +601,7 @@ pairs. frequency is normalised (0-1) \, amp in dB, f 53;
 #X connect 16 0 0 0;
 #X restore 110 714 pd makelist;
 #X f 34;
-#X obj 111 677 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 111 677 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 34 689 percthresh;
 #X text 34 677 harmthresh;
 #X obj 110 752 outlet;
@@ -774,38 +718,44 @@ pairs. frequency is normalised (0-1) \, amp in dB, f 53;
 #X connect 16 0 0 0;
 #X restore 274 689 pd makelist;
 #X f 34;
-#X obj 275 652 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 275 652 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 198 664 percthresh;
 #X text 198 652 harmthresh;
-#X connect 6 0 15 0;
-#X connect 9 0 5 0;
-#X connect 9 0 5 1;
-#X connect 10 0 9 1;
+#X text 15 95 In mode 0 \, fluid.hpss~ uses a soft-masking approach that produces smooth results \, at the cost of how separated they are. In modes 1 and 2 \, a binary mask is used instead (see mode 1 subpatch), f 94;
+#X text 15 74 Use mode 2 for more extreme separation and fine-tuning;
+#X text 15 140 In mode 2 \, the harmonic and percussive masks use separate thresholds. This means that two components are no longer guaranteed to sum to the source \, and so the residual buffer contains any leftovers. With some patient experimentation \, one can sometimes manage to place noisier material in the residual \, with tonal / persussive material in the other two channels., f 94;
+#X obj 90 900 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 90 898 1) Turn audio on;
+#X obj 346 796 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 346 794 3) Select which components to hear;
+#X text 17 229 2) Play a sound;
+#X connect 3 0 11 0;
+#X connect 5 0 2 0;
+#X connect 5 0 2 1;
+#X connect 6 0 5 1;
+#X connect 7 0 2 0;
+#X connect 7 0 2 1;
+#X connect 8 0 7 1;
 #X connect 11 0 5 0;
-#X connect 11 0 5 1;
-#X connect 12 0 11 1;
-#X connect 15 0 9 0;
-#X connect 15 1 11 0;
-#X connect 15 2 16 0;
-#X connect 16 0 5 0;
-#X connect 16 0 5 1;
-#X connect 17 0 16 1;
-#X connect 18 0 21 0;
-#X connect 18 0 20 0;
-#X connect 19 0 22 0;
-#X connect 19 0 20 0;
-#X connect 20 0 15 0;
-#X connect 24 0 33 1;
-#X connect 25 0 33 3;
-#X connect 26 0 33 2;
-#X connect 27 0 33 4;
-#X connect 33 0 32 0;
-#X connect 33 0 20 0;
-#X connect 34 0 33 0;
+#X connect 11 1 7 0;
+#X connect 11 2 12 0;
+#X connect 12 0 2 0;
+#X connect 12 0 2 1;
+#X connect 13 0 12 1;
+#X connect 14 0 17 0;
+#X connect 14 0 16 0;
+#X connect 15 0 18 0;
+#X connect 15 0 16 0;
+#X connect 16 0 11 0;
+#X connect 20 0 29 1;
+#X connect 21 0 29 3;
+#X connect 22 0 29 2;
+#X connect 23 0 29 4;
+#X connect 29 0 28 0;
+#X connect 29 0 16 0;
+#X connect 30 0 29 0;
 #X restore 526 909 pd masking_mode2;
-#X obj 97 961 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 97 961 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 97 959 1) Turn audio on;
 #X msg 395 374 3;
 #X msg 395 493 31;

@@ -1,38 +1,23 @@
-#N struct 5743-draw-item float x float y float c float a float b;
-#N struct 5744-rectangle float x float c;
-#N struct 5744-pixel float x0 float y0 float x1 float y1;
-#N struct 5754-rectangle float x float c;
-#N struct 5754-pixel float x0 float y0 float x1 float y1;
-#N struct 5756-rectangle float x float c;
-#N struct 5756-pixel float x0 float y0 float x1 float y1;
-#N canvas 65 69 701 910 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 474 804 cnv 15 198 68 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.pca.html reference/pca/
-;
+#N canvas 65 25 701 890 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 474 804 cnv 15 198 68 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.pca.html reference/pca/;
 #X text 17 79 Principal Component Analysis;
-#X text 17 119 Principal Components Analysis (PCA) of a fluid.dataset.
-;
+#X text 17 119 Principal Components Analysis (PCA) of a fluid.dataset.;
 #N canvas 1398 23 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 loadbang;
-#X msg 16 41 read media/Tremblay-ASWINE-ScratchySynth-M.wav help.pca.src.1
-;
+#X msg 16 41 read media/Tremblay-ASWINE-ScratchySynth-M.wav help.pca.src.1;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 19 163 pd loadsrc;
-#X obj 21 210 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 21 210 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 1454 23 594 435 MFCC_dataset 0;
 #X obj 37 37 inlet;
 #X obj 139 34 clone fluid.multiarray 13 help.pca.mfcc.1;
-#X obj 37 61 fluid.bufmfcc -source help.pca.src.1 -features help.pca.mfcc.1
--startcoeff 1;
+#X obj 37 61 fluid.bufmfcc -source help.pca.src.1 -features help.pca.mfcc.1 -startcoeff 1;
 #X obj 37 123 fluid.dataset help.pca.ds.1;
-#X obj 37 149 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 37 149 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 57 146 store dataset into a text object;
 #X text 244 212 <- double-click 'text' to see data, f 18;
 #X obj 37 174 fluid.ds2text help.pca.ds.1 help.pca.text.1, f 27;
@@ -50,30 +35,23 @@
 #X msg 29 583 fittransform help.pca.reduc.1 help.pca.norm.1;
 #X msg 29 653 fit help.pca.norm.1;
 #X obj 29 687 fluid.kdtree help.pca.tree.1;
-#X obj 22 380 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 22 380 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 42 387 store dataset into a text object;
-#X text 221 467 <- double-click 'text' to see data, f 18;
 #X obj 29 617 fluid.normalize;
-#X text 547 343 <- double-click 'text' to see data, f 18;
-#X obj 379 410 fluid.plotter;
-#N canvas 545 180 682 911 whitening 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 379 410 fluid.plotter 300 300 1 0 empty empty;
+#N canvas 545 25 682 910 whitening 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.pca 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 Whitening principal components;
-#X obj 21 151 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 21 151 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 1345 23 703 552 spectralshape_dataset 0;
 #X obj 37 37 inlet;
-#X obj 37 169 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 37 169 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 57 166 store dataset into a text object;
 #X text 244 232 <- double-click 'text' to see data, f 18;
 #X obj 441 37 clone fluid.multiarray 7 help.pca.mfcc.2, f 25;
 #X obj 37 143 fluid.dataset help.pca.ds.2;
 #X msg 37 119 frombuffer help.pca.mfcc.2;
-#X obj 37 81 fluid.bufspectralshape -source help.pca.src.1 -features
-help.pca.mfcc.2;
+#X obj 37 81 fluid.bufspectralshape -source help.pca.src.1 -features help.pca.mfcc.2;
 #X obj 37 194 fluid.ds2text help.pca.ds.2 help.pca.text.2, f 27;
 #X obj 42 232 text define help.pca.text.2;
 #X connect 0 0 7 0;
@@ -82,16 +60,13 @@ help.pca.mfcc.2;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
 #X restore 21 181 pd spectralshape_dataset;
-#X obj 43 146 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 43 146 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X msg 21 229 fittransform help.pca.ds.2;
-#X obj 227 225 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 227 225 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 228 224 2) calculate PCA with whitening on and off, f 43;
-#X obj 15 365 fluid.plotter;
-#X obj 325 365 fluid.plotter;
-#X text 44 145 1) generate a dataset from each frame of spectral shape
-analysis, f 32;
+#X obj 15 365 fluid.plotter 300 300 1 0 empty empty;
+#X obj 325 365 fluid.plotter 300 300 1 0 empty empty;
+#X text 44 145 1) generate a dataset from each frame of spectral shape analysis, f 32;
 #N canvas 215 258 888 599 drawing 0;
 #X obj 37 37 inlet;
 #X obj 34 310 fluid.ds2text dummy help.pca.whiten.1;
@@ -180,22 +155,11 @@ analysis, f 32;
 #X restore 328 315 pd drawing;
 #X obj 330 260 fluid.pca -numdimensions 2 -whiten 0, f 16;
 #X obj 21 261 fluid.pca -numdimensions 2 -whiten 1, f 17;
-#X text 13 688 Without whitening \, the first principal component always
-has a longer variance. This makes sense the first principal component
-always captures the most variance. Consecutive components will capture
-less and less., f 94;
-#X text 14 740 Whitening enforces unit variance for the principal components.
-It is a bit like standardising the values so that they exist in comparable
-ranges., f 93;
-#X text 14 779 Compare the clustering results here on the two plots
-which have whitening and don't have whitening respectively., f 94
-;
-#X text 12 820 The plots are normalised so the shape is the same \,
-but the fluid.kmeans~ object is operating on the raw PCA values.,
-f 94;
-#X text 11 858 A good explanation for why whitening is a useful step
-when using PCA values in analysis can be found on learn.flucoma.org
-, f 94;
+#X text 14 740 Whitening enforces unit variance for the principal components. It is a bit like standardising the values so that they exist in comparable ranges., f 93;
+#X text 14 779 Compare the clustering results here on the two plots which have whitening and don't have whitening respectively., f 94;
+#X text 12 820 The plots are normalised so the shape is the same \, but the fluid.kmeans~ object is operating on the raw PCA values., f 94;
+#X text 11 858 A good explanation for why whitening is a useful step when using PCA values in analysis can be found on learn.flucoma.org, f 94;
+#X text 13 688 Without whitening \, the first principal component always has a longer variance. This makes sense \, the first principal component always captures the most variance. Consecutive components will capture less and less., f 94;
 #X connect 2 0 3 0;
 #X connect 5 0 13 0;
 #X connect 5 0 14 0;
@@ -210,28 +174,21 @@ when using PCA values in analysis can be found on learn.flucoma.org
 #X obj 466 188 fluid.dataset help.pca.norm.1;
 #X obj 35 468 text define help.pca.reduc.text;
 #X f 25;
-#X obj 22 415 fluid.ds2text help.pca.reduc.1 help.pca.reduc.text,
-f 27;
-#X obj 379 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 379 290 fluid.ds2text help.pca.norm.1 help.pca.norm.text, f
-24;
+#X obj 22 415 fluid.ds2text help.pca.reduc.1 help.pca.reduc.text, f 27;
+#X obj 379 270 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 379 290 fluid.ds2text help.pca.norm.1 help.pca.norm.text, f 24;
 #X obj 390 343 text define help.pca.norm.text;
 #X f 21;
-#X text 30 709 also fit a fluid.kdtree~ for looking up later, f 28
-;
-#X text 23 774 Each frame of analysis contains 13 MFCC values. PCA
-reduces this to 2 values \, so that we can create a "map" of each frame.
-In theory \, frames that are similar will be clumped together creating
-a perceptually meaningful space., f 55;
-#N canvas 110 143 786 777 query_and_playback 0;
+#X text 30 709 also fit a fluid.kdtree~ for looking up later, f 28;
+#X text 23 774 Each frame of analysis contains 13 MFCC values. PCA reduces this to 2 values \, so that we can create a "map" of each frame. In theory \, frames that are similar will be clumped together creating a perceptually meaningful space., f 55;
+#N canvas 110 40 786 777 query_and_playback 0;
 #X obj 43 70 t b l;
 #X obj 259 250 route knearest;
 #X obj 259 272 symbol;
 #X msg 259 295 highlight \$1;
 #X floatatom 87 364 5 0 0 0 - - - 0;
 #X obj 87 343 fluid.s2f;
-#N canvas 739 591 308 296 player 0;
+#N canvas 739 521 308 296 player 0;
 #X obj 37 15 inlet;
 #X obj 51 145 phasor~;
 #X obj 18 200 +~;
@@ -276,34 +233,30 @@ a perceptually meaningful space., f 55;
 #X restore 373 722 pd query_and_playback;
 #X obj 488 767 fluid.out~;
 #X obj 432 164 array define help.pca.src.1 441000;
-#X obj 40 208 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 379 247 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 21 281 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 30 562 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 41 207 1) generate a dataset from each frame of mfcc analysis
-;
+#X obj 40 208 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 379 247 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 21 281 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 30 562 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 41 207 1) generate a dataset from each frame of mfcc analysis;
 #X text 23 280 2) reduce 13 MFCC coefficients to 2 with PCA;
 #X text 28 560 3) Normalize the new PCA values;
 #X text 378 245 4) store dataset into a text object;
-#X obj 530 720 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 530 720 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 480 848 note_on_automatic_datasets;
 #X text 531 719 5) switch on audio and browse the plotter, f 19;
+#X text 221 467 <- click 'text' to see data, f 18;
+#X text 547 343 <- click 'text' to see data, f 18;
 #X connect 6 0 7 0;
 #X connect 8 0 9 0;
 #X connect 9 0 14 0;
-#X connect 11 0 17 0;
+#X connect 11 0 16 0;
 #X connect 12 0 13 0;
-#X connect 14 0 24 0;
-#X connect 17 0 12 0;
-#X connect 19 0 30 0;
-#X connect 21 0 19 0;
-#X connect 25 0 26 0;
-#X connect 26 0 21 0;
-#X connect 30 0 19 0;
-#X connect 30 1 31 0;
-#X connect 30 1 31 1;
+#X connect 14 0 22 0;
+#X connect 16 0 12 0;
+#X connect 17 0 28 0;
+#X connect 19 0 17 0;
+#X connect 23 0 24 0;
+#X connect 24 0 19 0;
+#X connect 28 0 17 0;
+#X connect 28 1 29 0;
+#X connect 28 1 29 1;

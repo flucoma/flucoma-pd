@@ -42,24 +42,19 @@
 #X connect 4 0 2 1;
 #X connect 5 0 6 0;
 #X restore 216 253 pd square;
-#X floatatom 340 341 5 0 0 0 - - - 0;
+#X floatatom 340 341 5 0 5 0 - - - 0;
 #X obj 127 529 unpack f f;
 #X floatatom 127 565 8 0 0 0 - - - 0;
 #X floatatom 194 591 5 0 0 0 - - - 0;
 #X text 81 565 pitch, f 6;
 #X text 113 591 confidence, f 11;
 #X obj 127 505 fluid.pitch~;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.pitch~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.pitch~.html reference/pitch/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Real-time\\\ Pitch\\\ Descriptor
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Three popular monophonic pitch descriptors \, all of
-which compute frequency and confidence.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.pitch~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.pitch~.html reference/pitch/;
+#X obj 17 60 cnv 15 488 17 empty empty Real-time\ Pitch\ Descriptor 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Three popular monophonic pitch descriptors \, all of which compute frequency and confidence.;
 #X obj 28 691 fluid.out~ fluid.pitchhelp;
-#X obj 86 188 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000
-#000000 0;
+#X obj 86 188 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 19 201 triangle, f 9;
 #X text 47 186 sine, f 5;
 #X text 19 216 sawtooth, f 9;
@@ -123,20 +118,13 @@ which compute frequency and confidence.;
 #X connect 26 0 14 0;
 #X restore 86 275 pd select4;
 #X f 19;
-#X text 417 480 All algorithms use harmonic structure to fine-tune
-the pitch \, so will not be as effective on sines as on \, say \, sawtooth
-waves \, with triangle inbetween., f 30;
+#X text 417 480 All algorithms use harmonic structure to fine-tune the pitch \, so will not be as effective on sines as on \, say \, sawtooth waves \, with triangle inbetween., f 30;
 #N canvas 897 -937 461 267 pinknoise 0;
 #X obj 24 145 outlet~;
 #X obj 24 43 noise~;
-#X obj 24 69 fexpr~ $x1[0] * 0.049922 + $x1[-1] * -0.0959935 + $x1[-2]
-* 0.0506127 + $x1[-3] * -0.00440879 + $y1[-1] * 2.49496 + $y1[-2] *
--2.01727 + $y1[-3] * 0.522189;
-#X text 5 163 ref: https://ccrma.stanford.edu/~jos/sasp/Example_Synthesis_1_F_Noise.html
-with the help of https://uk.mathworks.com/help/matlab/ref/filter.html#buagwwg-2
-, f 69;
-#X text 8 5 pink-noise-approximator taken from the literature. More
-accurate than ~pink but more expensive too!, f 65;
+#X obj 24 69 fexpr~ $x1[0] * 0.049922 + $x1[-1] * -0.0959935 + $x1[-2] * 0.0506127 + $x1[-3] * -0.00440879 + $y1[-1] * 2.49496 + $y1[-2] * -2.01727 + $y1[-3] * 0.522189;
+#X text 5 163 ref: https://ccrma.stanford.edu/~jos/sasp/Example_Synthesis_1_F_Noise.html with the help of https://uk.mathworks.com/help/matlab/ref/filter.html#buagwwg-2, f 69;
+#X text 8 5 pink-noise-approximator taken from the literature. More accurate than ~pink but more expensive too!, f 65;
 #X obj 24 122 *~ 5;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
@@ -147,8 +135,7 @@ accurate than ~pink but more expensive too!, f 65;
 #X obj 237 505 fiddle~;
 #X floatatom 267 590 8 0 0 0 - - - 0;
 #X obj 267 554 mtof;
-#X text 263 607 compare with PD's fiddle object in noisy contexts.
-, f 21;
+#X text 263 607 compare with PD's fiddle object in noisy contexts., f 21;
 #X obj 267 530 unpack 0 0;
 #N canvas 423 215 550 822 parameters 0;
 #X floatatom 29 499 8 0 0 0 - - - 0;
@@ -165,31 +152,22 @@ accurate than ~pink but more expensive too!, f 65;
 #X obj 29 564 s \$0-params;
 #X obj 197 564 s \$0-params;
 #X obj 104 145 loadbang;
-#X obj 197 456 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 197 456 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 197 415 loadbang;
-#X obj 29 456 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 29 456 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 29 415 loadbang;
 #X obj 252 302 s \$0-params;
-#X obj 248 74 cnv 10 270 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 248 74 cnv 10 270 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 246 54 FFT settings;
-#X obj 28 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 28 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 26 54 Algorithm;
-#X obj 29 191 vradio 15 1 0 3 empty empty Algorithm 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
-#X obj 189 384 cnv 10 140 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 29 384 cnv 10 140 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 349 384 cnv 10 140 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 29 191 vradio 15 1 0 3 empty empty Algorithm 0 -8 0 10 #fcfcfc #000000 #000000 0;
+#X obj 189 384 cnv 10 140 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 29 384 cnv 10 140 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 349 384 cnv 10 140 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X obj 349 564 s \$0-params;
 #X obj 419 427 loadbang;
-#X text 246 86 If latency is no issue \, higher window size will give
-more precise results., f 37;
+#X text 246 86 If latency is no issue \, higher window size will give more precise results., f 37;
 #X text 27 364 minimum frequency;
 #X text 187 364 maximum frequency;
 #X text 347 364 unit;
@@ -204,8 +182,7 @@ more precise results., f 37;
 #X msg 197 537 maxfreq \$1;
 #X msg 197 477 10000;
 #X msg 349 537 unit \$1;
-#X obj 349 477 vradio 15 1 0 2 empty empty Units 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 349 477 vradio 15 1 0 2 empty empty Units 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 367 476 0: Hz;
 #X text 367 495 1: MIDI pitch;
 #X msg 419 451 0;
@@ -235,8 +212,7 @@ more precise results., f 37;
 #X connect 47 0 44 0;
 #X restore 221 441 pd parameters;
 #X text 323 440 see fluid.pitch~ parameters;
-#X obj 524 653 cnv 15 149 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 524 653 cnv 15 149 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 230 112 695 931 confidence 0;
 #X obj 20 398 readsf~;
 #X obj 20 537 delwrite~ \$0-latencycomp 1000, f 20;
@@ -315,42 +291,30 @@ more precise results., f 37;
 #X connect 30 0 18 0;
 #X restore 138 771 pd cool_delays;
 #X obj 281 583 change;
-#X text 18 104 using the pitch confidence of a source to control what
-gets sent to a delay effect, f 64;
+#X text 18 104 using the pitch confidence of a source to control what gets sent to a delay effect, f 64;
 #X msg 281 416 getlatency;
 #X obj 281 606 pack f 10;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.pitch~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty pitchiness-driven\\\ processing\\\ fun
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.pitch~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty pitchiness-driven\ processing\ fun 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 20 886 fluid.out~ fluid.pitchhelp;
 #X obj 373 439 value samplerate;
 #X obj 20 613 expr $f1*1000/samplerate;
 #X floatatom 362 513 5 0 0 0 - - - 0;
 #X obj 556 188 loadbang;
 #X floatatom 236 604 5 0 0 0 - - - 0;
-#X text 355 594 only on when pitch confidence is above thresh, f 24
-;
+#X text 355 594 only on when pitch confidence is above thresh, f 24;
 #X floatatom 432 535 5 0 0 0 - - - 0;
 #X obj 281 560 expr ($f2 > $f3) * 0.3;
-#X msg 31 223 open media/Tremblay-ASWINE-ScratchySynth-M.wav \, 1 \;
-threshold 0.98, f 52;
-#X msg 44 258 open media/Tremblay-UW-ComplexDescent-M.wav \, 1 \; threshold
-0.6, f 52;
-#X msg 60 293 open media/Tremblay-FMTriDist-M.wav \, 1 \; threshold
-0.5, f 52;
-#X msg 73 328 open media/Tremblay-Iterative-M.wav \, 1 \; threshold
-0.9, f 52;
-#X msg 21 188 open media/Tremblay-AaS-SynthTwoVoices-M.wav \, 1 \;
-threshold 0.8, f 52;
+#X msg 31 223 open media/Tremblay-ASWINE-ScratchySynth-M.wav \, 1 \; threshold 0.98, f 52;
+#X msg 44 258 open media/Tremblay-UW-ComplexDescent-M.wav \, 1 \; threshold 0.6, f 52;
+#X msg 60 293 open media/Tremblay-FMTriDist-M.wav \, 1 \; threshold 0.5, f 52;
+#X msg 73 328 open media/Tremblay-Iterative-M.wav \, 1 \; threshold 0.9, f 52;
+#X msg 21 188 open media/Tremblay-AaS-SynthTwoVoices-M.wav \, 1 \; threshold 0.8, f 52;
 #X obj 432 510 r threshold;
 #X msg 556 210 \; threshold 0.98;
-#X obj 18 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 18 155 1) click any of these 'presets' to start playing a file
-with an associated threshold of confidence to send to the delays;
-#X obj 92 890 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 18 155 1) click any of these 'presets' to start playing a file with an associated threshold of confidence to send to the delays;
+#X obj 92 890 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 94 889 2) Audio on.;
 #X connect 0 0 1 0;
 #X connect 0 0 5 0;
@@ -382,16 +346,12 @@ with an associated threshold of confidence to send to the delays;
 #X connect 28 0 0 0;
 #X connect 29 0 22 0;
 #X restore 537 678 pd confidence;
-#X obj 87 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 87 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 89 166 1) Pick a source;
-#X obj 384 342 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 384 342 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 245 370 *~ 0, f 14;
-#X text 386 341 3) Add noise to test the sturdiness of the detection
-, f 27;
-#X obj 97 699 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X text 386 341 3) Add noise to test the sturdiness of the detection, f 27;
+#X obj 97 699 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 99 698 2) Audio on.;
 #X connect 0 0 21 1;
 #X connect 1 0 21 2;

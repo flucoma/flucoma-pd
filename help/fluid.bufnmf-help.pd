@@ -1,33 +1,22 @@
-#N canvas 36 26 692 884 12;
-#X obj 458 670 cnv 15 215 196 empty empty More\\\ information 4 10
-0 13 #e0e0e0 #404040 0;
+#N canvas 36 25 692 887 12;
+#X obj 458 670 cnv 15 215 196 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 299 199 689 856 fixed_bases 0;
-#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 13 70 using the basesmode or actmode attributes \, we can guide
-NMF's behaviour to 'find' particular spectral components, f 92;
-#X obj 15 139 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
+#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 13 70 using the basesmode or actmode attributes \, we can guide NMF's behaviour to 'find' particular spectral components, f 92;
+#X obj 15 139 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
 #X obj 459 498 array define help.nmf.src.4;
 #X f 29;
 #X obj 19 802 fluid.out~ bufnmfhelp;
-#X obj 87 807 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 87 807 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 88 806 2) turn sound on;
-#X obj 459 556 clone fluid.multiarray 10 help.nmf.resynth.4, f 29
-;
-#X obj 35 139 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 459 556 clone fluid.multiarray 10 help.nmf.resynth.4, f 29;
+#X obj 35 139 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 138 1);
 #X text 56 138 start analysis;
 #N canvas 1162 -1080 827 819 find_media_spectral_centroids 0;
 #X obj 37 127 inlet;
-#X text 34 11 This subpatch analyses each resynthesised component for
-the median spectral centroid., f 77;
-#X text 34 51 It uses automatic buffer management to minimise the number
-of temporary buffers we have to use as well as leverages -select to
-pick out the descriptors we want instead of having to parse through
-a multi-channel buffer ourselves., f 80;
+#X text 34 11 This subpatch analyses each resynthesised component for the median spectral centroid., f 77;
+#X text 34 51 It uses automatic buffer management to minimise the number of temporary buffers we have to use as well as leverages -select to pick out the descriptors we want instead of having to parse through a multi-channel buffer ourselves., f 80;
 #X msg 37 151 buffer help.nmf.resynth.4;
 #X obj 37 245 fluid.bufspectralshape -select centroid;
 #X obj 37 379 fluid.bufstats -select mid;
@@ -39,21 +28,14 @@ a multi-channel buffer ourselves., f 80;
 #X obj 97 561 makefilename %s-0;
 #X obj 37 452 fluid.bufflatten;
 #X obj 37 491 t b a;
-#X text 226 146 10 channel buffer in. Each channel is a resynthesised
-component.;
-#X text 228 182 When we pass this message to bufspectralshape~ it processes
-this as the input.;
-#X text 322 240 Process each channel of the resynthesised output. Only
-retrieve the centroid giving us a new 10 channel buffer.;
+#X text 226 146 10 channel buffer in. Each channel is a resynthesised component.;
+#X text 228 182 When we pass this message to bufspectralshape~ it processes this as the input.;
+#X text 322 240 Process each channel of the resynthesised output. Only retrieve the centroid giving us a new 10 channel buffer.;
 #X listbox 57 315 30 0 0 0 - - - 0;
 #X obj 57 292 list;
-#X text 278 310 No output buffer is set for fluid.bufspectralshape~
-so it uses an internal one and provides the name for us.;
-#X text 232 373 This is ergonomically similar to spectralshape. We
-receive a buffer to process and haven't set an output so everything
-operates on buffers internal to each object., f 56;
-#X text 163 448 Flatten the 10 channel size 1 buffer into a single
-channel 10 element array;
+#X text 278 310 No output buffer is set for fluid.bufspectralshape~ so it uses an internal one and provides the name for us.;
+#X text 232 373 This is ergonomically similar to spectralshape. We receive a buffer to process and haven't set an output so everything operates on buffers internal to each object., f 56;
+#X text 163 448 Flatten the 10 channel size 1 buffer into a single channel 10 element array;
 #X connect 0 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
@@ -69,12 +51,10 @@ channel 10 element array;
 #X connect 13 1 9 0;
 #X connect 18 0 17 0;
 #X restore 15 211 pd find_media_spectral_centroids;
-#X obj 459 629 clone fluid.multiarray 2 help.nmf.pickstringseparation
-, f 29;
+#X obj 459 629 clone fluid.multiarray 2 help.nmf.pickstringseparation, f 29;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.bufnmf.fixed.display 10 float 3;
-#A 0 476.217 780.346 3335.66 419.201 1037.91 4727.09 2275.09 542.004
-5721.27 8781.46;
+#A 0 476.217 780.346 3335.66 419.201 1037.91 4727.09 2275.09 542.004 5721.27 8781.46;
 #X coords 0 20000 10 0 167 78 1 0 0;
 #X restore 265 288 graph;
 #N canvas 1720 -660 377 166 display 0;
@@ -98,8 +78,7 @@ channel 10 element array;
 #X obj 70 45 inlet;
 #X obj 36 109 until;
 #X text 135 78 First store list \, then start the loop;
-#X text 130 128 "until" bangs its output until told to stop by a "bang"
-to its right inlet., f 38;
+#X text 130 128 "until" bangs its output until told to stop by a "bang" to its right inlet., f 38;
 #X text 140 192 Store the remaining list.;
 #X obj 49 192 list store;
 #X obj 70 76 t b b l;
@@ -130,8 +109,7 @@ to its right inlet., f 38;
 #X obj 364 246 + 1;
 #X obj 409 245 sel 0;
 #X obj 364 272 mod 10;
-#X obj 256 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 256 216 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 201 136 t f b, f 8;
 #X obj 547 572 text define ordinal-\$0;
 #X f 10;
@@ -231,8 +209,7 @@ to its right inlet., f 38;
 #N canvas 2172 -848 310 179 loadsrc 0;
 #X obj 16 101 soundfiler;
 #X obj 16 27 loadbang;
-#X msg 16 49 read -resize media/Tremblay-AaS-AcousticStrums-M.wav help.nmf.src.4
-, f 30;
+#X msg 16 49 read -resize media/Tremblay-AaS-AcousticStrums-M.wav help.nmf.src.4, f 30;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 588 142 pd loadsrc;
@@ -245,8 +222,7 @@ to its right inlet., f 38;
 #X obj 70 45 inlet;
 #X obj 36 109 until;
 #X text 135 78 First store list \, then start the loop;
-#X text 130 128 "until" bangs its output until told to stop by a "bang"
-to its right inlet., f 38;
+#X text 130 128 "until" bangs its output until told to stop by a "bang" to its right inlet., f 38;
 #X text 140 192 Store the remaining list.;
 #X obj 49 192 list store;
 #X obj 70 76 t b b l;
@@ -271,8 +247,7 @@ to its right inlet., f 38;
 #X restore 197 108 pd iteratelist;
 #X msg 87 258 deststartchan \$1 \, startchan \$2 \, bang;
 #X msg 87 156 0 \$1;
-#X obj 87 282 fluid.bufcompose -destgain 1 -numchans 1 -source help.nmf.bases.4
--destination help.nmf.summedbases, f 24;
+#X obj 87 282 fluid.bufcompose -destgain 1 -numchans 1 -source help.nmf.bases.4 -destination help.nmf.summedbases, f 24;
 #X msg 197 152 1 \$1;
 #X connect 0 0 1 0;
 #X connect 2 0 6 0;
@@ -283,20 +258,14 @@ to its right inlet., f 38;
 #X connect 8 0 5 0;
 #X restore 15 280 pd make_new_bases;
 #X f 33;
-#X obj 15 309 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 19 567 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 39 567 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 24 660 cnv 15 250 44 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 15 309 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 19 567 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 39 567 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 24 660 cnv 15 250 44 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 149 736 *~;
-#X obj 167 685 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 167 685 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 19 736 *~;
-#X obj 37 685 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 37 685 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X text 26 661 select which components to hear:, f 33;
 #N canvas 63 101 338 195 sum 0;
 #X obj 54 39 inlet~;
@@ -312,37 +281,22 @@ to its right inlet., f 38;
 #X f 19;
 #X text 53 683 pick;
 #X text 184 682 resonance;
-#X obj 15 432 fluid.bufnmf -source help.nmf.src.4 -bases help.nmf.summedbases
--basesmode 2 -components 2 -resynth help.nmf.pickstringseparation -resynthmode
-1 -blocking 0;
-#X obj 15 496 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 459 592 clone fluid.multiarray 2 help.nmf.summedbases, f 29
-;
+#X obj 15 432 fluid.bufnmf -source help.nmf.src.4 -bases help.nmf.summedbases -basesmode 2 -components 2 -resynth help.nmf.pickstringseparation -resynthmode 1 -blocking 0;
+#X obj 15 496 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 459 592 clone fluid.multiarray 2 help.nmf.summedbases, f 29;
 #X text 40 566 3) start playback;
-#X text 226 719 Because we used @basesmode 2 (fixed bases) \, the order
-of bases is no longer random but instead decided by the bases buffer
-we provide to the object., f 49;
-#X text 226 799 This is how we can label channel 1 pick and channel
-2 resonance beforehand., f 49;
+#X text 226 719 Because we used @basesmode 2 (fixed bases) \, the order of bases is no longer random but instead decided by the bases buffer we provide to the object., f 49;
+#X text 226 799 This is how we can label channel 1 pick and channel 2 resonance beforehand., f 49;
 #X obj 459 520 clone fluid.multiarray 10 help.nmf.bases.4, f 29;
-#X obj 15 159 fluid.bufnmf -source help.nmf.src.4 -bases help.nmf.bases.4
--resynth help.nmf.resynth.4 -resynthmode 1 -components 10 -numframes
-88200;
+#X obj 15 159 fluid.bufnmf -source help.nmf.src.4 -bases help.nmf.bases.4 -resynth help.nmf.resynth.4 -resynthmode 1 -components 10 -numframes 88200;
 #X obj 19 604 tabplay~ help.nmf.pickstringseparation-0, f 18;
 #X obj 159 604 tabplay~ help.nmf.pickstringseparation-1, f 17;
 #N canvas 299 350 447 285 This_is_how_this_works 0;
 #X text 16 18 How this works!;
 #X text 16 48 1) Decompose 2 seconds of guitar in 10 components.;
-#X text 16 78 2) Analyse the median spectral centroid of each resynthesised
-components.;
-#X text 16 118 3) Find the component that has the highest median spectral
-centroid \, which we estimate to be the best guess of where the pick
-sound is.;
-#X text 16 178 4) We then take the activation of that pick sound and
-place it in a buffer on channel 1 \, and sum all the others to channel
-2 This 2 channel buffer becomes our new \, fixed template for a secondary
-fluid.bufnmf~ object that decomposes the whole file.;
+#X text 16 78 2) Analyse the median spectral centroid of each resynthesised components.;
+#X text 16 118 3) Find the component that has the highest median spectral centroid \, which we estimate to be the best guess of where the pick sound is.;
+#X text 16 178 4) We then take the activation of that pick sound and place it in a buffer on channel 1 \, and sum all the others to channel 2 This 2 channel buffer becomes our new \, fixed template for a secondary fluid.bufnmf~ object that decomposes the whole file.;
 #X restore 487 239 pd This_is_how_this_works;
 #X connect 2 0 37 0;
 #X connect 11 0 14 0;
@@ -366,8 +320,7 @@ fluid.bufnmf~ object that decomposes the whole file.;
 #X connect 39 0 22 0;
 #X restore 461 756 pd fixed_bases;
 #N canvas 150 98 689 755 bases_and_activation1 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
 #N canvas 1032 -1022 1154 936 visualisation 0;
 #N canvas 0 23 450 278 (subpatch) 0;
 #X array BasesLeft 513 float 0;
@@ -394,8 +347,7 @@ fluid.bufnmf~ object that decomposes the whole file.;
 #X restore 365 237 graph;
 #X obj 113 -338 s draw;
 #X obj 113 -277 r draw;
-#X obj 157 -362 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 157 -362 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 193 -23 array size;
 #X obj 113 1 array get;
 #X obj 113 -84 t b b b, f 12;
@@ -453,38 +405,25 @@ fluid.bufnmf~ object that decomposes the whole file.;
 #X connect 30 0 26 2;
 #X coords 0 -1 1 1 520 210 1 100 100;
 #X restore 15 484 pd visualisation;
-#X text 12 112 In the previous tab you can see how fluid.bufnmf~ can
-be used to decompose a sound into some components. We can also spy
-on the information that the object uses to perform this decomposition:
-the bases and activations. In either case we can extract these two
-things from the process by specifing the relevant attributes in the
-object., f 94;
-#X text 14 72 Bases and activations: the data under the hood that powers
-the NMF process, f 75;
+#X text 12 112 In the previous tab you can see how fluid.bufnmf~ can be used to decompose a sound into some components. We can also spy on the information that the object uses to perform this decomposition: the bases and activations. In either case we can extract these two things from the process by specifing the relevant attributes in the object., f 94;
+#X text 14 72 Bases and activations: the data under the hood that powers the NMF process, f 75;
 #X obj 15 287 soundfiler;
 #X obj 446 241 array define help.nmf.src.2;
-#X obj 15 389 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 15 409 fluid.bufnmf -source help.nmf.src.2 -bases help.nmf.bases.2
--activations help.nmf.activations.2 -components 2;
-#X obj 15 449 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 15 389 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 15 409 fluid.bufnmf -source help.nmf.src.2 -bases help.nmf.bases.2 -activations help.nmf.activations.2 -components 2;
+#X obj 15 449 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 349 264 clone fluid.multiarray 2 help.nmf.bases.2;
 #X obj 308 287 clone fluid.multiarray 2 help.nmf.activations.2;
 #X text 37 449 bang when done;
-#X obj 35 388 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 35 388 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 56 387 send a bang to start processing;
 #X msg 15 265 read -resize \$1 help.nmf.src.2;
-#X obj 16 199 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 16 199 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 15 218 fluid.demoaudiofiles;
 #X text 17 199 1) Pick a source;
 #X text 36 387 2);
-#X text 17 702 You can think of bases like filters for each component.
-, f 27;
-#X text 276 700 The activations are like "how active is this component"
-at a given point in time., f 41;
+#X text 17 702 You can think of bases like filters for each component., f 27;
+#X text 276 700 The activations are like "how active is this component" at a given point in time., f 41;
 #X connect 6 0 7 0;
 #X connect 7 0 8 0;
 #X connect 8 0 1 0;
@@ -492,12 +431,10 @@ at a given point in time., f 41;
 #X connect 16 0 14 0;
 #X restore 461 690 pd bases_and_activation1;
 #N canvas 179 99 694 820 bases_and_activation2 0;
-#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 14 72 Using bases and activations;
 #X obj 17 532 fluid.out~ bufnmfhelp;
-#X obj 87 529 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 87 529 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 1622 -867 388 477 srcselect 0;
 #X obj 60 71 inlet~;
 #X obj 140 71 inlet~;
@@ -505,10 +442,8 @@ at a given point in time., f 41;
 #X obj 62 371 +~;
 #X obj 62 395 outlet~;
 #X obj 221 172 == 0;
-#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X obj 221 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 221 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X msg 219 266 \$1 10;
 #X obj 219 292 line~;
 #X obj 273 71 loadbang;
@@ -535,10 +470,8 @@ at a given point in time., f 41;
 #X connect 15 0 3 1;
 #X restore 17 388 pd srcselect;
 #X f 21;
-#X obj 142 140 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 161 183 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 142 140 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 161 183 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 144 139 2) select an activation to listen to, f 23;
 #X text 179 179 activation 1;
 #X text 179 199 activation 2;
@@ -547,14 +480,9 @@ at a given point in time., f 41;
 #N canvas 897 -937 461 267 pink 0;
 #X obj 24 135 outlet~;
 #X obj 24 43 noise~;
-#X obj 24 69 fexpr~ $x1[0] * 0.049922 + $x1[-1] * -0.0959935 + $x1[-2]
-* 0.0506127 + $x1[-3] * -0.00440879 + $y1[-1] * 2.49496 + $y1[-2] *
--2.01727 + $y1[-3] * 0.522189;
-#X text 5 163 ref: https://ccrma.stanford.edu/~jos/sasp/Example_Synthesis_1_F_Noise.html
-with the help of https://uk.mathworks.com/help/matlab/ref/filter.html#buagwwg-2
-, f 69;
-#X text 8 5 pink-noise-approximator taken from the literature. More
-accurate than ~pink but more expensive too!, f 65;
+#X obj 24 69 fexpr~ $x1[0] * 0.049922 + $x1[-1] * -0.0959935 + $x1[-2] * 0.0506127 + $x1[-3] * -0.00440879 + $y1[-1] * 2.49496 + $y1[-2] * -2.01727 + $y1[-3] * 0.522189;
+#X text 5 163 ref: https://ccrma.stanford.edu/~jos/sasp/Example_Synthesis_1_F_Noise.html with the help of https://uk.mathworks.com/help/matlab/ref/filter.html#buagwwg-2, f 69;
+#X text 8 5 pink-noise-approximator taken from the literature. More accurate than ~pink but more expensive too!, f 65;
 #X obj 24 112 *~ 5;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
@@ -566,8 +494,7 @@ accurate than ~pink but more expensive too!, f 65;
 #X obj 17 203 *~ 889;
 #X obj 333 611 fluid.nmffilter~ 2 -bases help.nmf.bases.2, f 30;
 #X obj 333 772 fluid.out~ bufnmfhelp;
-#X obj 403 769 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 403 769 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 1622 -867 388 477 srcselect 0;
 #X obj 60 71 inlet~;
 #X obj 140 71 inlet~;
@@ -575,10 +502,8 @@ accurate than ~pink but more expensive too!, f 65;
 #X obj 62 371 +~;
 #X obj 62 395 outlet~;
 #X obj 221 172 == 0;
-#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X obj 221 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 221 150 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 221 198 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X msg 219 266 \$1 10;
 #X obj 219 292 line~;
 #X obj 273 71 loadbang;
@@ -605,36 +530,24 @@ accurate than ~pink but more expensive too!, f 65;
 #X connect 15 0 3 1;
 #X restore 333 728 pd srcselect;
 #X f 30;
-#X obj 499 663 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 540 685 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 499 663 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 540 685 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 558 682 bases 1;
 #X text 558 699 bases 2;
 #X text 501 661 4) select a base, f 23;
-#X obj 313 196 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
-#000000 #000000;
+#X obj 313 196 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
 #X obj 313 215 tabplay~ help.nmf.src.2;
 #X text 88 528 1) turn this sound on;
 #X text 404 768 3) turn this sound on;
-#X obj 372 139 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 374 138 5) play a source through the nmffilter with the selected
-base, f 34;
+#X obj 372 139 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 374 138 5) play a source through the nmffilter with the selected base, f 34;
 #X obj 336 320 readsf~;
-#X msg 336 263 open ./media/Tremblay-AaS-AcousticStrums-M.wav \, 1
-, f 23;
+#X msg 336 263 open ./media/Tremblay-AaS-AcousticStrums-M.wav \, 1, f 23;
 #X obj 358 424 readsf~;
-#X obj 336 244 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
-#000000 #000000;
-#X obj 358 349 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
-#000000 #000000;
-#X text 386 479 In a similar fashion we might also use the bases from
-NMF as filters for any other kind of sound. We could do this manually
-with rfft~ or we could use the fluid.nmffilter~ object here to simplify
-things., f 38;
-#X msg 358 367 open ./media/Olencki-TenTromboneLongTones-M.wav \, 1
-, f 24;
+#X obj 336 244 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 358 349 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X text 386 479 In a similar fashion we might also use the bases from NMF as filters for any other kind of sound. We could do this manually with rfft~ or we could use the fluid.nmffilter~ object here to simplify things., f 38;
+#X msg 358 367 open ./media/Olencki-TenTromboneLongTones-M.wav \, 1, f 24;
 #X connect 4 0 10 0;
 #X connect 6 0 4 2;
 #X connect 10 0 11 0;
@@ -660,14 +573,10 @@ things., f 38;
 #X connect 36 0 38 0;
 #X connect 38 0 34 0;
 #X restore 461 712 pd bases_and_activation2;
-#N canvas 229 55 695 791 vocoder 0;
-#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
+#N canvas 229 25 695 790 vocoder 0;
+#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 14 72 Using bases and activations to create a vododer;
-#X text 14 102 You might find it useful to think of the NMF algorithm
-as a bit like a vododer. This abstraction below demonstrates how you
-could use the bases and activations to reconstruct a sound in realtime
-\, based on what the algorithm has learned., f 89;
+#X text 14 102 You might find it useful to think of the NMF algorithm as a bit like a vododer. This abstraction below demonstrates how you could use the bases and activations to reconstruct a sound in realtime \, based on what the algorithm has learned., f 89;
 #N canvas 1115 -815 874 653 fluid.bufnmf.noiseplay.fft 0;
 #X obj 175 46 inlet~;
 #X obj 74 117 *~;
@@ -705,8 +614,7 @@ could use the bases and activations to reconstruct a sound in realtime
 #X obj 107 47 t b b;
 #X obj 107 302 * 0.0255155;
 #X obj 107 26 loadbang;
-#X obj 181 26 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 181 26 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X connect 0 0 2 0;
 #X connect 0 1 5 0;
 #X connect 1 0 0 0;
@@ -762,21 +670,17 @@ could use the bases and activations to reconstruct a sound in realtime
 #X restore 47 433 pd fluid.bufnmf.noiseplay.fft;
 #X obj 46 301 noise~;
 #X obj 46 322 *~ 4;
-#X text 73 452 combine the timing profile from one component with the
-spectral profile of another;
+#X text 73 452 combine the timing profile from one component with the spectral profile of another;
 #X obj 147 198 loadbang;
 #X msg 147 222 0;
-#X obj 247 273 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 247 273 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 265 269 activation 1;
 #X text 265 289 activation 2;
-#X obj 147 273 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 147 273 vradio 15 1 0 2 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 165 269 base 1;
 #X text 165 289 base 2;
 #X obj 48 747 fluid.out~ bufnmfhelp;
-#X obj 118 752 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 118 752 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X msg 247 383 set help.nmf.activations.2-\$1, f 25;
 #X msg 147 342 set help.nmf.bases.2-\$1, f 19;
 #N canvas 1149 -1008 955 628 visualisation 0;
@@ -820,8 +724,7 @@ spectral profile of another;
 #X connect 15 2 11 0;
 #X coords 0 -1 1 1 260 210 1 100 100;
 #X restore 338 530 pd visualisation;
-#X obj 206 235 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 206 235 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 119 751 1) turn sound on;
 #X text 207 234 2) select a combination of base and activation;
 #X connect 3 0 15 0;
@@ -839,48 +742,35 @@ spectral profile of another;
 #X connect 18 0 3 1;
 #X restore 461 734 pd vocoder;
 #N canvas 357 162 691 770 multichannel 0;
-#X text 16 113 fluid.bufnmf will process each channel independently
-;
+#X text 16 113 fluid.bufnmf will process each channel independently;
 #X obj 21 355 soundfiler;
 #X obj 21 376 t b;
 #X obj 25 716 clone fluid.multiarray 2 bufnmf_bells;
 #X obj 25 740 clone fluid.multiarray 24 bufnmf_bells_resynth;
-#X obj 21 438 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X msg 21 334 read -resize media/Tremblay-CF-ChurchBells.wav bufnmf_bells-0
-bufnmf_bells-1, f 80;
-#X text 22 615 in this case we've decomposed in to enough components
-to latch onto partials in the bell sound \, but you can hear that the
-left and right haven't converged to the *same* partials. See the 'technical
-details' tab for an explanation., f 89;
+#X obj 21 438 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X msg 21 334 read -resize media/Tremblay-CF-ChurchBells.wav bufnmf_bells-0 bufnmf_bells-1, f 80;
+#X text 22 615 in this case we've decomposed in to enough components to latch onto partials in the bell sound \, but you can hear that the left and right haven't converged to the *same* partials. See the 'technical details' tab for an explanation., f 89;
 #X floatatom 222 472 5 0 11 0 - - - 0;
 #X obj 222 519 tabplay~;
 #X msg 222 496 set bufnmf_bells_resynth-\$1 \, bang;
 #X obj 286 561 tabplay~;
 #X msg 286 540 set bufnmf_bells_resynth-\$1 \, bang;
 #X obj 285 520 + 12;
-#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
+#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 15 64 Processing multichannel buffers with fluid.bufnmf~;
-#X text 14 157 The output channels (in resynth \, bases and activations
-buffer~s) will be grouped by component. For example \, with a stereo
-input and 2 components:, f 73;
+#X text 14 157 The output channels (in resynth \, bases and activations buffer~s) will be grouped by component. For example \, with a stereo input and 2 components:, f 73;
 #X text 14 205 channel 1: channel 1 \, component 1;
 #X text 14 221 channel 2: channel 1 \, component 2;
 #X text 14 237 channel 3: channel 2 \, component 1;
 #X text 14 253 channel 4: channel 2 \, component 2;
 #X obj 222 583 fluid.out~;
 #X floatatom 465 433 8 0 0 0 - - - 0;
-#X obj 21 396 fluid.bufnmf -source bufnmf_bells -resynth bufnmf_bells_resynth
--resynthmode 1 -components 12 -blocking 0, f 64;
-#X obj 23 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 21 396 fluid.bufnmf -source bufnmf_bells -resynth bufnmf_bells_resynth -resynthmode 1 -components 12 -blocking 0, f 64;
+#X obj 23 311 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 24 310 1);
 #X text 44 310 load a stereo file and decompose it;
-#X obj 294 590 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 267 473 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 294 590 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 267 473 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 266 472 3) select components to hear;
 #X text 293 589 2) audio on;
 #X connect 1 0 2 0;
@@ -896,7 +786,7 @@ input and 2 components:, f 73;
 #X connect 23 0 5 0;
 #X connect 23 3 22 0;
 #X restore 461 800 pd multichannel;
-#N canvas 288 169 696 822 updating_bases 0;
+#N canvas 288 25 696 790 updating_bases 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.nmf.src.5 88200 float 2;
 #X coords 0 1 88200 -1 455 50 1 0 0;
@@ -909,8 +799,7 @@ input and 2 components:, f 73;
 #X array help.nmf.bases.5-1 513 float 0;
 #X coords 0 1 512 0 240 70 1 0 0;
 #X restore 17 496 graph;
-#X obj 18 343 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 18 343 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 731 210 833 684 make_2_tones 0;
 #X msg 38 172 44100;
 #X obj 57 220 until;
@@ -924,9 +813,7 @@ input and 2 components:, f 73;
 #X obj 39 107 array define hisine2 44100;
 #X obj 57 329 tabwrite lowsine2;
 #X obj 364 331 tabwrite hisine2;
-#X msg 38 365 reset \, destgain 1 \, destination help.nmf.src.5 \,
-source lowsine2 \, bang \, source hisine2 \, deststartframe 44100 \,
-bang;
+#X msg 38 365 reset \, destgain 1 \, destination help.nmf.src.5 \, source lowsine2 \, bang \, source hisine2 \, deststartframe 44100 \, bang;
 #X msg 172 186 \; help.nmf.src.5 const;
 #X obj 38 193 t b f b b;
 #X msg 38 427 \; help.nmf.src.5 xticks 0 0 0;
@@ -952,16 +839,10 @@ bang;
 #X connect 16 0 10 0;
 #X connect 17 0 11 0;
 #X restore 13 203 pd make_2_tones;
-#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 13 73 Using the basesmode or actmode attributes in update \,
-we can set NMF's starting conditions \, but let it improve to 'find'
-particular spectral components, f 78;
-#X obj 21 604 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 21 630 fluid.bufnmf -source help.nmf.src.5 -bases help.nmf.bases.5
--components 2 -iterations 25 -basesmode 1 -resynthmode 1 -resynth help.nmf.resynth.5
-, f 35;
+#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 13 73 Using the basesmode or actmode attributes in update \, we can set NMF's starting conditions \, but let it improve to 'find' particular spectral components, f 78;
+#X obj 21 604 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 21 630 fluid.bufnmf -source help.nmf.src.5 -bases help.nmf.bases.5 -components 2 -iterations 25 -basesmode 1 -resynthmode 1 -resynth help.nmf.resynth.5, f 35;
 #N canvas 2023 -1000 409 408 initialise_some_bases 0;
 #X obj 27 12 inlet;
 #X obj 27 94 until;
@@ -992,91 +873,64 @@ particular spectral components, f 78;
 #X connect 9 0 3 1;
 #X restore 18 363 pd initialise_some_bases;
 #X obj 503 127 clone fluid.multiarray 2 help.nmf.resynth.5, f 24;
-#X obj 21 713 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 21 713 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 490 333 fluid.out~ bufnmfhelp;
-#X obj 490 280 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 490 261 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 133 203 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 134 202 1) compose a buffer os two sine waves \, one second
-each in sequence, f 40;
-#X obj 43 343 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 490 280 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 490 261 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 133 203 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 134 202 1) compose a buffer os two sine waves \, one second each in sequence, f 40;
+#X obj 43 343 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 44 342 4) create some very crude initialising bases;
-#X obj 43 603 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 278 629 Every time you bang the bases are incrementally updated
-as the algorithm "learns" about the decomposition. Try playing back
-the result on the right at each stage to see how it progresses., f
-34;
+#X obj 43 603 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 278 629 Every time you bang the bases are incrementally updated as the algorithm "learns" about the decomposition. Try playing back the result on the right at each stage to see how it progresses., f 34;
 #X text 44 602 5) incrementally update the initialised bases;
-#X obj 559 338 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 559 338 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 490 304 tabplay~ help.nmf.src.5;
 #X obj 460 533 fluid.out~ bufnmfhelp;
-#X obj 460 420 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 460 401 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 461 400 6) listen to decomposition;
+#X obj 460 420 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 460 401 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 460 444 tabplay~ help.nmf.resynth.5-0, f 21;
 #X obj 489 480 tabplay~ help.nmf.resynth.5-1, f 21;
-#X text 532 528 Left is component 1 Right is component 2;
+#X text 307 525 Left is component 1 Right is component 2, f 21;
 #X text 560 337 2) audio on;
 #X text 491 260 3) listen to source;
+#X obj 530 540 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 461 400 7) listen to decomposition;
+#X text 531 539 6) audio on;
 #X connect 3 0 9 0;
 #X connect 7 0 8 0;
 #X connect 8 0 11 0;
 #X connect 13 0 23 0;
 #X connect 23 0 12 0;
 #X connect 23 0 12 1;
+#X connect 25 0 27 0;
 #X connect 25 0 28 0;
-#X connect 25 0 29 0;
-#X connect 28 0 24 0;
-#X connect 29 0 24 1;
+#X connect 27 0 24 0;
+#X connect 28 0 24 1;
 #X restore 461 778 pd updating_bases;
 #X obj 15 220 soundfiler;
 #X obj 15 176 loadbang;
-#X obj 15 74 cnv 15 380 17 empty empty Buffer-Based\\\ Non-Negative\\\ Matrix\\\ Factorisation
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 15 74 cnv 15 380 17 empty empty Buffer-Based\ Non-Negative\ Matrix\ Factorisation 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 17 744 fluid.out~ bufnmfhelp;
-#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 479 60 fluid.referencelauncher fluid.bufnmf.html reference/bufnmf/
-;
-#X obj 38 320 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 15 88 cnv 15 380 17 empty empty on\\\ Spectral\\\ Frames 4 8
-0 13 #e0e0e0 #404040 0;
-#X obj 17 392 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 17 320 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 15 13 cnv 15 660 42 empty empty fluid.bufnmf 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 479 60 fluid.referencelauncher fluid.bufnmf.html reference/bufnmf/;
+#X obj 38 320 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 15 88 cnv 15 380 17 empty empty on\ Spectral\ Frames 4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 392 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 17 320 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 39 319 1);
 #X text 59 319 send a bang to start processing;
-#X text 189 568 Each component of the decomposition will be in a separate
-channel of the destination buffer~., f 45;
-#X text 15 119 Decomposes the spectrum of a sound into a number of
-components using Non-Negative Matrix Factorisation (NMF), f 67;
+#X text 189 568 Each component of the decomposition will be in a separate channel of the destination buffer~., f 45;
+#X text 15 119 Decomposes the spectrum of a sound into a number of components using Non-Negative Matrix Factorisation (NMF), f 67;
 #X msg 15 198 read -resize media/Nicol-LoopE-M.wav help.nmf.src.1;
 #X obj 15 249 array define help.nmf.src.1;
-#X obj 17 352 fluid.bufnmf -source help.nmf.src.1 -resynth help.nmf.resynth.1
--components 2 -resynthmode 1;
+#X obj 17 352 fluid.bufnmf -source help.nmf.src.1 -resynth help.nmf.resynth.1 -components 2 -resynthmode 1;
 #X obj 17 573 tabplay~ help.nmf.resynth.1-0, f 21;
-#X text 427 454 If you decompose the same sound multiple times you
-will get roughly the same components but possibly in a different order.
-This is beacuse the NMF algorithm starts from a random state., f 35
-;
-#X obj 17 499 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X text 427 454 If you decompose the same sound multiple times you will get roughly the same components but possibly in a different order. This is beacuse the NMF algorithm starts from a random state., f 35;
+#X obj 17 499 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 134 622 tabplay~ help.nmf.resynth.1-1, f 21;
-#X obj 87 749 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 17 480 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 87 749 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 17 480 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 982 260 388 477 srcselect 0;
 #X obj 60 71 inlet~;
 #X obj 140 71 inlet~;
@@ -1115,13 +969,11 @@ This is beacuse the NMF algorithm starts from a random state., f 35
 #X connect 16 0 5 0;
 #X restore 17 668 pd srcselect;
 #X f 34;
-#X obj 234 430 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 234 430 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 18 479 4) play the component;
 #X text 271 448 component 1;
 #X text 271 466 component 2;
-#X obj 253 452 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 253 452 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X obj 369 265 clone fluid.multiarray 2 help.nmf.resynth.1;
 #X obj 461 823 note_on_multithreading;
 #X text 271 483 both together;

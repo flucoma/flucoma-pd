@@ -1,4 +1,4 @@
-#N canvas 46 44 697 917 12;
+#N canvas 0 30 697 913 12;
 #N canvas 731 210 626 585 make_2_tones 0;
 #X msg 38 176 44100;
 #X obj 61 226 until;
@@ -15,9 +15,7 @@
 #X obj 39 104 array define hisine3 44100;
 #X obj 61 370 tabwrite lowsine3, f 19;
 #X obj 322 370 tabwrite hisine3, f 19;
-#X msg 38 406 reset \, destgain 1 \, destination help.nmfmatch.src.1
-\, source lowsine3 \, bang \, source hisine3 \, deststartframe 44100
-\, bang;
+#X msg 38 406 reset \, destgain 1 \, destination help.nmfmatch.src.1 \, source lowsine3 \, bang \, source hisine3 \, deststartframe 44100 \, bang;
 #X msg 38 466 \; help.nmfmatch.src.1 xticks 0 0 0;
 #X connect 0 0 7 0;
 #X connect 1 0 3 0;
@@ -46,166 +44,110 @@
 #X array nmfmatch_bases-1 513 float 0;
 #X coords 0 1 512 0 270 40 1 0 0;
 #X restore 382 524 graph;
-#X obj 19 349 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 19 349 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 19 517 osc~ 500;
 #X obj 86 517 osc~ 5000;
 #X obj 19 558 *~;
-#X obj 37 539 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 37 539 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 86 559 *~;
-#X obj 104 540 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 104 540 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 19 679 *~ 0.1;
-#X text 18 88 Matches an incoming audio signal against a set of spectral
-templates, f 69;
+#X text 18 88 Matches an incoming audio signal against a set of spectral templates, f 69;
 #X obj 144 645 unpack f f;
 #X floatatom 144 691 8 0 0 0 - - - 0;
 #X floatatom 211 691 8 0 0 0 - - - 0;
 #X text 219 646 output is a list of activation levels;
-#X text 275 701 the activation levels grow in the presence of a learned
-component, f 33;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.nmfmatch~.html reference/nmfmatch/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Real-Time\\\ Non-Negative\\\ Matrix\\\ Factorisation\\\ with\\\ Fixed\\\ Bases
-4 8 0 13 #e0e0e0 #404040 0;
+#X text 275 701 the activation levels grow in the presence of a learned component, f 33;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.nmfmatch~.html reference/nmfmatch/;
+#X obj 17 60 cnv 15 488 17 empty empty Real-Time\ Non-Negative\ Matrix\ Factorisation\ with\ Fixed\ Bases 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 19 705 fluid.out~ nmfmatchhelp;
-#X obj 470 805 cnv 15 207 88 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#N canvas 187 74 695 841 detecting_knowns 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 18 88 Helping fluid.nmfmatch~ discover known "features" by
-only decomposing sections of a source, f 69;
+#X obj 470 805 cnv 15 207 88 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#N canvas 145 25 695 791 detecting_knowns 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 18 88 Helping fluid.nmfmatch~ discover known "features" by only decomposing sections of a source, f 69;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.nmfmatch.src.2 968235 float 0;
 #X coords 0 1 968234 -1 250 40 1 0 0;
 #X restore 302 197 graph;
 #X obj 16 248 soundfiler;
-#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 177 1) load a soundfile;
-#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X msg 16 197 read -resize media/Tremblay-BaB-SoundscapeGolcarWithDog.wav
-help.nmfmatch.src.2, f 37;
-#X obj 17 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X msg 16 197 read -resize media/Tremblay-BaB-SoundscapeGolcarWithDog.wav help.nmfmatch.src.2, f 37;
+#X obj 17 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 17 303 tabplay~ help.nmfmatch.src.2;
 #X obj 17 333 fluid.out~ nmfmatchhelp;
-#X obj 36 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 36 282 2) play the source;
-#X text 88 328 The dog's bark is very present in this recording but
-not always. By just decomposing the first four seconds (where the dog
-barks a lot) we can extract nmf bases that will help differentiate
-moments in time where the dog barking is an obvious feature.;
-#X obj 87 441 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 87 501 fluid.bufnmf -source help.nmfmatch.src.2 -bases help.nmfmatch.bases.2
--components 2 -numchans 1 -numframes 176400;
+#X obj 36 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 109 328 The dog's bark is very present in this recording but not always. By just decomposing the first four seconds (where the dog barks a lot) we can extract nmf bases that will help differentiate moments in time where the dog barking is an obvious feature.;
+#X obj 87 441 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 87 501 fluid.bufnmf -source help.nmfmatch.src.2 -bases help.nmfmatch.bases.2 -components 2 -numchans 1 -numframes 176400;
 #X obj 233 476 clone fluid.multiarray 2 help.nmfmatch.bases.2;
-#X obj 87 563 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 147 563 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 87 563 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 147 563 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 147 583 tabplay~ help.nmfmatch.src.2;
 #X obj 147 793 fluid.out~ nmfmatchhelp;
-#X obj 166 563 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 106 441 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 106 440 3) decompose the first four seconds into two components
-;
+#X obj 166 563 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 106 441 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 237 637 fluid.nmfmatch~ 2 -bases help.nmfmatch.bases.2;
 #X obj 237 661 fluid.stats 2 -history 10;
 #X obj 237 685 unpack 0 0;
-#X obj 237 712 vsl 40 60 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 279 712 vsl 40 60 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X text 328 712 One of these activation levels will jump up noticeably
-when the dog barks. Because the NMF algorithm starts from a stochastic
-state \, the contents of the decomposition will be vaguely similar
-\, but not always in the same order., f 47;
-#X text 166 562 5) Play the original source through the realtime matching.
-;
-#X obj 218 799 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 218 798 4) Audio on.;
+#X obj 237 712 vsl 40 60 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 279 712 vsl 40 60 0 127 0 0 empty empty empty 0 -9 0 10 #fcfcfc #000000 #000000 0 1;
+#X text 328 712 One of these activation levels will jump up noticeably when the dog barks. Because the NMF algorithm starts from a stochastic state \, the contents of the decomposition will be vaguely similar \, but not always in the same order., f 47;
+#X obj 218 799 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 17 364 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 17 363 2) audio on;
+#X text 36 282 3) play the source;
+#X text 106 440 4) decompose the first four seconds into two components;
+#X text 218 798 5) Audio on.;
+#X text 166 562 6) Play the original source through the realtime matching.;
 #X connect 6 0 7 0;
 #X connect 7 0 3 0;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
 #X connect 9 0 10 1;
-#X connect 14 0 15 0;
-#X connect 15 0 17 0;
+#X connect 13 0 14 0;
+#X connect 14 0 16 0;
+#X connect 17 0 18 0;
 #X connect 18 0 19 0;
-#X connect 19 0 20 0;
-#X connect 19 0 20 1;
-#X connect 19 0 24 0;
+#X connect 18 0 19 1;
+#X connect 18 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 24 0;
 #X connect 24 0 25 0;
-#X connect 25 0 26 0;
-#X connect 26 0 27 0;
-#X connect 26 1 28 0;
+#X connect 24 1 26 0;
 #X restore 473 825 pd detecting_knowns;
 #N canvas 283 88 703 810 controlling_a_comb_filter 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 18 88 control a compressor based on learned components, f
-69;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 18 88 control a compressor based on learned components, f 69;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.nmfmatch.src.3 1.00098e+06 float 0;
 #X coords 0 1 1.00097e+06 -1 250 40 1 0 0;
 #X restore 302 197 graph;
 #X obj 16 248 soundfiler;
-#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 177 1) load a soundfile;
-#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 17 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 17 283 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 17 333 fluid.out~ nmfmatchhelp;
-#X obj 36 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 36 283 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 282 2) play the source;
-#X msg 16 197 read -resize media/Tremblay-AaS-AcousticStrums-M.wav
-help.nmfmatch.src.3, f 37;
+#X msg 16 197 read -resize media/Tremblay-AaS-AcousticStrums-M.wav help.nmfmatch.src.3, f 37;
 #X obj 17 303 tabplay~ help.nmfmatch.src.3;
-#X obj 19 376 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 40 374 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 41 374 3) Start decomposition process to search for plectrum
-component, f 39;
+#X obj 19 376 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 40 374 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 41 374 3) Start decomposition process to search for plectrum component, f 39;
 #N canvas 1417 23 631 775 isolate_plectrum_component 0;
 #X obj 37 37 inlet;
 #X obj 37 582 outlet;
-#X text 116 35 This part of the patch uses fluid.bufnmf~ to derive
-some components based on the crude assumption that if a small part
-of the guitar sound is broken down into two components \, one of those
-components will contain the plectrum sound almost exclusively. The
-other component will contain the resonant part of the guitar sound.
-;
-#X text 116 135 To try and measure this automatically with the computer
-\, we resynthesise two components and then measure the median spectral
-centroid of each one. We assume that the component with the higher
-median spectral centroid will be the plectrum. The buffer channel index
-is then stored so that we can extract it later when we retrieve the
-matching.;
-#X obj 37 190 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 37 250 fluid.bufnmf -source help.nmfmatch.src.3 -numframes 20000
--components 2 -resynthmode 1 -fftsettings 1024 128 1024 -resynth help.nmfmatch.resynth.3
--bases help.nmfmatch.bases.3;
+#X text 116 35 This part of the patch uses fluid.bufnmf~ to derive some components based on the crude assumption that if a small part of the guitar sound is broken down into two components \, one of those components will contain the plectrum sound almost exclusively. The other component will contain the resonant part of the guitar sound.;
+#X text 116 135 To try and measure this automatically with the computer \, we resynthesise two components and then measure the median spectral centroid of each one. We assume that the component with the higher median spectral centroid will be the plectrum. The buffer channel index is then stored so that we can extract it later when we retrieve the matching.;
+#X obj 37 190 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 37 250 fluid.bufnmf -source help.nmfmatch.src.3 -numframes 20000 -components 2 -resynthmode 1 -fftsettings 1024 128 1024 -resynth help.nmfmatch.resynth.3 -bases help.nmfmatch.bases.3;
 #X obj 37 338 fluid.bufspectralshape -power 1 -select centroid;
-#X obj 383 338 clone fluid.multiarray 2 help.nmfmatch.resynth.3, f
-26;
-#X obj 383 380 clone fluid.multiarray 2 help.nmfmatch.bases.3, f 26
-;
+#X obj 383 338 clone fluid.multiarray 2 help.nmfmatch.resynth.3, f 26;
+#X obj 383 380 clone fluid.multiarray 2 help.nmfmatch.bases.3, f 26;
 #X obj 37 382 fluid.bufstats -select mid;
 #N canvas 1705 -1041 690 726 getvalues 0;
 #X obj 37 37 inlet;
@@ -247,8 +189,7 @@ matching.;
 #X obj 37 516 max;
 #X obj 37 490 pack 0 0, f 12;
 #X floatatom 37 549 5 0 0 0 - - - 0;
-#X text 167 457 the component with the highest centroid will most likely
-be the plectrum, f 40;
+#X text 167 457 the component with the highest centroid will most likely be the plectrum, f 40;
 #X floatatom 128 560 5 0 0 0 - - - 0;
 #X obj 128 582 s help.nmfmatch.pickedchannel;
 #X obj 128 536 expr if($f1>$f2 \, 1 \, 0);
@@ -268,19 +209,14 @@ be the plectrum, f 40;
 #X connect 17 0 18 0;
 #X connect 19 0 17 0;
 #X restore 19 416 pd isolate_plectrum_component;
-#X obj 19 442 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 281 481 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 19 442 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 281 481 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 281 522 tabplay~ help.nmfmatch.src.3;
-#X obj 281 555 fluid.nmfmatch~ 2 -bases help.nmfmatch.bases.3 -fftsettings
-1024 128, f 26;
+#X obj 281 555 fluid.nmfmatch~ 2 -bases help.nmfmatch.bases.3 -fftsettings 1024 128, f 26;
 #X obj 281 613 fluid.stats 2 -history 10;
 #X obj 281 657 unpack 0 0, f 11;
-#X obj 281 698 vsl 72 60 0 100 0 0 empty empty empty 0 -9 0 10 #606060
-#ff0400 #000000 0 1;
-#X obj 355 698 vsl 72 60 0 100 0 0 empty empty empty 0 -9 0 10 #606060
-#00faff #000000 0 1;
+#X obj 281 698 vsl 72 60 0 100 0 0 empty empty empty 0 -9 0 10 #606060 #ff0400 #000000 0 1;
+#X obj 355 698 vsl 72 60 0 100 0 0 empty empty empty 0 -9 0 10 #606060 #00faff #000000 0 1;
 #X obj 218 678 * 1.5;
 #X obj 25 701 fluid.comb~ 100 10 0.2 0 0.9;
 #X obj 25 765 fluid.out~ nmfmatchhelp;
@@ -294,8 +230,7 @@ be the plectrum, f 40;
 #X floatatom 30 201 5 0 0 0 - - - 0;
 #X obj 30 252 outlet;
 #X obj 30 66 unpack 0 0, f 12;
-#X text 31 293 This ensures that the match against the plectrum component
-is being used to drive the delay time of the comb filter, f 41;
+#X text 31 293 This ensures that the match against the plectrum component is being used to drive the delay time of the comb filter, f 41;
 #X connect 0 0 8 0;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
@@ -307,10 +242,8 @@ is being used to drive the delay time of the comb filter, f 41;
 #X connect 8 0 1 0;
 #X connect 8 1 5 0;
 #X restore 219 656 pd pick;
-#X obj 302 479 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 303 479 4) Play the original guitar file through fluid.nmfmatch~
-, f 29;
+#X obj 302 479 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 303 479 4) Play the original guitar file through fluid.nmfmatch~, f 29;
 #X connect 6 0 11 0;
 #X connect 7 0 12 0;
 #X connect 11 0 3 0;
@@ -331,36 +264,26 @@ is being used to drive the delay time of the comb filter, f 41;
 #X connect 26 0 27 1;
 #X connect 28 0 25 0;
 #X restore 473 847 pd controlling_a_comb_filter;
-#N canvas 157 84 693 798 resonant_filters 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb
-#ffffff 0;
+#N canvas 148 25 693 791 resonant_filters 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.nmfmatch~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 18 88 Make a filter bank from learned components, f 69;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array help.nmfmatch.src.4 867378 float 0;
 #X coords 0 1 867377 -1 250 40 1 0 0;
 #X restore 302 197 graph;
 #X obj 16 248 soundfiler;
-#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 36 178 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 36 177 1) load a soundfile;
-#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 17 433 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 16 178 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 17 433 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 17 743 fluid.out~ nmfmatchhelp;
-#X obj 36 433 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X msg 16 197 read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav
-help.nmfmatch.src.4, f 37;
+#X obj 36 433 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X msg 16 197 read -resize media/Tremblay-CEL-GlitchyMusicBoxMelo.wav help.nmfmatch.src.4, f 37;
 #X obj 17 453 tabplay~ help.nmfmatch.src.4;
-#X obj 116 288 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 96 288 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 116 288 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 96 288 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 116 287 2) Decompose the source sound into 8 components;
-#X obj 96 308 fluid.bufnmf -source help.nmfmatch.src.4 -bases help.nmfmatch.bases.4
--resynth help.nmfmatch.resynth.4 -resynthmode 1 -components 8 -numframes
-176400;
+#X obj 96 308 fluid.bufnmf -source help.nmfmatch.src.4 -bases help.nmfmatch.bases.4 -resynth help.nmfmatch.resynth.4 -resynthmode 1 -components 8 -numframes 176400;
 #N canvas 930 -1032 450 411 find_median_spectral_centroid 0;
 #X obj 37 37 inlet;
 #X obj 37 297 outlet;
@@ -388,7 +311,9 @@ help.nmfmatch.src.4, f 37;
 #X restore 17 687 pd sum;
 #X f 12;
 #X obj 107 521 fluid.stats 8 -history 5;
-#X text 36 432 3) play the source;
+#X obj 87 746 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 87 745 3) audio on;
+#X text 36 432 4) play the source;
 #X connect 6 0 10 0;
 #X connect 7 0 11 0;
 #X connect 10 0 3 0;
@@ -419,44 +344,12 @@ help.nmfmatch.src.4, f 37;
 #X f 10;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array base0 100 float 3;
-#A 0 1.19774e-15 1.19774e-15 1.19774e-15 1.19774e-15 1.19774e-15 1.19774e-15
-4.10061e-15 4.10061e-15 4.10061e-15 4.10061e-15 4.10061e-15 4.10061e-15
-4.10061e-15 4.10061e-15 9.72268e-16 9.72268e-16 9.72268e-16 9.72268e-16
-9.72268e-16 9.72268e-16 9.72268e-16 9.72268e-16 3.2945e-15 3.2945e-15
-3.2945e-15 3.2945e-15 3.2945e-15 3.2945e-15 3.2945e-15 3.2945e-15 2.77319e-15
-2.77319e-15 2.77319e-15 2.77319e-15 2.77319e-15 2.77319e-15 2.77319e-15
-2.77319e-15 1.11249e-15 1.11249e-15 1.11249e-15 1.11249e-15 1.11249e-15
-1.11249e-15 1.11249e-15 1.11249e-15 1.06314e-15 1.06314e-15 1.06314e-15
-1.06314e-15 1.06314e-15 1.06314e-15 1.06314e-15 1.06314e-15 2.60419e-15
-2.60419e-15 2.60419e-15 2.60419e-15 2.60419e-15 2.60419e-15 2.60419e-15
-2.60419e-15 1.67417e-15 1.67417e-15 1.67417e-15 1.67417e-15 1.67417e-15
-1.67417e-15 1.67417e-15 1.67417e-15 4.3039e-15 4.3039e-15 4.3039e-15
-4.3039e-15 4.3039e-15 4.3039e-15 4.3039e-15 4.3039e-15 7.44573e-16
-7.44573e-16 7.44573e-16 7.44573e-16 7.44573e-16 7.44573e-16 7.44573e-16
-7.44573e-16 3.26596e-15 3.26596e-15 3.26596e-15 3.26596e-15 3.26596e-15
-3.26596e-15 3.26596e-15 3.26596e-15 1.65625e-15 1.65625e-15 1.65625e-15
-1.65625e-15 1.65625e-15 1.65625e-15;
+#A 0 1.10966e-15 1.10966e-15 1.10966e-15 1.10966e-15 1.10966e-15 2.78779e-15 2.78779e-15 2.78779e-15 2.78779e-15 2.78779e-15 2.78779e-15 2.78779e-15 2.78779e-15 6.71539e-16 6.71539e-16 6.71539e-16 6.71539e-16 6.71539e-16 6.71539e-16 6.71539e-16 6.71539e-16 2.54329e-15 2.54329e-15 2.54329e-15 2.54329e-15 2.54329e-15 2.54329e-15 2.54329e-15 2.54329e-15 3.33471e-15 3.33471e-15 3.33471e-15 3.33471e-15 3.33471e-15 3.33471e-15 3.33471e-15 3.33471e-15 1.6929e-15 1.6929e-15 1.6929e-15 1.6929e-15 1.6929e-15 1.6929e-15 1.6929e-15 1.6929e-15 3.7197e-15 3.7197e-15 3.7197e-15 3.7197e-15 3.7197e-15 3.7197e-15 3.7197e-15 3.7197e-15 2.81746e-15 2.81746e-15 2.81746e-15 2.81746e-15 2.81746e-15 2.81746e-15 2.81746e-15 2.81746e-15 2.04438e-15 2.04438e-15 2.04438e-15 2.04438e-15 2.04438e-15 2.04438e-15 2.04438e-15 2.04438e-15 2.39695e-16 2.39695e-16 2.39695e-16 2.39695e-16 2.39695e-16 2.39695e-16 2.39695e-16 2.39695e-16 9.55123e-16 9.55123e-16 9.55123e-16 9.55123e-16 9.55123e-16 9.55123e-16 9.55123e-16 9.55123e-16 2.35875e-15 2.35875e-15 2.35875e-15 2.35875e-15 2.35875e-15 2.35875e-15 2.35875e-15 2.35875e-15 3.01056e-15 3.01056e-15 3.01056e-15 3.01056e-15 3.01056e-15 3.01056e-15 3.01056e-15;
 #X coords 0 400 100 0 271 40 1 0 0;
 #X restore 145 743 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array base1 100 float 3;
-#A 0 3.83146e-15 3.83146e-15 3.83146e-15 3.83146e-15 3.83146e-15 3.83146e-15
-9.2859e-16 9.2859e-16 9.2859e-16 9.2859e-16 9.2859e-16 9.2859e-16 9.2859e-16
-9.2859e-16 4.05693e-15 4.05693e-15 4.05693e-15 4.05693e-15 4.05693e-15
-4.05693e-15 4.05693e-15 4.05693e-15 1.7347e-15 1.7347e-15 1.7347e-15
-1.7347e-15 1.7347e-15 1.7347e-15 1.7347e-15 1.7347e-15 2.25601e-15
-2.25601e-15 2.25601e-15 2.25601e-15 2.25601e-15 2.25601e-15 2.25601e-15
-2.25601e-15 3.91671e-15 3.91671e-15 3.91671e-15 3.91671e-15 3.91671e-15
-3.91671e-15 3.91671e-15 3.91671e-15 3.96606e-15 3.96606e-15 3.96606e-15
-3.96606e-15 3.96606e-15 3.96606e-15 3.96606e-15 3.96606e-15 2.42501e-15
-2.42501e-15 2.42501e-15 2.42501e-15 2.42501e-15 2.42501e-15 2.42501e-15
-2.42501e-15 3.35503e-15 3.35503e-15 3.35503e-15 3.35503e-15 3.35503e-15
-3.35503e-15 3.35503e-15 3.35503e-15 7.25296e-16 7.25296e-16 7.25296e-16
-7.25296e-16 7.25296e-16 7.25296e-16 7.25296e-16 7.25296e-16 4.28463e-15
-4.28463e-15 4.28463e-15 4.28463e-15 4.28463e-15 4.28463e-15 4.28463e-15
-4.28463e-15 1.76324e-15 1.76324e-15 1.76324e-15 1.76324e-15 1.76324e-15
-1.76324e-15 1.76324e-15 1.76324e-15 3.37295e-15 3.37295e-15 3.37295e-15
-3.37295e-15 3.37295e-15 3.37295e-15;
+#A 0 3.91954e-15 3.91954e-15 3.91954e-15 3.91954e-15 3.91954e-15 2.24141e-15 2.24141e-15 2.24141e-15 2.24141e-15 2.24141e-15 2.24141e-15 2.24141e-15 2.24141e-15 4.35766e-15 4.35766e-15 4.35766e-15 4.35766e-15 4.35766e-15 4.35766e-15 4.35766e-15 4.35766e-15 2.48591e-15 2.48591e-15 2.48591e-15 2.48591e-15 2.48591e-15 2.48591e-15 2.48591e-15 2.48591e-15 1.69449e-15 1.69449e-15 1.69449e-15 1.69449e-15 1.69449e-15 1.69449e-15 1.69449e-15 1.69449e-15 3.3363e-15 3.3363e-15 3.3363e-15 3.3363e-15 3.3363e-15 3.3363e-15 3.3363e-15 3.3363e-15 1.3095e-15 1.3095e-15 1.3095e-15 1.3095e-15 1.3095e-15 1.3095e-15 1.3095e-15 1.3095e-15 2.21174e-15 2.21174e-15 2.21174e-15 2.21174e-15 2.21174e-15 2.21174e-15 2.21174e-15 2.21174e-15 2.98482e-15 2.98482e-15 2.98482e-15 2.98482e-15 2.98482e-15 2.98482e-15 2.98482e-15 2.98482e-15 4.78951e-15 4.78951e-15 4.78951e-15 4.78951e-15 4.78951e-15 4.78951e-15 4.78951e-15 4.78951e-15 4.07408e-15 4.07408e-15 4.07408e-15 4.07408e-15 4.07408e-15 4.07408e-15 4.07408e-15 4.07408e-15 2.67045e-15 2.67045e-15 2.67045e-15 2.67045e-15 2.67045e-15 2.67045e-15 2.67045e-15 2.67045e-15 2.01864e-15 2.01864e-15 2.01864e-15 2.01864e-15 2.01864e-15 2.01864e-15 2.01864e-15;
 #X coords 0 400 100 0 271 40 1 0 0;
 #X restore 145 803 graph;
 #N canvas 2119 -456 446 295 draw 0;
@@ -481,19 +374,14 @@ help.nmfmatch.src.4, f 37;
 #X connect 7 1 6 1;
 #X connect 8 0 6 0;
 #X restore 155 668 pd draw;
-#X obj 19 732 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 19 732 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 19 731 1) audio on;
-#X obj 48 349 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 47 348 2) decompose the 2 consecutive sines above in 2 components
-with bufnmf~, f 74;
+#X obj 48 349 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 47 348 2) decompose the 2 consecutive sines above in 2 components with bufnmf~, f 74;
 #X text 381 418 These are the "bases" of each component.;
-#X obj 19 367 fluid.bufnmf -source help.nmfmatch.src.1 -bases nmfmatch_bases
--components 2, f 72;
+#X obj 19 367 fluid.bufnmf -source help.nmfmatch.src.1 -bases nmfmatch_bases -components 2, f 72;
 #X obj 144 624 fluid.nmfmatch~ 2 -bases nmfmatch_bases;
-#X obj 128 543 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 128 543 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 129 542 3) pick the audio source to identify, f 24;
 #X connect 3 0 35 0;
 #X connect 4 0 6 0;

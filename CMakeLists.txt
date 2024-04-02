@@ -1,5 +1,5 @@
 # Part of the Fluid Corpus Manipulation Project (http://www.flucoma.org/)
-# Copyright 2017-2019 University of Huddersfield.
+# Copyright University of Huddersfield.
 # Licensed under the BSD-3 License.
 # See license.md file in the project root for full license information.
 # This project has received funding from the European Research Council (ERC)
@@ -154,6 +154,7 @@ generate_pd_source(
 
 add_pd_external(fluid.bufinfo "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.bufinfo/fluid.bufinfo.cpp")
 add_pd_external(fluid.waveform "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.waveform/fluid.waveform.c")
+add_pd_external(fluid.plotter "${CMAKE_CURRENT_SOURCE_DIR}/src/fluid.plotter/fluid.plotter.c")
 
 target_include_directories(fluid.bufinfo PRIVATE 
   "${CMAKE_CURRENT_SOURCE_DIR}/include"

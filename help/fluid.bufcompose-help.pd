@@ -1,42 +1,27 @@
-#N canvas 55 65 695 887 12;
+#N canvas 55 25 695 791 12;
 #X obj 18 230 soundfiler;
 #X obj 23 622 fluid.bufcompose;
 #X obj 18 183 loadbang;
-#X obj 80 756 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 80 756 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 100 755 stop;
-#X text 20 332 fluid.bufcompose copies from a source buffer/array to
-a destination buffer/array at a given gain. Use the source and destination
-attributes to set these buffers \, and bang to process, f 64;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufcompose.html reference/bufcompose/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Buffer\\\ Compositing\\\ Utility
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 87 A flexible utility for combining the contents of buffers.
-It can be used for thing like mixing down multichannel buffers \, or
-converting from left-right stereo to mid-side. It is used extensively
-in the example code of Fluid Decomposition.;
+#X text 20 332 fluid.bufcompose copies from a source buffer/array to a destination buffer/array at a given gain. Use the source and destination attributes to set these buffers \, and bang to process, f 64;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufcompose.html reference/bufcompose/;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer\ Compositing\ Utility 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 87 A flexible utility for combining the contents of buffers. It can be used for thing like mixing down multichannel buffers \, or converting from left-right stereo to mid-side. It is used extensively in the example code of Fluid Decomposition.;
 #X obj 100 837 fluid.out~ bufcompose-help;
-#X obj 458 714 cnv 15 217 153 {empty} {empty} {More\\\ information}
-4 10 0 13 #e0e0e0 #404040 0;
+#X obj 458 714 cnv 15 217 153 {empty} {empty} {More\ information} 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 107 78 690 871 mixing 0;
 #X msg 18 429 destgain \$1;
 #X floatatom 18 399 5 0 0 0 - - - 0;
 #X msg 18 365 1;
 #X msg 51 365 0.5;
 #X msg 83 365 0;
-#X text 16 89 by default \, new content overwrites what is in the destination
-buffer. By using the destgain attribute \, you can choose how much
-old stuff gets mixed with new stuff, f 82;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Use\\\ the\\\ destgain\\\ parameter\\\ to\\\ mix\\\ into\\\ the\\\ destination\\\ buffer
-4 8 0 13 #e0e0e0 #404040 0;
+#X text 16 89 by default \, new content overwrites what is in the destination buffer. By using the destgain attribute \, you can choose how much old stuff gets mixed with new stuff, f 82;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Use\ the\ destgain\ parameter\ to\ mix\ into\ the\ destination\ buffer 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 18 566 fluid.bufcompose;
-#X obj 39 597 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 39 597 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufcompose_dst2 2.51861e+06 float 2;
 #X coords 0 1 2.51861e+06 -1 200 140 1 0 0;
@@ -47,13 +32,10 @@ old stuff gets mixed with new stuff, f 82;
 #X obj 442 241 array define bufcompose_help_src3;
 #X obj 18 207 soundfiler;
 #X obj 18 123 loadbang;
-#X msg 28 151 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_help_src2, f 74;
-#X msg 18 175 read -resize media/Tremblay-SlideChoirAdd-M.wav bufcompose_help_src3
-, f 74;
+#X msg 28 151 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav bufcompose_help_src2, f 74;
+#X msg 18 175 read -resize media/Tremblay-SlideChoirAdd-M.wav bufcompose_help_src3, f 74;
 #X msg 193 365 \; bufcompose_dst2 const 0, f 27;
-#X msg 194 450 source bufcompose_help_src2 \, destination bufcompose_dst2
-\, bang \, source bufcompose_help_src3 \, bang;
+#X msg 194 450 source bufcompose_help_src2 \, destination bufcompose_dst2 \, bang \, source bufcompose_help_src3 \, bang;
 #X msg 167 654 set bufcompose_help_src2 \, bang;
 #X msg 167 677 set bufcompose_help_src3 \, bang;
 #X msg 202 700 set bufcompose_dst2 \, bang;
@@ -62,20 +44,15 @@ bufcompose_help_src2, f 74;
 #X text 65 679 play source2, f 13;
 #X text 64 702 play mixture, f 13;
 #X text 57 596 done;
-#X obj 15 345 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 192 344 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 290 807 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 15 345 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 192 344 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 290 807 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 288 806 4) Audio on;
-#X obj 197 429 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 197 429 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 195 428 3) trigger the process;
 #X text 15 343 1) try different gains;
 #X text 192 343 2) clear the destination;
-#X obj 113 633 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 113 633 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 110 632 5) play the various arrays;
 #X connect 0 0 8 0;
 #X connect 1 0 0 0;
@@ -97,13 +74,9 @@ bufcompose_help_src2, f 74;
 #X connect 24 0 12 1;
 #X restore 464 735 pd mixing;
 #N canvas 188 135 699 900 subsections 0;
-#X text 16 103 the attributes startframe \, numframes \, startchan
-\, numchans \, deststartframe \, and deststartchan give you fine control
-over which portion of the source you copy and where it is placed;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Copy\\\ only\\\ a\\\ section\\\ of\\\ the\\\ source\\\ control\\\ its\\\ placement
-4 8 0 13 #e0e0e0 #404040 0;
+#X text 16 103 the attributes startframe \, numframes \, startchan \, numchans \, deststartframe \, and deststartchan give you fine control over which portion of the source you copy and where it is placed;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Copy\ only\ a\ section\ of\ the\ source\ control\ its\ placement 4 8 0 13 #e0e0e0 #404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufcompose_dst3 44100 float 2;
 #X coords 0 1 44100 -1 200 140 1 0 0;
@@ -112,17 +85,12 @@ over which portion of the source you copy and where it is placed;
 #X obj 442 261 array define bufcompose_help_src6;
 #X obj 18 242 soundfiler;
 #X obj 18 158 loadbang;
-#X msg 18 210 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_help_src6, f 74;
-#X msg 28 186 read -resize media/Tremblay-SlideChoirAdd-M.wav bufcompose_help_src5
-, f 69;
+#X msg 18 210 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav bufcompose_help_src6, f 74;
+#X msg 28 186 read -resize media/Tremblay-SlideChoirAdd-M.wav bufcompose_help_src5, f 69;
 #X msg 17 350 \; bufcompose_dst3 const;
-#X msg 19 438 reset \, destination bufcompose_dst3 \, source bufcompose_help_src5
-\, numframes 9000 \, bang \, source bufcompose_help_src6 \, startframe
-30000 \, numframes 44100 \, destgain 1 \, bang, f 68;
+#X msg 19 438 reset \, destination bufcompose_dst3 \, source bufcompose_help_src5 \, numframes 9000 \, bang \, source bufcompose_help_src6 \, startframe 30000 \, numframes 44100 \, destgain 1 \, bang, f 68;
 #X obj 18 496 fluid.bufcompose;
-#X obj 39 527 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 39 527 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 249 741 stop;
 #X obj 197 813 fluid.out~ bufcompose-help;
 #X text 63 652 play source1, f 13;
@@ -133,18 +101,13 @@ bufcompose_help_src6, f 74;
 #X msg 201 700 set bufcompose_dst3 \, bang;
 #X obj 197 777 tabplay~;
 #X text 57 527 done;
-#X obj 269 819 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 160 628 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 269 819 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 160 628 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 267 818 3) Audio on;
 #X text 157 627 4) play the various arrays;
-#X obj 13 402 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 15 331 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 13 402 2) overlay a brief burst of the first source \, with
-1" of the second \, read from an offset of 30k samples;
+#X obj 13 402 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 15 331 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 13 402 2) overlay a brief burst of the first source \, with 1" of the second \, read from an offset of 30k samples;
 #X text 15 330 1) clear the destination;
 #X connect 7 0 8 0;
 #X connect 7 0 9 0;
@@ -159,30 +122,22 @@ bufcompose_help_src6, f 74;
 #X connect 22 0 15 0;
 #X connect 22 0 15 1;
 #X restore 464 757 pd subsections;
-#N canvas 259 52 702 961 multichannel 0;
+#N canvas 259 25 702 791 multichannel 0;
 #X obj 540 335 note_on_multiarrays;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Sources\\\ can\\\ repeat\\\ channels\\\ to\\\ fit\\\ destinations
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Sources\ can\ repeat\ channels\ to\ fit\ destinations 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 16 566 fluid.bufcompose;
-#X obj 16 591 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X text 16 99 If numchans > the available source channels \, then channels
-will be repeated;
+#X obj 16 591 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X text 16 99 If numchans > the available source channels \, then channels will be repeated;
 #X obj 16 282 soundfiler;
 #X obj 16 198 loadbang;
 #X obj 441 279 array define bufcompose_help_src7;
 #X obj 441 301 array define bufcompose_help_src8;
-#X msg 16 220 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufcompose_help_src7, f 79;
-#X msg 51 243 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_help_src8, f 74;
-#X msg 28 536 source bufcompose_help_src8 \, gain 0.7 \, destgain 1
-\, deststartchan 0 \, numchans 2 \, bang, f 85;
+#X msg 16 220 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav bufcompose_help_src7, f 79;
+#X msg 51 243 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav bufcompose_help_src8, f 74;
+#X msg 28 536 source bufcompose_help_src8 \, gain 0.7 \, destgain 1 \, deststartchan 0 \, numchans 2 \, bang, f 85;
 #X obj 358 358 clone fluid.multiarray 2 bufcompose_help_dst4;
-#X msg 16 508 reset \, source bufcompose_help_src7 \, destination bufcompose_help_dst4
-\, bang, f 76;
+#X msg 16 508 reset \, source bufcompose_help_src7 \, destination bufcompose_help_dst4 \, bang, f 76;
 #X msg 114 792 stop;
 #X obj 300 874 fluid.out~ bufcompose-help;
 #X text 10 661 play source1, f 13;
@@ -191,35 +146,26 @@ bufcompose_help_src8, f 74;
 #X obj 272 848 tabplay~;
 #X msg 163 677 set bufcompose_help_src7 \, bang;
 #X msg 163 719 set bufcompose_help_src8 \, bang;
-#X obj 113 662 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 113 704 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 113 747 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 113 662 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 113 704 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 113 747 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 336 847 tabplay~;
 #X msg 413 677 set bufcompose_help_src7 \, bang;
 #X msg 413 719 set bufcompose_help_src8 \, bang;
 #X msg 163 761 set bufcompose_help_dst4-0 \, bang;
 #X msg 413 761 set bufcompose_help_dst4-1 \, bang;
 #X text 37 588 done;
-#X obj 374 881 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 166 649 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 374 881 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 166 649 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 372 880 3) Audio on;
 #X text 163 648 4) play the various arrays;
-#X obj 15 458 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 145 566 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 143 565 2) press this second message - it is only separated
-for ease of reading;
-#X text 14 456 1) Here we make a stereo buffer from a stereo source
-\, and then copy in a mono source with numchans = 2 \; it is then repeated
-across each destination channel;
+#X obj 15 458 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 145 566 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 143 565 2) press this second message - it is only separated for ease of reading;
+#X text 14 456 1) Here we make a stereo buffer from a stereo source \, and then copy in a mono source with numchans = 2 \; it is then repeated across each destination channel;
 #X connect 3 0 4 0;
 #X connect 7 0 11 0;
+#X connect 7 0 10 0;
 #X connect 10 0 6 0;
 #X connect 11 0 6 0;
 #X connect 12 0 3 0;
@@ -242,40 +188,27 @@ across each destination channel;
 #X connect 30 0 26 0;
 #X restore 464 779 pd multichannel;
 #N canvas 290 145 702 822 more_examples 0;
-#X text 15 88 by combining attributes for selection \, placement \,
-gain and channel behaviour we have a veritable swiss-army knife of
-buffer operations...;
+#X text 15 88 by combining attributes for selection \, placement \, gain and channel behaviour we have a veritable swiss-army knife of buffer operations...;
 #N canvas 530 144 480 270 example5a 0;
 #X obj 11 219 outlet;
 #X obj 11 36 inlet;
 #X obj 11 59 t b b;
-#X msg 43 83 \; bufcompose_help_dst5-0 const \; bufcompose_help_dst5-1
-const;
-#X msg 11 146 reset \, destination bufcompose_help_dst5 \, source bufcompose_help_src9
-\, numframes 9000 \, numchans 1 \, gain 0.5 \, bang \, source bufcompose_help_src10
-\, startframe 30000 \, numframes 44100 \, numchans 1 \, gain 0.9 \,
-destgain 1 \, bang;
+#X msg 43 83 \; bufcompose_help_dst5-0 const \; bufcompose_help_dst5-1 const;
+#X msg 11 146 reset \, destination bufcompose_help_dst5 \, source bufcompose_help_src9 \, numframes 9000 \, numchans 1 \, gain 0.5 \, bang \, source bufcompose_help_src10 \, startframe 30000 \, numframes 44100 \, numchans 1 \, gain 0.9 \, destgain 1 \, bang;
 #X connect 1 0 2 0;
 #X connect 2 0 4 0;
 #X connect 2 1 3 0;
 #X connect 4 0 0 0;
 #X restore 16 425 pd example5a;
-#X obj 16 391 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 131 443 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 242 491 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 16 391 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 131 443 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 242 491 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #N canvas 519 301 472 279 example5b 0;
 #X obj 11 229 outlet;
 #X obj 11 36 inlet;
 #X obj 11 59 t b b;
-#X msg 43 83 \; bufcompose_help_dst5-0 const \; bufcompose_help_dst5-1
-const;
-#X msg 11 146 reset \, destination bufcompose_help_dst5 \, source bufcompose_help_src9
-\, startframe 441000 \, numchans 2 \, gain 0.6 \, bang \, source bufcompose_help_src10
-\, startframe 0 \, numframes 78000 \, startchan 1 \, gain 0.5 \, deststartframe
-22050 \, destgain 1 \, bang;
+#X msg 43 83 \; bufcompose_help_dst5-0 const \; bufcompose_help_dst5-1 const;
+#X msg 11 146 reset \, destination bufcompose_help_dst5 \, source bufcompose_help_src9 \, startframe 441000 \, numchans 2 \, gain 0.6 \, bang \, source bufcompose_help_src10 \, startframe 0 \, numframes 78000 \, startchan 1 \, gain 0.5 \, deststartframe 22050 \, destgain 1 \, bang;
 #X connect 1 0 2 0;
 #X connect 2 0 4 0;
 #X connect 2 1 3 0;
@@ -285,59 +218,41 @@ const;
 #X obj 11 233 outlet;
 #X obj 11 36 inlet;
 #X obj 11 59 t b b;
-#X msg 43 83 \; bufcompose_help_dst5-0 const \; bufcompose_help_dst5-1
-const;
-#X msg 11 146 reset \, destination bufcompose_help_dst5 \, source bufcompose_help_src9
-\, startframe 0 \, numframes 44100 \, deststartchan 1 \, bang \, source
-bufcompose_help_src10 \, numchans 1 \, deststartchan 0 \, bang;
+#X msg 43 83 \; bufcompose_help_dst5-0 const \; bufcompose_help_dst5-1 const;
+#X msg 11 146 reset \, destination bufcompose_help_dst5 \, source bufcompose_help_src9 \, startframe 0 \, numframes 44100 \, deststartchan 1 \, bang \, source bufcompose_help_src10 \, numchans 1 \, deststartchan 0 \, bang;
 #X connect 1 0 2 0;
 #X connect 2 0 4 0;
 #X connect 2 1 3 0;
 #X connect 4 0 0 0;
 #X restore 242 520 pd example5c;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Combining\\\ parameters 4 8
-0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufcompose 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Combining\ parameters 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 16 545 fluid.bufcompose;
-#X obj 16 571 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 16 571 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 441 298 array define bufcompose_help_src9;
 #X obj 539 261 note_on_multiarrays;
 #X obj 357 350 clone fluid.multiarray 2 bufcompose_help_dst5;
 #X obj 16 256 soundfiler;
 #X obj 16 168 loadbang;
-#X msg 51 197 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_help_src9, f 74;
+#X msg 51 197 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav bufcompose_help_src9, f 74;
 #X obj 90 743 fluid.out~ bufcompose-help;
-#X obj 26 661 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 26 661 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 45 660 stop;
 #X obj 90 685 tabplay~ bufcompose_help_dst5-0;
 #X obj 119 713 tabplay~ bufcompose_help_dst5-1;
 #X obj 350 322 clone fluid.multiarray 2 bufcompose_help_src10;
-#X msg 16 220 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav
-bufcompose_help_src10-0 bufcompose_help_src10-1, f 79;
+#X msg 16 220 read -resize media/Tremblay-SA-UprightPianoPedalWide.wav bufcompose_help_src10-0 bufcompose_help_src10-1, f 79;
 #X text 34 569 done;
-#X obj 164 749 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 95 658 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 164 749 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 95 658 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 162 748 1) Audio on;
-#X obj 33 391 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 33 391 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 94 658 3) Listen to the destination;
-#X obj 152 441 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 260 489 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 34 388 2) make a mono buffer \, with a quiet punch from the
-synth \, with a choked piano resonance from the left channel;
-#X text 150 440 4) make a stereo buffer \, with the end of the mono
-synth in both channels \, with a piano resonance in swapped stereo
-;
-#X text 261 488 5) make a stereo buffer: the first second of each buffer
-\, the mono synth on the right \, the piano on the left;
+#X obj 152 441 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 260 489 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 34 388 2) make a mono buffer \, with a quiet punch from the synth \, with a choked piano resonance from the left channel;
+#X text 150 440 4) make a stereo buffer \, with the end of the mono synth in both channels \, with a piano resonance in swapped stereo;
+#X text 261 488 5) make a stereo buffer: the first second of each buffer \, the mono synth on the right \, the piano on the left;
 #X connect 1 0 9 0;
 #X connect 2 0 1 0;
 #X connect 3 0 5 0;
@@ -357,11 +272,9 @@ synth in both channels \, with a piano resonance in swapped stereo
 #X connect 23 0 14 0;
 #X restore 464 801 pd more_examples;
 #X obj 416 267 array define bufcompose_help_src1;
-#X msg 18 207 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav
-bufcompose_help_src1, f 74;
+#X msg 18 207 read -resize media/Tremblay-AaS-SynthTwoVoices-M.wav bufcompose_help_src1, f 74;
 #X msg 78 493 destination bufcompose_dst;
-#X obj 127 544 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 127 544 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X msg 21 422 source bufcompose_help_src1 \, gain 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array bufcompose_dst-0 515088 float 2;
@@ -374,18 +287,13 @@ bufcompose_help_src1, f 74;
 #X text 62 649 'buffer <destination>' message when done;
 #X obj 23 646 print;
 #X obj 464 846 note_on_automatic_multiarrays;
-#X obj 172 840 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 146 757 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 172 840 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 146 757 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 145 757 5) Listen to the source;
 #X text 170 839 4) Audio on;
-#X obj 20 404 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 77 474 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 108 545 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 20 404 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 77 474 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 108 545 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 108 542 3);
 #X text 77 473 2) set a destination;
 #X text 19 402 1) set a source and a gain;

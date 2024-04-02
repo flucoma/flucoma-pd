@@ -1,12 +1,8 @@
-#N canvas 74 86 695 918 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufstft.html reference/bufstft/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Perform\\\ a\\\ Short-Time\\\ Fourier\\\ Transform\\\ on\\\ one\\\ channel
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 99 Performs either a forward or inverse Short-Time Fourier
-Transform (STFT) on a single channel source array.;
+#N canvas 74 25 695 919 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufstft.html reference/bufstft/;
+#X obj 17 60 cnv 15 488 17 empty empty Perform\ a\ Short-Time\ Fourier\ Transform\ on\ one\ channel 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 99 Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel source array.;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -17,32 +13,22 @@ Transform (STFT) on a single channel source array.;
 #X connect 3 0 0 0;
 #X restore 18 218 pd loadsrc;
 #X obj 18 170 fluid.demoaudiofiles;
-#X obj 18 152 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 152 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 491 143 array define help.stft.src;
 #X obj 325 378 fluid.waveform 350 100 1 empty empty 0;
-#X obj 43 325 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 43 325 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 19 151 1) Load a sound of your choice;
 #X text 44 324 2) Do STFT analysis;
-#X obj 18 325 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 17 78 cnv 15 488 17 empty empty of\\\ a\\\ buffer 4 8 0 13 #e0e0e0
-#404040 0;
-#X obj 18 345 fluid.bufstft -source help.stft.src -magnitude help.stft.magnitudes
--phase help.stft.phases, f 35;
-#X obj 491 173 clone fluid.multiarray 513 help.stft.magnitudes, f
-26;
+#X obj 18 325 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 17 78 cnv 15 488 17 empty empty of\ a\ buffer 4 8 0 13 #e0e0e0 #404040 0;
+#X obj 18 345 fluid.bufstft -source help.stft.src -magnitude help.stft.magnitudes -phase help.stft.phases, f 35;
+#X obj 491 173 clone fluid.multiarray 513 help.stft.magnitudes, f 26;
 #X obj 491 213 clone fluid.multiarray 513 help.stft.phases, f 26;
-#X obj 18 403 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X obj 462 813 cnv 15 212 88 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 18 403 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 462 813 cnv 15 212 88 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 162 143 692 671 musical_example 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X text 17 99 Performs either a forward or inverse Short-Time Fourier
-Transform (STFT) on a single channel source array.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufstft 1 22 0 36 #4ba3fb #ffffff 0;
+#X text 17 99 Performs either a forward or inverse Short-Time Fourier Transform (STFT) on a single channel source array.;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 inlet;
@@ -53,45 +39,30 @@ Transform (STFT) on a single channel source array.;
 #X connect 3 0 0 0;
 #X restore 18 218 pd loadsrc;
 #X obj 18 170 fluid.demoaudiofiles;
-#X text 19 151 1) Load a sound of your choice;
 #X obj 461 148 array define help.stft.src.2;
-#X obj 461 173 clone fluid.multiarray 513 help.stft.magnitudes.2,
-f 26;
-#X obj 461 213 clone fluid.multiarray 513 help.stft.phases.2, f 26
-;
+#X obj 461 173 clone fluid.multiarray 513 help.stft.magnitudes.2, f 26;
+#X obj 461 213 clone fluid.multiarray 513 help.stft.phases.2, f 26;
 #X obj 461 253 array define help.stft.resynth.2;
 #X f 26;
-#X obj 43 325 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 43 325 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 44 323 2) Do STFT analysis;
-#X obj 18 325 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X obj 18 345 fluid.bufstft -source help.stft.src.2 -magnitude help.stft.magnitudes.2
--phase help.stft.phases.2;
-#X obj 323 425 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 298 425 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
-#000000 #000000;
+#X obj 18 325 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 18 345 fluid.bufstft -source help.stft.src.2 -magnitude help.stft.magnitudes.2 -phase help.stft.phases.2;
+#X obj 323 425 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 298 425 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
 #X text 324 423 3) Resynthesise using the reversed magnitudes;
-#X obj 298 445 fluid.bufstft -inverse 1 -resynth help.stft.resynth.2
--magnitude help.stft.magnitudes.modified -phase help.stft.phases.2
-;
-#X obj 298 499 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 298 445 fluid.bufstft -inverse 1 -resynth help.stft.resynth.2 -magnitude help.stft.magnitudes.modified -phase help.stft.phases.2;
+#X obj 298 499 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 368 580 tabplay~ help.stft.resynth.2;
 #X obj 368 624 fluid.out~ bufstfthelp;
-#X obj 393 545 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 368 545 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7
-#000000 #000000;
-#X obj 438 630 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 393 545 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 368 545 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X obj 438 630 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 439 628 3) audio on;
 #X text 394 542 5) play the results;
 #N canvas 316 283 767 671 resize_modified_magnitudes_array 0;
 #X obj 30 30 inlet;
-#X obj 30 281 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 30 281 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 29 372 5 0 0 0 - - - 0;
 #X obj 30 301 array size help.stft.magnitudes.2-0;
 #X obj 30 246 t b f;
@@ -124,14 +95,12 @@ f 26;
 #X connect 14 0 12 1;
 #X restore 50 463 pd resize_modified_magnitudes_array;
 #X f 16;
-#X obj 461 293 clone fluid.multiarray 513 help.stft.magnitudes.modified
-, f 29;
+#X obj 461 293 clone fluid.multiarray 513 help.stft.magnitudes.modified, f 29;
 #X obj 18 432 t b b;
 #X msg 18 516 513;
 #N canvas 1040 -982 1345 813 reverse_magnitudes 0;
 #X obj 162 33 inlet;
-#X obj 162 281 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 162 281 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 162 120 until;
 #X obj 195 164 + 1;
 #X obj 162 93 t f b;
@@ -165,8 +134,7 @@ f 26;
 #X text 255 130 iterate 512 channels;
 #X text 76 577 count down;
 #X text 70 630 index value;
-#X obj 697 59 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 697 59 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 696 110 print;
 #X obj 697 79 array get help.stft.magnitudes.modified-1;
 #X floatatom 313 556 5 0 0 0 - - - 0;
@@ -218,49 +186,41 @@ f 26;
 #X connect 40 0 26 0;
 #X connect 40 0 23 1;
 #X restore 18 549 pd reverse_magnitudes;
-#X obj 18 408 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 18 408 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
+#X obj 18 152 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 19 151 1) Load a sound of your choice;
 #X connect 3 0 2 0;
-#X connect 11 0 12 0;
-#X connect 12 0 30 0;
-#X connect 14 0 16 0;
-#X connect 16 0 17 0;
-#X connect 18 0 19 0;
-#X connect 18 0 19 1;
-#X connect 21 0 18 0;
+#X connect 10 0 11 0;
+#X connect 11 0 29 0;
+#X connect 13 0 15 0;
+#X connect 15 0 16 0;
+#X connect 17 0 18 0;
+#X connect 17 0 18 1;
+#X connect 20 0 17 0;
+#X connect 26 0 27 0;
+#X connect 26 1 24 0;
 #X connect 27 0 28 0;
-#X connect 27 1 25 0;
-#X connect 28 0 29 0;
-#X connect 30 0 27 0;
+#X connect 29 0 26 0;
 #X restore 465 833 pd musical_example;
 #X obj 465 877 note_on_multithreading;
 #X obj 465 855 note_on_automatic_multiarrays;
-#X obj 43 525 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 18 525 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X msg 325 339 imagelogflag 1 \, imagecolorscheme 1 \, image help.stft.magnitudes
-;
-#X obj 18 545 fluid.bufstft -magnitude help.stft.magnitudes -phase
-help.stft.phases -resynth help.stft.resynth -inverse 1;
+#X obj 43 525 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 18 525 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X msg 325 339 imagelogflag 1 \, imagecolorscheme 1 \, image help.stft.magnitudes;
+#X obj 18 545 fluid.bufstft -magnitude help.stft.magnitudes -phase help.stft.phases -resynth help.stft.resynth -inverse 1;
 #X obj 491 253 array define help.stft.resynth;
 #X f 26;
-#X obj 18 603 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 18 603 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 18 636 t b b, f 47;
 #X obj 18 714 fluid.waveform 315 80 0 empty empty 0;
 #X obj 344 714 fluid.waveform 315 80 0 empty empty 0;
 #X text 287 697 source;
 #X text 578 697 resynthesis;
-#X obj 325 315 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 325 315 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 326 314 3) Draw magnitudes as a spectrogram;
-#X text 44 524 4) Resynthesise the source using the magnitudes and
-phases;
-#X msg 18 665 waveformcolor #0000cc \, waveform help.stft.src, f 23
-;
-#X msg 344 665 waveformcolor #009900 \, waveform help.stft.resynth
-, f 27;
+#X text 44 524 4) Resynthesise the source using the magnitudes and phases;
+#X msg 18 665 waveformcolor #0000cc \, waveform help.stft.src, f 23;
+#X msg 344 665 waveformcolor #009900 \, waveform help.stft.resynth, f 27;
 #X connect 5 0 4 0;
 #X connect 12 0 14 0;
 #X connect 14 0 17 0;
