@@ -78,17 +78,17 @@ jobs:
 
     steps:
       #### LINUX ####
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: linuxbuild
 
       #### MAC ####
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: macbuild
 
       #### WINDOWS ####
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4.1.7
         with:
           name: winbuild
 
