@@ -32,7 +32,7 @@ jobs:
           apppwd: ${{ secrets.APPSTORECONNECTPWD }}
           appusr: ${{ secrets.APPSTORECONNECTUSERNAME }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4.3.6
         with:
           name: macbuild
           path: release-packaging/FluCoMa-PD-Mac-nightly.dmg
@@ -50,7 +50,7 @@ jobs:
         run: 7z a FluCoMa-PD-Windows-nightly.zip FluidCorpusManipulation
         working-directory: release-packaging
 
-      - uses: actions/upload-artifact@v3 
+      - uses: actions/upload-artifact@v4.3.6 
         with:
           name: winbuild
           path: release-packaging/FluCoMa-PD-Windows-nightly.zip
@@ -68,7 +68,7 @@ jobs:
         run: tar -zcvf FluCoMa-PD-Linux-nightly.tar.gz FluidCorpusManipulation
         working-directory: release-packaging
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4.3.6
         with:
           name: linuxbuild 
           path: release-packaging/FluCoMa-PD-Linux-nightly.tar.gz
