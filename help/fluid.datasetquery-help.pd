@@ -5,7 +5,7 @@
 #X obj 509 60 fluid.referencelauncher fluid.datasetquery.html reference/datasetquery/;
 #X obj 47 211 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 17 79 Query a FluidDataSet;
-#X text 17 129 A selection of columns and a set of conditions that match rows of a FluidDataSet. Use to filter and search in a database of descriptors.;
+#X text 17 129 A selection of columns and a set of conditions that match points of a FluidDataSet. Use to filter and search in a database of descriptors.;
 #N canvas 376 25 697 791 operators 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.datasetquery 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 We can also combine multiple operators to refine the filter for the query.;
@@ -809,8 +809,8 @@
 #X obj 302 619 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 303 618 3) Filter the spectral shape analyses by the pitch confidence values of the pitch dataset.;
 #X obj 47 741 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
-#X text 48 780 Note the size (number of rows) in each dataset., f 26;
-#X text 470 431 Once we filter the data based on pitch confidence there are fewer rows in the dataset. Any identifier where the confidence was lower than 0.9 in the pitch dataset is removed from both., f 20;
+#X text 48 780 Note the size (number of points) in each dataset., f 26;
+#X text 470 431 Once we filter the data based on pitch confidence there are fewer points in the dataset. Any identifier where the confidence was lower than 0.9 in the pitch dataset is removed from both., f 20;
 #X obj 38 331 route size;
 #X obj 45 569 route size;
 #X obj 247 436 route size;
