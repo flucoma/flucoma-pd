@@ -1,13 +1,9 @@
-#N canvas 126 23 693 777 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyfeature~ 1 22 0
-36 #4ba3fb #ffffff 0;
+#N canvas 126 44 693 777 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.noveltyfeature~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 23 149 fluid.demosound~;
-#X obj 509 60 fluid.referencelauncher fluid.noveltyfeature~.html reference/noveltyfeature/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Realtime\\\ Novelty\\\ Feature
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 Calculates the novelty feature of audio in realtime.
-;
+#X obj 509 60 fluid.referencelauncher fluid.noveltyfeature~.html reference/noveltyfeature/;
+#X obj 17 60 cnv 15 488 17 empty empty Realtime\ Novelty\ Feature 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 Calculates the novelty feature of audio in realtime.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array noveltyfeature_helpviewer 300 float 2;
 #X coords 0 1 300 0 300 140 1 0 0;
@@ -76,32 +72,24 @@
 #X connect 17 0 18 0;
 #X coords 0 -1 1 1 294 90 2 100 100;
 #X restore 261 263 pd parameters;
-#N canvas 68 23 771 729 parameters 0;
+#N canvas 68 44 771 729 parameters 0;
 #X obj 415 318 s \$0-params;
 #X obj 29 577 r \$0-params;
 #X obj 29 600 outlet;
 #X obj 29 145 s \$0-params;
 #X text 152 148 for hopsize \, -1 = windowsize/2, f 26;
-#X text 153 100 window size (1024) \, hop size (-1) \, fft size (-1)
-, f 26;
-#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power
-of 2, f 26;
+#X text 153 100 window size (1024) \, hop size (-1) \, fft size (-1), f 26;
+#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power of 2, f 26;
 #X obj 415 120 s \$0-params;
 #X obj 33 482 s \$0-params;
 #X obj 417 503 s \$0-params;
-#X obj 29 355 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 417 465 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 29 355 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 417 465 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 54 FFT settings;
-#X obj 417 575 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 415 267 cnv 10 280 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 415 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 417 575 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 415 267 cnv 10 280 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 415 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X msg 29 102 fftsettings 1024 -1 1, f 12;
 #X text 413 54 Filter size;
 #X text 415 555 Warnings;
@@ -112,9 +100,7 @@ of 2, f 26;
 #X text 507 618 or no warnings;
 #X msg 415 97 filtersize 5;
 #X text 540 93 size of smoothing filter;
-#X msg 33 460 metric 0;
-#X obj 33 390 vradio 12 1 0 5 empty empty metric: 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 33 390 vradio 12 1 0 5 empty empty algorithm: 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 27 335 Algorithm;
 #X text 48 386 0: Spectrum, f 15;
 #X text 48 398 1: MFCC, f 15;
@@ -123,52 +109,44 @@ of 2, f 26;
 #X text 48 434 4: Loudness, f 15;
 #X obj 29 285 s \$0-params;
 #X msg 29 262 maxfftsize -1;
-#X text 547 350 size upper bound \, -1 sets to initial size, f 26
-;
+#X text 547 350 size upper bound \, -1 sets to initial size, f 26;
 #X obj 415 182 s \$0-params;
 #X msg 415 159 maxfiltersize -1;
 #X text 413 249 Kernel;
 #X msg 415 295 kernelsize;
-#X text 527 294 granularity of the window in which the algorithm looks
-for change \, in samples, f 29;
+#X text 527 294 granularity of the window in which the algorithm looks for change \, in samples, f 29;
 #X obj 415 380 s \$0-params;
 #X msg 415 357 maxkernelsize -1;
 #X text 415 445 Smoothing filter size;
 #X msg 417 480 filtersize 1;
-#X text 526 475 size of a smoothing filter that is applied on the novelty
-curve, f 29;
+#X text 526 475 size of a smoothing filter that is applied on the novelty curve, f 29;
 #X text 28 6 Optional parameters to fluid.noveltyfeature~;
+#X msg 33 460 algorithm 0;
 #X connect 1 0 2 0;
 #X connect 17 0 3 0;
 #X connect 21 0 20 0;
 #X connect 22 0 20 0;
 #X connect 25 0 7 0;
-#X connect 27 0 8 0;
-#X connect 28 0 27 0;
-#X connect 36 0 35 0;
-#X connect 39 0 38 0;
-#X connect 41 0 0 0;
-#X connect 44 0 43 0;
-#X connect 46 0 9 0;
+#X connect 27 0 48 0;
+#X connect 35 0 34 0;
+#X connect 38 0 37 0;
+#X connect 40 0 0 0;
+#X connect 43 0 42 0;
+#X connect 45 0 9 0;
+#X connect 48 0 8 0;
 #X restore 502 374 pd parameters;
 #X text 601 374 <-- more;
 #X obj 53 400 fluid.noveltyslice~ 21 5;
 #X obj 315 425 fluid.noveltyfeature~ 21 5 -warnings 1;
-#X text 373 447 arguments (optional) set the maxkernelsize and maxfiltersize
-, f 31;
-#X obj 27 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X text 373 447 arguments (optional) set the maxkernelsize and maxfiltersize, f 31;
+#X obj 27 128 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 28 127 1) pick a source and start playing;
-#X obj 96 525 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 96 525 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 97 524 2) Audio on.;
-#X obj 563 266 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 563 266 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 564 265 4) explore the parameters, f 14;
-#X obj 30 731 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 31 730 3) This represents the change in the underlying feature
-of fluid.noveltyslice~ in realtime.;
+#X obj 30 731 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 31 730 3) This represents the change in the underlying feature of fluid.noveltyslice~ in realtime.;
 #X connect 1 0 10 0;
 #X connect 1 0 14 0;
 #X connect 1 0 15 0;
