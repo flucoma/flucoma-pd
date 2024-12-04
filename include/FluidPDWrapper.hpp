@@ -978,10 +978,10 @@ public:
   }
 
   FluidPDWrapper(t_symbol*, int ac, t_atom* av)
-      : mListSize{32}, mDumpOutlet{nullptr},
+      : mListSize{32}, mDumpOutlet{nullptr}, mAutosize{true},
         mParams(Client::getParameterDescriptors(), FluidDefaultAllocator()),
-        mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av),
-        FluidContext()}, mAutosize{true}, mCanvas{canvas_getcurrent()}
+        mParamSnapshot(mParams.toTuple()), mClient{initParamsFromArgs(ac, av), 
+        FluidContext()}, mCanvas{canvas_getcurrent()}
   {
     t_object* pdObject = impl::PDBase::getPDObject();
 
@@ -1216,8 +1216,7 @@ public:
       mParams.template forEachParam<MatchName>(s->s_name + 1, matched);
       if (!strcmp(s->s_name + 1, "warnings")) matched = true;
 
-      if (!strcmp(s->s_name + 1, "autosize"))
-        matched = true;
+      if (!strcmp(s->s_name + 1, "autosize")) matched = true;
 
       if (isNonRealTime<Client>::value && !strcmp(s->s_name + 1, "blocking"))
         matched = true;
@@ -2001,10 +2000,10 @@ private:
   std::deque<Result> mUserMessageQueue;
   t_outlet*          mDumpOutlet;
   bool               mVerbose;
+  bool               mAutosize;
   ParamSetType       mParams;
   ParamValues        mParamSnapshot;
   Client             mClient;
-  bool               mAutosize;
 
   FluidTensor<double, 2>                  mInputListData;
   std::vector<FluidTensorView<double, 1>> mInputListViews;

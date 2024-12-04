@@ -37,7 +37,7 @@ set(FLUID_DOCS_PATH "" CACHE PATH "Optional path to flucoma-docs (needed for doc
 
 if (APPLE)
   set(CMAKE_XCODE_GENERATE_SCHEME ON)
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.8" CACHE STRING "")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "")
   # A consequence of targetting 10.8. Needs to be set globally from 10.15 onwards in order for the test program to compile successfully during configure 
   string(APPEND CMAKE_CXX_FLAGS " -stdlib=libc++")
 endif()
