@@ -59,7 +59,6 @@
 #X connect 16 0 15 2;
 #X connect 17 0 15 0;
 #X restore 498 207 pd auto_managed_buffers;
-#X obj 509 60 fluid.referencelauncher fluid.bufinfo.html reference/bufinfo/;
 #X obj 23 179 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 24 179 1) try on a fluid.multiarray;
 #X obj 149 238 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
@@ -67,6 +66,7 @@
 #X text 157 267 3) ... and on constructed stereo;
 #X text 150 236 2) works on native arrays too...;
 #X text 17 92 This utility object tests the validity \, the size in frames and the number of channels of a fluid.multiarray \, either when created via the clone object \, or programmatically with automatically generated 'buffers'., f 68;
+#X obj 509 60 fluid.referencelauncher fluid.bufinfo.html reference;
 #X connect 2 0 5 0;
 #X connect 4 0 2 0;
 #X connect 8 0 2 0;
