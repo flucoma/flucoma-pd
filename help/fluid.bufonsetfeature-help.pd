@@ -1,7 +1,7 @@
 #N canvas 58 69 696 937 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufonsetfeature 1 22 0
 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufonsetfeature.html reference/onsetfeature/
+#X obj 509 60 fluid.referencelauncher fluid.onsetfeature.html reference/onsetfeature/
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Spectral\\\ Difference\\\ Feature
 4 8 0 13 #e0e0e0 #404040 0;

@@ -1,6 +1,6 @@
 #N canvas 18 45 701 892 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyfeature 1 22 0 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufnoveltyfeature.html reference/noveltyfeature/;
+#X obj 509 60 fluid.referencelauncher fluid.noveltyfeature.html reference/noveltyfeature/;
 #X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Novelty\ Feature 4 8 0 13 #e0e0e0 #404040 0;
 #X text 18 80 Calculates the novelty feature of audio stored in a buffer.;
 #N canvas 1376 -757 448 179 loadsrc 0;
