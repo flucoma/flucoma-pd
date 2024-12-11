@@ -1,7 +1,6 @@
 #N canvas 82 79 700 790 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.multiarray 1 22 0 36 #4ba3fb
 #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.multiarray.html reference/multiarray/
 ;
 #X obj 17 60 cnv 15 488 17 empty empty Multichannel\\\ arrays 4 8 0
 13 #e0e0e0 #404040 0;
@@ -69,6 +68,7 @@ arrays. Note that it requires invoking with the clone object to work.
 #X connect 9 0 15 0;
 #X connect 9 1 24 0;
 #X connect 10 0 13 0;
+#X obj 509 60 fluid.referencelauncher fluid.multiarray.html reference;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
 #X connect 13 1 25 0;
