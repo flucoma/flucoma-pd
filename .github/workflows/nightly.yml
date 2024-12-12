@@ -47,13 +47,13 @@ jobs:
           branch: origin/main
 
       - name: compress archive
-        run: 7z a FluCoMa-PD-Windows-nightly.zip FluidCorpusManipulation
+        run: 7z a FluCoMa-PD-Windows-x64-nightly.zip FluidCorpusManipulation
         working-directory: release-packaging
 
       - uses: actions/upload-artifact@v4.3.6 
         with:
           name: winbuild
-          path: release-packaging/FluCoMa-PD-Windows-nightly.zip
+          path: release-packaging/FluCoMa-PD-Windows-x64-nightly.zip
 
   linuxbuild:
     runs-on: ubuntu-20.04
@@ -65,13 +65,13 @@ jobs:
           branch: origin/main
 
       - name: compress archive
-        run: tar -zcvf FluCoMa-PD-Linux-nightly.tar.gz FluidCorpusManipulation
+        run: tar -zcvf FluCoMa-PD-Linux-x64-nightly.tar.gz FluidCorpusManipulation
         working-directory: release-packaging
 
       - uses: actions/upload-artifact@v4.3.6
         with:
           name: linuxbuild 
-          path: release-packaging/FluCoMa-PD-Linux-nightly.tar.gz
+          path: release-packaging/FluCoMa-PD-Linux-x64-nightly.tar.gz
   
   release:
     runs-on: ubuntu-20.04
