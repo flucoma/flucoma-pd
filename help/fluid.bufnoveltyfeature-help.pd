@@ -1,22 +1,16 @@
 #N canvas 18 45 701 892 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyfeature 1 22
-0 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufnoveltyfeature.html
-reference/noveltyfeature/;
-#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Novelty\\\ Feature
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 18 80 Calculates the novelty feature of audio stored in a buffer.
-;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyfeature 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.noveltyfeature.html reference/noveltyfeature/;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Novelty\ Feature 4 8 0 13 #e0e0e0 #404040 0;
+#X text 18 80 Calculates the novelty feature of audio stored in a buffer.;
 #N canvas 1376 -757 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;
 #X obj 16 19 loadbang;
-#X msg 16 41 read -resize media/Harker-DS-TenOboeMultiphonics-M.wav
-help.novelty.src;
+#X msg 16 41 read -resize media/Harker-DS-TenOboeMultiphonics-M.wav help.novelty.src;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X restore 17 151 pd loadsrc;
-#X obj 42 196 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 42 196 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 43 196 1) Trigger curve generation and slicing;
 #N canvas 1389 -780 593 406 drawing_commands 0;
 #X obj 23 66 inlet;
@@ -26,8 +20,7 @@ help.novelty.src;
 #X obj 23 100 t b;
 #X obj 253 100 t b b, f 24;
 #X msg 253 130 features help.novelty.curve, f 19;
-#X msg 23 130 indices help.novelty.slices help.novelty.slices, f 29
-;
+#X msg 23 130 indices help.novelty.slices help.novelty.slices, f 29;
 #X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 3 0 2 0;
@@ -39,23 +32,18 @@ help.novelty.src;
 #X restore 17 605 pd drawing_commands;
 #X f 34;
 #X obj 17 629 fluid.waveform 660 117 1 empty empty 0;
-#X obj 455 807 cnv 15 222 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 455 807 cnv 15 222 65 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 466 849 note_on_multithreading;
-#N canvas 1075 -1074 918 1022 parameters 0;
+#N canvas 1075 44 918 1022 parameters 0;
 #X obj 29 927 r \$0-params;
 #X obj 29 950 outlet;
 #X obj 29 145 s \$0-params;
 #X text 152 148 for hopsize \, -1 = windowsize/2, f 26;
-#X text 153 101 window size (1024) \, hop size (-1) \, fft size (-1)
-, f 26;
-#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power
-of 2, f 26;
-#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X text 153 101 window size (1024) \, hop size (-1) \, fft size (-1), f 26;
+#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power of 2, f 26;
+#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 54 FFT settings;
-#X obj 27 645 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 27 645 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X msg 29 102 fftsettings 1024 -1 1, f 12;
 #X text 25 625 Warnings;
 #X obj 28 724 s \$0-params;
@@ -65,8 +53,7 @@ of 2, f 26;
 #X text 117 688 or no warnings;
 #X obj 29 285 s \$0-params;
 #X msg 29 262 maxfftsize -1;
-#X obj 417 75 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 417 75 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X obj 415 126 s \$0-params;
 #X obj 415 196 s \$0-params;
 #X obj 415 546 s \$0-params;
@@ -81,32 +68,25 @@ of 2, f 26;
 #X msg 415 592 startchan 0;
 #X obj 415 756 s \$0-params;
 #X msg 415 732 startframe 0;
-#X text 557 101 index of the buffer to use as the source material to
-be analysed, f 38;
+#X text 557 101 index of the buffer to use as the source material to be analysed, f 38;
 #X text 557 661 How many frames to analyse, f 39;
-#X text 557 801 controls the zero-padding added to either end of the
-source buffer or segment, f 39;
+#X text 557 801 controls the zero-padding added to either end of the source buffer or segment, f 39;
 #X text 28 6 Optional parameters to fluid.bufnoveltyfeature~;
 #X obj 415 266 s \$0-params;
 #X obj 415 336 s \$0-params;
 #X obj 415 406 s \$0-params;
 #X obj 415 476 s \$0-params;
 #X msg 415 242 filtersize 1;
-#X text 557 241 size of a smoothing filter that is applied on the novelty
-curve, f 38;
+#X text 557 241 size of a smoothing filter that is applied on the novelty curve, f 38;
 #X msg 415 312 kernelsize 3;
-#X text 557 311 granularity of the window in which the algorithm looks
-for change \, in samples, f 38;
+#X text 557 311 granularity of the window in which the algorithm looks for change \, in samples, f 38;
 #X msg 415 382 maxfiltersize -1;
 #X text 557 381 maximum value for filtersize, f 38;
 #X msg 415 452 maxkernelsize -1;
 #X text 557 451 maximum value for kernelsize, f 38;
 #X obj 33 482 s \$0-params;
-#X obj 29 355 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X msg 33 460 metric 0;
-#X obj 33 390 vradio 12 1 0 5 empty empty metric: 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 29 355 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 33 390 vradio 12 1 0 5 empty empty algorithm: 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 27 335 Algorithm;
 #X text 48 386 0: Spectrum, f 15;
 #X text 48 398 1: MFCC, f 15;
@@ -114,14 +94,11 @@ for change \, in samples, f 38;
 #X text 48 422 3: Pitch, f 15;
 #X text 48 434 4: Loudness, f 15;
 #X text 171 390 feature on which novelty is computed, f 23;
-#X text 557 521 for a multichannel source \, how many channels to process
-, f 39;
-#X text 557 591 for a multichannel source \, which channel should be
-processed first, f 39;
-#X text 557 731 Where in the source the analysis should start \, in
-samples, f 39;
-#X text 557 171 destination buffer to write the analysis into, f 38
-;
+#X text 557 521 for a multichannel source \, how many channels to process, f 39;
+#X text 557 591 for a multichannel source \, which channel should be processed first, f 39;
+#X text 557 731 Where in the source the analysis should start \, in samples, f 39;
+#X text 557 171 destination buffer to write the analysis into, f 38;
+#X msg 33 460 algorithm 0;
 #X connect 0 0 1 0;
 #X connect 9 0 2 0;
 #X connect 12 0 11 0;
@@ -138,17 +115,15 @@ samples, f 39;
 #X connect 43 0 38 0;
 #X connect 45 0 39 0;
 #X connect 47 0 40 0;
-#X connect 51 0 49 0;
-#X connect 52 0 51 0;
+#X connect 51 0 63 0;
+#X connect 63 0 49 0;
+#X coords 0 0 1 1 85 60 0;
 #X restore 376 455 pd parameters;
 #X obj 469 151 array define help.novelty.src;
 #X obj 448 199 array define help.novelty.slices;
 #X obj 455 175 array define help.novelty.curve;
-#X obj 17 487 fluid.bufnoveltyslice -source help.novelty.src -indices
-help.novelty.slices -threshold 0.5 -maxfiltersize 11 -maxkernelsize
-51, f 31;
-#X obj 252 487 fluid.bufnoveltyfeature -source help.novelty.src -features
-help.novelty.curve -maxfiltersize 11 -maxkernelsize 51, f 31;
+#X obj 17 487 fluid.bufnoveltyslice -source help.novelty.src -indices help.novelty.slices -threshold 0.5 -maxfiltersize 11 -maxkernelsize 51, f 31;
+#X obj 252 487 fluid.bufnoveltyfeature -source help.novelty.src -features help.novelty.curve -maxfiltersize 11 -maxkernelsize 51, f 31;
 #N canvas 1333 -934 660 584 parameters 0;
 #X floatatom 185 146 8 0 0 0 - - - 0;
 #X floatatom 185 125 8 0 0 0 - - - 0;
@@ -208,15 +183,10 @@ help.novelty.curve -maxfiltersize 11 -maxkernelsize 51, f 31;
 #X connect 17 0 9 0;
 #X coords 0 -1 1 1 294 90 2 100 100;
 #X restore 96 280 pd parameters;
-#X obj 17 197 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
-#X text 400 277 By matching the algorithm \, kernelsize and filtersize
-attributes we get a glimpse of the novelty curve that noveltyslice
-uses to measure the "novelty" of the audio., f 30;
-#X text 15 765 The amount of novelty over time is depicted by the red
-line., f 22;
-#X text 203 762 Slices detected by the noveltyslice object can be seen
-where are "peaks" in the novelty., f 22;
+#X obj 17 197 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
+#X text 400 277 By matching the algorithm \, kernelsize and filtersize attributes we get a glimpse of the novelty curve that noveltyslice uses to measure the "novelty" of the audio., f 30;
+#X text 15 765 The amount of novelty over time is depicted by the red line., f 22;
+#X text 203 762 Slices detected by the noveltyslice object can be seen where are "peaks" in the novelty., f 22;
 #X text 355 434 more parameters;
 #X obj 17 217 t b b;
 #X obj 466 827 note_on_automatic_multiarrays;

@@ -1,25 +1,16 @@
 #N canvas 84 126 701 752 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyslice 1 22 0
-36 #4ba3fb #ffffff 0;
-#X obj 456 668 cnv 15 222 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufnoveltyslice.html reference/noveltyslice/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Novelty-Based\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 A non-realtime slicer using an algorithm assessing novelty
-in the signal to estimate the slicing points.;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyslice 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 456 668 cnv 15 222 65 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
+#X obj 509 60 fluid.referencelauncher fluid.noveltyslice.html reference/noveltyslice/;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Novelty-Based\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 A non-realtime slicer using an algorithm assessing novelty in the signal to estimate the slicing points.;
 #X obj 506 161 array define help.ns.src;
 #X obj 19 514 fluid.waveform 430 130 1 empty empty 0;
-#X obj 57 251 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 57 251 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 495 599 fluid.out~ bufnoveltyslicehelp;
-#X obj 567 604 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 81 251 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 57 426 fluid.bufnoveltyslice -source help.ns.src -indices help.ns.slices
--maxfiltersize 71 -maxkernelsize 101;
+#X obj 567 604 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 81 251 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 57 426 fluid.bufnoveltyslice -source help.ns.src -indices help.ns.slices -maxfiltersize 71 -maxkernelsize 101;
 #X obj 485 184 array define help.ns.slices;
 #X msg 57 464 indices help.ns.slices;
 #X floatatom 494 511 5 0 0 0 - - - 0;
@@ -117,29 +108,22 @@ in the signal to estimate the slicing points.;
 #X coords 0 -1 1 1 294 90 2 100 100;
 #X restore 267 250 pd parameters;
 #X text 370 383 <-- more parameters;
-#N canvas 1315 -1045 835 1003 parameters 0;
+#N canvas 1221 44 835 1003 parameters 0;
 #X obj 415 308 s \$0-params;
 #X obj 29 927 r \$0-params;
 #X obj 29 950 outlet;
 #X obj 29 145 s \$0-params;
 #X text 152 148 for hopsize \, -1 = windowsize/2, f 26;
-#X text 153 100 window size (1024) \, hop size (-1) \, fft size (-1)
-, f 26;
-#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power
-of 2, f 26;
+#X text 153 100 window size (1024) \, hop size (-1) \, fft size (-1), f 26;
+#X text 152 189 for fftsize \, -1 = windowsize snapped to nearest power of 2, f 26;
 #X obj 415 120 s \$0-params;
 #X obj 33 482 s \$0-params;
-#X obj 29 355 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 29 355 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 29 74 cnv 10 310 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X text 27 54 FFT settings;
-#X obj 27 565 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 415 257 cnv 10 280 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X obj 415 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
+#X obj 27 565 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 415 257 cnv 10 280 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X obj 415 74 cnv 10 200 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
 #X msg 29 102 fftsettings 1024 -1 1, f 12;
 #X text 413 54 Filter size;
 #X text 25 545 Warnings;
@@ -150,9 +134,7 @@ of 2, f 26;
 #X text 117 608 or no warnings;
 #X msg 415 97 filtersize 5;
 #X text 550 93 size of smoothing filter, f 18;
-#X msg 33 460 metric 0;
-#X obj 33 390 vradio 12 1 0 5 empty empty metric: 0 -8 0 10 #fcfcfc
-#000000 #000000 0;
+#X obj 33 390 vradio 12 1 0 5 empty empty algorithm: 0 -8 0 10 #fcfcfc #000000 #000000 0;
 #X text 27 335 Algorithm;
 #X text 48 386 0: Spectrum, f 15;
 #X text 48 398 1: MFCC, f 15;
@@ -161,31 +143,25 @@ of 2, f 26;
 #X text 48 434 4: Loudness, f 15;
 #X obj 29 285 s \$0-params;
 #X msg 29 262 maxfftsize -1;
-#X text 547 340 size upper bound \, -1 sets to initial size, f 32
-;
+#X text 547 340 size upper bound \, -1 sets to initial size, f 32;
 #X obj 415 182 s \$0-params;
 #X msg 415 159 maxfiltersize -1;
 #X text 413 239 Kernel;
 #X msg 415 285 kernelsize;
-#X text 527 284 granularity of the window in which the algorithm looks
-for change \, in samples, f 35;
+#X text 527 284 granularity of the window in which the algorithm looks for change \, in samples, f 35;
 #X obj 415 370 s \$0-params;
 #X msg 415 347 maxkernelsize -1;
 #X text 28 6 Optional parameters to fluid.noveltyfeature~;
 #X obj 415 553 s \$0-params;
-#X obj 417 425 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040
-0;
-#X text 546 509 index of the buffer where the indices (in sample) of
-the estimated starting points of slices will be written, f 33;
+#X obj 417 425 cnv 10 233 2 empty empty empty 20 12 0 14 #bbbbbb #404040 0;
+#X text 546 509 index of the buffer where the indices (in sample) of the estimated starting points of slices will be written, f 33;
 #X msg 415 517 indices arrayname, f 11;
 #X obj 415 481 s \$0-params;
 #X msg 415 457 threshold 0.5;
-#X text 547 450 normalised threshold \, between 0 and 1 \, on the novelty
-curve to consider it a segmentation point, f 32;
+#X text 547 450 normalised threshold \, between 0 and 1 \, on the novelty curve to consider it a segmentation point, f 32;
 #X obj 415 625 s \$0-params;
 #X msg 415 587 source arrayname, f 13;
-#X text 546 581 index of the buffer to use as the source material to
-be sliced through novelty identification, f 33;
+#X text 546 581 index of the buffer to use as the source material to be sliced through novelty identification, f 33;
 #X obj 415 691 s \$0-params;
 #X msg 415 667 minslicelength 2;
 #X obj 415 751 s \$0-params;
@@ -196,35 +172,32 @@ be sliced through novelty identification, f 33;
 #X msg 415 907 startframe 0;
 #X obj 415 811 s \$0-params;
 #X msg 415 787 numframes -1;
-#X text 546 661 minimum duration of a slice in number of hopSize.,
-f 33;
-#X text 546 721 for multichannel srcBuf \, how many channels should
-be summed., f 33;
-#X text 546 841 for multichannel srcBuf \, which channel should be
-processed., f 33;
+#X text 546 661 minimum duration of a slice in number of hopSize., f 33;
+#X text 546 721 for multichannel srcBuf \, how many channels should be summed., f 33;
+#X text 546 841 for multichannel srcBuf \, which channel should be processed., f 33;
 #X text 546 781 How many frames to be processed., f 33;
-#X text 546 901 where in the srcBuf to start slicing \, in samples.
-, f 33;
+#X text 546 901 where in the srcBuf to start slicing \, in samples., f 33;
 #X text 550 153 maximum value for filtersize, f 18;
+#X msg 33 460 algorithm 0;
 #X connect 1 0 2 0;
 #X connect 15 0 3 0;
 #X connect 19 0 18 0;
 #X connect 20 0 18 0;
 #X connect 23 0 7 0;
-#X connect 25 0 8 0;
-#X connect 26 0 25 0;
-#X connect 34 0 33 0;
-#X connect 37 0 36 0;
-#X connect 39 0 0 0;
-#X connect 42 0 41 0;
-#X connect 47 0 44 0;
-#X connect 49 0 48 0;
-#X connect 52 0 51 0;
-#X connect 55 0 54 0;
-#X connect 57 0 56 0;
-#X connect 59 0 58 0;
-#X connect 61 0 60 0;
-#X connect 63 0 62 0;
+#X connect 25 0 69 0;
+#X connect 33 0 32 0;
+#X connect 36 0 35 0;
+#X connect 38 0 0 0;
+#X connect 41 0 40 0;
+#X connect 46 0 43 0;
+#X connect 48 0 47 0;
+#X connect 51 0 50 0;
+#X connect 54 0 53 0;
+#X connect 56 0 55 0;
+#X connect 58 0 57 0;
+#X connect 60 0 59 0;
+#X connect 62 0 61 0;
+#X connect 69 0 8 0;
 #X restore 267 382 pd parameters;
 #X obj 467 710 note_on_multithreading;
 #N canvas 1426 -858 567 271 loadsrc 0;
@@ -236,15 +209,13 @@ processed., f 33;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X restore 18 193 pd loadsrc;
-#X obj 18 121 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 121 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 140 fluid.demoaudiofiles;
 #X text 19 121 1) select a source;
 #X obj 467 688 note_on_automatic_multiarrays;
 #X text 82 251 2) Segment the audio, f 11;
 #X text 569 604 3) Start audio, f 17;
-#X obj 493 492 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 493 492 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 495 491 4) Select a slice to play;
 #X connect 7 0 11 0;
 #X connect 11 0 13 0;
