@@ -10,9 +10,9 @@ under the European Union’s Horizon 2020 research and innovation programme
 
 #pragma once
 
-#include <clients/common/BufferAdaptor.hpp>
-#include <clients/common/Result.hpp>
-#include <data/FluidTensor.hpp>
+#include <flucoma/clients/common/BufferAdaptor.hpp>
+#include <flucoma/clients/common/Result.hpp>
+#include <flucoma/data/FluidTensor.hpp>
 #include <atomic>
 #include <string_view> 
 

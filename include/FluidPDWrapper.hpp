@@ -12,16 +12,16 @@ under the European Union’s Horizon 2020 research and innovation programme
 
 #include "PDBufferAdaptor.hpp"
 
-#include <FluidVersion.hpp>
+#include <flucoma/FluidVersion.hpp>
 
-#include <clients/common/FluidBaseClient.hpp>
-#include <clients/common/FluidNRTClientWrapper.hpp>
-#include <clients/common/OfflineClient.hpp>
-#include <clients/common/ParameterSet.hpp>
-#include <clients/common/ParameterTypes.hpp>
-#include <clients/nrt/FluidSharedInstanceAdaptor.hpp>
+#include <flucoma/clients/common/FluidBaseClient.hpp>
+#include <flucoma/clients/common/FluidNRTClientWrapper.hpp>
+#include <flucoma/clients/common/OfflineClient.hpp>
+#include <flucoma/clients/common/ParameterSet.hpp>
+#include <flucoma/clients/common/ParameterTypes.hpp>
+#include <flucoma/clients/nrt/FluidSharedInstanceAdaptor.hpp>
 
-#include <data/FluidMemory.hpp>
+#include <flucoma/data/FluidMemory.hpp>
 
 #include <m_pd.h>
 
