@@ -347,6 +347,7 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv, int clean){
     }
     
     sys_vgui(".x%lx.c bind %lx_frame <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_points <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
 }
 
 static void fplot_outline(t_fplot *x, t_float f){
