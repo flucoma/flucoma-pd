@@ -274,7 +274,12 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
             sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
                 x->x_fullname, x->x_bindname->s_name, x->x_fullname, x->x_fullname);
     }
-    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);//if there is no picture mouserelease won't work...
+    
+    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_waveform <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_features <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_indices <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+
     fwf_draw_io_let(x);
 }
 
