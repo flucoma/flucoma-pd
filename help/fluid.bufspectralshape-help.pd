@@ -1,7 +1,7 @@
 #N canvas 8 41 700 728 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 465 592 cnv 15 215 110 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.spectralshape.html reference/bufspectralshape/;
+#X obj 509 60 fluid.referencelauncher fluid.bufspectralshape.html reference/bufspectralshape/;
 #X obj 17 60 cnv 15 488 17 empty empty Seven\ Spectral\ Shape\ Descriptors\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Seven of the spectral shape descriptors \, computed on a linear scale for both amplitude and frequency.;
 #N canvas 119 59 706 918 layout_of_results 0;
