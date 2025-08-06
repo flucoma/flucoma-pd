@@ -1,7 +1,7 @@
 #N canvas 116 59 697 892 12;
 #X obj 16 18 cnv 15 660 42 empty empty fluid.bufonsetslice 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 463 791 cnv 15 212 88 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#X obj 508 65 fluid.referencelauncher fluid.onsetslice.html reference/bufonsetslice/;
+#X obj 508 65 fluid.referencelauncher fluid.bufonsetslice.html reference/bufonsetslice/;
 #X obj 16 65 cnv 15 488 17 empty empty Spectral\ Difference-Based\ Audio\ Buffer\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 16 84 Implements a selection of spectrum-based onset slicers;
 #N canvas 1551 -858 448 179 loadsrc 0;

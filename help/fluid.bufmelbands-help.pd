@@ -1,7 +1,7 @@
 #N canvas 37 25 695 791 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufmelbands 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 459 817 cnv 15 217 113 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.melbands.html reference/bufmelbands/;
+#X obj 509 60 fluid.referencelauncher fluid.bufmelbands.html reference/bufmelbands/;
 #X obj 17 60 cnv 15 488 17 empty empty A\ Perceptually\ Spread\ Spectral\ Contour\ Descriptor\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Magnitudes for a number of perceptually-evenly spaced bands.;
 #N canvas 188 166 752 725 visualising_the_mel_bands 0;
