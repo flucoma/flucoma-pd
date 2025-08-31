@@ -21,6 +21,7 @@
 -Wl,-U,_outlet_new
 -Wl,-U,_outlet_list
 -Wl,-U,_outlet_bang
+-Wl,-U,_outlet_symbol
 -Wl,-U,_outlet_float
 -Wl,-U,_outlet_anything
 -Wl,-U,_signalinlet_new
@@ -64,6 +65,7 @@
 -Wl,-U,_pd_bang
 -Wl,-U,_pd_float
 -Wl,-U,_pd_list
+-Wl,-U,_pd_symbol
 -Wl,-U,_text_getbufbyname
 -Wl,-U,_binbuf_getvec
 -Wl,-U,_binbuf_getnatom

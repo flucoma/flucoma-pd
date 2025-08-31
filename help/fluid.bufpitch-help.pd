@@ -1,6 +1,6 @@
 #N canvas 47 25 692 847 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufpitch 1 22 0 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.pitch.html reference/pitch/;
+#X obj 509 60 fluid.referencelauncher fluid.bufpitch.html reference/pitch/;
 #X obj 458 715 cnv 15 215 115 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 1955 -858 448 179 loadsrc 0;
 #X obj 16 83 soundfiler;

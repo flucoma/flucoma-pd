@@ -188,6 +188,8 @@ static void fplot_motion(t_fplot *x, t_floatarg dx, t_floatarg dy){
             pd_list(x->x_send->s_thing, &s_list, 2, at);
     } else if (x->x_clicktype == 1) {
         fplot_draw(x, x->x_glist, 1, 0);
+    } else if (x->x_clicktype == -1) {
+        x->x_clicktype == 0;
     }
 }
 
@@ -257,9 +259,16 @@ static void fplot_mouserelease(t_fplot* x){
             x->x_y_range = fabsf(x->x_y_s_temp - scaledY) * -1.0;
         }
 
-        x->x_clicktype = 0;
+        x->x_clicktype = -1;
         fplot_draw(x, x->x_glist, 1, 0);
-    }
+    } else x->x_clicktype = -1;
+
+    if (x->x_latch) {
+        t_symbol *mouseup = gensym("mouseup");
+        outlet_symbol(x->x_obj.ob_outlet, mouseup);
+        if(x->x_send != &s_ && x->x_send->s_thing)
+            pd_symbol(x->x_send->s_thing, mouseup);       
+    };
 }
 
 static void fplot_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -347,6 +356,7 @@ static void fplot_drawplot(t_fplot* x, t_canvas *cv, int clean){
     }
     
     sys_vgui(".x%lx.c bind %lx_frame <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
+    sys_vgui(".x%lx.c bind %lx_points <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
 }
 
 static void fplot_outline(t_fplot *x, t_float f){
@@ -867,7 +877,7 @@ void setup_fluid0x2eplotter(void){
     sys_vgui("    pack $id.tics -side top\n");
     sys_vgui("    label $id.tics.loutline -text \"Outline:\"\n");
     sys_vgui("    checkbutton $id.tics.outline -variable $var_outline \n");
-    sys_vgui("    label $id.tics.llatch -text \"                Latch Mode:\"\n");//dirty pad
+    sys_vgui("    label $id.tics.llatch -text \"                Mouse Up:\"\n");//dirty pad
     sys_vgui("    checkbutton $id.tics.latch -variable $var_latch \n");
     sys_vgui("    pack $id.tics.loutline $id.tics.outline $id.tics.llatch $id.tics.latch -side left\n");
     sys_vgui("\n");

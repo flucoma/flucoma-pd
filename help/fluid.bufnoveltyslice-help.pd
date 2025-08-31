@@ -1,7 +1,7 @@
 #N canvas 84 126 701 752 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufnoveltyslice 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 456 668 cnv 15 222 65 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.noveltyslice.html reference/noveltyslice/;
+#X obj 509 60 fluid.referencelauncher fluid.bufnoveltyslice.html reference/noveltyslice/;
 #X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Novelty-Based\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 A non-realtime slicer using an algorithm assessing novelty in the signal to estimate the slicing points.;
 #X obj 506 161 array define help.ns.src;

@@ -91,9 +91,59 @@ There is also an 'advanced' interface that allows the user to specify the coordi
 	</section>
   	<section class="argument_section">
     	<h2>Arguments</h2>
+	    <h3 class="argument_name">width<span class="type"> [int]</span></h3> 
+		<span class="defaultval"> (default: 10)</span>
+    	<div class="description">The width of the object.</div>
+      	<h3 class="argument_name">heigth<span class="type"> [int]</span></h3> 
+		<span class="defaultval"> (default: 10)</span>
+    	<div class="description">The height of the object.</div>
+      	<h3 class="argument_name">outline<span class="type"> [int]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: 0)</span>
+    	<div class="description">A flag to draw the frame around the object.</div>
+		<h3 class="argument_name">mouseup<span class="type"> [int]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: 0)</span>
+    	<div class="description">A flag to send a value on mouse up.</div>
+      	<h3 class="argument_name">send<span class="type"> [symbol]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: empty)</span>
+    	<div class="description">The name of the object for receiving messages.</div>
+      	<h3 class="argument_name">receive<span class="type"> [symbol]</span></h3> 
+      	<div class="optional">Optional</div> 
+		<span class="defaultval"> (default: empty)</span>
+    	<div class="description">The name of the object on which it will send its mousing values.</div>
  	 </section> 
   	<section class="attribute_section">
     <h2>Attributes</h2>
+	    <div class="attribute_group">
+    	<h3 class="attribute_name">outline
+        <span class="type"> [int]</span>
+        <span class="defaultval"> (default: 0)</span>
+      	</h3>
+      	<div class="description">A flag to draw the frame around the object.</div>       
+		</div>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">send
+        <span class="type"> [symbol]</span>
+        <span class="defaultval"> (default: empty)</span>
+      	</h3>
+      	<div class="description">The name of the object for receiving messages.</div>       
+		</div>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">receive
+        <span class="type"> [symbol]</span>
+        <span class="defaultval"> (default: empty)</span>
+      	</h3>
+      	<div class="description">The name of the object on which it will send its mousing values.</div>       
+		</div>
+    <div class="attribute_group">
+    	<h3 class="attribute_name">mouseup
+        <span class="type"> [int]</span>
+        <span class="defaultval"> (default: 0)</span>
+      	</h3>
+      	<div class="description">A flag to send a 'mouseup' symbol on mouse up.</div>       
+		</div>
   	</section> 
   	<section class="method_section"> 
     <h2>Messages</h2>

@@ -1,6 +1,6 @@
 #N canvas 13 25 695 967 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.buftransients 1 22 0 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.transients.html reference/buftransients/;
+#X obj 509 60 fluid.referencelauncher fluid.buftransients.html reference/buftransients/;
 #X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Transient\ Extractor 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 This class triggers a Sinusoidal Modelling process on buffers in non-real-time \, It implements a mix and match algorithms taken from classic papers.;
 #N canvas 1600 23 448 179 loadsrc 0;
