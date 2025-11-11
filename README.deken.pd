@@ -1,4 +1,4 @@
-#N canvas 366 25 693 668 12;
+#N canvas 366 25 693 676 12;
 #X declare -path FluidCorpusManipulation;
 #X declare -lib fluid_libmanipulation;
 #X declare -path FluidCorpusManipulation -lib fluid_libmanipulation;
@@ -102,9 +102,9 @@
 #X text 17 211 To do so now \, either add the folder in Pd's preferences \, or click the button on the right to add it automatically., f 57;
 #X text 17 252 If you prefer not to change Pd's preferences \, you can add this declaration in patches that use FluCoMa:;
 #X text 17 538 If you're new to Fluid Corpus Manipulation \, you can explore its objects in the overview patch., f 57;
-#X text 17 588 For deeper dives \, tutorials \, examples and docs can be accessed through the reference launcher on the right (also included in help patches)., f 57;
 #X text 17 332 Besides its standalone externals \, FluCoMa includes a library binary with additional objects. To make these available \, load 'fluid_libmanipulation' - also possible via preferences or another declaration:, f 57;
 #X text 17 140 For Pd to find FluCoMa \, add its folder to the search path. This may already be done if the Deken option "Add newly installed libraries to Pd's search path" is enabled (Deken window: Edit -> Preferences...)., f 57;
+#X text 17 588 For deeper dives \, tutorials \, examples and docs can be accessed through the reference launcher on the right. This widget is also included in help patches \, where it links to specific resources for each object., f 57;
 #X connect 5 0 16 0;
 #X connect 6 0 9 0;
 #X connect 7 0 8 0;
