@@ -98,8 +98,15 @@ typedef struct _fplot{
 
 static void fplot_draw(t_fplot* x, struct _glist *glist, int vis, int clean);
 
+static int fplot_canvas_ready(t_glist *glist){
+    t_canvas *cv = glist ? glist_getcanvas(glist) : NULL;
+    return cv ? cv->gl_havewindow : 0;
+}
+
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fplot_draw_io_let(t_fplot *x){
+    if(!fplot_canvas_ready(x->x_glist))
+        return;
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
@@ -315,6 +322,8 @@ static void fplot_delete(t_gobj *z, t_glist *glist){
 }
 
 static void fplot_erase(t_fplot* x, struct _glist *glist){
+    if(!fplot_canvas_ready(glist))
+        return;
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c delete %lx_frame\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_points\n", cv, x);
@@ -379,9 +388,11 @@ static void fplot_outline(t_fplot *x, t_float f){
 }
 
 static void fplot_draw(t_fplot* x, struct _glist *glist, int vis, int clean){
+    (void)vis;
+    if(!fplot_canvas_ready(glist))
+        return;
     t_canvas *cv = glist_getcanvas(glist);
-    int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(visible || (_Bool)vis) fplot_drawplot(x, cv, clean);
+    fplot_drawplot(x, cv, clean);
 
     fplot_draw_io_let(x);
 }
