@@ -1,14 +1,9 @@
 #N canvas 30 42 704 649 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.concataudiofiles 1 22
-0 36 #4ba3fb #ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty A\\\ utility\\\ to\\\ concatenate\\\ audio\\\ files.
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.concataudiofiles 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty A\ utility\ to\ concatenate\ audio\ files. 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 21 241 fluid.concataudiofiles help-audio help-text;
 #X obj 24 358 text define help-text;
-#X text 17 79 This object takes a list of paths to audio files \, loads
-them one after the other into a [multi-array] \, and fills a [text]
-with the filenames \, start amd end frames \, sampling rate and channel
-count., f 65;
+#X text 17 79 This object takes a list of paths to audio files \, loads them one after the other into a [multi-array] \, and fills a [text] with the filenames \, start amd end frames \, sampling rate and channel count., f 65;
 #N canvas 152 189 998 764 get_flucoma_demo_files_as_a_list 0;
 #X obj 102 60 inlet;
 #X obj 102 317 file glob;
@@ -49,24 +44,24 @@ count., f 65;
 #X connect 15 2 13 1;
 #X connect 15 2 11 1;
 #X restore 21 214 pd get_flucoma_demo_files_as_a_list;
-#X obj 21 265 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 21 265 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 41 264 bang when finished;
-#X obj 509 60 fluid.referencelauncher fluid.concataudiofiles.html reference/concataudiofiles/
-;
 #N canvas 101 806 450 278 (subpatch) 0;
 #X array left-\$0 1 float 0;
+#A color 0;
+#A width 1;
 #X coords 0 1 1 -1 568 66 1 0 0;
 #X restore 68 467 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array right-\$0 1 float 0;
+#A color 0;
+#A width 1;
 #X coords 0 1 1 -1 568 66 1 0 0;
 #X restore 68 554 graph;
 #X msg 21 190 symbol fluid.concataudiofiles-help.pd;
 #X obj 427 244 clone fluid.multiarray 2 help-audio;
 #N canvas 899 -920 1149 608 drawdisplay 0;
-#X obj 40 48 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 40 48 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X floatatom 39 126 5 0 0 0 - - - 0;
 #X obj 197 195 array size left-\$0;
 #X obj 39 256 until;
@@ -133,16 +128,12 @@ count., f 65;
 #X restore 43 288 pd drawdisplay;
 #X text 22 429 See the concatenated files:;
 #X obj 539 221 note_on_multiarrays;
-#X obj 18 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 185 351 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 18 166 1) Click here to load all the FluCoMa demo audio files
-in one 'multiarray', f 74;
-#X text 184 349 2) open the text to see the items in order. Each line
-is a file with its path / sampling_rate / nbChans / startFrame / endframe
-, f 63;
+#X obj 18 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 185 351 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 18 166 1) Click here to load all the FluCoMa demo audio files in one 'multiarray', f 74;
+#X text 184 349 2) open the text to see the items in order. Each line is a file with its path / sampling_rate / nbChans / startFrame / endframe, f 63;
+#X obj 509 60 fluid.referencelauncher fluid.concataudiofiles.html;
 #X connect 2 0 6 0;
 #X connect 5 0 2 0;
-#X connect 6 0 13 0;
-#X connect 11 0 5 0;
+#X connect 6 0 12 0;
+#X connect 10 0 5 0;
