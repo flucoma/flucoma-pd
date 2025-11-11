@@ -413,8 +413,18 @@ static void fplot_save(t_gobj *z, t_binbuf *b){
 //------------------------------- METHODS --------------------------------------------
 void fplot_setpoints(t_fplot* x, t_symbol* name){
     x->x_binbuf = text_getbufbyname(name);
-    
+
+    if(!x->x_binbuf){
+        pd_error(x, "[fluid.plotter]: couldn't find text buffer '%s' for setpoints", name->s_name);
+        return;
+    }
+
     int natom = binbuf_getnatom(x->x_binbuf);
+
+    if(natom % 4 != 0){
+        pd_error(x, "[fluid.plotter]: wrong number of atoms (%d) for setpoints, expected multiples of 4", natom);
+        return;
+    }
     t_atom *stuff = binbuf_getvec(x->x_binbuf);
     
     for (int n = 0; n<natom; n+=4){
