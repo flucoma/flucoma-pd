@@ -1,7 +1,6 @@
 #N canvas 8 44 700 728 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufspectralshape 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 465 592 cnv 15 215 110 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufspectralshape.html reference/bufspectralshape/;
 #X obj 17 60 cnv 15 488 17 empty empty Seven\ Spectral\ Shape\ Descriptors\ on\ a\ Buffer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Seven of the spectral shape descriptors \, computed on a linear scale for both amplitude and frequency.;
 #N canvas 119 59 706 918 layout_of_results 0;
@@ -242,8 +241,9 @@
 #X obj 468 678 note_on_multithreading;
 #X obj 468 656 note_on_automatic_multiarrays;
 #X text 515 422 Click and drag to scrub through different parts of the audio file and retrieve the analysis, f 24;
-#X connect 7 0 8 0;
-#X connect 8 0 15 0;
-#X connect 13 0 11 0;
-#X connect 15 0 16 0;
-#X connect 16 0 19 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufspectralshape.html reference/spectralshape/;
+#X connect 6 0 7 0;
+#X connect 7 0 14 0;
+#X connect 12 0 10 0;
+#X connect 14 0 15 0;
+#X connect 15 0 18 0;

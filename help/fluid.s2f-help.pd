@@ -1,19 +1,13 @@
 #N canvas 109 126 692 348 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.s2f 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Convert\\\ a\\\ symbol\\\ into\\\ a\\\ float
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.s2f 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Convert\ a\ symbol\ into\ a\ float 4 8 0 13 #e0e0e0 #404040 0;
 #X floatatom 17 292 9 0 0 0 - - - 0;
 #X msg 17 228 symbol "3.14159";
 #X obj 17 267 fluid.s2f;
-#X text 18 114 Convert a floating point value expressed as a symbol
-("string") and output it as a float.;
+#X text 18 114 Convert a floating point value expressed as a symbol ("string") and output it as a float.;
 #X msg 147 228 symbol "1";
 #X msg 232 228 symbol "123456789.012345";
-#X text 94 264 Note that the symbol needs to be enclosed in double
-quotes for s2f to work., f 30;
-#X obj 509 60 fluid.referencelauncher fluid.s2f.html reference/s2f/
-;
+#X text 94 264 Note that the symbol needs to be enclosed in double quotes for s2f to work., f 30;
 #X floatatom 445 205 9 0 0 0 - - - 0;
 #X symbolatom 445 252 10 0 0 0 - - - 0;
 #X obj 445 275 fluid.s2f;
@@ -23,22 +17,20 @@ quotes for s2f to work., f 30;
 #X obj 558 274 fluid.s2f;
 #X floatatom 558 298 9 0 0 0 - - - 0;
 #X obj 558 227 makefilename %d;
-#X obj 18 205 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 445 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 205 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 445 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 18 205 1) try various symbols spelling out floats.;
-#X text 445 165 2) another example: we convert to symbol then back
-to float, f 33;
+#X text 445 165 2) another example: we convert to symbol then back to float, f 33;
+#X obj 509 60 fluid.referencelauncher fluid.s2f.html;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
 #X connect 6 0 4 0;
 #X connect 7 0 4 0;
-#X connect 10 0 14 0;
-#X connect 10 0 18 0;
+#X connect 9 0 13 0;
+#X connect 9 0 17 0;
+#X connect 10 0 11 0;
 #X connect 11 0 12 0;
-#X connect 12 0 13 0;
-#X connect 14 0 11 0;
+#X connect 13 0 10 0;
+#X connect 14 0 15 0;
 #X connect 15 0 16 0;
-#X connect 16 0 17 0;
-#X connect 18 0 15 0;
+#X connect 17 0 14 0;
