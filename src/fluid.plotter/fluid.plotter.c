@@ -329,6 +329,8 @@ static void fplot_erase(t_fplot* x, struct _glist *glist){
     sys_vgui(".x%lx.c delete %lx_points\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_selframe\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
 }
 
 static void fplot_drawplot(t_fplot* x, t_canvas *cv, int clean){
