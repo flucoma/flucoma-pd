@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: flucoma/actions/env@main         
-      - uses: flucoma/actions/pd@v5
+      - uses: flucoma/actions/pd@v6
         with:
           branch: origin/main
 
@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: flucoma/actions/env@main 
-      - uses: flucoma/actions/pd@v5
+      - uses: flucoma/actions/pd@v6
         with:
           branch: origin/main
 
