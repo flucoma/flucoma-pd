@@ -181,7 +181,7 @@ install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/AudioFiles/"
         DESTINATION "${PD_PACKAGE_ROOT}/media")
 install(DIRECTORY "${flucoma-core_SOURCE_DIR}/Resources/Data/"
         DESTINATION "${PD_PACKAGE_ROOT}/data")
-install(FILES icon.png QuickStart.md 
+install(FILES icon.png QuickStart.md README.deken.pd
         DESTINATION ${PD_PACKAGE_ROOT})
 install(FILES ${flucoma-core_SOURCE_DIR}/distribution.lic 
         DESTINATION ${PD_PACKAGE_ROOT} 
