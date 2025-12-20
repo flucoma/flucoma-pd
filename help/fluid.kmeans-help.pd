@@ -300,7 +300,6 @@
 #X msg 300 339 clear \, setmeans help.kmeans.3.means, f 22;
 #X obj 477 402 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X msg 302 397 fitpredict help.kmeans.3.data help.kmeans.3.labels, f 22;
-#X msg 298 242 0 0.1 0.1 \, 1 0.2 0.2 \, 2 0.3 0.3 \, 3 0.4 0.4 \, bang;
 #X obj 25 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 25 155 1) Choose a dataset, f 29;
 #N canvas 1738 -676 594 552 choosedataset 0;
@@ -360,6 +359,7 @@
 #X text 296 208 2) Instead of learning the "means" from scratch we can seed the algorithm with starting points to work from., f 54;
 #X text 404 497 fluid.kmeans~ can converge on similar clustering even with extreme means set as the seed. By keeping the iterations low it is more obvious how it affects the clustering process., f 38;
 #X text 345 812 You will notice that after one interation \, the space is roughly around the 4 means that were set in step 2 This means that we can "seed" kmeans to find certain clusters rather than letting it come to its own conclusions from a random starting point., f 47;
+#X msg 298 242 0 0.1 0.1 \, 1 0.9 0.1 \, 2 0.1 0.9 \, 3 0.9 0.9 \, bang;
 #X connect 1 0 5 0;
 #X connect 3 0 10 0;
 #X connect 5 0 7 0;
@@ -373,9 +373,9 @@
 #X connect 13 0 12 0;
 #X connect 17 0 1 0;
 #X connect 19 0 1 0;
-#X connect 20 0 24 0;
-#X connect 23 0 9 0;
-#X connect 24 0 2 0;
+#X connect 22 0 9 0;
+#X connect 23 0 2 0;
+#X connect 30 0 23 0;
 #X restore 490 804 pd accessing_the_means_1;
 #N canvas 129 86 700 956 accessing_the_means_2 0;
 #X obj 18 19 cnv 15 660 42 empty empty fluid.kmeans 1 22 0 36 #4ba3fb #ffffff 0;
@@ -403,7 +403,7 @@
 #X msg 328 238 getmeans help.kmeans.4.means, f 19;
 #X text 489 237 3) Retrieve the means that fluid.kmeans learned and store in a dataset, f 25;
 #X obj 451 572 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
-#N canvas 1566 23 482 562 plot_means 0;
+#N canvas 1566 44 482 562 plot_means 0;
 #X obj 35 56 inlet;
 #X obj 137 60 fluid.dataset help.kmeans.4.means;
 #X obj 35 137 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
@@ -422,7 +422,7 @@
 #X obj 70 386 list fromsymbol;
 #X obj 36 443 list append;
 #X msg 36 480 setpoint \$1-mean \$2 \$3 10 \$4;
-#X obj 70 410 - 47;
+#X obj 70 410 - 48;
 #X connect 0 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 5 0;
