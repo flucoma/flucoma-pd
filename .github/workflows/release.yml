@@ -124,7 +124,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [macbuild, winbuild, linuxbuild]
     steps:
-      - uses: ben-wes/flucoma-actions/deken@v6
+      - uses: flucoma/actions/deken@v6
         with:
           version: ${{ needs.linuxbuild.outputs.version }}
           deken_username: ${{ secrets.DEKEN_USERNAME }}
