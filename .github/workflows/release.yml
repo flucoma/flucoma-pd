@@ -1,6 +1,12 @@
 name: release
 on:
   workflow_dispatch:
+    inputs:
+      upload_to_deken:
+        description: 'Upload to deken'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   macbuild:
@@ -129,3 +135,4 @@ jobs:
           version: ${{ needs.linuxbuild.outputs.version }}
           deken_username: ${{ secrets.DEKEN_USERNAME }}
           deken_password: ${{ secrets.DEKEN_PASSWORD }}
+          upload: ${{ inputs.upload_to_deken }}

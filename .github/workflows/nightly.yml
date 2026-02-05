@@ -37,6 +37,15 @@ jobs:
           name: macbuild
           path: release-packaging/FluCoMa-PD-Mac-nightly.dmg
 
+      # additional upload to avoid dmg unpacking for deken
+      - name: archive mac folder for deken
+        run: tar -czf FluCoMa-PD-Mac-nightly.tar.gz -C release-packaging FluidCorpusManipulation
+
+      - uses: actions/upload-artifact@v4.3.6
+        with:
+          name: macdeken
+          path: FluCoMa-PD-Mac-nightly.tar.gz
+
   winbuild:
     runs-on: windows-latest
     steps:
@@ -57,6 +66,8 @@ jobs:
 
   linuxbuild:
     runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
     steps:
       - uses: actions/checkout@v3
       - uses: flucoma/actions/env@main 
@@ -72,6 +83,10 @@ jobs:
         with:
           name: linuxbuild 
           path: release-packaging/FluCoMa-PD-Linux-x64-nightly.tar.gz
+          
+      - id: get-version
+        run: echo "version=$(cat flucoma.version.rc)-nightly" >> $GITHUB_OUTPUT
+        working-directory: build/_deps/flucoma-core-src
   
   release:
     runs-on: ubuntu-22.04
@@ -112,3 +127,14 @@ jobs:
           prerelease: true
           draft: false
           allowUpdates: true
+
+  deken:
+    runs-on: ubuntu-22.04
+    needs: [macbuild, winbuild, linuxbuild]
+    steps:
+      - uses: flucoma/actions/deken@v6
+        with:
+          version: ${{ needs.linuxbuild.outputs.version }}
+          deken_username: ${{ secrets.DEKEN_USERNAME }}
+          deken_password: ${{ secrets.DEKEN_PASSWORD }}
+          upload: 'true'
