@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [macbuild, winbuild, linuxbuild]
     steps:
-      - uses: flucoma/actions/deken@v6
+      - uses: flucoma/actions/deken@main
         with:
           version: ${{ needs.linuxbuild.outputs.version }}
           deken_username: ${{ secrets.DEKEN_USERNAME }}
