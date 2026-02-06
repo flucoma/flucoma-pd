@@ -85,7 +85,7 @@ jobs:
           path: release-packaging/FluCoMa-PD-Linux-x64-nightly.tar.gz
           
       - id: get-version
-        run: echo "version=$(cat flucoma.version.rc)-nightly" >> $GITHUB_OUTPUT
+        run: echo "version=$(cat flucoma.version.rc)+nightly" >> $GITHUB_OUTPUT
         working-directory: build/_deps/flucoma-core-src
   
   release:
