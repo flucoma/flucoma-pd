@@ -712,7 +712,7 @@ static void *fplot_new(t_symbol *s, int ac, t_atom *av){
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
     x->x_edit = cv->gl_edit;
-    x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_points = &s_;
+    x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
     x->x_rcv_set = x->x_snd_set = x->x_latch = x->x_nbhighlight = x->x_x_min = x->x_y_min = x->x_x_refmin = x->x_y_refmin = 0;
     x->x_outline =  x->x_x_range = x->x_y_range = x->x_x_refrange = x->x_y_refrange = 1;
     x->x_pointsizescale = 3;
