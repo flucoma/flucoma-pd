@@ -219,7 +219,7 @@
 #X obj 373 387 r pd-dsp-started;
 #X obj 373 416 samplerate~;
 #X obj 20 640 delread~ \$0-latencycomp 1, f 19;
-#X obj 281 471 fluid.pitch~;
+#X obj 281 468 fluid.pitch~;
 #X obj 281 628 line~;
 #X obj 138 743 *~, f 21;
 #N canvas 512 268 1103 698 cool_delays 0;
@@ -303,19 +303,20 @@
 #X obj 556 188 loadbang;
 #X floatatom 236 604 5 0 0 0 - - - 0;
 #X text 355 594 only on when pitch confidence is above thresh, f 24;
-#X floatatom 432 535 5 0 0 0 - - - 0;
+#X floatatom 432 536 5 0 0 0 - - - 0;
 #X obj 281 560 expr ($f2 > $f3) * 0.3;
 #X msg 31 223 open media/Tremblay-ASWINE-ScratchySynth-M.wav \, 1 \; threshold 0.98, f 52;
 #X msg 44 258 open media/Tremblay-UW-ComplexDescent-M.wav \, 1 \; threshold 0.6, f 52;
 #X msg 60 293 open media/Tremblay-FMTriDist-M.wav \, 1 \; threshold 0.5, f 52;
 #X msg 73 328 open media/Tremblay-Iterative-M.wav \, 1 \; threshold 0.9, f 52;
 #X msg 21 188 open media/Tremblay-AaS-SynthTwoVoices-M.wav \, 1 \; threshold 0.8, f 52;
-#X obj 432 510 r threshold;
+#X obj 432 512 r threshold;
 #X msg 556 210 \; threshold 0.98;
 #X obj 18 156 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 18 155 1) click any of these 'presets' to start playing a file with an associated threshold of confidence to send to the delays;
 #X obj 92 890 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 94 889 2) Audio on.;
+#X obj 362 490 route latency;
 #X connect 0 0 1 0;
 #X connect 0 0 5 0;
 #X connect 2 0 3 0;
@@ -325,7 +326,7 @@
 #X connect 4 0 15 1;
 #X connect 4 0 7 0;
 #X connect 5 0 23 0;
-#X connect 5 1 18 0;
+#X connect 5 1 35 0;
 #X connect 6 0 7 1;
 #X connect 7 0 8 0;
 #X connect 8 0 15 0;
@@ -345,6 +346,7 @@
 #X connect 27 0 0 0;
 #X connect 28 0 0 0;
 #X connect 29 0 22 0;
+#X connect 35 0 18 0;
 #X restore 537 678 pd confidence;
 #X obj 87 167 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 89 166 1) Pick a source;

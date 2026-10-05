@@ -97,7 +97,10 @@ public:
 
   static void getLatency(Wrapper* x)
   {
-    outlet_float(x->mLatencyOut, static_cast<t_float>(x->mClient.latency()));
+    t_atom latency[1];
+    SETFLOAT(latency, static_cast<t_float>(x->mClient.latency()));
+    outlet_anything(x->mLatencyOut, gensym("latency"), static_cast<int>(1),
+                    latency);
   }
 
   static void callDSP(Wrapper* x, t_signal** sp) { x->dsp(sp); }
