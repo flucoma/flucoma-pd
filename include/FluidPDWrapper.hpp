@@ -99,8 +99,9 @@ public:
   {
     t_atom latency[1];
     SETFLOAT(latency, static_cast<t_float>(x->mClient.latency()));
-    outlet_anything(x->mLatencyOut, gensym("latency"), static_cast<int>(1),
-                    latency);
+    if (x->mLatencyOut != nullptr)
+      outlet_anything(x->mLatencyOut, gensym("latency"), static_cast<int>(1),
+                      latency);
   }
 
   static void callDSP(Wrapper* x, t_signal** sp) { x->dsp(sp); }
@@ -232,7 +233,7 @@ private:
   std::vector<t_sample*>  mSigOuts;
   FluidTensor<t_float, 2> mControlOutputs;
   FluidTensor<t_atom, 2>  mControlAtoms;
-  t_outlet*               mLatencyOut;
+  t_outlet*               mLatencyOut{nullptr};
   t_clock*                mControlClock{nullptr};
   FluidContext            mContext;
 };
