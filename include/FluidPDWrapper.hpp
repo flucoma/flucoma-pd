@@ -1846,7 +1846,11 @@ private:
   template <size_t N>
   static void doWrite(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if (!ac) return;
+    if (!ac)
+    {
+      pd_error(x, "Missing filename");
+      return;
+    }
     const char* filename = av[0].a_w.w_symbol->s_name;
     if (!filename)
     {
