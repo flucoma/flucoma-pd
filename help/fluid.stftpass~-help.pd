@@ -1,4 +1,4 @@
-#N canvas 651 39 838 510 10;
+#N canvas 651 44 838 510 10;
 #X obj 316 231 delread~ latencycomp 1;
 #X obj 316 89 samplerate~;
 #X obj 316 68 r pd-dsp-started;
@@ -16,8 +16,7 @@
 #X obj 532 131 osc~ 220;
 #X obj 532 152 *~ 0.1;
 #X obj 532 238 dac~;
-#X obj 603 65 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 603 65 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 603 85 metro 1000;
 #X obj 603 106 random 9910;
 #X obj 603 127 + 10;
@@ -25,6 +24,8 @@
 #X obj 603 169 list trim;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array fluidstftview 1000 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 1 1000 -1 200 140 1;
 #X restore 312 317 graph;
 #X obj 20 362 tabwrite~ fluidstftview;
@@ -32,6 +33,7 @@
 #X obj 315 188 * 1000;
 #X obj 75 164 fluid.stftpass~ -fftsettings 2048;
 #X obj 553 204 fluid.stftpass~ -maxfftsize 16386;
+#X obj 215 186 route latency;
 #X connect 0 0 6 1;
 #X connect 0 0 11 0;
 #X connect 1 0 4 0;
@@ -62,5 +64,6 @@
 #X connect 26 0 3 0;
 #X connect 27 0 6 0;
 #X connect 27 0 24 0;
-#X connect 27 1 26 0;
+#X connect 27 1 29 0;
 #X connect 28 0 16 1;
+#X connect 29 0 26 0;
