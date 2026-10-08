@@ -1816,15 +1816,15 @@ private:
   template <size_t N>
   static void doRead(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if (!ac)
+    if (!ac || av[0].a_type != A_SYMBOL)
     {
-      pd_error(x, "Missing filename");
+      pd_error(x, "Missing or invalid filename");
       return;
     }
     const char* filename = av[0].a_w.w_symbol->s_name;
     if (!filename)
     {
-      pd_error(x, "Missing or invalid filename");
+      pd_error(x, "Invalid filename");
       return;
     }
     char buf[MAXPDSTRING], *bufptr;
@@ -1850,15 +1850,15 @@ private:
   template <size_t N>
   static void doWrite(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if (!ac)
+    if (!ac || av[0].a_type != A_SYMBOL)
     {
-      pd_error(x, "Missing filename");
+      pd_error(x, "Missing or invalid filename");
       return;
     }
     const char* filename = av[0].a_w.w_symbol->s_name;
     if (!filename)
     {
-      pd_error(x, "Missing or invalid filename");
+      pd_error(x, "Invalid filename");
       return;
     }
     char filenamebuf[MAXPDSTRING];
