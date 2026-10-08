@@ -257,7 +257,7 @@ struct NonRealTime
   {
     class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL);
     
-    if(Wrapper::NumInputBuffers)
+    if constexpr (Wrapper::NumInputBuffers)
         class_addmethod(c, (t_method) callBuffer, gensym("buffer"), A_GIMME, 0);
     
     class_addmethod(c, (t_method) callSR, gensym("sr"), A_FLOAT, 0);
@@ -1505,6 +1505,7 @@ private:
   {
     class_addmethod(getClass(), (t_method) doSharedClientRefer, gensym("refer"), A_DEFSYM,
                     0);
+      class_addmethod(getClass(), (t_method) doGetName, gensym("getname"), A_NULL);
   }
 
   static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
@@ -1523,6 +1524,12 @@ private:
     }
   }
 
+  static void doGetName(FluidPDWrapper* x)
+  {
+    t_atom name;
+    SETSYMBOL(&name, gensym(x->mParams.template get<0>().c_str()));
+    outlet_anything(x->mDumpOutlet, gensym("name"), static_cast<int>(1), &name);
+  }
 
   // Sets up a single parameter
 
