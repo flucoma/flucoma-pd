@@ -1,42 +1,28 @@
 #N canvas 38 49 700 978 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.bufsines 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufsines.html reference/bufsines/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\\\ Sinusoidal\\\ Modelling\\\ and\\\ Resynthesis
-4 8 0 13 #e0e0e0 #404040 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.bufsines 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Buffer-Based\ Sinusoidal\ Modelling\ and\ Resynthesis 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 Sinusoidal modelling on buffers;
-#X obj 35 257 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000
-#000000;
+#X obj 35 257 bng 15 250 50 0 empty empty empty 17 7 0 10 #c6ffc7 #000000 #000000;
 #X obj 434 175 array define help.bufsines.1.sines;
-#X obj 35 501 fluid.bufsines -source help.bufsines.1.src -sines help.bufsines.1.sines
--residual help.bufsines.1.residual -numchans 1;
+#X obj 35 501 fluid.bufsines -source help.bufsines.1.src -sines help.bufsines.1.sines -residual help.bufsines.1.residual -numchans 1;
 #X obj 413 199 array define help.bufsines.1.residual;
-#X obj 47 621 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 47 621 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 47 822 *~;
-#X obj 65 799 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 65 799 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X text 82 795 sinusoid;
 #X obj 47 866 fluid.out~ bufsineshelp;
 #X obj 147 822 *~;
-#X obj 165 799 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 165 799 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X text 179 797 residual;
 #X obj 47 691 tabplay~ help.bufsines.1.sines, f 22;
 #X obj 147 651 tabplay~ help.bufsines.1.residual, f 25;
 #X obj 448 151 array define help.bufsines.1.src;
-#X obj 60 256 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 122 871 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 248 787 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X text 36 552 -numchans 1 makes it so that only the left channel is
-processed in case we load a stereo file.;
+#X obj 60 256 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 122 871 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 248 787 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 36 552 -numchans 1 makes it so that only the left channel is processed in case we load a stereo file.;
 #X msg 69 307 detectionthreshold -40 \, mintracklen 1 \, bang;
-#X obj 76 620 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 76 620 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 150 188 219 215 load 0;
 #X obj 44 36 loadbang;
 #X msg 44 67 1;
@@ -47,15 +33,11 @@ processed in case we load a stereo file.;
 #X msg 79 352 detectionthreshold -40 \, mintracklen 15 \, bang;
 #X msg 89 397 detectionthreshold -80 \, mintracklen 50 \, bang;
 #X msg 109 443 detectionthreshold -24 \, mintracklen 1 \, bang;
-#X text 396 306 Tracks can be short but the detection threshold is
-higher than default., f 39;
+#X text 396 306 Tracks can be short but the detection threshold is higher than default., f 39;
 #X text 406 351 Increase the minimum track length., f 38;
-#X text 416 396 Lower the threshold but increase the track length drastically.
-, f 37;
-#X text 426 442 Increase the threshold drastically but lower the minimum
-track length., f 36;
-#X obj 455 897 cnv 15 222 65 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X text 416 396 Lower the threshold but increase the track length drastically., f 37;
+#X text 426 442 Increase the threshold drastically but lower the minimum track length., f 36;
+#X obj 455 897 cnv 15 222 65 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #X obj 466 939 note_on_multithreading;
 #N canvas 1955 -858 567 271 loadsrc 0;
 #X obj 16 83 soundfiler;
@@ -66,28 +48,27 @@ track length., f 36;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X restore 18 228 pd loadsrc;
-#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 18 161 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X obj 18 180 fluid.demoaudiofiles;
 #X text 19 161 1) select a source;
 #X text 123 871 2) Start audio;
 #X text 61 256 3) Decompose the source buffer;
 #X text 77 620 4) play the result, f 30;
-#X text 249 787 5) Select which component you want to hear. Selecting
-both sums to the original input., f 46;
+#X text 249 787 5) Select which component you want to hear. Selecting both sums to the original input., f 46;
 #X obj 466 917 note_on_automatic_multiarrays;
-#X connect 4 0 6 0;
-#X connect 8 0 16 0;
-#X connect 8 0 17 0;
-#X connect 9 0 12 0;
-#X connect 10 0 9 1;
+#X obj 509 60 fluid.referencelauncher fluid.bufsines.html reference/sines/;
+#X connect 3 0 5 0;
+#X connect 7 0 15 0;
+#X connect 7 0 16 0;
+#X connect 8 0 11 0;
+#X connect 9 0 8 1;
+#X connect 12 0 11 1;
 #X connect 13 0 12 1;
-#X connect 14 0 13 1;
-#X connect 16 0 9 0;
-#X connect 17 0 13 0;
-#X connect 23 0 6 0;
-#X connect 25 0 10 0;
-#X connect 26 0 6 0;
-#X connect 27 0 6 0;
-#X connect 28 0 6 0;
-#X connect 37 0 35 0;
+#X connect 15 0 8 0;
+#X connect 16 0 12 0;
+#X connect 22 0 5 0;
+#X connect 24 0 9 0;
+#X connect 25 0 5 0;
+#X connect 26 0 5 0;
+#X connect 27 0 5 0;
+#X connect 36 0 34 0;

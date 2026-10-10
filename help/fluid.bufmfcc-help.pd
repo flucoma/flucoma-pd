@@ -1,7 +1,6 @@
 #N canvas 37 74 706 910 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.bufmfcc 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 435 478 cnv 15 235 90 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#X obj 509 60 fluid.referencelauncher fluid.bufmfcc.html reference/bufmfcc/;
 #X obj 17 60 cnv 15 488 17 empty empty Mel-Frequency\ Cepstral\ Coefficients\ as\ Spectral 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 109 A classic timbral spectral descriptor \, the Mel-Frequency Cepstral Coefficients (MFCCs).;
 #N canvas 1376 -757 448 179 loadsrc 0;
@@ -185,10 +184,11 @@
 #X obj 448 520 note_on_automatic_multiarrays;
 #X msg 60 524 features help.mfcc.features;
 #X msg 21 225 waveformcolor #666666 \, waveform help.mfcc.src;
-#X connect 5 0 21 0;
-#X connect 7 0 13 0;
-#X connect 9 0 13 0;
-#X connect 11 0 13 0;
-#X connect 13 0 20 0;
-#X connect 20 0 6 0;
-#X connect 21 0 6 0;
+#X obj 509 60 fluid.referencelauncher fluid.bufmfcc.html reference/mfcc/;
+#X connect 4 0 20 0;
+#X connect 6 0 12 0;
+#X connect 8 0 12 0;
+#X connect 10 0 12 0;
+#X connect 12 0 19 0;
+#X connect 19 0 5 0;
+#X connect 20 0 5 0;

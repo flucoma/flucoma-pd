@@ -1,50 +1,36 @@
-#N canvas 139 41 693 871 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.ampslice~.html reference/ampslice/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\\\ Detrending\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
-#X text 17 79 This class implements an amplitude-based slicer \, with
-various customisable options and conditions to detect relative amplitude
-changes as onsets., f 64;
+#N canvas 139 44 693 871 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.ampslice~.html reference/ampslice/;
+#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\ Detrending\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
+#X text 17 79 This class implements an amplitude-based slicer \, with various customisable options and conditions to detect relative amplitude changes as onsets., f 64;
 #X obj 20 179 fluid.demosound~;
-#X obj 119 382 fluid.ampslice~ -slowrampup 4410 -slowrampdown 4410
--fastrampup 10 -fastrampdown 10 -onthreshold 9 -offthreshold 6 -minslicelength
-4410 -highpassfreq 20 -floor -40, f 38;
+#X obj 119 382 fluid.ampslice~ -slowrampup 4410 -slowrampdown 4410 -fastrampup 10 -fastrampdown 10 -onthreshold 9 -offthreshold 6 -minslicelength 4410 -highpassfreq 20 -floor -40, f 38;
 #X msg 119 350 getlatency;
-#X floatatom 382 478 5 0 0 0 - - - 0;
+#X floatatom 382 514 5 0 0 0 - - - 0;
 #X obj 21 630 delread~ ampslicedel;
 #X obj 21 594 delwrite~ ampslicedel 1000;
-#X obj 428 501 samplerate~;
-#X obj 428 481 r pd-dsp-started;
-#X obj 382 531 / 1;
-#X obj 382 500 * 1000;
+#X obj 432 536 samplerate~;
+#X obj 432 514 r pd-dsp-started;
+#X obj 382 562 / 1;
+#X obj 382 536 * 1000;
 #X obj 119 327 loadbang;
 #X obj 21 752 *~;
-#X obj 37 717 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 37 717 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 117 752 *~;
-#X obj 135 717 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 135 717 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X floatatom 382 588 5 0 0 0 - - - 0;
 #X floatatom 58 717 5 0 0 0 - - - 0;
 #X text 34 699 unprocessed;
 #X text 133 699 slice ticks;
-#X obj 531 725 cnv 15 145 50 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 531 725 cnv 15 145 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 413 114 695 831 more_info 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb
-#ffffff 0;
-#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\\\ Detrending\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
-#X obj 18 145 cnv 15 220 320 empty empty empty 20 12 0 14 #f0f3f3 #404040
-0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.ampslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 17 60 cnv 15 488 17 empty empty Amplitude-based\ Detrending\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
+#X obj 18 145 cnv 15 220 320 empty empty empty 20 12 0 14 #f0f3f3 #404040 0;
 #X obj 29 253 osc~ 80;
 #X obj 121 160 loadbang;
 #X obj 121 253 metro 1000;
-#X obj 121 207 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#X obj 121 207 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000 0 1;
 #X msg 190 207 1000;
 #X floatatom 190 228 5 0 0 0 - - - 0;
 #X obj 121 184 t b b, f 12;
@@ -71,33 +57,19 @@ changes as onsets., f 64;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 338 249 pd link;
-#X obj 321 249 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 321 249 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X text 253 249 go to URL;
-#X text 252 143 The fluid.ampslice~ object performs segmentation by
-comparing the difference between two amplitude envelopes \, one capturing
-slow changes \, one capturing fast changes in a signal. The slow one
-provides a context which the fast one is compared to meaning the threshold
-of this slicer is dynamic. For a more detailed explanation see: https://learn.flucoma.org/reference/ampslice"
-;
+#X text 252 143 The fluid.ampslice~ object performs segmentation by comparing the difference between two amplitude envelopes \, one capturing slow changes \, one capturing fast changes in a signal. The slow one provides a context which the fast one is compared to meaning the threshold of this slicer is dynamic. For a more detailed explanation see: https://learn.flucoma.org/reference/ampslice";
 #X text 254 335 Fast envelope has to exceed slow envelope by 6dB;
-#X text 264 382 Fast envelope has to go 6dB below slow envelope for
-a new onset to be detected. This causes "false" onsets to be detected.
-;
-#X text 271 480 Make the fast envelope a bit smoother \, and the slow
-envelope a lot smoother. It's not perfect but a little less jittery.
-;
-#X text 285 571 The minimum time between detected segments is now 4410
-samples \, or about 100 ms.;
+#X text 264 382 Fast envelope has to go 6dB below slow envelope for a new onset to be detected. This causes "false" onsets to be detected.;
+#X text 271 480 Make the fast envelope a bit smoother \, and the slow envelope a lot smoother. It's not perfect but a little less jittery.;
+#X text 285 571 The minimum time between detected segments is now 4410 samples \, or about 100 ms.;
 #X msg 67 234 0;
 #X obj 27 750 fluid.out~ ampslicehelp;
-#X msg 268 444 fastrampup 10 \, fastrampdown 50 \, slowrampup 500 \,
-slowrampdown 500, f 47;
-#X obj 97 754 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X msg 268 444 fastrampup 10 \, fastrampdown 50 \, slowrampup 500 \, slowrampdown 500, f 47;
+#X obj 97 754 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 98 753 1) switch audio on;
-#X obj 250 291 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 250 291 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 250 290 2) compare various presets;
 #X connect 3 0 14 0;
 #X connect 4 0 9 0;
@@ -134,25 +106,21 @@ slowrampdown 500, f 47;
 #X obj 21 828 fluid.out~ ampslicehelp;
 #X obj 109 787 loadbang;
 #X msg 109 809 1, f 2;
-#X text 431 442 computed latency is max of latency-inducing attributes
-, f 27;
-#X obj 141 522 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
-#000000 #000000;
+#X text 430 482 computed latency is max of latency-inducing attributes, f 27;
+#X obj 141 522 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6 #000000 #000000;
 #X obj 141 491 threshold~ 0.5 1 0.1 1;
-#X obj 19 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 99 836 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 19 159 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 99 836 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 99 835 2) switch audio on;
-#X obj 160 750 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 160 750 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 160 749 3) select what to listen to;
 #X text 20 157 1) Select a source., f 66;
+#X obj 382 463 route latency;
 #X connect 4 0 9 0;
 #X connect 4 0 5 0;
 #X connect 5 0 17 0;
 #X connect 5 0 30 0;
-#X connect 5 1 7 0;
+#X connect 5 1 37 0;
 #X connect 6 0 5 0;
 #X connect 7 0 13 0;
 #X connect 8 0 15 0;
@@ -170,3 +138,4 @@ slowrampdown 500, f 47;
 #X connect 26 0 27 0;
 #X connect 27 0 25 2;
 #X connect 30 0 29 0;
+#X connect 37 0 7 0;

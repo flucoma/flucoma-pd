@@ -8,7 +8,6 @@
 #X msg 95 249 2;
 #X obj 22 514 fluid.ls2text myLS myText;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.ls2text 1 22 0 36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.ls2text.html reference/ls2text/;
 #X obj 17 60 cnv 15 488 17 empty empty Convert\ FluCoMa\ LabelSet\ into\ text 4 8 0 13 #e0e0e0 #404040 0;
 #X text 17 79 A utility object to convert a labelset into text.;
 #X text 490 614 see also:;
@@ -22,9 +21,10 @@
 #X text 19 206 1) Click these to populate an array with values and save those in dataset myDS.;
 #X text 96 341 2) Click to see the DataSet printed in the console, f 28;
 #X text 45 468 3) Click to convert the myDS dataset and save it in text object myText, f 36;
+#X obj 509 60 fluid.referencelauncher fluid.ls2text.html;
 #X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 2 0 5 0;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
-#X connect 15 0 7 0;
+#X connect 14 0 7 0;

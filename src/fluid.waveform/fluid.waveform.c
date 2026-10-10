@@ -84,8 +84,15 @@ typedef struct _fwf{
      t_outlet      *x_outlet;
 }t_fwf;
 
+static int fwf_canvas_ready(t_glist *glist){
+    t_canvas *cv = glist ? glist_getcanvas(glist) : NULL;
+    return cv ? cv->gl_havewindow : 0;
+}
+
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void fwf_draw_io_let(t_fwf *x){
+    if(!fwf_canvas_ready(x->x_glist))
+        return;
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
@@ -252,34 +259,36 @@ static void fwf_delete(t_gobj *z, t_glist *glist){
 }
 
 static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
+    (void)vis;
+    if(!fwf_canvas_ready(glist))
+        return;
     t_canvas *cv = glist_getcanvas(glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-    int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(x->x_def_img && (visible || (_Bool)vis)){ // DEFAULT LOAD STATE AS FRAME
+    if(x->x_def_img){ // DEFAULT LOAD STATE AS FRAME
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d -fill white -tags %lx_picture\n",
                 cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom, x);
     }
     else{
-        if(visible || (_Bool)vis){
-            if(x->x_edit || x->x_outline)
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                    cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-            sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} else { .x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_picture\n} \n", 
-                x->x_fullname, cv, xpos, ypos, x->x_fullname, x, cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom, x->x_outline ? "black" : "white", x);
-            sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
-                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_waveformcolor);
-            sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
-                x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, x->x_featurescolor);
-            sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
-                x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, x->x_indicescolor);
-        }
-        if(!x->x_init)
+        if(x->x_edit || x->x_outline)
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
+        sys_vgui("if { [info exists %lx_picname] == 1 } { .x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n} else { .x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill white -tags %lx_picture\n} \n", 
+            x->x_fullname, cv, xpos, ypos, x->x_fullname, x, cv, xpos, ypos, xpos + x->x_width*x->x_zoom, ypos + x->x_height*x->x_zoom, x->x_zoom, x->x_outline ? "black" : "white", x);
+        sys_vgui("if { [info exists %lx_audiopeaks] == 1 } { for { set index 0 } { $index < [llength $%lx_audiopeaks] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_audiopeaks $index] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 1]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 2]] + %d] [expr [lindex $%lx_audiopeaks [expr $index + 3]] + %d] -tags %lx_waveform -fill #%s\n}\n}\n",
+            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_waveformcolor);
+        sys_vgui("if { [info exists %lx_featurespeaks] == 1 } { set scaledfeatures {} \n foreach {i j} $%lx_featurespeaks {lappend scaledfeatures [expr $i + %d] \n lappend scaledfeatures [expr $j + %d] \n} \n for {set chans 0} {$chans < $%lx_featurescount} {incr chans} { .x%lx.c create line [lrange $scaledfeatures [expr $chans * $%lx_featureslen] [expr (($chans + 1) * $%lx_featureslen) - 1]] -tags %lx_features -width %d -fill #%s\n} \n unset scaledfeatures \n}\n",
+            x->x_fullname, x->x_fullname, xpos, ypos, x->x_fullname, cv, x->x_fullname, x->x_fullname, x, x->x_linewidth, x->x_featurescolor);
+        sys_vgui("if { [info exists %lx_indicesarray] == 1 } { for { set index 0 } { $index < [llength $%lx_indicesarray] } { incr index 4 } { .x%lx.c create line [expr [lindex $%lx_indicesarray $index] + %d] [expr [lindex $%lx_indicesarray [expr $index + 1]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 2]] + %d] [expr [lindex $%lx_indicesarray [expr $index + 3]] + %d] -tags %lx_indices -width %d -fill #%s\n}\n}\n",
+            x->x_fullname, x->x_fullname, cv, x->x_fullname, xpos, x->x_fullname, ypos, x->x_fullname, xpos, x->x_fullname, ypos, x, x->x_linewidth, x->x_indicescolor);
+        if(!x->x_init){
             x->x_init = 1;
-        else if((visible || (_Bool)vis) && (x->x_edit || x->x_outline))
+        }
+        else if(x->x_edit || x->x_outline){
             sys_vgui("if { [info exists %lx_picname] == 1 } {.x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d}\n",
                 x->x_fullname, cv, xpos, ypos, xpos+x->x_width*x->x_zoom, ypos+x->x_height*x->x_zoom, x, x->x_zoom);
-            sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
-                x->x_fullname, x->x_bindname->s_name, x->x_fullname, x->x_fullname);
+        }
+        sys_vgui("if { [info exists %lx_picname] == 1 } {pdsend \"%s _fwfsize [image width %lx_picname] [image height %lx_picname]\"}\n",
+            x->x_fullname, x->x_bindname->s_name, x->x_fullname, x->x_fullname);
     }
     
     sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindname->s_name);
@@ -291,6 +300,8 @@ static void fwf_draw(t_fwf* x, struct _glist *glist, int vis){
 }
 
 static void fwf_erase(t_fwf* x, struct _glist *glist){
+    if(!fwf_canvas_ready(glist))
+        return;
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c delete %lx_picture\n", cv, x); // ERASE
     sys_vgui(".x%lx.c delete %lx_waveform\n", cv, x); // ERASE

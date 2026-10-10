@@ -1,4 +1,4 @@
-#N canvas 48 76 695 855 12;
+#N canvas 84 107 695 855 12;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\ set\ of\ data\ associated\ with\ identifiers. 4 8 0 13 #e0e0e0 #404040 0;
 #X obj 509 60 fluid.referencelauncher fluid.dataset.html reference/dataset/;
@@ -103,7 +103,7 @@
 #X connect 30 0 16 0;
 #X connect 31 0 30 0;
 #X restore 478 663 pd audio-descriptor_example;
-#N canvas 110 98 703 609 other_messages 0;
+#N canvas 382 116 703 609 other_messages 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 Other useful messages that can be used with fluid.dataset~;
 #X obj 57 130 loadbang;
@@ -153,6 +153,9 @@
 #X text 162 286 4) Get the number of columns \, or dimensions of the data points. Since all points must have the same number of dimensions \, this is just a single number. It is reported out the left outlet.;
 #X text 183 357 5) Dump the contents of the fluid.dataset~ to the console;
 #X text 204 388 6) Completely empty and reset a fluid.dataset~;
+#X msg 173 424 containsid foo13;
+#X obj 302 425 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 302 423 7) :Return 1 if the identifier exists.;
 #X connect 2 0 3 0;
 #X connect 4 0 10 0;
 #X connect 5 0 10 0;
@@ -162,6 +165,7 @@
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
 #X connect 10 1 12 0;
+#X connect 25 0 10 0;
 #X restore 478 685 pd other_messages;
 #N canvas 131 150 696 630 merging 0;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
@@ -474,14 +478,20 @@
 #X obj 50 144 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 237 275 450 278 (subpatch) 0;
 #X array help.ds.buffers.arrays-1 2 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 -0.1 2 1.1 200 40 1 0 0;
 #X restore 30 662 graph;
 #N canvas 237 275 450 278 (subpatch) 0;
 #X array help.ds.buffers.arrays-2 2 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 -0.1 2 1.1 200 40 1 0 0;
 #X restore 30 725 graph;
 #N canvas 237 275 450 278 (subpatch) 0;
 #X array help.ds.buffers.arrays-3 2 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 -0.1 2 1.1 200 40 1 0 0;
 #X restore 30 782 graph;
 #X obj 28 212 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
@@ -537,6 +547,8 @@
 #X msg 32 249 tobuffer help.ds.buffers.arrays;
 #N canvas 237 275 450 278 (subpatch) 0;
 #X array help.ds.buffers.arrays-0 2 float 2;
+#A color 0;
+#A width 2;
 #X coords 0 -0.1 2 1.1 200 40 1 0 0;
 #X restore 29 599 graph;
 #N canvas 283 490 460 300 more_explanations_on_transposition 0;
