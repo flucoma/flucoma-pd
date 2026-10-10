@@ -1,4 +1,4 @@
-#N canvas 18 40 725 920 12;
+#N canvas 133 44 725 920 12;
 #X text 35 860 Once latency compensated with the delay as above \, the detected position is always at the start of the spectral frame in which an onset appears. Change the window size above to observe the changes., f 95;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.onsetslice~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 510 60 fluid.referencelauncher fluid.onsetslice~.html reference/onsetslice/;
@@ -8,11 +8,11 @@
 #X obj 18 193 clip~ 0 1;
 #X obj 18 171 biquad~ 0 0 -1 1 0;
 #X obj 18 254 delwrite~ \$0-latencycomp 100;
-#X obj 303 181 r pd-dsp-started;
-#X obj 479 285 samplerate~;
-#X obj 303 207 t b b, f 25;
-#X obj 461 316 / 1;
-#X msg 303 238 getlatency;
+#X obj 303 176 r pd-dsp-started;
+#X obj 562 308 samplerate~;
+#X obj 303 202 t b b, f 25;
+#X obj 461 332 / 1, f 15;
+#X msg 303 233 getlatency;
 #X obj 96 382 delread~ \$0-latencycomp;
 #X obj 96 358 * 1000;
 #X obj 38 812 snapshot~;
@@ -24,7 +24,7 @@
 #X obj 38 669 samphold~;
 #X obj 133 594 fexpr~ $y1[-1] + 1;
 #X text 81 837 spectral frame accurate detection, f 55;
-#X obj 303 264 fluid.onsetslice~ -threshold 1e-06 -fftsettings 50, f 23;
+#X obj 303 259 fluid.onsetslice~ -threshold 1e-06 -fftsettings 50, f 23;
 #X obj 104 489 fluid.onsetslice.help.scope A;
 #X obj 308 488 fluid.onsetslice.help.scope B;
 #X obj 512 488 fluid.onsetslice.help.scope C;
@@ -35,10 +35,10 @@
 #X obj 552 759 cnv 15 149 50 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 322 127 711 919 musical_example 0;
 #X obj 23 713 * 1000;
-#X obj 363 673 / 1;
+#X obj 363 673 / 1, f 15;
 #X obj 247 624 fluid.onsetslice~;
-#X obj 381 624 r pd-dsp-started;
-#X obj 381 648 samplerate~;
+#X obj 465 624 r pd-dsp-started;
+#X obj 465 648 samplerate~;
 #X obj 24 843 fluid.out~ onsetslice-help;
 #N canvas 69 -1055 1728 1027 guts 0;
 #X obj 102 320 r _tg;
@@ -369,11 +369,12 @@
 #X text 22 145 1) pick a preset and observe the changes below;
 #X obj 97 848 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 98 846 2) Audio on.;
+#X obj 363 648 route latency;
 #X connect 0 0 13 0;
 #X connect 1 0 0 0;
 #X connect 2 0 5 1;
 #X connect 2 0 19 0;
-#X connect 2 1 1 0;
+#X connect 2 1 24 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 1;
 #X connect 11 0 2 0;
@@ -384,7 +385,9 @@
 #X connect 16 0 15 0;
 #X connect 16 0 17 0;
 #X connect 19 0 18 0;
+#X connect 24 0 1 0;
 #X restore 560 783 pd musical_example;
+#X obj 461 308 route latency;
 #X connect 5 0 7 0;
 #X connect 6 0 8 0;
 #X connect 6 0 25 0;
@@ -410,5 +413,6 @@
 #X connect 25 0 20 1;
 #X connect 25 0 29 1;
 #X connect 25 0 28 0;
-#X connect 25 1 12 0;
+#X connect 25 1 35 0;
 #X connect 29 0 27 0;
+#X connect 35 0 12 0;

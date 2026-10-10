@@ -1,17 +1,12 @@
-#N canvas 91 23 697 795 12;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.transientslice~ 1 22 0
-36 #4ba3fb #ffffff 0;
-#X obj 509 60 fluid.referencelauncher fluid.transientslice~.html reference/transientslice/
-;
-#X obj 17 60 cnv 15 488 17 empty empty Transient-Based\\\ Real-Time\\\ Audio\\\ Slicer
-4 8 0 13 #e0e0e0 #404040 0;
+#N canvas 91 44 697 795 12;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.transientslice~ 1 22 0 36 #4ba3fb #ffffff 0;
+#X obj 509 60 fluid.referencelauncher fluid.transientslice~.html reference/transientslice/;
+#X obj 17 60 cnv 15 488 17 empty empty Transient-Based\ Real-Time\ Audio\ Slicer 4 8 0 13 #e0e0e0 #404040 0;
 #X text 24 97 A real-time transient-based slice extractor;
 #X obj 20 730 fluid.out~ transientshelp;
 #X obj 20 171 fluid.demosound~;
-#X obj 92 735 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 30 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 92 735 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 30 147 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 31 146 2) Play a sound;
 #X text 93 734 1) Audio on;
 #N canvas 1114 23 544 712 parameters 0;
@@ -67,8 +62,7 @@
 #X text 28 6 Optional parameters to fluid.bufaudiotransport;
 #X obj 29 125 s \$0-params;
 #X msg 29 102 blocksize 256;
-#X text 163 100 size of audio block (in samples) on which the process
-is operating, f 32;
+#X text 163 100 size of audio block (in samples) on which the process is operating, f 32;
 #X obj 29 195 s \$0-params;
 #X obj 29 279 s \$0-params;
 #X obj 29 345 s \$0-params;
@@ -77,8 +71,7 @@ is operating, f 32;
 #X obj 29 565 s \$0-params;
 #X obj 29 635 s \$0-params;
 #X msg 29 172 clumplength 25;
-#X text 163 170 window size in samples within which anomalous samples
-will be clumped together to avoid over-detecting in time, f 32;
+#X text 163 170 window size in samples within which anomalous samples will be clumped together to avoid over-detecting in time, f 32;
 #X msg 29 242 minslicelength 1000, f 14;
 #X msg 29 322 order 20;
 #X msg 29 402 padsize 128;
@@ -86,29 +79,20 @@ will be clumped together to avoid over-detecting in time, f 32;
 #X msg 29 542 threshback 1.1;
 #X msg 29 612 threshfwd 2;
 #X text 163 250 minimum duration of a slice in samples., f 32;
-#X text 163 320 number of previous samples used by the algorithm to
-create the model of the signal within the blocksize window of analysis
-, f 32;
-#X text 163 400 size (in samples) of analysis on each side of blocksize
-, f 32;
-#X text 163 470 nervousness of the bespoke detection function, f 32
-;
-#X text 163 540 threshold applied to the smoothed backward prediction
-error for determining an offset, f 33;
-#X text 163 610 threshold applied to the smoothed forward prediction
-error for determining an onset, f 33;
+#X text 163 320 number of previous samples used by the algorithm to create the model of the signal within the blocksize window of analysis, f 32;
+#X text 163 400 size (in samples) of analysis on each side of blocksize, f 32;
+#X text 163 470 nervousness of the bespoke detection function, f 32;
+#X text 163 540 threshold applied to the smoothed backward prediction error for determining an offset, f 33;
+#X text 163 610 threshold applied to the smoothed forward prediction error for determining an onset, f 33;
 #X obj 479 125 s \$0-params;
 #X obj 479 195 s \$0-params;
 #X obj 479 265 s \$0-params;
 #X msg 479 102 warnings 0;
 #X msg 479 172 windowsize 14;
 #X msg 479 242 reset;
-#X text 603 239 Calling reset will change parameter values back to
-those the object was created with, f 33;
-#X text 603 170 averaging window of the error detection function,
-f 33;
-#X text 603 100 enable warnings to be issued whenever a parameter value
-is constrained, f 33;
+#X text 603 239 Calling reset will change parameter values back to those the object was created with, f 33;
+#X text 603 170 averaging window of the error detection function, f 33;
+#X text 603 100 enable warnings to be issued whenever a parameter value is constrained, f 33;
 #X connect 0 0 1 0;
 #X connect 4 0 3 0;
 #X connect 13 0 6 0;
@@ -123,7 +107,7 @@ is constrained, f 33;
 #X connect 32 0 29 0;
 #X restore 184 479 pd parameters;
 #X obj 130 599 fluid.transientslice~, f 32;
-#X floatatom 351 623 5 0 0 0 - - - 0;
+#X floatatom 351 660 5 0 0 0 - - - 0;
 #N canvas 1547 23 501 476 latencydelay 0;
 #X obj 37 46 inlet~;
 #X obj 337 189 samplerate~;
@@ -145,25 +129,20 @@ is constrained, f 33;
 #X connect 9 0 6 0;
 #X restore 20 599 pd latencydelay;
 #X f 13;
-#X obj 351 646 s tslatency;
-#X obj 153 677 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
-#000000 #000000;
+#X obj 351 683 s tslatency;
+#X obj 153 677 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6 #000000 #000000;
 #X msg 281 573 getlatency;
 #X obj 281 546 loadbang;
-#X obj 503 728 cnv 15 178 45 empty empty More\\\ information 4 10 0
-13 #e0e0e0 #404040 0;
+#X obj 503 728 cnv 15 178 45 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
 #N canvas 301 81 697 744 musical_example 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.transientslice~ 1 22 0
-36 #4ba3fb #ffffff 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.transientslice~ 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 24 97 Using transientslice~ musically;
 #X obj 26 693 fluid.out~ transientshelp;
 #X obj 26 174 fluid.demosound~;
-#X obj 104 698 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
-#X obj 36 150 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040
-0;
+#X obj 104 698 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X obj 36 150 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 105 697 1) Audio on;
-#X floatatom 432 386 5 0 0 0 - - - 0;
+#X floatatom 432 410 5 0 0 0 - - - 0;
 #N canvas 1547 23 501 476 latencydelay 0;
 #X obj 37 46 inlet~;
 #X obj 337 189 samplerate~;
@@ -188,17 +167,13 @@ is constrained, f 33;
 #X msg 134 312 getlatency;
 #X obj 134 288 loadbang;
 #X text 37 149 2) Play audio;
-#X obj 134 342 fluid.transientslice~ -order 80 -blocksize 256 -padsize
-128 -skew 10, f 43;
+#X obj 134 342 fluid.transientslice~ -order 80 -blocksize 256 -padsize 128 -skew 10, f 43;
 #N canvas 1324 23 724 516 equalpowerpan 0;
 #X obj 37 37 inlet~;
-#X obj 256 52 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 97 227 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#000000 #000000 0 1;
+#X obj 256 52 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 97 227 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 62 186 expr cos($f1*3.14159/2), f 18;
-#X obj 275 227 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#000000 #000000 0 1;
+#X obj 275 227 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #000000 #000000 0 1;
 #X obj 240 186 expr sin($f1*3.14159/2), f 18;
 #X obj 240 28 inlet;
 #X obj 38 334 outlet~;
@@ -219,8 +194,7 @@ is constrained, f 33;
 #X restore 26 622 pd equalpowerpan;
 #N canvas 1812 -970 617 495 counter 0;
 #X obj 24 16 inlet;
-#X obj 24 57 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
+#X obj 24 57 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 24 77 f;
 #X obj 86 65 + 1;
 #X obj 86 89 % 40;
@@ -243,13 +217,10 @@ is constrained, f 33;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
 #X restore 135 533 pd counter;
-#X obj 156 577 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc
-#000000 #000000 0 1;
-#X obj 432 416 s ts2latency;
-#X text 218 494 Everytime a slice is detected a panner progresses across
-the stereo image, f 22;
-#X obj 135 471 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6
-#000000 #000000;
+#X obj 156 577 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #fcfcfc #000000 #000000 0 1;
+#X obj 432 440 s ts2latency;
+#X text 218 494 Everytime a slice is detected a panner progresses across the stereo image, f 22;
+#X obj 135 471 bng 15 250 50 0 empty empty empty 17 7 0 10 #ffe3c6 #000000 #000000;
 #N canvas 1114 23 544 712 parameters 0;
 #X obj 186 548 outlet;
 #X obj 34 -62 loadbang;
@@ -297,6 +268,7 @@ the stereo image, f 22;
 #X coords 0 -1 1 1 150 129 2 100 100;
 #X restore 444 195 pd parameters;
 #X obj 135 440 threshold~ 0.5 1 0.1 1;
+#X obj 432 382 route latency;
 #X connect 3 0 8 0;
 #X connect 3 0 12 0;
 #X connect 7 0 16 0;
@@ -304,7 +276,7 @@ the stereo image, f 22;
 #X connect 9 0 12 0;
 #X connect 10 0 9 0;
 #X connect 12 0 20 0;
-#X connect 12 1 7 0;
+#X connect 12 1 21 0;
 #X connect 13 0 2 0;
 #X connect 13 1 2 1;
 #X connect 14 0 15 0;
@@ -312,17 +284,20 @@ the stereo image, f 22;
 #X connect 18 0 14 0;
 #X connect 19 0 12 0;
 #X connect 20 0 18 0;
+#X connect 21 0 7 0;
 #X restore 506 748 pd musical_example;
 #X obj 153 646 threshold~ 0.5 1 0.1 1;
+#X obj 351 629 route latency;
 #X connect 5 0 13 0;
 #X connect 5 0 15 0;
 #X connect 10 0 13 0;
 #X connect 12 0 13 0;
 #X connect 13 0 4 1;
 #X connect 13 0 22 0;
-#X connect 13 1 14 0;
+#X connect 13 1 23 0;
 #X connect 14 0 16 0;
 #X connect 15 0 4 0;
 #X connect 18 0 13 0;
 #X connect 19 0 18 0;
 #X connect 22 0 17 0;
+#X connect 23 0 14 0;

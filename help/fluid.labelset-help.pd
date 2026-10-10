@@ -1,4 +1,4 @@
-#N canvas 0 25 698 767 12;
+#N canvas 65 131 698 767 12;
 #X msg 85 237 print;
 #X obj 17 13 cnv 15 660 42 empty empty fluid.labelset 1 22 0 36 #4ba3fb #ffffff 0;
 #X obj 17 60 cnv 15 488 17 empty empty A\ set\ of\ labels\ associated\ with\ identifiers. 4 8 0 13 #e0e0e0 #404040 0;
@@ -20,7 +20,7 @@
 #X obj 359 446 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #X text 359 445 5) Delete the label with the identifier huddersfield \, and print the labelset to the console again., f 41;
 #X obj 474 616 cnv 15 200 131 empty empty More\ information 4 10 0 13 #e0e0e0 #404040 0;
-#N canvas 22 25 696 929 audio-descriptor_example 0;
+#N canvas 22 44 696 929 audio-descriptor_example 0;
 #X obj 37 296 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 58 296 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
 #N canvas 1600 23 448 165 loadsrc 0;
@@ -67,11 +67,11 @@
 #X connect 17 0 20 0;
 #X connect 17 0 23 0;
 #X restore 477 636 pd audio-descriptor_example;
-#N canvas 149 122 695 570 other_messages 0;
-#X obj 17 13 cnv 15 660 42 empty empty fluid.dataset 1 22 0 36 #4ba3fb #ffffff 0;
+#N canvas 387 157 695 570 other_messages 0;
+#X obj 17 13 cnv 15 660 42 empty empty fluid.labelset 1 22 0 36 #4ba3fb #ffffff 0;
 #X text 17 79 Other useful messages that can be used with fluid.dataset~;
 #X obj 57 130 loadbang;
-#N canvas 1549 23 499 766 make_dummy_dataset 0;
+#N canvas 1549 44 499 766 make_dummy_dataset 0;
 #X obj 37 37 inlet;
 #X obj 37 132 until;
 #X obj 37 160 f;
@@ -138,7 +138,7 @@
 #X msg 157 278 print;
 #X msg 197 308 clear;
 #X obj 307 527 text define help.labelset.text.2;
-#X msg 51 463 bang;
+#X msg 86 471 bang;
 #X msg 97 188 write /tmp/myfile.json;
 #X msg 117 218 read /tmp/myfile.json;
 #X obj 51 503 fluid.ls2text help.labelset.2 help.labelset.text.2, f 27;
@@ -151,10 +151,15 @@
 #X text 263 187 1) Write a fluid.labelset to disk;
 #X text 180 249 3) Get the size (number of identifiers with associated labels)., f 63;
 #X text 204 280 4) Prints the content in the Pd window, f 63;
-#X text 72 424 store the labelset into a text object;
+#X text 123 473 store the labelset into a text object;
 #X text 278 219 2) Read a fluid.labelset from disk;
 #X text 243 309 5) Completely empty and reset a fluid.labelset;
 #X text 309 502 click 'text' to see labels;
+#X msg 220 346 containsid foo13;
+#X obj 51 419 route containsid;
+#X obj 51 443 print;
+#X obj 346 349 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
+#X text 346 347 6) :Return 1 if the identifier exists.;
 #X connect 2 0 3 0;
 #X connect 4 0 12 0;
 #X connect 5 0 12 0;
@@ -162,7 +167,10 @@
 #X connect 8 0 11 0;
 #X connect 9 0 12 0;
 #X connect 10 0 12 0;
-#X connect 12 0 8 0;
+#X connect 12 0 26 0;
+#X connect 25 0 12 0;
+#X connect 26 0 27 0;
+#X connect 26 1 8 0;
 #X restore 477 658 pd other_messages;
 #X obj 36 596 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000 #000000;
 #X obj 57 595 cnv 15 15 15 empty empty empty 20 12 0 14 #c6ffc7 #404040 0;
@@ -221,6 +229,7 @@
 #X text 58 594 6) store the labelset into a text object;
 #X text 342 304 3) Set and update labels with the corresponding messages. The setlabel message will create the label if it does not yet exist \, while updatelabel message assumes it already exists and will not make it., f 44;
 #X text 38 675 7) ]click 'text' to see labels;
+#X msg 535 326;
 #X connect 0 0 26 0;
 #X connect 5 0 26 0;
 #X connect 6 0 26 0;

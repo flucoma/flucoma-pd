@@ -97,7 +97,11 @@ public:
 
   static void getLatency(Wrapper* x)
   {
-    outlet_float(x->mLatencyOut, static_cast<t_float>(x->mClient.latency()));
+    t_atom latency[1];
+    SETFLOAT(latency, static_cast<t_float>(x->mClient.latency()));
+    if (x->mLatencyOut != nullptr)
+      outlet_anything(x->mLatencyOut, gensym("latency"), static_cast<int>(1),
+                      latency);
   }
 
   static void callDSP(Wrapper* x, t_signal** sp) { x->dsp(sp); }
@@ -229,7 +233,7 @@ private:
   std::vector<t_sample*>  mSigOuts;
   FluidTensor<t_float, 2> mControlOutputs;
   FluidTensor<t_atom, 2>  mControlAtoms;
-  t_outlet*               mLatencyOut;
+  t_outlet*               mLatencyOut{nullptr};
   t_clock*                mControlClock{nullptr};
   FluidContext            mContext;
 };
@@ -254,7 +258,7 @@ struct NonRealTime
   {
     class_addmethod(c, (t_method) callProcess, gensym("bang"), A_NULL);
     
-    if(Wrapper::NumInputBuffers)
+    if constexpr (Wrapper::NumInputBuffers)
         class_addmethod(c, (t_method) callBuffer, gensym("buffer"), A_GIMME, 0);
     
     class_addmethod(c, (t_method) callSR, gensym("sr"), A_FLOAT, 0);
@@ -1502,6 +1506,7 @@ private:
   {
     class_addmethod(getClass(), (t_method) doSharedClientRefer, gensym("refer"), A_DEFSYM,
                     0);
+      class_addmethod(getClass(), (t_method) doGetName, gensym("getname"), A_NULL);
   }
 
   static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
@@ -1520,6 +1525,12 @@ private:
     }
   }
 
+  static void doGetName(FluidPDWrapper* x)
+  {
+    t_atom name;
+    SETSYMBOL(&name, gensym(x->mParams.template get<0>().c_str()));
+    outlet_anything(x->mDumpOutlet, gensym("name"), static_cast<int>(1), &name);
+  }
 
   // Sets up a single parameter
 
@@ -1813,11 +1824,15 @@ private:
   template <size_t N>
   static void doRead(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if (!ac) return;
+    if (!ac || av[0].a_type != A_SYMBOL)
+    {
+      pd_error(x, "Missing or invalid filename");
+      return;
+    }
     const char* filename = av[0].a_w.w_symbol->s_name;
     if (!filename)
     {
-      pd_error(x, "Missing or invalid filename");
+      pd_error(x, "Invalid filename");
       return;
     }
     char buf[MAXPDSTRING], *bufptr;
@@ -1843,11 +1858,15 @@ private:
   template <size_t N>
   static void doWrite(FluidPDWrapper* x, t_symbol*, long ac, t_atom* av)
   {
-    if (!ac) return;
+    if (!ac || av[0].a_type != A_SYMBOL)
+    {
+      pd_error(x, "Missing or invalid filename");
+      return;
+    }
     const char* filename = av[0].a_w.w_symbol->s_name;
     if (!filename)
     {
-      pd_error(x, "Missing or invalid filename");
+      pd_error(x, "Invalid filename");
       return;
     }
     char filenamebuf[MAXPDSTRING];
