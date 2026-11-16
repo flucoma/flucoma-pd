@@ -1251,11 +1251,13 @@ public:
     void* x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
     static constexpr index numListArgs = isControlOutFollowsIn<typename Client::Client>;
-    if (static_cast<index>(paramArgOffset(ac, av) - numListArgs) >
+    // shared objects take their name as first argument; it isn't a parameter
+    static constexpr index numNameArgs = IsThreadedShared<Client>::value;
+    if (static_cast<index>(paramArgOffset(ac, av) - numListArgs - numNameArgs) >
         ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
-                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + numListArgs);
+                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + numListArgs + numNameArgs);
     }
 
     return x;
@@ -1465,6 +1467,20 @@ private:
         ac--;
       }
 
+      // Shared objects: the first argument is the name, which is not part of
+      // the parameter set (an automatic one was added above if needed)
+      if constexpr (IsThreadedShared<Client>::value)
+      {
+        if (numArgs > 0)
+        {
+          mUserMessageQueue.push_back(
+              mParams.setName(atom_getsymbol(av)->s_name));
+          numArgs -= 1;
+          av += 1;
+          ac--;
+        }
+      }
+
       mParams.setPrimaryParameterValues(
           true,
           [this](auto idx, long ac, t_atom* av, long& currentCount) {
@@ -1506,13 +1522,15 @@ private:
   {
     class_addmethod(getClass(), (t_method) doSharedClientRefer, gensym("refer"), A_DEFSYM,
                     0);
-      class_addmethod(getClass(), (t_method) doGetName, gensym("getname"), A_NULL);
+    class_addmethod(getClass(), (t_method) doGetName, gensym("getname"), A_NULL);
+    class_addmethod(getClass(), (t_method) doSetName, gensym("setname"),
+                    A_DEFSYM, 0);
   }
 
   static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
   {
     rt::string name(newName->s_name);
-    if (name != x->mParams.template get<0>())
+    if (name != x->mParams.name())
     {
       Result r = x->mParams.lookup(name);
       if (r.ok())
@@ -1528,8 +1546,16 @@ private:
   static void doGetName(FluidPDWrapper* x)
   {
     t_atom name;
-    SETSYMBOL(&name, gensym(x->mParams.template get<0>().c_str()));
+    SETSYMBOL(&name, gensym(x->mParams.name().c_str()));
     outlet_anything(x->mDumpOutlet, gensym("name"), static_cast<int>(1), &name);
+  }
+
+  // Change the name under which this object's shared data is registered. The
+  // data itself is untouched, and every object sharing it follows the new name
+  static void doSetName(FluidPDWrapper* x, t_symbol* newName)
+  {
+    Result r = x->mParams.rename(rt::string(newName->s_name));
+    if (!r.ok()) printResult(x, r);
   }
 
   // Sets up a single parameter
