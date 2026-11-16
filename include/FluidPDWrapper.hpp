@@ -1537,6 +1537,7 @@ private:
       {
         x->mParams.refer(name);
         x->mClient = Client(x->mParams, FluidContext());
+        outlet_anything(x->mDataOutlets[0], gensym("refer"), 0, nullptr);
       }
       else
         printResult(x, r);
@@ -1547,15 +1548,19 @@ private:
   {
     t_atom name;
     SETSYMBOL(&name, gensym(x->mParams.name().c_str()));
-    outlet_anything(x->mDumpOutlet, gensym("name"), static_cast<int>(1), &name);
+    outlet_anything(x->mDataOutlets[0], gensym("getname"), static_cast<int>(1),
+                    &name);
   }
 
-  // Change the name under which this object's shared data is registered. The
-  // data itself is untouched, and every object sharing it follows the new name
   static void doSetName(FluidPDWrapper* x, t_symbol* newName)
   {
     Result r = x->mParams.rename(rt::string(newName->s_name));
-    if (!r.ok()) printResult(x, r);
+    if (!r.ok())
+    {
+      printResult(x, r);
+      return;
+    }
+    outlet_anything(x->mDataOutlets[0], gensym("setname"), 0, nullptr);
   }
 
   // Sets up a single parameter
