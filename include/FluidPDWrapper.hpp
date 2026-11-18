@@ -1280,8 +1280,6 @@ public:
                     A_FLOAT, 0);
     class_addmethod(getClass(), (t_method) doVersion, gensym("version"),
                     A_NULL);
-    makeReferable(); 
-    
     if (isControlIn<typename Client::Client>)
     {
       class_addmethod(getClass(), (t_method) handleList, gensym("list"), A_GIMME, 0);
@@ -1292,6 +1290,8 @@ public:
       class_addmethod(getClass(), (t_method) doAutosize, gensym("autosize"), A_FLOAT, 0);
      }
 
+    // for shared objects this includes refer, setname and getname, which
+    // flucoma-core declares for every shared client
     m.template iterate<SetupMessage>();
 
     p.template iterateMutable<SetupParameter>();
@@ -1513,56 +1513,6 @@ private:
     return mParams;
   }
   
-  template <typename CType = Client>
-  static std::enable_if_t<!IsThreadedShared<CType>::value> makeReferable()
-  {}
-
-  template <typename CType = Client>
-  static std::enable_if_t<IsThreadedShared<CType>::value> makeReferable()
-  {
-    class_addmethod(getClass(), (t_method) doSharedClientRefer, gensym("refer"), A_DEFSYM,
-                    0);
-    class_addmethod(getClass(), (t_method) doGetName, gensym("getname"), A_NULL);
-    class_addmethod(getClass(), (t_method) doSetName, gensym("setname"),
-                    A_DEFSYM, 0);
-  }
-
-  static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
-  {
-    rt::string name(newName->s_name);
-    if (name != x->mParams.name())
-    {
-      Result r = x->mParams.lookup(name);
-      if (r.ok())
-      {
-        x->mParams.refer(name);
-        x->mClient = Client(x->mParams, FluidContext());
-        outlet_anything(x->mDataOutlets[0], gensym("refer"), 0, nullptr);
-      }
-      else
-        printResult(x, r);
-    }
-  }
-
-  static void doGetName(FluidPDWrapper* x)
-  {
-    t_atom name;
-    SETSYMBOL(&name, gensym(x->mParams.name().c_str()));
-    outlet_anything(x->mDataOutlets[0], gensym("getname"), static_cast<int>(1),
-                    &name);
-  }
-
-  static void doSetName(FluidPDWrapper* x, t_symbol* newName)
-  {
-    Result r = x->mParams.rename(rt::string(newName->s_name));
-    if (!r.ok())
-    {
-      printResult(x, r);
-      return;
-    }
-    outlet_anything(x->mDataOutlets[0], gensym("setname"), 0, nullptr);
-  }
-
   // Sets up a single parameter
 
   template <size_t N, typename T>
