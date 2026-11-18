@@ -1251,11 +1251,13 @@ public:
     void* x = pd_new(getClass());
     new (x) FluidPDWrapper(sym, ac, av);
     static constexpr index numListArgs = isControlOutFollowsIn<typename Client::Client>;
-    if (static_cast<index>(paramArgOffset(ac, av) - numListArgs) >
+    // shared objects take their name as first argument; it isn't a parameter
+    static constexpr index numNameArgs = IsThreadedShared<Client>::value;
+    if (static_cast<index>(paramArgOffset(ac, av) - numListArgs - numNameArgs) >
         ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams)
     {
       impl::object_warn(x, "Too many arguments. Got %d, expect at most %d", ac,
-                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + numListArgs);
+                        ParamDescType::NumFixedParams + ParamDescType::NumPrimaryParams + numListArgs + numNameArgs);
     }
 
     return x;
@@ -1278,8 +1280,6 @@ public:
                     A_FLOAT, 0);
     class_addmethod(getClass(), (t_method) doVersion, gensym("version"),
                     A_NULL);
-    makeReferable(); 
-    
     if (isControlIn<typename Client::Client>)
     {
       class_addmethod(getClass(), (t_method) handleList, gensym("list"), A_GIMME, 0);
@@ -1290,6 +1290,8 @@ public:
       class_addmethod(getClass(), (t_method) doAutosize, gensym("autosize"), A_FLOAT, 0);
      }
 
+    // for shared objects this includes refer, setname and getname, which
+    // flucoma-core declares for every shared client
     m.template iterate<SetupMessage>();
 
     p.template iterateMutable<SetupParameter>();
@@ -1465,6 +1467,20 @@ private:
         ac--;
       }
 
+      // Shared objects: the first argument is the name, which is not part of
+      // the parameter set (an automatic one was added above if needed)
+      if constexpr (IsThreadedShared<Client>::value)
+      {
+        if (numArgs > 0)
+        {
+          mUserMessageQueue.push_back(
+              mParams.setName(atom_getsymbol(av)->s_name));
+          numArgs -= 1;
+          av += 1;
+          ac--;
+        }
+      }
+
       mParams.setPrimaryParameterValues(
           true,
           [this](auto idx, long ac, t_atom* av, long& currentCount) {
@@ -1497,41 +1513,6 @@ private:
     return mParams;
   }
   
-  template <typename CType = Client>
-  static std::enable_if_t<!IsThreadedShared<CType>::value> makeReferable()
-  {}
-
-  template <typename CType = Client>
-  static std::enable_if_t<IsThreadedShared<CType>::value> makeReferable()
-  {
-    class_addmethod(getClass(), (t_method) doSharedClientRefer, gensym("refer"), A_DEFSYM,
-                    0);
-      class_addmethod(getClass(), (t_method) doGetName, gensym("getname"), A_NULL);
-  }
-
-  static void doSharedClientRefer(FluidPDWrapper* x, t_symbol* newName)
-  {
-    rt::string name(newName->s_name);
-    if (name != x->mParams.template get<0>())
-    {
-      Result r = x->mParams.lookup(name);
-      if (r.ok())
-      {
-        x->mParams.refer(name);
-        x->mClient = Client(x->mParams, FluidContext());
-      }
-      else
-        printResult(x, r);
-    }
-  }
-
-  static void doGetName(FluidPDWrapper* x)
-  {
-    t_atom name;
-    SETSYMBOL(&name, gensym(x->mParams.template get<0>().c_str()));
-    outlet_anything(x->mDumpOutlet, gensym("name"), static_cast<int>(1), &name);
-  }
-
   // Sets up a single parameter
 
   template <size_t N, typename T>
